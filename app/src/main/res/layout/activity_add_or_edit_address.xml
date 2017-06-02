@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.ytxd.spp.ui.views.ActionBarView
+        android:id="@+id/actionBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.ytxd.spp.ui.views.ReboundScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    style="@style/VG_Stable_Height_NO_Padding"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="80.0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/padding_left"
+                        android:text="联系人"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/text_size_little_small" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:paddingRight="@dimen/default_ui_margin_medium_s">
+
+                            <EditText
+                                android:id="@+id/et_name"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:hint="联系人姓名"
+                                android:paddingLeft="@dimen/default_ui_margin_small"
+                                android:text="帆赛"
+                                android:textColor="@color/black_overlay2"
+                                android:textColorHint="@color/hint_gray"
+                                android:textSize="@dimen/text_size_little_small" />
+
+                            <ImageView
+                                android:id="@+id/iv_ed_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:paddingLeft="@dimen/default_ui_margin_small"
+                                android:paddingRight="@dimen/default_ui_margin_small"
+                                android:src="@drawable/ic_e_d"
+                                android:visibility="gone" />
+                        </LinearLayout>
+
+
+                        <include layout="@layout/line_gray"></include>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/VG_Stable_Height_NO_Padding"
+                    android:orientation="horizontal">
+
+                    <Space
+                        android:layout_width="80.0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/padding_left" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_sex"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rb_man"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/default_ui_margin_huge"
+                            android:button="@drawable/selectable_common_rb_bg"
+                            android:checked="true"
+                            android:paddingLeft="@dimen/default_ui_margin_medium_small"
+                            android:text="先生"
+                            android:textColor="@color/black_overlay2"
+                            android:textSize="@dimen/text_size_little_small" />
+
+                        <RadioButton
+                            android:id="@+id/rb_woman"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:button="@drawable/selectable_common_rb_bg"
+                            android:paddingLeft="@dimen/default_ui_margin_medium_small"
+                            android:text="女士"
+                            android:textColor="@color/black_overlay2"
+                            android:textSize="@dimen/text_size_little_small" />
+
+                    </RadioGroup>
+
+
+                </LinearLayout>
+
+                <include layout="@layout/line_gray"></include>
+
+                <LinearLayout
+                    style="@style/VG_Stable_Height_NO_Padding"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="80.0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/padding_left"
+                        android:text="手机号"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/text_size_little_small" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:paddingRight="@dimen/default_ui_margin_medium_s">
+
+                        <EditText
+                            android:id="@+id/et_phone"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:hint="联系人手机号"
+                            android:inputType="phone"
+                            android:paddingLeft="@dimen/default_ui_margin_small"
+                            android:text="123455666"
+                            android:textColor="@color/black_overlay2"
+                            android:textColorHint="@color/hint_gray"
+                            android:textSize="@dimen/text_size_little_small" />
+
+                        <ImageView
+                            android:id="@+id/iv_ed_phone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:paddingLeft="@dimen/default_ui_margin_small"
+                            android:paddingRight="@dimen/default_ui_margin_small"
+                            android:src="@drawable/ic_e_d"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <include layout="@layout/line_gray"></include>
+
+                <LinearLayout
+                    style="@style/VG_Stable_Height_NO_Padding"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="80.0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/padding_left"
+                        android:text="联系人"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/text_size_little_small" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/ll_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/selector_bg_viewgroup_click"
+                            android:orientation="horizontal"
+                            android:paddingRight="@dimen/default_ui_margin_medium_s">
+
+                            <TextView
+                                android:id="@+id/tv_address"
+                                style="@style/TV_VG_RGIHT_TO2"
+                                android:layout_width="match_parent"
+                                android:ellipsize="end"
+                                android:gravity="center_vertical"
+                                android:singleLine="true"
+                                android:text="朝阳区百子湾束带结发"
+                                android:textColor="@color/black_overlay2" />
+
+                        </LinearLayout>
+
+
+                        <include layout="@layout/line_gray"></include>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/VG_Stable_Height_NO_Padding"
+                    android:orientation="horizontal">
+
+                    <Space
+                        android:layout_width="80.0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/padding_left" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:paddingRight="@dimen/default_ui_margin_medium_s">
+
+                        <EditText
+                            android:id="@+id/et_ad_d"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:hint="详细地址（比如门牌号等）"
+                            android:paddingLeft="@dimen/default_ui_margin_small"
+                            android:text="5号楼二单元102"
+                            android:textColor="@color/black_overlay2"
+                            android:textColorHint="@color/hint_gray"
+                            android:textSize="@dimen/text_size_little_small" />
+
+                        <ImageView
+                            android:id="@+id/iv_ed_ad_d"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:paddingLeft="@dimen/default_ui_margin_small"
+                            android:paddingRight="@dimen/default_ui_margin_small"
+                            android:src="@drawable/ic_e_d"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <include layout="@layout/line_gray"></include>
+
+                <LinearLayout
+                    style="@style/VG_Stable_Height_NO_Padding"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="80.0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/padding_left"
+                        android:text="标签"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/text_size_little_small" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:paddingRight="@dimen/default_ui_margin_medium_s">
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <include layout="@layout/line_gray"></include>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_save"
+                style="@style/Common_PriceBtn_NoCorner"
+                android:layout_alignParentBottom="true"
+                android:text="保存" />
+
+
+        </RelativeLayout>
+    </com.ytxd.spp.ui.views.ReboundScrollView>
+</LinearLayout>

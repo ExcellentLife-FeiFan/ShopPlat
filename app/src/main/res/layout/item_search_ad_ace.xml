@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        style="@style/VG_padding"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/default_ui_margin_medium"
+                android:text="哈喽c先生"
+                android:textColor="@color/black_overlay"
+                android:textSize="@dimen/text_size_little_small" />
+
+            <TextView
+                android:id="@+id/tv_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="18811256789"
+                android:textColor="@color/black_overlay"
+                android:textSize="@dimen/text_size_little_small" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_ui_margin"
+            android:layout_marginLeft="@dimen/default_ui_margin_small"
+            android:layout_marginTop="@dimen/default_ui_margin_medium_s"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_address_t"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/default_ui_margin_large"
+                android:drawableTop="@drawable/ic_ad_jia"
+                android:ellipsize="end"
+                android:gravity="center_horizontal"
+                android:singleLine="true"
+                android:text="家"
+                android:textColor="@color/price_color"
+                android:textSize="@dimen/text_size_micro" />
+
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="朝阳区百子湾百子园"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_size_small" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

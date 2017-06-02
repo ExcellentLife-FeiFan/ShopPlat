@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.ytxd.spp.ui.views.ActionBarView
+        android:id="@+id/actionBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionbar_height"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_city"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/selector_bg_viewgroup_click3"
+            android:drawablePadding="@dimen/default_ui_margin"
+            android:drawableRight="@drawable/vm"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/padding_left2"
+            android:paddingRight="@dimen/padding_left2"
+            android:text="北京"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_little_small"
+            android:visibility="visible" />
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/default_ui_margin_medium_s"
+            android:layout_marginRight="@dimen/padding_left"
+            android:layout_marginTop="@dimen/default_ui_margin_medium_s"
+            android:background="@drawable/bg_white_halfcircle"
+            android:drawableLeft="@drawable/ic_home_search"
+            android:drawablePadding="@dimen/default_ui_margin_medium_s"
+            android:hint="地址关键字"
+            android:paddingLeft="@dimen/padding_left2"
+            android:textColor="@color/black_overlay"
+            android:textColorHint="@color/hint_gray"
+            android:textSize="@dimen/text_size_small" />
+
+
+    </LinearLayout>
+
+    <com.ytxd.spp.ui.views.ReboundScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/ll_loc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/drawable_padding"
+                    android:paddingLeft="@dimen/padding_left"
+                    android:paddingRight="@dimen/drawable_padding"
+                    android:paddingTop="@dimen/drawable_padding"
+                    android:text="当前地址"
+                    android:textSize="@dimen/text_size_small" />
+
+                <LinearLayout style="@style/VG_padding">
+
+                    <TextView
+                        android:id="@+id/tv_loc_ad"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="@string/loc_doing"
+                        android:textColor="@color/black_overlay"
+                        android:textSize="@dimen/text_size_little_small" />
+
+                    <TextView
+                        android:id="@+id/tv_re_loc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/drawable_padding"
+                        android:paddingRight="@dimen/drawable_padding"
+                        android:text="重新定位"
+                        android:drawablePadding="@dimen/default_ui_margin_medium_small"
+                        android:drawableLeft="@drawable/ic_action_loc"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_size_little_small" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/drawable_padding"
+                    android:paddingLeft="@dimen/padding_left"
+                    android:paddingRight="@dimen/drawable_padding"
+                    android:paddingTop="@dimen/drawable_padding"
+                    android:text="收货地址"
+                    android:textSize="@dimen/text_size_small" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_lv_ad_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.ytxd.spp.ui.views.InListView
+                        android:id="@+id/lv_ad_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@color/line_gray"
+                        android:dividerHeight="@dimen/common_divider_height" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/drawable_padding"
+                    android:paddingLeft="@dimen/padding_left"
+                    android:paddingRight="@dimen/drawable_padding"
+                    android:paddingTop="@dimen/drawable_padding"
+                    android:text="附近地址"
+                    android:textSize="@dimen/text_size_small" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_lv_near_ad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.ytxd.spp.ui.views.InListView
+                        android:id="@+id/lv_near_ad"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@color/line_gray"
+                        android:dividerHeight="@dimen/common_divider_height" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <include layout="@layout/layout_common_lv"></include>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </com.ytxd.spp.ui.views.ReboundScrollView>
+</LinearLayout>

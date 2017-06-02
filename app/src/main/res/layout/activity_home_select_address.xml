@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionbar_height"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/rl_back"
+            android:layout_width="@dimen/dp40"
+            android:layout_height="match_parent"
+            android:background="@drawable/selector_bg_viewgroup_click3">
+
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:scaleType="fitStart"
+                android:src="@drawable/ic_back_white"
+                />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_title_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/selector_bg_viewgroup_click3"
+            android:drawablePadding="@dimen/default_ui_margin"
+            android:drawableRight="@drawable/vm"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/padding_left2"
+            android:paddingRight="@dimen/padding_left2"
+            android:text="北京"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_small"
+            android:visibility="visible" />
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/default_ui_margin_medium_s"
+            android:layout_marginRight="@dimen/padding_left"
+            android:layout_marginTop="@dimen/default_ui_margin_medium_s"
+            android:background="@drawable/bg_white_halfcircle"
+            android:drawableLeft="@drawable/ic_home_search"
+            android:drawablePadding="@dimen/default_ui_margin_medium_s"
+            android:hint="地址关键字"
+            android:paddingLeft="@dimen/padding_left2"
+            android:textColor="@color/black_overlay"
+            android:textColorHint="@color/hint_gray"
+            android:textSize="@dimen/text_size_small" />
+
+
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ll_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="250.0dip">
+
+                <com.amap.api.maps2d.MapView
+                    android:id="@+id/map"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40.0dip"
+                        android:layout_marginBottom="17.0dip"
+                        android:src="@drawable/ic_location_center" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+
+            <ListView
+                android:id="@+id/lv_nearly"
+                style="@style/Common_LV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <include layout="@layout/layout_common_lv"></include>
+
+        </RelativeLayout>
+
+
+    </FrameLayout>
+
+</LinearLayout>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/padding_bottom"
+        android:paddingLeft="@dimen/default_ui_margin_great"
+        android:paddingRight="@dimen/default_ui_margin_great"
+        android:paddingTop="@dimen/padding_bottom"
+        android:weightSum="1.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_marginRight="@dimen/padding_left2"
+                android:background="@drawable/bg_merchant_icon_border">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:src="@color/img_bg"
+                    app:riv_corner_radius="@dimen/common_radius" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_ui_margin"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="肯德基宅急送"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_little_small"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_ui_margin"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                        android:id="@+id/rb"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:maxHeight="14dp"
+                        android:minHeight="14dp"
+                        android:rating="2.5"
+                        app:mrb_progressBackgroundTint="@color/gray"
+                        app:mrb_progressTint="@color/colorPrimary"
+                        app:mrb_secondaryProgressTint="@color/gray" />
+
+                    <TextView
+                        android:id="@+id/tv_rb_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/default_ui_margin_small"
+                        android:text="4.8"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_size_micro" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/default_ui_margin_medium_small"
+                        android:text="月售"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_micro" />
+
+                    <TextView
+                        android:id="@+id/tv_month_sales"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="214"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_micro" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="单"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_micro" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_ui_margin"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_qisong_p"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¥0起送"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/item_merchant_tv2_size" />
+
+                    <View
+                        android:layout_width="1.0dp"
+                        android:layout_height="@dimen/dp10"
+                        android:layout_marginLeft="@dimen/default_ui_margin_small"
+                        android:layout_marginRight="@dimen/default_ui_margin_small"
+                        android:background="@color/hint_gray"></View>
+
+                    <TextView
+                        android:id="@+id/tv_distri_p"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="配送费¥9"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/item_merchant_tv2_size" />
+
+                    <View
+                        android:layout_width="1.0dp"
+                        android:layout_height="@dimen/dp10"
+                        android:layout_marginLeft="@dimen/default_ui_margin_small"
+                        android:layout_marginRight="@dimen/default_ui_margin_small"
+                        android:background="@color/hint_gray"></View>
+
+                    <TextView
+                        android:id="@+id/tv_per_peo_p"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¥48/人"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/item_merchant_tv2_size" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right|center_vertical"
+                        android:orientation="horizontal">
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp2"
+            android:layout_marginTop="@dimen/default_ui_margin"
+            android:background="@drawable/shape_white_line_dash"
+            android:layerType="software" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_ui_margin_medium_s"
+            android:orientation="horizontal">
+
+            <com.ytxd.spp.ui.views.MyExpandableLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                app:el_contentLayout="@layout/expandlayout_merchat_act_content"
+                app:el_headerLayout="@layout/expandlayout_merchat_act_header" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:gravity="right">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5个活动"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/item_merchant_tv2_size" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>
