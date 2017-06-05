@@ -16,9 +16,9 @@
         android:paddingTop="@dimen/padding_left">
 
         <RelativeLayout
-            android:layout_width="@dimen/dp85"
+            android:layout_width="@dimen/dp80"
             android:layout_height="@dimen/dp100"
-            android:padding="@dimen/default_ui_margin_medium_small">
+            android:padding="@dimen/dp3">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -68,7 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/default_ui_margin_medium_s">
+                    android:layout_marginLeft="@dimen/default_ui_margin_medium_small">
 
                     <TextView
                         android:id="@+id/tv_origin_p"

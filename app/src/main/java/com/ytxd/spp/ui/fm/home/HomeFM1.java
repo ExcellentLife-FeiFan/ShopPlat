@@ -26,6 +26,7 @@ import com.ytxd.spp.ui.activity.main.SelectACEAddressActivity;
 import com.ytxd.spp.ui.adapter.HomeMerchantA;
 import com.ytxd.spp.ui.views.SimpleDividerDecoration;
 import com.ytxd.spp.util.AMapLocationUtil;
+import com.ytxd.spp.util.AbStrUtil;
 import com.ytxd.spp.util.CommonUtils;
 
 import butterknife.BindView;
@@ -125,7 +126,11 @@ public class HomeFM1 extends BaseFragment implements BaseQuickAdapter.RequestLoa
             address.setAddress(event.getaMapLocation().getAddress());
             address.setLatLng(new LatLonPoint(event.getaMapLocation().getLatitude(), event.getaMapLocation().getLongitude()));
             addressM = address;
-            tvAddress.setText(address.getTitle());
+            if(AbStrUtil.isEmpty(address.getTitle())){
+                tvAddress.setText(getString(R.string.loc_fail));
+            }else{
+                tvAddress.setText(address.getTitle());
+            }
         } else {
             addressM = null;
             tvAddress.setText(getString(R.string.loc_fail));

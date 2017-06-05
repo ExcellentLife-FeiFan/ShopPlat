@@ -30,7 +30,7 @@ public class MerchantCartListPopWindow extends PopupWindow implements View.OnCli
         //设置SelectPicPopupWindow弹出窗体可点击
         this.setFocusable(true);
         //设置SelectPicPopupWindow弹出窗体动画效果
-        this.setAnimationStyle(R.style.Pop);
+//        this.setAnimationStyle(R.style.Pop);
         //实例化一个ColorDrawable颜色为半透明
 //        ColorDrawable dw = new ColorDrawable(CommonUtils.getColor(context,R.color.red));
         //设置SelectPicPopupWindow弹出窗体的背景

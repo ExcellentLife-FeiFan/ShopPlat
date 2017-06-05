@@ -2,6 +2,7 @@ package com.ytxd.spp.ui.activity.main;
 
 import android.Manifest;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,6 +12,7 @@ import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
 import com.ytxd.spp.ui.activity.login.LoginActivity;
 import com.ytxd.spp.util.PermissionsActivity;
+import com.ytxd.spp.util.PermissionsChecker;
 import com.ytxd.spp.util.SPUtil;
 
 public class SplashActivity extends BaseActivity {
@@ -25,10 +27,22 @@ public class SplashActivity extends BaseActivity {
     };
     private static final int REQUEST_CODE = 0; // 请求码
 
+    private PermissionsChecker mPermissionsChecker; // 权限检测器
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mPermissionsChecker = new PermissionsChecker(this);
+            // 缺少权限时, 进入权限配置页面
+            if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
+                startPermissionsActivity();
+                return;
+            }
+        }
+
         new Handler() {
             @Override
             public void handleMessage(Message msg) {

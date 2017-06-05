@@ -7,20 +7,20 @@
 
     <ImageView
         android:id="@+id/iv_plus"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_alignRight="@+id/btnAdd"
         android:scaleType="fitXY"
         android:src="@drawable/ic_good_plus" />
 
-    <ImageView
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+<!--    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_alignLeft="@+id/btnAdd"
         android:layout_centerVertical="true"
         android:scaleType="fitXY"
         android:src="@drawable/ic_good_minus"
-        android:visibility="invisible" />
+        android:visibility="invisible" />-->
 
     <com.mcxtzhang.lib.AnimShopButton
         android:id="@+id/btnAdd"
@@ -34,7 +34,10 @@
         app:hintBgColor="@color/price_color"
         app:hintBgRoundValue="15dp"
         app:hintFgColor="#ffffff"
+        app:radius="12dp"
+        app:gapBetweenCircle="15dp"
         app:maxCount="99"
+        app:hingTextSize="@dimen/text_size_tag_small"
         app:replenishText="补货中" />
 
 </RelativeLayout>

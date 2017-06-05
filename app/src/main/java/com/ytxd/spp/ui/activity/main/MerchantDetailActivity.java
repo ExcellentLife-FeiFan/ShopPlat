@@ -14,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,6 +33,7 @@ import com.ytxd.spp.ui.adapter.MerchantCategoryA;
 import com.ytxd.spp.ui.adapter.MerchantGoodA;
 import com.ytxd.spp.ui.views.FakeAddImageView;
 import com.ytxd.spp.ui.views.SimpleDividerDecoration;
+import com.ytxd.spp.ui.views.pop.MerchantCartListDialog;
 import com.ytxd.spp.ui.views.pop.MerchantCartListPopWindow;
 import com.ytxd.spp.util.PointFTypeEvaluator;
 
@@ -186,8 +189,8 @@ public class MerchantDetailActivity extends BaseActivity {
         final FakeAddImageView fakeAddImageView = new FakeAddImageView(this);
         mainLayout.addView(fakeAddImageView);
         fakeAddImageView.setImageResource(R.drawable.ic_good_plus);
-        fakeAddImageView.getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.dp28);
-        fakeAddImageView.getLayoutParams().height = getResources().getDimensionPixelSize(R.dimen.dp28);
+        fakeAddImageView.getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.dp24);
+        fakeAddImageView.getLayoutParams().height = getResources().getDimensionPixelSize(R.dimen.dp24);
         fakeAddImageView.setVisibility(View.VISIBLE);
         ObjectAnimator addAnimator = ObjectAnimator.ofObject(fakeAddImageView, "mPointF",
                 new PointFTypeEvaluator(controlP), startP, endP);
@@ -252,37 +255,23 @@ public class MerchantDetailActivity extends BaseActivity {
             case R.id.btn_ok:
                 break;
             case R.id.shopping_cart_layout:
-                if (null == merchantCartListPopWindow) {
-                    merchantCartListPopWindow = new MerchantCartListPopWindow(this);
-                }
-                if(!merchantCartListPopWindow.isShowing()){
-                    merchantCartListPopWindow.showAtLocation(mainLayout, Gravity.BOTTOM,0,0);
-                }else{
-                    merchantCartListPopWindow.dismiss();
-                }
-//                toggleCartMenu();
+                showCart();
                 break;
         }
     }
 
-    /*private void toggleCartMenu(){
-        if (rlCartList.getVisibility() == View.VISIBLE) {
-            exlayoutCartList.hide();
-            exlayoutCartList.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    rlCartList.setVisibility(View.GONE);
-                }
-            }, 200);
+    private void showCart() {
+        MerchantCartListDialog dialog = new MerchantCartListDialog(this);
+            Window window = dialog.getWindow();
+            dialog.setCanceledOnTouchOutside(true);
+            dialog.setCancelable(true);
+            dialog.show();
+            WindowManager.LayoutParams params = window.getAttributes();
+            params.width = WindowManager.LayoutParams.MATCH_PARENT;
+            params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            params.gravity = Gravity.BOTTOM;
+            params.dimAmount =0.5f;
+            window.setAttributes(params);
+    }
 
-        } else {
-            rlCartList.setVisibility(View.VISIBLE);
-            exlayoutCartList.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    exlayoutCartList.show();
-                }
-            }, 200);
-        }
-    }*/
 }
