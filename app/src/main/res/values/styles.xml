@@ -19,6 +19,19 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
+    <style name="CustomDialog" parent="android:style/Theme.Dialog">
+        <!--背景颜色及透明程度-->
+        <item name="android:windowBackground">@color/transparent</item>
+        <!--是否有标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!--是否浮现在activity之上-->
+        <item name="android:windowIsFloating">false</item>
+        <!--是否模糊-->
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
+    </style>
+
 
     <style name="cartdialog">
         <item name="android:windowIsFloating">true</item>
@@ -226,7 +239,7 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:drawablePadding">@dimen/drawable_padding</item>
         <item name="android:textSize">@dimen/text_size_little_small</item>
-        <item name="android:drawableRight">@drawable/ic_gray_to</item>
+        <item name="android:drawableRight">@drawable/ic_gray_right</item>
         <item name="android:layout_alignParentRight">true</item>
     </style>
 

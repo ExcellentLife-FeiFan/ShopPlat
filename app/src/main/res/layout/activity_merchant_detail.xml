@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -100,40 +99,9 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
-   <!-- <RelativeLayout
-        android:id="@+id/rl_cart_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/dp50"
-        android:background="#55383838"
-        android:clickable="true"
-        android:visibility="gone">
-
-        <View
-            android:id="@+id/v_cart_menu_bank"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/transparent"
-            android:layout_above="@+id/exlayout_cart_list"></View>
-
-
-        <com.ytxd.spp.ui.views.MyExpandableLayout
-            android:id="@+id/exlayout_cart_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/white"
-            android:paddingBottom="@dimen/default_ui_margin"
-            android:paddingLeft="@dimen/padding_left"
-            android:paddingRight="@dimen/padding_left"
-            android:paddingTop="@dimen/default_ui_margin"
-            app:el_contentLayout="@layout/expandlayout_merchat_act_content"
-            app:el_headerLayout="@layout/expandlayout_merchat_act_header" />
-
-    </RelativeLayout>-->
-
 
     <RelativeLayout
+        android:id="@+id/rl_cart"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_alignParentBottom="true">

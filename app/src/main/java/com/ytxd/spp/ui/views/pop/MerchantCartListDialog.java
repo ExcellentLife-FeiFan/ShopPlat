@@ -16,6 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ytxd.spp.R;
+import com.ytxd.spp.ui.adapter.CartListDialogLV;
+import com.ytxd.spp.util.CommonUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,7 +52,7 @@ public class MerchantCartListDialog extends Dialog {
     TextView shoppingCartTotalNum;
     @BindView(R.id.rl_cart_btn)
     RelativeLayout rlCartBtn;
-
+    CartListDialogLV goodListA;
 
     public MerchantCartListDialog(Context context) {
         super(context, R.style.cartdialog);
@@ -61,7 +63,8 @@ public class MerchantCartListDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_merchant_cart_list);
         ButterKnife.bind(this);
-
+        goodListA = new CartListDialogLV(CommonUtils.getSampleList(10),getContext());
+        lv.setAdapter(goodListA);
     }
 
     @Override

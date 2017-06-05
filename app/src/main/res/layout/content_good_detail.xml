@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
+    android:scrollbars="none"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/default_ui_margin_medium"
+            android:paddingLeft="@dimen/padding_left"
+            android:paddingRight="@dimen/padding_left"
+            android:paddingTop="@dimen/default_ui_margin_medium">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_good_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="[纯牛奶] /大杯"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_common_btn" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_ui_margin"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="月售"
+                    android:textColor="@color/black_overlay4"
+                    android:textSize="@dimen/text_size_common" />
+
+                <TextView
+                    android:id="@+id/tv_month_sales"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="68"
+                    android:textColor="@color/black_overlay4"
+                    android:textSize="@dimen/text_size_common" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="份"
+                    android:textColor="@color/black_overlay4"
+                    android:textSize="@dimen/text_size_common" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/default_ui_margin_large"
+                    android:text="好评率"
+                    android:textColor="@color/black_overlay4"
+                    android:textSize="@dimen/text_size_common" />
+
+                <TextView
+                    android:id="@+id/tv_favor_persent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="80%"
+                    android:textColor="@color/black_overlay4"
+                    android:textSize="@dimen/text_size_common" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_ui_margin_large"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¥  "
+                    android:textColor="@color/price_color"
+                    android:textSize="@dimen/sp12" />
+
+                <TextView
+                    android:id="@+id/tv_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2.9"
+                    android:textColor="@color/price_color"
+                    android:textSize="@dimen/text_size_medium" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/default_ui_margin_medium_small">
+
+                    <TextView
+                        android:id="@+id/tv_origin_p"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¥ 3.5"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/sp12" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/tv_origin_p"
+                        android:layout_alignRight="@+id/tv_origin_p"
+                        android:layout_centerVertical="true"
+                        android:background="@color/gray"></View>
+
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+
+                    <include layout="@layout/layout_btn_add_good_number"></include>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                style="@style/VG_padding"
+                android:layout_marginTop="@dimen/default_ui_margin">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="商品评价"
+                        android:textColor="@color/black_overlay"
+                        android:textSize="@dimen/text_size_medium" />
+
+                    <TextView
+                        android:id="@+id/tv_good_comment_persent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/default_ui_margin"
+                        android:text="（好评率96%）"
+                        android:textColor="@color/black_overlay"
+                        android:textSize="@dimen/text_size_small" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/tv_num_comment"
+                    style="@style/TV_VG_RGIHT_TO2"
+                    android:drawablePadding="@dimen/default_ui_margin_small"
+                    android:text="40余条评论"
+                    android:textSize="@dimen/text_size_small" />
+
+
+            </RelativeLayout>
+
+            <include layout="@layout/line_gray_padding_left"></include>
+
+            <com.ytxd.spp.ui.views.InListView
+                android:id="@+id/lv_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@color/common_divider_color"
+                android:dividerHeight="@dimen/common_divider_height"
+                android:paddingLeft="@dimen/padding_left"
+                android:scrollbars="none" />
+
+            <LinearLayout
+                android:id="@+id/ll_comment_more"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <include layout="@layout/line_gray"></include>
+
+                <RelativeLayout style="@style/VG_padding">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:drawablePadding="@dimen/default_ui_margin_medium_small"
+                        android:drawableRight="@drawable/ic_gray_right"
+                        android:text="全部评论"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/text_size_common_btn" />
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

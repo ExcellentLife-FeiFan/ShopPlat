@@ -8,9 +8,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="220dp">
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_address_mana"
+                style="@style/VG_padding">
+
+                <TextView
+                    style="@style/TV_VG_LEFT"
+                    android:text="收货地址" />
+
+                <TextView style="@style/TV_VG_RGIHT_TO2" />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
         <Button
-            style="@style/Common_Btn"
             android:id="@+id/btn_logout"
+            style="@style/Common_Btn"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/default_ui_margin"
             android:text="注销" />

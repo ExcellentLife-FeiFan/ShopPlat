@@ -26,6 +26,7 @@ import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.flyco.systembar.SystemBarHelper;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.BaseActivity;
+import com.ytxd.spp.event.CartListDialogShowEvent;
 import com.ytxd.spp.event.MerchantGoodAddEvent;
 import com.ytxd.spp.model.MerchantGoodM;
 import com.ytxd.spp.model.MerhchantGoodCategoryM;
@@ -62,6 +63,9 @@ public class MerchantDetailActivity extends BaseActivity {
     RelativeLayout mainLayout;
     @BindView(R.id.shopping_cart_bottom)
     LinearLayout shopping_cart_bottom;
+    @BindView(R.id.rl_cart)
+    RelativeLayout rl_cart;
+    MerchantCartListDialog cartListDialog;
 
 
     /*    @BindView(R.id.rl_cart_list)
@@ -90,7 +94,7 @@ public class MerchantDetailActivity extends BaseActivity {
         SystemBarHelper.setHeightAndPadding(this, toolbar);
 
 
-        goodA = new MerchantGoodA();
+        goodA = new MerchantGoodA(this);
         goodLM = new StickyHeaderLayoutManager();
         rvGood.setLayoutManager(goodLM);
         rvGood.addItemDecoration(new SimpleDividerDecoration(this, R.color.line_gray));
@@ -129,6 +133,7 @@ public class MerchantDetailActivity extends BaseActivity {
 
             }
         });
+
 
 
         categoryA = new MerchantCategoryA(categoryMS);
@@ -253,6 +258,7 @@ public class MerchantDetailActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_ok:
+                startActivity(EnsureOrderActivity.class);
                 break;
             case R.id.shopping_cart_layout:
                 showCart();
@@ -261,17 +267,27 @@ public class MerchantDetailActivity extends BaseActivity {
     }
 
     private void showCart() {
-        MerchantCartListDialog dialog = new MerchantCartListDialog(this);
-            Window window = dialog.getWindow();
-            dialog.setCanceledOnTouchOutside(true);
-            dialog.setCancelable(true);
-            dialog.show();
-            WindowManager.LayoutParams params = window.getAttributes();
-            params.width = WindowManager.LayoutParams.MATCH_PARENT;
-            params.height = WindowManager.LayoutParams.WRAP_CONTENT;
-            params.gravity = Gravity.BOTTOM;
-            params.dimAmount =0.5f;
-            window.setAttributes(params);
+        if(null==cartListDialog){
+            cartListDialog = new MerchantCartListDialog(this);
+        }
+        Window window = cartListDialog.getWindow();
+        cartListDialog.setCanceledOnTouchOutside(true);
+        cartListDialog.setCancelable(true);
+        cartListDialog.show();
+        WindowManager.LayoutParams params = window.getAttributes();
+        params.width = WindowManager.LayoutParams.MATCH_PARENT;
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        params.gravity = Gravity.BOTTOM;
+        params.dimAmount = 0.3f;
+        window.setAttributes(params);
     }
 
+    public void onEvent(CartListDialogShowEvent event) {
+        if (event.show) {
+            rl_cart.setVisibility(View.INVISIBLE);
+        } else {
+            rl_cart.setVisibility(View.VISIBLE);
+        }
+
+    }
 }

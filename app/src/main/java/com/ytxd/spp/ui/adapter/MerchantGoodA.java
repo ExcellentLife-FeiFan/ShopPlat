@@ -1,5 +1,7 @@
 package com.ytxd.spp.ui.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import com.mcxtzhang.lib.IOnAddDelListener;
 import com.ytxd.spp.R;
 import com.ytxd.spp.event.MerchantGoodAddEvent;
 import com.ytxd.spp.model.MerhchantGoodCategoryM;
+import com.ytxd.spp.ui.activity.main.GoodDetailActivity;
 import com.ytxd.spp.util.LogUtils;
 
 import org.zakariya.stickyheaders.SectioningAdapter;
@@ -26,8 +29,13 @@ import de.greenrobot.event.EventBus;
 
 public class MerchantGoodA extends SectioningAdapter {
 
+    private Context mContext;
 
     ArrayList<MerhchantGoodCategoryM> items = new ArrayList<>();
+
+    public MerchantGoodA(Context context) {
+        mContext = context;
+    }
 
     public class ItemViewHolder extends SectioningAdapter.ItemViewHolder {
         public View rootView;
@@ -94,6 +102,13 @@ public class MerchantGoodA extends SectioningAdapter {
     @Override
     public void onBindItemViewHolder(SectioningAdapter.ItemViewHolder viewHolder, int sectionIndex, int itemIndex, int itemType) {
         final ItemViewHolder holder = (ItemViewHolder) viewHolder;
+        holder.rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent itent = new Intent(mContext, GoodDetailActivity.class);
+                mContext.startActivity(itent);
+            }
+        });
         holder.tv_name.setText(items.get(sectionIndex).getGoods().get(itemIndex).getName());
         holder.btnAdd.setOnAddDelListener(new IOnAddDelListener() {
             @Override

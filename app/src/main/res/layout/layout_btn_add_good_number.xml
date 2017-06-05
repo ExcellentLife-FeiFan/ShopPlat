@@ -5,39 +5,57 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/iv_plus"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignRight="@+id/btnAdd"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_good_plus" />
-
-<!--    <ImageView
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignLeft="@+id/btnAdd"
-        android:layout_centerVertical="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_good_minus"
-        android:visibility="invisible" />-->
-
-    <com.mcxtzhang.lib.AnimShopButton
-        android:id="@+id/btnAdd"
+    <RelativeLayout
+        android:id="@+id/rl_add_btn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:addEnableBgColor="@color/colorPrimary"
-        app:addEnableFgColor="#ffffff"
-        app:count="1"
-        app:delEnableBgColor="@color/gray"
-        app:delEnableFgColor="@color/gray"
-        app:hintBgColor="@color/price_color"
-        app:hintBgRoundValue="15dp"
-        app:hintFgColor="#ffffff"
-        app:radius="12dp"
-        app:gapBetweenCircle="15dp"
-        app:maxCount="99"
-        app:hingTextSize="@dimen/text_size_tag_small"
-        app:replenishText="补货中" />
+        android:layout_height="26dp">
+
+        <ImageView
+            android:id="@+id/iv_plus"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignRight="@+id/btnAdd"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_good_plus" />
+
+        <!--    <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignLeft="@+id/btnAdd"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_good_minus"
+                android:visibility="invisible" />-->
+
+        <com.mcxtzhang.lib.AnimShopButton
+            android:id="@+id/btnAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:addEnableBgColor="@color/colorPrimary"
+            app:addEnableFgColor="#ffffff"
+            app:count="0"
+            app:delEnableBgColor="@color/gray"
+            app:delEnableFgColor="@color/gray"
+            app:gapBetweenCircle="15dp"
+            app:hingTextSize="@dimen/text_size_tag_small"
+            app:hintBgColor="@color/price_color"
+            app:hintBgRoundValue="15dp"
+            app:hintFgColor="#ffffff"
+            app:maxCount="99"
+            app:radius="12dp"
+            app:replenishText="补货中" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_select_stand"
+        android:layout_width="66.0dip"
+        android:layout_height="26.0dip"
+        android:background="@drawable/selectable_pricecolor_btn_bg_halfcircle"
+        android:gravity="center"
+        android:text="选规格"
+        android:textColor="@drawable/selector_text_white_color"
+        android:textSize="@dimen/text_size_tag_small"
+        android:visibility="gone" />
+
 
 </RelativeLayout>

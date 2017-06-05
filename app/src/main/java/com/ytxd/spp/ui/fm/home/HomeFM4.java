@@ -10,6 +10,7 @@ import com.ytxd.spp.R;
 import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseFragment;
 import com.ytxd.spp.ui.activity.login.LoginActivity;
+import com.ytxd.spp.ui.activity.mine.AddressManaActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -52,9 +53,17 @@ public class HomeFM4 extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick(R.id.btn_logout)
-    public void onViewClicked() {
-        startActivity(LoginActivity.class);
-        AppManager.getInstance().killActivity(activity);
+
+    @OnClick({R.id.rl_address_mana, R.id.btn_logout})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.rl_address_mana:
+                startActivity(AddressManaActivity.class);
+                break;
+            case R.id.btn_logout:
+                startActivity(LoginActivity.class);
+                AppManager.getInstance().killActivity(activity);
+                break;
+        }
     }
 }

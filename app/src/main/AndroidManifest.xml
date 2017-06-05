@@ -69,7 +69,10 @@
             android:name=".ui.activity.login.FindPwdActivity"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity android:name=".ui.activity.main.MerchantDetailActivity" />
-        <activity android:name=".ui.activity.main.HomeSearchActivity"></activity>
+        <activity android:name=".ui.activity.main.HomeSearchActivity" />
+        <activity android:name=".ui.activity.mine.AddressManaActivity" />
+        <activity android:name=".ui.activity.main.GoodDetailActivity" />
+        <activity android:name=".ui.activity.main.EnsureOrderActivity"></activity>
     </application>
 
 </manifest>
