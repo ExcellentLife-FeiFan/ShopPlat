@@ -2,48 +2,156 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <com.ytxd.spp.ui.views.SpringScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:fillViewport="true"
+        android:scrollbars="none">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="220dp">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:orientation="vertical">
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/actionbar_height">
+
+                        <TextView
+                            android:id="@+id/tv_left"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/padding_left"
+                            android:gravity="center_vertical"
+                            android:text="我的"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_actionbar_right" />
+
+                        <RelativeLayout
+                            android:id="@+id/rl_v_right"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/selector_bg_viewgroup_click3"
+                            android:paddingLeft="@dimen/padding_left"
+                            android:paddingRight="@dimen/padding_left">
+
+                            <ImageView
+                                android:id="@+id/iv_right"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/ic_mine_settings" />
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/dp50"
+                        android:paddingTop="@dimen/dp5">
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/civ"
+                                android:layout_width="@dimen/data_icon_size_big"
+                                android:layout_height="@dimen/data_icon_size_big"
+                                android:src="@drawable/ic_no_people" />
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/default_ui_margin"
+                                android:text="用户名称"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/sp20" />
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/default_ui_margin_medium"
+                                android:drawableLeft="@drawable/ic_mine_phone"
+                                android:drawablePadding="@dimen/default_ui_margin_medium_s"
+                                android:gravity="center_vertical"
+                                android:text="1812340876"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_common_btn" />
+
+
+                        </LinearLayout>
+
+
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_address_mana"
+                    style="@style/VG_padding">
+
+                    <TextView
+                        style="@style/TV_VG_LEFT_DRAWABLE"
+                        android:drawableLeft="@drawable/ic_mine_address"
+                        android:text="收货地址" />
+
+                    <TextView style="@style/TV_VG_RGIHT_TO2" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/line_gray"></include>
+
+                <RelativeLayout
+                    android:id="@+id/rl_commnet"
+                    style="@style/VG_padding">
+
+                    <TextView
+                        style="@style/TV_VG_LEFT_DRAWABLE"
+                        android:drawableLeft="@drawable/ic_mine_dianping"
+                        android:text="我的点评" />
+
+                    <TextView style="@style/TV_VG_RGIHT_TO2" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/line_gray"></include>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="700dp"></View>
 
 
             </LinearLayout>
 
-            <RelativeLayout
-                android:id="@+id/rl_address_mana"
-                style="@style/VG_padding">
+        </RelativeLayout>
 
-                <TextView
-                    style="@style/TV_VG_LEFT"
-                    android:text="收货地址" />
-
-                <TextView style="@style/TV_VG_RGIHT_TO2" />
-
-            </RelativeLayout>
-
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_logout"
-            style="@style/Common_Btn"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/default_ui_margin"
-            android:text="注销" />
-
-    </RelativeLayout>
-
-
+    </com.ytxd.spp.ui.views.SpringScrollView>
 </LinearLayout>

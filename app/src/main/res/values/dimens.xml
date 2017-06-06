@@ -16,12 +16,14 @@
     <dimen name="text_size_actionbar_title">18.0sp</dimen>
     <dimen name="text_size_actionbar_right">16.0sp</dimen>
     <dimen name="text_size_common_btn">16.0sp</dimen>
-    <dimen name="text_size_common">14.0sp</dimen>
+    <dimen name="text_size_common">15.0sp</dimen>
+    <dimen name="text_size_common_s">13.0sp</dimen>
     <dimen name="divider_height">0.5dp</dimen>
     <dimen name="common_divider_height">0.7dp</dimen>
     <dimen name="divider_height2">5.0dip</dimen>
     <dimen name="divider_height3">10.0dip</dimen>
     <dimen name="common_viewgroup_height">45.0dip</dimen>
+    <dimen name="common_viewgroup_height_big">50.0dip</dimen>
     <dimen name="bottom_bar_height">55.0dip</dimen>
     <dimen name="common_radius">4.0dip</dimen>
     <dimen name="common_border">0.6dip</dimen>
@@ -150,4 +152,6 @@
     <dimen name="login_icon_size_h">32.0dip</dimen>
     <dimen name="data_icon_size">40.0dip</dimen>
     <dimen name="data_icon_size_small">35.0dip</dimen>
+    <dimen name="data_icon_size_middle">55.0dip</dimen>
+    <dimen name="data_icon_size_big">70.0dip</dimen>
 </resources>

@@ -239,7 +239,7 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:drawablePadding">@dimen/drawable_padding</item>
         <item name="android:textSize">@dimen/text_size_little_small</item>
-        <item name="android:drawableRight">@drawable/ic_gray_right</item>
+        <item name="android:drawableRight">@drawable/ic_gray_to</item>
         <item name="android:layout_alignParentRight">true</item>
     </style>
 
@@ -302,5 +302,19 @@
     <style name="TITLE2">
         <item name="android:textColor">@color/transparent</item>
         <item name="android:textSize">@dimen/text_size_actionbar_title</item>
+    </style>
+
+    <style name="Common_Border_Btn">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black_overlay2</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/selectable_blackcolor_border_btn</item>
+        <item name="android:textSize">@dimen/text_size_common_btn</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:paddingBottom">@dimen/default_ui_margin_small</item>
+        <item name="android:paddingTop">@dimen/default_ui_margin_small</item>
+        <item name="android:paddingLeft">@dimen/drawable_padding</item>
+        <item name="android:paddingRight">@dimen/drawable_padding</item>
     </style>
 </resources>

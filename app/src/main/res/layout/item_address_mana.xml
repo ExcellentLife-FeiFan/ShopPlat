@@ -104,31 +104,15 @@
 
         <TextView
             android:id="@+id/tv_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/selectable_blackcolor_border_btn"
-            android:paddingBottom="@dimen/default_ui_margin_small"
-            android:paddingLeft="@dimen/drawable_padding"
-            android:paddingRight="@dimen/drawable_padding"
-            android:paddingTop="@dimen/default_ui_margin_small"
-            android:text="删除"
-            android:textColor="@color/black_overlay2"
-            android:textSize="@dimen/text_size_common_btn" />
+            style="@style/Common_Border_Btn"
+            android:text="删除" />
 
 
         <TextView
             android:id="@+id/tv_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Common_Border_Btn"
             android:layout_marginLeft="@dimen/default_ui_margin_medium"
-            android:background="@drawable/selectable_blackcolor_border_btn"
-            android:paddingBottom="@dimen/default_ui_margin_small"
-            android:paddingLeft="@dimen/drawable_padding"
-            android:paddingRight="@dimen/drawable_padding"
-            android:paddingTop="@dimen/default_ui_margin_small"
-            android:text="编辑"
-            android:textColor="@color/black_overlay2"
-            android:textSize="@dimen/text_size_common_btn" />
+            android:text="编辑" />
 
 
     </LinearLayout>

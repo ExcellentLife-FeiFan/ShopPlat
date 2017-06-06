@@ -12,11 +12,13 @@ import android.widget.FrameLayout;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
+import com.flyco.systembar.SystemBarHelper;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.BaseActivity;
 import com.ytxd.spp.ui.fm.home.HomeFM1;
 import com.ytxd.spp.ui.fm.home.HomeFM3;
 import com.ytxd.spp.ui.fm.home.HomeFM4;
+import com.ytxd.spp.util.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,14 +44,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-//        SystemBarHelper.immersiveStatusBar(this, 0f);
-     /*   if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Slide slideTransition = new Slide();
-            slideTransition.excludeTarget(android.R.id.statusBarBackground, false);
-            slideTransition.setSlideEdge(Gravity.RIGHT);
-            slideTransition.setDuration(500);
-            getWindow().setReenterTransition(slideTransition);
-        }*/
+        SystemBarHelper.tintStatusBar(this, CommonUtils.getColor(this,R.color.colorPrimary),0.3f);
         if (null == savedInstanceState) {
             fm1 = new HomeFM1();
 //            fm2 = new HomeFM2();

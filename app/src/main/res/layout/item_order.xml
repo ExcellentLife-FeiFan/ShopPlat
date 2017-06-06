@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_left2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/civ"
+                android:layout_width="@dimen/data_icon_size_middle"
+                android:layout_height="@dimen/data_icon_size_middle"
+                android:layout_marginRight="@dimen/default_ui_margin"
+                android:background="@drawable/bg_graycolor_border"
+                android:padding="@dimen/dp4"
+                android:src="@color/img_bg" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_ui_margin_small"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_mer_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="匿名用户"
+                        android:textColor="@color/black_overlay"
+                        android:textSize="@dimen/text_size_common_btn" />
+
+
+                    <TextView
+                        android:id="@+id/tv_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="订单已完成"
+                        android:textColor="@color/hint_gray"
+                        android:textSize="@dimen/text_size_small" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_ui_margin_small"
+                    android:text="2013-03-23 09:12"
+                    android:textColor="@color/hint_gray"
+                    android:textSize="@dimen/text_size_micro" />
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_ui_margin"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_goods_desr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="猪肉炖粉条等5件商品"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/text_size_common_s" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_ui_margin_small"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_total_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¥45.0"
+                        android:textColor="@color/price_color"
+                        android:textSize="@dimen/text_size_common_s" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_ui_margin_large"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="买过"
+                        android:textColor="@color/black_overlay2"
+                        android:textSize="@dimen/text_size_common" />
+
+
+                    <TextView
+                        android:id="@+id/tv_buied_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/default_ui_margin_micro"
+                        android:layout_marginRight="@dimen/default_ui_margin_micro"
+                        android:gravity="right"
+                        android:paddingBottom="@dimen/dp2"
+                        android:text="3"
+                        android:textColor="@color/price_color"
+                        android:textSize="@dimen/text_size_actionbar_title" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="次"
+                        android:textColor="@color/black_overlay2"
+                        android:textSize="@dimen/text_size_common" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_ui_margin"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_again"
+                style="@style/Common_Border_Btn"
+                android:layout_marginRight="@dimen/default_ui_margin_medium"
+                android:text="再来一单" />
+
+            <TextView
+                android:id="@+id/tv_evaluate"
+                style="@style/Common_Border_Btn"
+                android:background="@drawable/selectable_pricecolor_border_btn"
+                android:text="评价"
+                android:textColor="@color/price_color" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-def supportVersion = "25.0.0"
+def supportVersion = "25.3.1"
 
 android {
     compileSdkVersion 25
@@ -37,7 +37,12 @@ dependencies {
     compile 'com.android.support:appcompat-v7:' + supportVersion
     compile 'com.android.support:design:' + supportVersion
     compile 'com.android.support:recyclerview-v7:' + supportVersion
+
+
+
     compile 'com.github.todou:appbarspring:1.0.3'
+    compile 'com.github.todou:appbarspring:1.0.3'
+    compile 'com.android.support:support-dynamic-animation:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.afollestad.material-dialogs:core:0.9.0.1'
@@ -54,7 +59,6 @@ dependencies {
     compile 'me.iwf.photopicker:PhotoPicker:0.9.8@aar'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.github.zagum:Android-ExpandIcon:1.2.0'
-    compile 'com.github.todou:appbarspring:1.0.3'
     compile 'com.jakewharton:butterknife:8.4.0'
     compile 'com.aurelhubert:ahbottomnavigation:2.0.6'
     compile 'com.zxy.android:recovery:0.1.4'
@@ -62,6 +66,7 @@ dependencies {
     compile 'com.github.mcxtzhang:AnimShopButton:V1.2.0'
     compile 'org.zakariya.stickyheaders:stickyheaders:0.7.6'
     compile 'com.bigkoo:convenientbanner:2.0.5'
+    compile 'com.zhihu.android:matisse:0.4.3'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 }

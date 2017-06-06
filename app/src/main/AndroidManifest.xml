@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ytxd.spp">
 
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
@@ -72,7 +73,11 @@
         <activity android:name=".ui.activity.main.HomeSearchActivity" />
         <activity android:name=".ui.activity.mine.AddressManaActivity" />
         <activity android:name=".ui.activity.main.GoodDetailActivity" />
-        <activity android:name=".ui.activity.main.EnsureOrderActivity"></activity>
+        <activity android:name=".ui.activity.main.EnsureOrderActivity" />
+        <activity android:name=".ui.activity.mine.SettingsActivity" />
+        <activity android:name=".ui.activity.mine.AccountActivity" />
+        <activity android:name=".ui.activity.order.MyOrderActivity" />
+        <activity android:name=".ui.activity.main.OrderDetailActivity"></activity>
     </application>
 
 </manifest>

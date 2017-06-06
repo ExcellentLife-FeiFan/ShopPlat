@@ -7,7 +7,6 @@ import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.TransitionInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -46,7 +45,6 @@ public class BaseActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         AppManager.getInstance().addActivity(this);
-//        SystemBarHelper.tintStatusBar(this, getResources().getColor(R.color.title_bg_color));
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }

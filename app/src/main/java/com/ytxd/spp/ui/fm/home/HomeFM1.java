@@ -1,7 +1,6 @@
 package com.ytxd.spp.ui.fm.home;
 
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -39,7 +38,7 @@ import butterknife.Unbinder;
  * Created by apple on 2017/3/29.
  */
 
-public class HomeFM1 extends BaseFragment implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener{
+public class HomeFM1 extends BaseFragment implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.rv_list)
     RecyclerView mRecyclerView;
@@ -64,9 +63,7 @@ public class HomeFM1 extends BaseFragment implements BaseQuickAdapter.RequestLoa
     @Override
     public void initView() {
         AMapLocationUtil.getInstance().startLocation();
-
         refreshLayout.setOnRefreshListener(this);
-        refreshLayout.setColorSchemeColors(Color.rgb(47, 223, 189));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
         mRecyclerView.addItemDecoration(new SimpleDividerDecoration(activity, R.color.line_gray, R.dimen.common_divider_height));
         mAdapter = new HomeMerchantA(CommonUtils.getSampleList(15));
@@ -126,9 +123,9 @@ public class HomeFM1 extends BaseFragment implements BaseQuickAdapter.RequestLoa
             address.setAddress(event.getaMapLocation().getAddress());
             address.setLatLng(new LatLonPoint(event.getaMapLocation().getLatitude(), event.getaMapLocation().getLongitude()));
             addressM = address;
-            if(AbStrUtil.isEmpty(address.getTitle())){
+            if (AbStrUtil.isEmpty(address.getTitle())) {
                 tvAddress.setText(getString(R.string.loc_fail));
-            }else{
+            } else {
                 tvAddress.setText(address.getTitle());
             }
         } else {

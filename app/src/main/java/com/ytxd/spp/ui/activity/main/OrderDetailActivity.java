@@ -2,6 +2,7 @@ package com.ytxd.spp.ui.activity.main;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.AppManager;
@@ -14,19 +15,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class EnsureOrderActivity extends BaseActivity implements View.OnClickListener {
+public class OrderDetailActivity extends BaseActivity implements View.OnClickListener {
 
+    @BindView(R.id.ll_shop)
+    LinearLayout llShop;
     @BindView(R.id.lv_sub_goods)
     InListView lvSubGoods;
     OrderSubGoodsLV mAdapter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ensure_order);
+        setContentView(R.layout.activity_order_detail);
         ButterKnife.bind(this);
-        getBar().initActionBar("确认订单", this);
+        getBar().initActionBar("订单详情", this);
         mAdapter = new OrderSubGoodsLV(CommonUtils.getSampleList(7), this);
         lvSubGoods.setAdapter(mAdapter);
     }
@@ -41,18 +43,13 @@ public class EnsureOrderActivity extends BaseActivity implements View.OnClickLis
 
     }
 
-    @OnClick({R.id.ll_address, R.id.ll_distri_select, R.id.ll_remark, R.id.ll_shop, R.id.ll_youhuiquan})
+    @OnClick({R.id.ll_shop, R.id.btn_one_more})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.ll_address:
-                break;
-            case R.id.ll_distri_select:
-                break;
-            case R.id.ll_remark:
-                break;
             case R.id.ll_shop:
+                startActivity(MerchantDetailActivity.class);
                 break;
-            case R.id.ll_youhuiquan:
+            case R.id.btn_one_more:
                 break;
         }
     }
