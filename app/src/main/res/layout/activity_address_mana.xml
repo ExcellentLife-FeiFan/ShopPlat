@@ -3,26 +3,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <com.ytxd.spp.ui.views.ActionBarView
         android:id="@+id/actionBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/actionbar_height" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/refresh"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/lv"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/refresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@color/transparent"
-            android:dividerHeight="@dimen/dp10"
-            android:scrollbars="none" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_height="match_parent">
 
+            <com.kennyc.view.MultiStateView
+                android:id="@+id/msv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:msv_emptyView="@layout/common_empty_view"
+                app:msv_loadingView="@layout/common_progress_view"
+                app:msv_viewState="loading">
+
+                <ListView
+                    android:id="@+id/lv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@color/transparent"
+                    android:dividerHeight="@dimen/dp10"
+                    android:scrollbars="none" />
+            </com.kennyc.view.MultiStateView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+
+        <Button
+            android:id="@+id/btn_add"
+            style="@style/Common_Btn_NoCorner"
+            android:layout_alignParentBottom="true"
+            android:text="新增收货地址" />
+    </RelativeLayout>
 </LinearLayout>

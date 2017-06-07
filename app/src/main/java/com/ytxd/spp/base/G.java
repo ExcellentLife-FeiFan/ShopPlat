@@ -13,13 +13,12 @@ public class G {
     /**
      * 应用程序名
      */
-    public static final String APPNAME = "DreamMarket";
+    public static final String APPNAME = "ShopPlat";
 
     /**
      * 文件根目录
      */
     public static final String STORAGEPATH = SdCardUtil.getNormalSDCardPath() + "/" + APPNAME + "/";
-
 
 
     public static final int CONNECT_TIME_OUT = 5 * 1000;

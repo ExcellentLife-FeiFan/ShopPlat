@@ -23,7 +23,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -473,25 +472,4 @@ public class FileUtils {
         return code;
     }
 
-    public static void saveWifiTxt(String src, String desc) {
-        byte[] LINE_END = "\n".getBytes();
-        try {
-            InputStreamReader isr = new InputStreamReader(new FileInputStream(src), getCharset(src));
-            BufferedReader br = new BufferedReader(isr);
-
-            FileOutputStream fout = new FileOutputStream(desc, true);
-            String temp;
-            while ((temp = br.readLine()) != null) {
-                byte[] bytes = temp.getBytes();
-                fout.write(bytes);
-                fout.write(LINE_END);
-            }
-            br.close();
-            fout.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

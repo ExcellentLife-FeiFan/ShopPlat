@@ -2,6 +2,8 @@ package com.ytxd.spp.ui.activity.main;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +22,7 @@ import com.ytxd.spp.ui.adapter.GoodCommentLV;
 import com.ytxd.spp.ui.views.InListView;
 import com.ytxd.spp.ui.views.pop.SelectGoodStandDialog;
 import com.ytxd.spp.util.CommonUtils;
+import com.ytxd.spp.util.LogUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,13 +63,17 @@ public class GoodDetailActivity extends BaseActivity {
     GoodCommentLV mAdapter;
     @BindView(R.id.lv_comment)
     InListView lvComment;
+    @BindView(R.id.scrollView)
+    NestedScrollView scrollView;
+    @BindView(R.id.toolbar_layout)
+    CollapsingToolbarLayout toolbarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_good_detail);
         ButterKnife.bind(this);
-        toolbar.setTitle("");
+        toolbar.setTitle("[纯牛奶]/大杯");
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,22 +98,37 @@ public class GoodDetailActivity extends BaseActivity {
                 //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
                 .setPageIndicator(new int[]{R.drawable.ic_banner_dot_ns, R.drawable.ic_banner_dot_s})
                 //设置指示器的方向
-                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT);
+                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL)
+                .startTurning(3000);
         //设置翻页的效果，不需要翻页效果可用不设
         //.setPageTransformer(Transformer.DefaultTransformer);    集成特效之后会有白屏现象，新版已经分离，如果要集成特效的例子可以看Demo的点击响应。
 //        convenientBanner.setManualPageable(false);//设置不能手动影响
 
         rlAddBtn.setVisibility(View.GONE);
         tvSelectStand.setVisibility(View.VISIBLE);
+
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                LogUtils.e("scrollX:" + scrollX + "-scrollY:" + scrollY + "-oldScrollX:" + oldScrollX + "-oldScrollY" + oldScrollY);
+            }
+        });
+        toolbarLayout.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                LogUtils.e("scrollX:" + scrollX + "-scrollY:" + scrollY + "-oldScrollX:" + oldScrollX + "-oldScrollY" + oldScrollY);
+            }
+        });
+//        toolbarLayout.setO
     }
 
-    @OnClick({R.id.rl_v_right})
+/*    @OnClick({R.id.rl_v_right})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_v_right:
                 break;
         }
-    }
+    }*/
 
     @OnClick({R.id.tv_select_stand, R.id.ll_comment_more, R.id.tv_num_comment})
     public void onViewClicked2(View view) {
@@ -117,7 +139,7 @@ public class GoodDetailActivity extends BaseActivity {
                 break;
             case R.id.ll_comment_more:
             case R.id.tv_num_comment:
-
+                startActivity(GoodCommentsActivity.class);
                 break;
         }
     }

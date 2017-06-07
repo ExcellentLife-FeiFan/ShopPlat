@@ -1,4 +1,4 @@
-package com.ytxd.spp.ui.activity.main;
+package com.ytxd.spp.ui.activity.order;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
+import com.ytxd.spp.ui.activity.main.MerchantDetailActivity;
 import com.ytxd.spp.ui.adapter.OrderSubGoodsLV;
 import com.ytxd.spp.ui.views.InListView;
 import com.ytxd.spp.util.CommonUtils;

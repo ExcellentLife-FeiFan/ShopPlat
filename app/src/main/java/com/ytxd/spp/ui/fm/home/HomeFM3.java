@@ -10,12 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.kennyc.view.MultiStateView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.BaseFragment;
-import com.ytxd.spp.ui.activity.main.OrderDetailActivity;
 import com.ytxd.spp.ui.activity.order.MyOrderActivity;
+import com.ytxd.spp.ui.activity.order.OrderDetailActivity;
 import com.ytxd.spp.ui.adapter.HomeOrderA;
 import com.ytxd.spp.ui.views.SimpleDividerDecoration;
 import com.ytxd.spp.util.CommonUtils;
@@ -54,9 +53,15 @@ public class HomeFM3 extends BaseFragment implements  SwipeRefreshLayout.OnRefre
         orderA = new HomeOrderA(CommonUtils.getSampleList(7));
         orderA.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         rvOrder.setAdapter(orderA);
-        rvOrder.addOnItemTouchListener(new OnItemClickListener() {
+//        rvOrder.addOnItemTouchListener(new OnItemClickListener() {
+//            @Override
+//            public void onSimpleItemClick(final BaseQuickAdapter adapter, final View view, final int position) {
+//                startActivity(OrderDetailActivity.class);
+//            }
+//        });
+        orderA.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onSimpleItemClick(final BaseQuickAdapter adapter, final View view, final int position) {
+            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
                 startActivity(OrderDetailActivity.class);
             }
         });
@@ -95,6 +100,6 @@ public class HomeFM3 extends BaseFragment implements  SwipeRefreshLayout.OnRefre
                 refreshLayout.setRefreshing(false);
                 msvOrder.setViewState(MultiStateView.VIEW_STATE_CONTENT);
             }
-        }, 3000);
+        }, 1000);
     }
 }

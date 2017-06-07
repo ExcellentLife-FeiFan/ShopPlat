@@ -83,7 +83,7 @@ public class SelectACEAddressActivity extends BaseActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_aceaddress);
         ButterKnife.bind(this);
-        getBar().initActionBar("选择收货地址", "", "新增地址", R.drawable.ic_back_white, -1, this);
+        getBar().initActionBar("选择收货地址", "", "", R.drawable.ic_back_white, -1, this);
         CommonUtils.setEmptyViewForSLV(this, rl_lv_ad_data, lvAdData);
         CommonUtils.setEmptyViewForSLV(this, rl_lv_near_ad, lvNearAd);
         selectACEAdLV = new SelectACEAdLV(CommonUtils.getSampleList(4), this);
@@ -168,9 +168,6 @@ public class SelectACEAddressActivity extends BaseActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_right:
-                startActivity(AddOrEditAddressActivity.class);
-                break;
             case R.id.rl_back:
                 AppManager.getInstance().killActivity(this);
                 break;

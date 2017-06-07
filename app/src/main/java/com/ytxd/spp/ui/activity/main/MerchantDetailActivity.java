@@ -24,18 +24,20 @@ import android.widget.RelativeLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.flyco.systembar.SystemBarHelper;
+import com.kennyc.view.MultiStateView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.BaseActivity;
 import com.ytxd.spp.event.CartListDialogShowEvent;
 import com.ytxd.spp.event.MerchantGoodAddEvent;
 import com.ytxd.spp.model.MerchantGoodM;
 import com.ytxd.spp.model.MerhchantGoodCategoryM;
+import com.ytxd.spp.ui.activity.order.EnsureOrderActivity;
+import com.ytxd.spp.ui.activity.order.ShoppingCartActivity;
 import com.ytxd.spp.ui.adapter.MerchantCategoryA;
 import com.ytxd.spp.ui.adapter.MerchantGoodA;
 import com.ytxd.spp.ui.views.FakeAddImageView;
 import com.ytxd.spp.ui.views.SimpleDividerDecoration;
 import com.ytxd.spp.ui.views.pop.MerchantCartListDialog;
-import com.ytxd.spp.ui.views.pop.MerchantCartListPopWindow;
 import com.ytxd.spp.util.PointFTypeEvaluator;
 
 import org.zakariya.stickyheaders.StickyHeaderLayoutManager;
@@ -49,6 +51,8 @@ import butterknife.OnClick;
 
 public class MerchantDetailActivity extends BaseActivity {
 
+    @BindView(R.id.msv)
+    MultiStateView msv;
     @BindView(R.id.rv_category)
     RecyclerView rvCategory;
     @BindView(R.id.rv_good)
@@ -81,7 +85,7 @@ public class MerchantDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_merchant_detail);
         ButterKnife.bind(this);
-        toolbar.setTitle("");
+        toolbar.setTitle("肯德基宅急送");
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,7 +139,6 @@ public class MerchantDetailActivity extends BaseActivity {
         });
 
 
-
         categoryA = new MerchantCategoryA(categoryMS);
         categoryLM = new LinearLayoutManager(this);
         rvCategory.setLayoutManager(categoryLM);
@@ -151,6 +154,14 @@ public class MerchantDetailActivity extends BaseActivity {
                 }
             }
         });
+
+        msv.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                rl_cart.setVisibility(View.VISIBLE);
+            }
+        }, 500);
 
     }
 
@@ -244,6 +255,7 @@ public class MerchantDetailActivity extends BaseActivity {
         switch (item.getItemId()) {
 
             case R.id.cart:
+                startActivity(ShoppingCartActivity.class);
                 break;
 
             case R.id.more:
@@ -252,7 +264,6 @@ public class MerchantDetailActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    MerchantCartListPopWindow merchantCartListPopWindow;
 
     @OnClick({R.id.btn_ok, R.id.shopping_cart_layout})
     public void onViewClicked(View view) {
@@ -267,7 +278,7 @@ public class MerchantDetailActivity extends BaseActivity {
     }
 
     private void showCart() {
-        if(null==cartListDialog){
+        if (null == cartListDialog) {
             cartListDialog = new MerchantCartListDialog(this);
         }
         Window window = cartListDialog.getWindow();

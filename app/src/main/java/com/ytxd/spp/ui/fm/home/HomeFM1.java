@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.amap.api.services.core.LatLonPoint;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.kennyc.view.MultiStateView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.BaseFragment;
 import com.ytxd.spp.event.AMapLocationUpdateEvent;
@@ -40,6 +41,8 @@ import butterknife.Unbinder;
 
 public class HomeFM1 extends BaseFragment implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
 
+    @BindView(R.id.msv)
+    MultiStateView msv;
     @BindView(R.id.rv_list)
     RecyclerView mRecyclerView;
     @BindView(R.id.swipeLayout)
@@ -66,7 +69,7 @@ public class HomeFM1 extends BaseFragment implements BaseQuickAdapter.RequestLoa
         refreshLayout.setOnRefreshListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
         mRecyclerView.addItemDecoration(new SimpleDividerDecoration(activity, R.color.line_gray, R.dimen.common_divider_height));
-        mAdapter = new HomeMerchantA(CommonUtils.getSampleList(15));
+        mAdapter = new HomeMerchantA(null);
         mAdapter.setOnLoadMoreListener(this, mRecyclerView);
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         mRecyclerView.setAdapter(mAdapter);
@@ -76,6 +79,13 @@ public class HomeFM1 extends BaseFragment implements BaseQuickAdapter.RequestLoa
                 startActivity(MerchantDetailActivity.class);
             }
         });
+        refreshLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mAdapter.addData(CommonUtils.getSampleList(15));
+                msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+            }
+        }, 500);
     }
 
     @Override

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.ytxd.spp.ui.views.ActionBarView
+        android:id="@+id/actionBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionbar_height" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.ytxd.spp.ui.views.SpringScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/ll_shop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector_bg_viewgroup_click5"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/default_ui_margin_medium"
+                    android:paddingLeft="@dimen/padding_left"
+                    android:paddingTop="@dimen/default_ui_margin_medium">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/civ"
+                        android:layout_width="@dimen/dp30"
+                        android:layout_height="@dimen/dp30"
+                        android:layout_marginRight="@dimen/default_ui_margin_medium"
+                        android:src="@drawable/ic_no_people" />
+
+                    <TextView
+                        android:id="@+id/tv_mer_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="@dimen/default_ui_margin_small"
+                        android:text="酒来酒往"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_actionbar_title" />
+
+
+                </LinearLayout>
+
+                <include layout="@layout/line_gray"></include>
+
+                <LinearLayout
+                    style="@style/VG_padding"
+                    android:orientation="horizontal"
+                    android:paddingBottom="0dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="配送服务"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/text_size_common_s" />
+
+                    <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                        android:id="@+id/rb_dist"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/default_ui_margin_medium"
+                        android:maxHeight="26dp"
+                        android:minHeight="26dp"
+                        android:rating="0"
+                        app:mrb_progressBackgroundTint="@color/gray"
+                        app:mrb_progressTint="#FFAA0C"
+                        app:mrb_secondaryProgressTint="@color/gray" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/VG_padding"
+                    android:layout_marginBottom="@dimen/default_ui_margin_small"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="商品质量"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/text_size_common_s" />
+
+                    <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                        android:id="@+id/rb_good"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/default_ui_margin_medium"
+                        android:maxHeight="26dp"
+                        android:minHeight="26dp"
+                        android:rating="0"
+                        app:mrb_progressBackgroundTint="@color/gray"
+                        app:mrb_progressTint="#FFAA0C"
+                        app:mrb_secondaryProgressTint="@color/gray" />
+
+
+                </LinearLayout>
+
+                <include layout="@layout/line_gray_padding_left"></include>
+
+
+                <RelativeLayout style="@style/VG_padding_big">
+
+                    <com.ytxd.spp.ui.views.InListView
+                        android:id="@+id/lv_goods"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@color/transparent"
+                        android:dividerHeight="@dimen/divider_height2" />
+
+
+                </RelativeLayout>
+
+                <include layout="@layout/line_gray_padding_left"></include>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_margin="@dimen/padding_left"
+                    android:background="@drawable/bg_graycolor_border_noconer"
+                    android:padding="@dimen/padding_left2">
+
+                    <EditText
+                        android:id="@+id/et"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:gravity="top"
+                        android:hint="点评一下吧，您的意见很重要(最多300字)"
+                        android:maxLength="300"
+                        android:textColor="@color/black_overlay2"
+                        android:textColorHint="@color/hint_gray"
+                        android:textSize="@dimen/text_size_common" />
+
+
+                </RelativeLayout>
+
+
+                <include layout="@layout/line_gray"></include>
+
+                <!--              <com.ytxd.spp.ui.views.InGridView
+                                  android:id="@+id/gv_pic"
+                                  android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                                  android:layout_margin="@dimen/padding_left"
+                                  android:horizontalSpacing="@dimen/default_ui_margin"
+                                  android:numColumns="4"
+                                  android:verticalSpacing="@dimen/default_ui_margin" />-->
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_pics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_left"
+                    android:minHeight="60dp" />
+
+                <include layout="@layout/line_gray"></include>
+
+                <android.support.v4.widget.Space
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp" />
+
+
+            </LinearLayout>
+        </com.ytxd.spp.ui.views.SpringScrollView>
+
+        <Button
+            android:id="@+id/btn_add"
+            style="@style/Common_PriceBtn_NoCorner"
+            android:layout_alignParentBottom="true"
+            android:text="提交评论" />
+    </RelativeLayout>
+</LinearLayout>

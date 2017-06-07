@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="火龙果"
+        android:textColor="@color/black_overlay"
+        android:textSize="@dimen/text_size_common" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/default_ui_margin_large"
+            android:background="@drawable/bg_pricecolor_border_halfcircle"
+            android:paddingBottom="@dimen/default_ui_margin_small"
+            android:paddingLeft="@dimen/default_ui_margin_large"
+            android:paddingRight="@dimen/default_ui_margin_large"
+            android:paddingTop="@dimen/default_ui_margin_small">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_zan_t_s" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_gray_border_halfcircle"
+            android:paddingBottom="@dimen/default_ui_margin_small"
+            android:paddingLeft="@dimen/default_ui_margin_large"
+            android:paddingRight="@dimen/default_ui_margin_large"
+            android:paddingTop="@dimen/default_ui_margin_small">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_zan_b_ns" />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

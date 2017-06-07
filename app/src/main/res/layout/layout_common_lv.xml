@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
     <ListView
@@ -17,7 +18,14 @@
         android:layout_centerInParent="true"
         android:visibility="gone">
 
-        <include layout="@layout/common_progress_view"></include>
+        <com.ytxd.spp.ui.views.loadview.AVLoadingIndicatorView
+            style="@style/AVLoadingIndicatorView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/default_ui_margin_great"
+            app:indicatorColor="@color/colorPrimary"
+            app:indicatorName="LineScalePulseOutRapidIndicator" />
     </RelativeLayout>
 
 </RelativeLayout>

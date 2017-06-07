@@ -79,9 +79,13 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <RelativeLayout
+        <com.kennyc.view.MultiStateView
+            android:id="@+id/msv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            app:msv_emptyView="@layout/common_empty_view"
+            app:msv_loadingView="@layout/common_progress_view"
+            app:msv_viewState="loading">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_list"
@@ -89,7 +93,7 @@
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        </RelativeLayout>
+        </com.kennyc.view.MultiStateView>
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.design.widget.CoordinatorLayout>

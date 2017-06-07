@@ -55,7 +55,7 @@
 
     <style name="Common_Btn">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dp40</item>
+        <item name="android:layout_height">@dimen/common_viewgroup_height</item>
         <item name="android:textColor">@drawable/selector_text_white_color</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/text_size_actionbar_title</item>
@@ -68,7 +68,7 @@
 
     <style name="Common_Btn_W">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dp40</item>
+        <item name="android:layout_height">@dimen/common_viewgroup_height</item>
         <item name="android:textColor">@drawable/selector_text_white_color</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/text_size_actionbar_title</item>
@@ -80,7 +80,7 @@
 
     <style name="Common_Btn_MaxRound">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dp40</item>
+        <item name="android:layout_height">@dimen/common_viewgroup_height</item>
         <item name="android:textColor">@drawable/selector_text_white_color</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/text_size_actionbar_title</item>
@@ -90,7 +90,7 @@
 
     <style name="Common_Btn_NoCorner">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dp40</item>
+        <item name="android:layout_height">@dimen/common_viewgroup_height</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/text_size_actionbar_title</item>
@@ -100,7 +100,7 @@
 
     <style name="Common_PriceBtn_NoCorner">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dp40</item>
+        <item name="android:layout_height">@dimen/common_viewgroup_height</item>
         <item name="android:textColor">@drawable/selector_text_white_color</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/text_size_actionbar_title</item>
@@ -110,7 +110,7 @@
 
     <style name="Common_Btn_No_Margin">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dp40</item>
+        <item name="android:layout_height">@dimen/common_viewgroup_height</item>
         <item name="android:textColor">@drawable/selector_text_white_color</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/text_size_actionbar_title</item>
@@ -301,6 +301,11 @@
 
     <style name="TITLE2">
         <item name="android:textColor">@color/transparent</item>
+        <item name="android:textSize">@dimen/text_size_actionbar_title</item>
+    </style>
+
+    <style name="TITLE3">
+        <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/text_size_actionbar_title</item>
     </style>
 

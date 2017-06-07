@@ -35,7 +35,7 @@ public class CustomDialog extends Dialog {
     }
 
     public static CustomDialog instance(Context activity) {
-        RelativeLayout v = (RelativeLayout) View.inflate(activity, R.layout.common_progress_view, null);
+        RelativeLayout v = (RelativeLayout) View.inflate(activity, R.layout.dialog_progress, null);
         CustomDialog dialog = new CustomDialog(activity, R.style.loading_dialog);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(v,

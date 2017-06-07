@@ -16,6 +16,8 @@ import com.ytxd.spp.util.SPUtil;
 import com.zxy.recovery.callback.RecoveryCallback;
 import com.zxy.recovery.core.Recovery;
 
+import java.io.File;
+
 import butterknife.BuildConfig;
 import butterknife.ButterKnife;
 
@@ -120,13 +122,13 @@ public class App extends Application{
 
 
     private void initDirs() {
-      /*  File path1 = new File(G.STORAGEPATH);
+        File path1 = new File(G.STORAGEPATH);
         if (!path1.exists()) {
             path1.mkdirs();
         }
-        File path2 = new File(CommonUtils.getUserCachePath());
-        if (!path2.exists()) {
-            path2.mkdirs();
-        }*/
+//        File path2 = new File(CommonUtils.getUserCachePath());
+//        if (!path2.exists()) {
+//            path2.mkdirs();
+//        }
     }
 }

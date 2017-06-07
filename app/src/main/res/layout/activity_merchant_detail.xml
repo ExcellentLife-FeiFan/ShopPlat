@@ -20,9 +20,13 @@
                 android:id="@+id/collapsingToolbarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:collapsedTitleTextAppearance="@style/TITLE"
                 app:contentScrim="@drawable/timg"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:titleEnabled="false">
+                app:expandedTitleGravity="top"
+                app:expandedTitleMarginStart="95dp"
+                app:expandedTitleMarginTop="60dp"
+                app:expandedTitleTextAppearance="@style/TITLE3"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -53,7 +57,6 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/actionbar_height"
-                    android:title=""
                     app:layout_collapseMode="pin"
                     app:navigationIcon="@drawable/ic_back_white"
                     app:titleTextAppearance="@style/TITLE"
@@ -66,36 +69,45 @@
         </android.support.design.widget.AppBarLayout>
 
 
-        <LinearLayout
+        <com.kennyc.view.MultiStateView
+            android:id="@+id/msv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:visibility="visible"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:msv_emptyView="@layout/common_empty_view"
+            app:msv_loadingView="@layout/common_progress_view"
+            app:msv_viewState="loading">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_category"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/bg" />
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="3">
+                android:orientation="horizontal"
+                android:visibility="visible"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_good"
-                    android:layout_width="match_parent"
+                    android:id="@+id/rv_category"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:background="@android:color/white"
-                    android:clipToPadding="true"
-                    android:saveEnabled="false" />
+                    android:layout_weight="1"
+                    android:background="@color/bg" />
 
-            </RelativeLayout>
-        </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3">
 
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_good"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/white"
+                        android:clipToPadding="true"
+                        android:saveEnabled="false" />
+
+                </RelativeLayout>
+            </LinearLayout>
+        </com.kennyc.view.MultiStateView>
 
     </android.support.design.widget.CoordinatorLayout>
 
@@ -104,7 +116,8 @@
         android:id="@+id/rl_cart"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/shopping_cart_bottom"

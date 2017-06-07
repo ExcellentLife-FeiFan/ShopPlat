@@ -73,11 +73,22 @@
         <activity android:name=".ui.activity.main.HomeSearchActivity" />
         <activity android:name=".ui.activity.mine.AddressManaActivity" />
         <activity android:name=".ui.activity.main.GoodDetailActivity" />
-        <activity android:name=".ui.activity.main.EnsureOrderActivity" />
+        <activity android:name=".ui.activity.order.EnsureOrderActivity" />
         <activity android:name=".ui.activity.mine.SettingsActivity" />
         <activity android:name=".ui.activity.mine.AccountActivity" />
         <activity android:name=".ui.activity.order.MyOrderActivity" />
-        <activity android:name=".ui.activity.main.OrderDetailActivity"></activity>
+        <activity android:name=".ui.activity.order.OrderDetailActivity" />
+        <activity android:name=".ui.activity.order.OrderRemarkEditActivity" />
+        <activity android:name=".ui.activity.order.DiscountCouponActivity" />
+        <activity
+            android:name=".ui.activity.order.AddCommentActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity android:name="me.iwf.photopicker.PhotoPickerActivity" />
+        <activity
+            android:name="me.iwf.photopicker.PhotoPagerActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".ui.activity.main.GoodCommentsActivity" />
+        <activity android:name=".ui.activity.order.ShoppingCartActivity"></activity>
     </application>
 
 </manifest>
