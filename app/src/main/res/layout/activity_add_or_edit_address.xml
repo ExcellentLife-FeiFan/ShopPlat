@@ -206,7 +206,7 @@
 
                             <TextView
                                 android:id="@+id/tv_address"
-                                style="@style/TV_VG_RGIHT_TO2"
+                                style="@style/TV_VG_RGIHT_TO_graycolor"
                                 android:layout_width="match_parent"
                                 android:ellipsize="end"
                                 android:gravity="center_vertical"

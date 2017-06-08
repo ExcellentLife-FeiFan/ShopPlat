@@ -65,8 +65,18 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="Common_Btn_No_Margin">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/common_viewgroup_height</item>
+        <item name="android:textColor">@drawable/selector_text_white_color</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/text_size_actionbar_title</item>
+        <item name="android:background">@drawable/selectable_login_btn_bg_halfcircle</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
-    <style name="Common_Btn_W">
+
+    <style name="Common_Btn_White">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/common_viewgroup_height</item>
         <item name="android:textColor">@drawable/selector_text_white_color</item>
@@ -108,15 +118,21 @@
         <item name="android:fontFamily">serif-monospace</item>
     </style>
 
-    <style name="Common_Btn_No_Margin">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/common_viewgroup_height</item>
-        <item name="android:textColor">@drawable/selector_text_white_color</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/text_size_actionbar_title</item>
-        <item name="android:background">@drawable/selectable_login_btn_bg_halfcircle</item>
-        <item name="android:textStyle">bold</item>
+
+    <style name="Common_Border_Btn">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black_overlay2</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/selectable_blackcolor_border_btn</item>
+        <item name="android:textSize">@dimen/text_size_common_btn</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:paddingBottom">@dimen/default_ui_margin_small</item>
+        <item name="android:paddingTop">@dimen/default_ui_margin_small</item>
+        <item name="android:paddingLeft">@dimen/drawable_padding</item>
+        <item name="android:paddingRight">@dimen/drawable_padding</item>
     </style>
+
 
     <style name="VG_padding">
         <item name="android:layout_width">match_parent</item>
@@ -156,9 +172,9 @@
         <item name="android:paddingBottom">@dimen/default_ui_margin_large</item>
     </style>
 
-    <style name="VG_Stable_big">
+    <style name="VG_Stable_Height_big">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dp50</item>
+        <item name="android:layout_height">@dimen/common_viewgroup_height_big</item>
         <item name="android:background">@drawable/selector_bg_viewgroup_click</item>
         <item name="android:paddingLeft">@dimen/padding_left</item>
         <item name="android:paddingRight">@dimen/padding_left</item>
@@ -185,24 +201,24 @@
     </style>
 
 
-    <style name="TV_VG_LEFT">
+    <style name="TV_VG_LEFT_W70">
         <item name="android:layout_width">@dimen/dp70</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/black_overlay2</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textSize">@dimen/text_size_common</item>
         <item name="android:layout_marginRight">@dimen/default_ui_margin</item>
     </style>
 
-    <style name="TV_VG_LEFT2">
+    <style name="TV_VG_LEFT_WC">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/black_overlay2</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:layout_centerVertical">true</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textSize">@dimen/text_size_common</item>
         <item name="android:layout_marginRight">@dimen/default_ui_margin</item>
     </style>
 
@@ -214,10 +230,11 @@
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:drawablePadding">@dimen/drawable_padding</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textSize">@dimen/text_size_common</item>
     </style>
 
-    <style name="TV_VG_RGIHT_TO">
+
+    <style name="TV_VG_RGIHT_DRAWABLE">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/hint_gray</item>
@@ -225,12 +242,24 @@
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:drawablePadding">@dimen/drawable_padding</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textSize">@dimen/text_size_common</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+
+    <style name="TV_VG_RGIHT_TO_appcolor">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/hint_gray</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:drawablePadding">@dimen/drawable_padding</item>
+        <item name="android:textSize">@dimen/text_size_common</item>
         <item name="android:drawableRight">@drawable/ic_appcolor_right</item>
         <item name="android:layout_alignParentRight">true</item>
     </style>
 
-    <style name="TV_VG_RGIHT_TO2">
+    <style name="TV_VG_RGIHT_TO_graycolor">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/hint_gray</item>
@@ -309,17 +338,4 @@
         <item name="android:textSize">@dimen/text_size_actionbar_title</item>
     </style>
 
-    <style name="Common_Border_Btn">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/black_overlay2</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:background">@drawable/selectable_blackcolor_border_btn</item>
-        <item name="android:textSize">@dimen/text_size_common_btn</item>
-        <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:paddingBottom">@dimen/default_ui_margin_small</item>
-        <item name="android:paddingTop">@dimen/default_ui_margin_small</item>
-        <item name="android:paddingLeft">@dimen/drawable_padding</item>
-        <item name="android:paddingRight">@dimen/drawable_padding</item>
-    </style>
 </resources>

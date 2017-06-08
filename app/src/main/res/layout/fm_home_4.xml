@@ -122,7 +122,7 @@
                         android:drawableLeft="@drawable/ic_mine_address"
                         android:text="收货地址" />
 
-                    <TextView style="@style/TV_VG_RGIHT_TO2" />
+                    <!--    <TextView style="@style/TV_VG_RGIHT_TO_graycolor" />-->
 
                 </RelativeLayout>
 
@@ -137,7 +137,6 @@
                         android:drawableLeft="@drawable/ic_mine_dianping"
                         android:text="我的点评" />
 
-                    <TextView style="@style/TV_VG_RGIHT_TO2" />
 
                 </RelativeLayout>
 

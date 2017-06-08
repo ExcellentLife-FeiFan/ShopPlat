@@ -17,13 +17,176 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <RelativeLayout
+                android:id="@+id/rl_icon"
+                style="@style/VG_padding">
+
+                <TextView
+                    style="@style/TV_VG_LEFT_WC"
+                    android:text="头像" />
 
 
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/civ"
+                    android:layout_width="@dimen/data_icon_size_middle"
+                    android:layout_height="@dimen/data_icon_size_middle"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_no_people" />
+
+
+            </RelativeLayout>
+
+            <include layout="@layout/line_gray"></include>
+
+            <RelativeLayout
+                android:id="@+id/rl_name"
+                style="@style/VG_padding">
+
+                <TextView
+                    style="@style/TV_VG_LEFT_WC"
+                    android:text="昵称" />
+
+
+                <TextView
+                    android:id="@+id/tv_nickname"
+                    style="@style/TV_VG_RGIHT_DRAWABLE"
+                    android:text="非凡先生"
+                    android:textColor="@color/gray" />
+
+
+            </RelativeLayout>
+
+            <include layout="@layout/line_gray"></include>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_ui_margin_large"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:id="@+id/rl_phone"
+                    style="@style/VG_padding">
+
+                    <TextView
+                        style="@style/TV_VG_LEFT_DRAWABLE"
+                        android:drawableLeft="@drawable/r7"
+                        android:text="手机" />
+
+
+                    <TextView
+                        android:id="@+id/tv_bind_phone"
+                        style="@style/TV_VG_RGIHT_DRAWABLE"
+                        android:text="18811389065"
+                        android:textColor="@color/gray" />
+
+
+                </RelativeLayout>
+
+                <include layout="@layout/line_gray"></include>
+
+                <RelativeLayout
+                    android:id="@+id/rl_qq"
+                    style="@style/VG_padding">
+
+                    <TextView
+                        style="@style/TV_VG_LEFT_DRAWABLE"
+                        android:drawableLeft="@drawable/r8"
+                        android:text="QQ" />
+
+
+                    <TextView
+                        android:id="@+id/tv_bind_qq"
+                        style="@style/TV_VG_RGIHT_DRAWABLE"
+                        android:text="未绑定"
+                        android:textColor="@color/colorPrimary" />
+
+
+                </RelativeLayout>
+
+                <include layout="@layout/line_gray"></include>
+
+                <RelativeLayout
+                    android:id="@+id/rl_weixin"
+                    style="@style/VG_padding">
+
+                    <TextView
+                        style="@style/TV_VG_LEFT_DRAWABLE"
+                        android:drawableLeft="@drawable/r_"
+                        android:text="微信" />
+
+
+                    <TextView
+                        android:id="@+id/tv_bind_weixin"
+                        style="@style/TV_VG_RGIHT_DRAWABLE"
+                        android:text="未绑定"
+                        android:textColor="@color/colorPrimary" />
+
+
+                </RelativeLayout>
+
+                <include layout="@layout/line_gray"></include>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_ui_margin_large"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:id="@+id/rl_loginpwd"
+                    style="@style/VG_padding">
+
+                    <TextView
+                        style="@style/TV_VG_LEFT_WC"
+                        android:text="登陆密码" />
+
+
+                    <TextView
+                        android:id="@+id/tv_login_pwd"
+                        style="@style/TV_VG_RGIHT_DRAWABLE"
+                        android:text="修改"
+                        android:textColor="@color/colorPrimary" />
+
+
+                </RelativeLayout>
+
+                <include layout="@layout/line_gray"></include>
+
+                <RelativeLayout
+                    android:id="@+id/rl_paypwd"
+                    style="@style/VG_padding">
+
+                    <TextView
+                        style="@style/TV_VG_LEFT_WC"
+                        android:text="支付密码" />
+
+
+                    <TextView
+                        android:id="@+id/tv_pay_pwd"
+                        style="@style/TV_VG_RGIHT_DRAWABLE"
+                        android:text="未设置"
+                        android:textColor="@color/colorPrimary" />
+
+
+                </RelativeLayout>
+
+                <include layout="@layout/line_gray"></include>
+
+            </LinearLayout>
         </LinearLayout>
 
 

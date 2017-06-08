@@ -186,7 +186,7 @@
 
                 <TextView
                     android:id="@+id/tv_num_comment"
-                    style="@style/TV_VG_RGIHT_TO2"
+                    style="@style/TV_VG_RGIHT_TO_graycolor"
                     android:drawablePadding="@dimen/default_ui_margin_small"
                     android:text="40余条评论"
                     android:textSize="@dimen/text_size_small" />

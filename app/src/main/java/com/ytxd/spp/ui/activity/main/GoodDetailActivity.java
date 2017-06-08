@@ -151,7 +151,8 @@ public class GoodDetailActivity extends BaseActivity {
         public View createView(Context context) {
             View imgV = getLayoutInflater().inflate(R.layout.item_banner_image, null);
             ImageView imageView = (ImageView) imgV.findViewById(R.id.iv);
-            imageView.setImageResource(R.drawable.a9);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setImageResource(R.mipmap.img_food);
             return imgV;
         }
 

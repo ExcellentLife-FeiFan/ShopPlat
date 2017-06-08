@@ -32,10 +32,22 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
     }
 
-    @OnClick(R.id.tv_logout)
-    public void onViewClicked() {
-        startActivity(LoginActivity.class);
-        AppManager.getInstance().killActivity(activity);
-        AppManager.getInstance().killActivity(MainActivity.class);
+
+    @OnClick({R.id.rl_account, R.id.rl_normal, R.id.rl_abount, R.id.tv_logout})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.rl_account:
+                startActivity(AccountActivity.class);
+                break;
+            case R.id.rl_normal:
+                break;
+            case R.id.rl_abount:
+                break;
+            case R.id.tv_logout:
+                startActivity(LoginActivity.class);
+                AppManager.getInstance().killActivity(activity);
+                AppManager.getInstance().killActivity(MainActivity.class);
+                break;
+        }
     }
 }

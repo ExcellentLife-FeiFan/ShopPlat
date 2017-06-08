@@ -15,20 +15,24 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RelativeLayout style="@style/VG_Stable_Height">
+        <LinearLayout
+            android:id="@+id/rl_loginpwd"
+            style="@style/VG_padding"
+            android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/et_phone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:hint="请输入手机号码"
-                android:inputType="phone"
-                android:singleLine="true"
-                android:textColor="@color/black_overlay2"
-                android:textColorHint="@color/hint_gray"
-                android:textSize="@dimen/text_size_common" />
-        </RelativeLayout>
+            <TextView
+                style="@style/TV_VG_LEFT_WC"
+                android:text="当前手机号"
+                android:textColor="@color/gray" />
+
+            <TextView
+                android:id="@+id/tv_curphone"
+                style="@style/TV_VG_LEFT_WC"
+                android:layout_marginLeft="@dimen/default_ui_margin"
+                android:text="188****9064" />
+
+
+        </LinearLayout>
 
         <include layout="@layout/line_gray_padding"></include>
 
@@ -76,29 +80,12 @@
 
         <include layout="@layout/line_gray_padding"></include>
 
-        <RelativeLayout style="@style/VG_Stable_Height">
-
-            <EditText
-                android:id="@+id/et_pwd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:hint="请输入8-16位密码"
-                android:inputType="textPassword"
-                android:singleLine="true"
-                android:textColor="@color/black_overlay2"
-                android:textColorHint="@color/hint_gray"
-                android:textSize="@dimen/text_size_common" />
-        </RelativeLayout>
-
-        <include layout="@layout/line_gray_padding"></include>
-
 
         <Button
+            android:id="@+id/btn_next"
             style="@style/Common_Btn"
-            android:id="@+id/btn_register"
             android:layout_marginTop="@dimen/dp50"
-            android:text="注册" />
+            android:text="下一步绑定新手机号" />
 
 
     </LinearLayout>
