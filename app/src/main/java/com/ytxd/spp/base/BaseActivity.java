@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.ytxd.spp.R;
 import com.ytxd.spp.event.EmptyEvent;
+import com.ytxd.spp.presenter.BasePresenter;
 import com.ytxd.spp.ui.views.ActionBarView;
 import com.ytxd.spp.ui.views.loadview.CustomDialog;
 import com.ytxd.spp.util.AbStrUtil;
@@ -32,11 +33,13 @@ import de.greenrobot.event.EventBus;
  * Created by XY on 2016/11/2.
  */
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity {
     protected Activity activity;
     private CustomDialog dialog;//进度条
     protected ActionBarView actionBar;
     protected final List<View> viewsToAnimate = new ArrayList<>();
+    protected String TAG = this.getClass().getSimpleName();
+    protected T presenter;
 
 
     @Override
@@ -52,6 +55,11 @@ public class BaseActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setupWindowAnimations();
         }
+        initPresenter();
+
+    }
+
+    protected void initPresenter() {
 
     }
 
@@ -259,6 +267,9 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (null != presenter) {
+            presenter.release();
+        }
         System.gc();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
