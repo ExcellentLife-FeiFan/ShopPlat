@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ytxd.spp.event.EmptyEvent;
+import com.ytxd.spp.presenter.BasePresenter;
 import com.ytxd.spp.util.AbWifiUtil;
 import com.ytxd.spp.util.LogUtils;
 import com.ytxd.spp.util.SPUtil;
@@ -24,7 +25,7 @@ import de.greenrobot.event.EventBus;
  * Created by XY on 2016/11/2.
  */
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
 
     public BaseActivity activity;
     private View mLayoutView;
@@ -32,6 +33,8 @@ public abstract class BaseFragment extends Fragment {
     private boolean isVisible;                  //是否可见状态
     private boolean isPrepared;                 //标志位，View已经初始化完成。
     private boolean isFirstLoad = true;
+
+    protected T presenter;
 
     /**
      * 初始化布局
@@ -53,6 +56,11 @@ public abstract class BaseFragment extends Fragment {
         if(!EventBus.getDefault().isRegistered(this)){
             EventBus.getDefault().register(this);
         }
+        initPresenter();
+    }
+
+    protected void initPresenter() {
+
     }
 
     @Override
@@ -245,6 +253,9 @@ public abstract class BaseFragment extends Fragment {
         super.onDestroy();
         if(EventBus.getDefault().isRegistered(this)){
             EventBus.getDefault().unregister(this);
+        }
+        if (null != presenter) {
+            presenter.release();
         }
     }
 }

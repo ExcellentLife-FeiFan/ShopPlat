@@ -59,7 +59,7 @@
                                 android:background="@null"
                                 android:hint="联系人姓名"
                                 android:paddingLeft="@dimen/default_ui_margin_small"
-                                android:text="帆赛"
+                                android:text=""
                                 android:textColor="@color/black_overlay2"
                                 android:textColorHint="@color/hint_gray"
                                 android:textSize="@dimen/text_size_little_small" />
@@ -157,7 +157,7 @@
                             android:hint="联系人手机号"
                             android:inputType="phone"
                             android:paddingLeft="@dimen/default_ui_margin_small"
-                            android:text="123455666"
+                            android:text=""
                             android:textColor="@color/black_overlay2"
                             android:textColorHint="@color/hint_gray"
                             android:textSize="@dimen/text_size_little_small" />
@@ -211,7 +211,7 @@
                                 android:ellipsize="end"
                                 android:gravity="center_vertical"
                                 android:singleLine="true"
-                                android:text="朝阳区百子湾束带结发"
+                                android:text=""
                                 android:textColor="@color/black_overlay2" />
 
                         </LinearLayout>
@@ -249,7 +249,7 @@
                             android:background="@null"
                             android:hint="详细地址（比如门牌号等）"
                             android:paddingLeft="@dimen/default_ui_margin_small"
-                            android:text="5号楼二单元102"
+                            android:text=""
                             android:textColor="@color/black_overlay2"
                             android:textColorHint="@color/hint_gray"
                             android:textSize="@dimen/text_size_little_small" />

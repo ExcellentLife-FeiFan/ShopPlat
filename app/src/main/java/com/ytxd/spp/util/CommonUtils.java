@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static com.ytxd.spp.base.App.user;
+
 
 /**
  * Created by XY on 2016/11/20.
@@ -51,12 +53,11 @@ public class CommonUtils {
     }
 
     public static boolean isLogined2() {
-      /*  if (null != userBean) {
+        if (null != user) {
             return true;
         } else {
             return false;
-        }*/
-        return false;
+        }
     }
 
     public static void setEmptyView(Activity context, AbsListView listView) {

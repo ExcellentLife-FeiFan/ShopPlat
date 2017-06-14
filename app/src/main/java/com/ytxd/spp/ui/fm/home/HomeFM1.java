@@ -20,6 +20,8 @@ import com.ytxd.spp.base.BaseFragment;
 import com.ytxd.spp.event.AMapLocationUpdateEvent;
 import com.ytxd.spp.event.HomeAddressChangeEvent;
 import com.ytxd.spp.model.HomeAddressM;
+import com.ytxd.spp.model.MerchantM;
+import com.ytxd.spp.presenter.HomePresenter;
 import com.ytxd.spp.ui.activity.main.HomeSearchActivity;
 import com.ytxd.spp.ui.activity.main.MerchantDetailActivity;
 import com.ytxd.spp.ui.activity.main.SelectACEAddressActivity;
@@ -27,7 +29,10 @@ import com.ytxd.spp.ui.adapter.HomeMerchantA;
 import com.ytxd.spp.ui.views.SimpleDividerDecoration;
 import com.ytxd.spp.util.AMapLocationUtil;
 import com.ytxd.spp.util.AbStrUtil;
-import com.ytxd.spp.util.CommonUtils;
+import com.ytxd.spp.view.IHomeView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,7 +44,7 @@ import butterknife.Unbinder;
  * Created by apple on 2017/3/29.
  */
 
-public class HomeFM1 extends BaseFragment implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
+public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener, IHomeView {
 
     @BindView(R.id.msv)
     MultiStateView msv;
@@ -54,8 +59,14 @@ public class HomeFM1 extends BaseFragment implements BaseQuickAdapter.RequestLoa
     TextView tvAddress;
     @BindView(R.id.et)
     TextView et;
-    HomeAddressM addressM;
+    HomeAddressM addressM = null;
     HomeMerchantA mAdapter;
+
+    @Override
+    protected void initPresenter() {
+        presenter = new HomePresenter(activity, this);
+        presenter.init();
+    }
 
 
     @Override
@@ -79,13 +90,7 @@ public class HomeFM1 extends BaseFragment implements BaseQuickAdapter.RequestLoa
                 startActivity(MerchantDetailActivity.class);
             }
         });
-        refreshLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mAdapter.addData(CommonUtils.getSampleList(15));
-                msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
-            }
-        }, 500);
+
     }
 
     @Override
@@ -123,6 +128,7 @@ public class HomeFM1 extends BaseFragment implements BaseQuickAdapter.RequestLoa
         if (null != event.getAddressM()) {
             addressM = event.getAddressM();
             tvAddress.setText(event.getAddressM().getTitle());
+            presenter.getSPMList(addressM.getCity());
         }
     }
 
@@ -130,28 +136,33 @@ public class HomeFM1 extends BaseFragment implements BaseQuickAdapter.RequestLoa
         if (null != event.getaMapLocation()) {
             HomeAddressM address = new HomeAddressM();
             address.setTitle(event.getaMapLocation().getPoiName());
+            address.setCity(event.getaMapLocation().getCity());
             address.setAddress(event.getaMapLocation().getAddress());
             address.setLatLng(new LatLonPoint(event.getaMapLocation().getLatitude(), event.getaMapLocation().getLongitude()));
             addressM = address;
             if (AbStrUtil.isEmpty(address.getTitle())) {
                 tvAddress.setText(getString(R.string.loc_fail));
             } else {
+                presenter.getSPMList(addressM.getCity());
                 tvAddress.setText(address.getTitle());
+                return;
             }
         } else {
             addressM = null;
             tvAddress.setText(getString(R.string.loc_fail));
         }
+        loginFailed();
     }
 
     @Override
     public void onRefresh() {
-        refreshLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                refreshLayout.setRefreshing(false);
-            }
-        }, 3000);
+        if (null != addressM) {
+            presenter.getSPMList(addressM.getCity());
+        } else {
+            showToast("位置错误");
+            loginFailed();
+        }
+
     }
 
     @Override
@@ -162,5 +173,24 @@ public class HomeFM1 extends BaseFragment implements BaseQuickAdapter.RequestLoa
                 mAdapter.loadMoreEnd(true);
             }
         }, 3000);
+    }
+
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public void loginSuccess(List<MerchantM> items) {
+        refreshLayout.setRefreshing(false);
+        mAdapter.setNewData(items);
+        msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+    }
+
+    @Override
+    public void loginFailed() {
+        refreshLayout.setRefreshing(false);
+        mAdapter.setNewData(new ArrayList<MerchantM>());
+        msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
     }
 }

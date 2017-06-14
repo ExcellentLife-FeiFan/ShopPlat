@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -33,7 +34,9 @@ import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.flyco.systembar.SystemBarHelper;
 import com.ytxd.spp.R;
+import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
+import com.ytxd.spp.event.ADEditSelectEvent;
 import com.ytxd.spp.ui.adapter.AddressSearchLV;
 import com.ytxd.spp.ui.adapter.AddressSearchLV2;
 import com.ytxd.spp.util.AbStrUtil;
@@ -48,6 +51,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 
 public class SelectADFromMapActivity extends BaseActivity implements LocationSource, AMapLocationListener, PoiSearch.OnPoiSearchListener, GeocodeSearch.OnGeocodeSearchListener {
@@ -127,6 +131,20 @@ public class SelectADFromMapActivity extends BaseActivity implements LocationSou
                 searchCity(cs.toString());
             }
         });
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                EventBus.getDefault().post(new ADEditSelectEvent(mNearAddAdapter.getItem(position)));
+                AppManager.getInstance().killActivity(activity);
+            }
+        });
+        lvSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                EventBus.getDefault().post(new ADEditSelectEvent(mSearchAddAdapter.getItem(position)));
+                AppManager.getInstance().killActivity(activity);
+            }
+        });
 
 
     }
@@ -200,16 +218,6 @@ public class SelectADFromMapActivity extends BaseActivity implements LocationSou
         }
         super.onDestroy();
     }
-
-   /* public void searchNearby(LatLonPoint point) {
-        query = new PoiSearch.Query("", "", cityCurrent);// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
-        query.setPageSize(20);// 设置每页最多返回多少条poiitem
-        query.setPageNum(1);// 设置查第一页
-        poiSearch = new PoiSearch(this, query);
-        poiSearch.setOnPoiSearchListener(this);
-        poiSearch.setBound(new PoiSearch.SearchBound(point, 5000, true));//
-        poiSearch.searchPOIAsyn();// 异步搜索
-    }*/
 
     public void searchN(LatLonPoint point) {
         if (null == geocoderSearch) {
@@ -333,9 +341,9 @@ public class SelectADFromMapActivity extends BaseActivity implements LocationSou
     @Override
     public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
         List<PoiItem> items = regeocodeResult.getRegeocodeAddress().getPois();
-        if (items.size() > 0) {
-            items.get(0).setCityName(regeocodeResult.getRegeocodeAddress().getCity());
-            items.get(0).setAdName(regeocodeResult.getRegeocodeAddress().getDistrict());
+        for (int i1 = 0; i1 < items.size(); i1++) {
+            items.get(i1).setCityName(regeocodeResult.getRegeocodeAddress().getCity());
+            items.get(i1).setAdName(regeocodeResult.getRegeocodeAddress().getDistrict());
         }
         mNearAddAdapter.addItems(items, true);
         LogUtils.e(i + "");

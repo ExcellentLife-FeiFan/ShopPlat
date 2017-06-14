@@ -7,8 +7,10 @@ import android.widget.EditText;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.BaseActivity;
 import com.ytxd.spp.presenter.LoginPresenter;
+import com.ytxd.spp.ui.activity.main.MainActivity;
 import com.ytxd.spp.util.AbStrUtil;
 import com.ytxd.spp.util.HideUtil;
+import com.ytxd.spp.util.SPUtil;
 import com.ytxd.spp.util.ToastUtil;
 import com.ytxd.spp.view.ILoginView;
 
@@ -16,7 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends BaseActivity<LoginPresenter> implements ILoginView{
+public class LoginActivity extends BaseActivity<LoginPresenter> implements ILoginView {
 
     @BindView(R.id.et_phone)
     EditText etPhone;
@@ -29,7 +31,16 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         HideUtil.init(this);
+        String phone = SPUtil.getInstance().getString("phone");
+        if(!AbStrUtil.isEmpty(phone)){
+            etPhone.setText(phone);
+        }
+        String pwd = SPUtil.getInstance().getString("pwd");
+        if(!AbStrUtil.isEmpty(pwd)){
+            etPwd.setText(pwd);
+        }
     }
+
     @Override
     protected void initPresenter() {
         presenter = new LoginPresenter(this, this);
@@ -53,7 +64,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                 } else if (AbStrUtil.isEmpty(pwd)) {
                     ToastUtil.showToastShort(this, "请输入密码");
                 } else {
-                    presenter.loginPhone(phone,pwd);
+                    presenter.loginPhone(phone, pwd);
                 }
                 break;
             case R.id.ll_wechat:
@@ -67,4 +78,25 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     public void init() {
 
     }
+
+    @Override
+    public void loginSuccess() {
+        startActivity(MainActivity.class);
+    }
+
+    @Override
+    public void startToMain() {
+        startActivity(MainActivity.class);
+    }
+
+    @Override
+    public void showDialogs() {
+        showDialog();
+    }
+
+    @Override
+    public void dismissDialogs() {
+        dismissDialog();
+    }
+
 }

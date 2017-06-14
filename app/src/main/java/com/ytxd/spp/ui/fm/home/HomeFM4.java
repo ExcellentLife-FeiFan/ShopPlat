@@ -5,16 +5,22 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.ytxd.spp.R;
+import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.BaseFragment;
 import com.ytxd.spp.ui.activity.mine.AccountActivity;
 import com.ytxd.spp.ui.activity.mine.AddressManaActivity;
 import com.ytxd.spp.ui.activity.mine.SettingsActivity;
+import com.ytxd.spp.util.CommonUtils;
+import com.ytxd.spp.util.ImageLoadUtil;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by apple on 2017/3/29.
@@ -23,6 +29,12 @@ import butterknife.Unbinder;
 public class HomeFM4 extends BaseFragment {
 
     Unbinder unbinder;
+    @BindView(R.id.civ)
+    CircleImageView civ;
+    @BindView(R.id.tv_nickname)
+    TextView tvNickname;
+    @BindView(R.id.tv_phone)
+    TextView tvPhone;
 
     @Override
     public int getLayoutRes() {
@@ -31,6 +43,11 @@ public class HomeFM4 extends BaseFragment {
 
     @Override
     public void initView() {
+        if (CommonUtils.isLogined2()) {
+            ImageLoadUtil.setImageNP(App.user.getTitlePath(), civ, activity);
+            CommonUtils.setText(tvNickname, App.user.getNickName());
+            CommonUtils.setText(tvPhone, App.user.getPhone());
+        }
 
     }
 
@@ -53,7 +70,7 @@ public class HomeFM4 extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.rl_v_right,R.id.civ,R.id.rl_address_mana, R.id.rl_commnet})
+    @OnClick({R.id.rl_v_right, R.id.civ, R.id.rl_address_mana, R.id.rl_commnet})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_v_right:

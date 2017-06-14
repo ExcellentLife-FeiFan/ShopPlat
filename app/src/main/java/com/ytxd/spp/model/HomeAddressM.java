@@ -9,6 +9,7 @@ import java.io.Serializable;
  */
 
 public class HomeAddressM implements Serializable {
+    String city;
     String title;
     String address;
     LatLonPoint latLng;
@@ -16,7 +17,8 @@ public class HomeAddressM implements Serializable {
     public HomeAddressM() {
     }
 
-    public HomeAddressM(String title, String address, LatLonPoint latLng) {
+    public HomeAddressM(String city, String title, String address, LatLonPoint latLng) {
+        this.city = city;
         this.title = title;
         this.address = address;
         this.latLng = latLng;
@@ -44,5 +46,13 @@ public class HomeAddressM implements Serializable {
 
     public void setLatLng(LatLonPoint latLng) {
         this.latLng = latLng;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

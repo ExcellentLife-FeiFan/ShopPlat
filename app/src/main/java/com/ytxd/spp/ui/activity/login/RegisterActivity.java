@@ -1,6 +1,7 @@
 package com.ytxd.spp.ui.activity.login;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -8,13 +9,17 @@ import android.widget.TextView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
+import com.ytxd.spp.presenter.RegisterPresenter;
+import com.ytxd.spp.util.AbStrUtil;
 import com.ytxd.spp.util.HideUtil;
+import com.ytxd.spp.util.ToastUtil;
+import com.ytxd.spp.view.IRegisterView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RegisterActivity extends BaseActivity implements View.OnClickListener {
+public class RegisterActivity extends BaseActivity<RegisterPresenter> implements View.OnClickListener, IRegisterView {
 
     @BindView(R.id.et_phone)
     EditText etPhone;
@@ -26,12 +31,19 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     EditText etPwd;
 
     @Override
+    protected void initPresenter() {
+        presenter = new RegisterPresenter(this, this);
+        presenter.init();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
         HideUtil.init(this);
         getBar().initActionBar("注册", this);
+        time = new TimeCount(60000, 1000);
     }
 
     @Override
@@ -48,9 +60,64 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_get_smscode:
+                String phone1 = etPhone.getText().toString();
+                if (AbStrUtil.isEmpty(phone1)) {
+                    ToastUtil.showToastShort(this, "请输入手机号");
+                } else {
+                    presenter.sendSmscode(phone1);
+                }
                 break;
             case R.id.btn_register:
+                String phone = etPhone.getText().toString();
+                String pwd = etPwd.getText().toString();
+                if (AbStrUtil.isEmpty(phone)) {
+                    ToastUtil.showToastShort(this, "请输入手机号");
+                } else if (AbStrUtil.isEmpty(pwd)) {
+                    ToastUtil.showToastShort(this, "请输入密码");
+                } else {
+                    presenter.registerPhone(phone, pwd);
+                }
                 break;
+        }
+    }
+
+    private TimeCount time;
+
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public void startTimer() {
+        time.start();
+    }
+
+    @Override
+    public void stopTimer() {
+        time.cancel();
+    }
+
+    @Override
+    public void finishRegister() {
+        AppManager.getInstance().killActivity(this);
+    }
+
+    class TimeCount extends CountDownTimer {
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);//参数依次为总时长,和计时的时间间隔
+        }
+
+        @Override
+        public void onFinish() {//计时完毕时触发
+            tvGetSmscode.setText("重新获取");
+            tvGetSmscode.setClickable(true);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {//计时过程显示
+            tvGetSmscode.setClickable(false);
+            tvGetSmscode.setText(String.format("重新获取（%s）", millisUntilFinished / 1000));
         }
     }
 }

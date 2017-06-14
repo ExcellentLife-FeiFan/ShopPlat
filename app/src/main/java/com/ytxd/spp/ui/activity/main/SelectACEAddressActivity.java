@@ -95,7 +95,7 @@ public class SelectACEAddressActivity extends BaseActivity implements View.OnCli
         lvNearAd.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                EventBus.getDefault().post(new HomeAddressChangeEvent(new HomeAddressM(mNearAddAdapter.getItem(position).getTitle()
+                EventBus.getDefault().post(new HomeAddressChangeEvent(new HomeAddressM(mNearAddAdapter.getItem(position).getCityName(),mNearAddAdapter.getItem(position).getTitle()
                         , mNearAddAdapter.getItem(position).toString()
                         , mNearAddAdapter.getItem(position).getLatLonPoint())));
                 AppManager.getInstance().killActivity(activity);
@@ -105,7 +105,7 @@ public class SelectACEAddressActivity extends BaseActivity implements View.OnCli
         lvSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                EventBus.getDefault().post(new HomeAddressChangeEvent(new HomeAddressM(mSearchAddAdapter.getItem(position).getTitle()
+                EventBus.getDefault().post(new HomeAddressChangeEvent(new HomeAddressM(mNearAddAdapter.getItem(position).getCityName(),mSearchAddAdapter.getItem(position).getTitle()
                         , mSearchAddAdapter.getItem(position).toString()
                         , mSearchAddAdapter.getItem(position).getLatLonPoint())));
                 AppManager.getInstance().killActivity(activity);
@@ -202,6 +202,7 @@ public class SelectACEAddressActivity extends BaseActivity implements View.OnCli
             HomeAddressM address = new HomeAddressM();
             address.setTitle(event.getaMapLocation().getPoiName());
             address.setAddress(event.getaMapLocation().getAddress());
+            address.setCity(event.getaMapLocation().getCity());
             address.setLatLng(new LatLonPoint(event.getaMapLocation().getLatitude(), event.getaMapLocation().getLongitude()));
             addressM = address;
 

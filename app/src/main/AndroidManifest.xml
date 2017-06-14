@@ -62,7 +62,7 @@
         <activity
             android:name=".ui.activity.main.SelectACEAddressActivity"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity android:name=".ui.activity.main.AddOrEditAddressActivity" />
+        <activity android:name=".ui.activity.mine.account.AddOrEditAddressActivity" />
         <activity
             android:name=".ui.activity.login.RegisterActivity"
             android:windowSoftInputMode="adjustPan|stateHidden" />

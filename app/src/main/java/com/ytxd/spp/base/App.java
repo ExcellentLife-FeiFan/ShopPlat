@@ -16,6 +16,7 @@ import com.lzy.okgo.https.HttpsUtils;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
+import com.ytxd.spp.model.UserM;
 import com.ytxd.spp.ui.activity.main.MainActivity;
 import com.ytxd.spp.util.SPUtil;
 import com.zxy.recovery.callback.RecoveryCallback;
@@ -33,10 +34,11 @@ import okhttp3.OkHttpClient;
  * Created by XY on 2017/5/27.
  */
 
-public class App extends Application{
+public class App extends Application {
 
     public static Context context;
     private static LiteOrm liteOrm;
+    public static UserM user;
 
     @Override
     public void onCreate() {
@@ -66,6 +68,7 @@ public class App extends Application{
 //                .skip(TestActivity.class)
                 .init(this);
     }
+
     static final class MyCrashCallback implements RecoveryCallback {
         @Override
         public void stackTrace(String exceptionMessage) {
@@ -168,4 +171,5 @@ public class App extends Application{
 //            path2.mkdirs();
 //        }
     }
+
 }

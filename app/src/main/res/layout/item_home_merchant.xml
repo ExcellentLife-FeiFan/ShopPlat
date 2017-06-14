@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:src="@drawable/ic_test_merchant"
+                android:src="@drawable/ic_no_people"
                 app:riv_corner_radius="@dimen/common_radius" />
 
         </RelativeLayout>
@@ -47,7 +47,7 @@
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="肯德基宅急送"
+                    android:text="@string/null_s"
                     android:textColor="@color/black_overlay2"
                     android:textSize="@dimen/text_size_little_small"
                     android:textStyle="bold" />
@@ -69,7 +69,7 @@
                     android:isIndicator="true"
                     android:maxHeight="14dp"
                     android:minHeight="14dp"
-                    android:rating="2.5"
+                    android:rating="0.0"
                     app:mrb_progressBackgroundTint="@color/gray"
                     app:mrb_progressTint="#FFAA0C"
                     app:mrb_secondaryProgressTint="@color/gray" />
@@ -79,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/default_ui_margin_small"
-                    android:text="4.8"
+                    android:text="0.0"
                     android:textColor="@color/price_color"
                     android:textSize="@dimen/text_size_micro" />
 
@@ -95,7 +95,7 @@
                     android:id="@+id/tv_month_sales"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="214"
+                    android:text="0"
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_micro" />
 
@@ -134,7 +134,7 @@
                     android:id="@+id/tv_distri_p"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="配送费¥9"
+                    android:text="配送费¥0"
                     android:textColor="@color/gray"
                     android:textSize="@dimen/item_merchant_tv2_size" />
 
@@ -149,7 +149,7 @@
                     android:id="@+id/tv_per_peo_p"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="¥48/人"
+                    android:text="¥0/人"
                     android:textColor="@color/gray"
                     android:textSize="@dimen/item_merchant_tv2_size" />
 
@@ -164,7 +164,7 @@
                         android:id="@+id/tv_distance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1.76km"
+                        android:text="0.0km"
                         android:textColor="@color/gray"
                         android:textSize="@dimen/item_merchant_tv2_size" />
 
@@ -179,7 +179,7 @@
                         android:id="@+id/tv_distri_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="36分钟"
+                        android:text="0分钟"
                         android:textColor="@color/price_color"
                         android:textSize="@dimen/item_merchant_tv2_size" />
 

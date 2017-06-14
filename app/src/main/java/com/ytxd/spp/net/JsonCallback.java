@@ -15,8 +15,13 @@
  */
 package com.ytxd.spp.net;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.request.Request;
+import com.ytxd.spp.base.App;
+import com.ytxd.spp.util.LogUtils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -31,10 +36,6 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
     public JsonCallback() {
     }
 
-    public JsonCallback(Type type) {
-        this.type = type;
-    }
-
     public JsonCallback(Class<T> clazz) {
         this.clazz = clazz;
     }
@@ -42,28 +43,44 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
     @Override
     public void onStart(Request<T, ? extends Request> request) {
         super.onStart(request);
-//        request.headers("header1", "HeaderValue1")//
-//                .params("params1", "ParamsValue1")//
-//                .params("token", "3215sdf13ad1f65asd4f3ads1f");
+        if (null != App.user) {
+            request.params("UserCode", App.user.getUserCode());//
+        }
+
     }
 
-    /**
-     * 该方法是子线程处理，不能做ui相关的工作
-     * 主要作用是解析网络返回的 response 对象,生产onSuccess回调中需要的数据对象
-     * 这里的解析工作不同的业务逻辑基本都不一样,所以需要自己实现,以下给出的时模板代码,实际使用根据需要修改
-     */
+
     @Override
     public T convertResponse(Response response) throws Throwable {
-        if (type == null) {
-            if (clazz == null) {
-                Type genType = getClass().getGenericSuperclass();
-                type = ((ParameterizedType) genType).getActualTypeArguments()[0];
-            } else {
-                JsonConvert<T> convert = new JsonConvert<>(clazz);
-                return convert.convertResponse(response);
+        try {
+            if (type == null) {
+                if (clazz == null) {
+                    // 如果没有通过构造函数传进来，就自动解析父类泛型的真实类型（有局限性，继承后就无法解析到）
+                    Type genType = getClass().getGenericSuperclass();
+                    type = ((ParameterizedType) genType).getActualTypeArguments()[0];
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        JsonConvert<T> convert = new JsonConvert<>(type);
-        return convert.convertResponse(response);
+        try {
+            String data = null;
+            data = response.body().string();
+            LogUtils.e(data);
+            Gson gson = new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                    .create();
+
+            if (clazz == String.class) return (T) data;
+            try {
+                if (clazz != null) return gson.fromJson(data, clazz);
+                if (type != null) return gson.fromJson(data, type);
+            } catch (JsonSyntaxException ex) {
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

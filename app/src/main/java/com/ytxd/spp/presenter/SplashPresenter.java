@@ -9,23 +9,40 @@ import com.ytxd.spp.model.UserM;
 import com.ytxd.spp.net.ApiResult;
 import com.ytxd.spp.net.Apis;
 import com.ytxd.spp.net.JsonCallback;
+import com.ytxd.spp.util.AbStrUtil;
 import com.ytxd.spp.util.LogUtils;
 import com.ytxd.spp.util.SPUtil;
 import com.ytxd.spp.util.ToastUtil;
-import com.ytxd.spp.view.ILoginView;
+import com.ytxd.spp.view.ISplashView;
 
 /**
  * 主界面presenter
  * Created by panl on 15/12/24.
  */
-public class LoginPresenter extends BasePresenter<ILoginView> {
+public class SplashPresenter extends BasePresenter<ISplashView> {
 
-    public LoginPresenter(Context context, ILoginView iView) {
+    public SplashPresenter(Context context, ISplashView iView) {
         super(context, iView);
     }
 
     @Override
     public void release() {
+    }
+
+    public void isFirst() {
+        boolean isFirst = SPUtil.getInstance().getBoolean("isFirst", true);
+        if (isFirst) {
+            SPUtil.getInstance().putBoolean("isFirst", false);
+            iView.startToLogin();
+        } else {
+            String phone = SPUtil.getInstance().getString("phone");
+            String pwd = SPUtil.getInstance().getString("pwd");
+            if (!AbStrUtil.isEmpty(phone) && !AbStrUtil.isEmpty(pwd)) {
+                loginPhone(phone, pwd);
+            } else {
+                iView.startToLogin();
+            }
+        }
     }
 
     public void loginPhone(final String phone, final String pwd) {
@@ -40,11 +57,12 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                         ApiResult<UserM> result = response.body();
                         if (result.isSuccess()) {
                             App.user = result.getObj();
-                            SPUtil.getInstance().putString("phone",phone);
-                            SPUtil.getInstance().putString("pwd",pwd);
+                            SPUtil.getInstance().putString("phone", phone);
+                            SPUtil.getInstance().putString("pwd", pwd);
                             iView.startToMain();
                         } else {
                             ToastUtil.showToastShort(context, result.getMsg());
+                            iView.startToLogin();
                         }
                         LogUtils.e("");
                     }
@@ -52,6 +70,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                     @Override
                     public void onError(Response<ApiResult<UserM>> response) {
                         iView.dismissDialogs();
+                        iView.startToLogin();
                         super.onError(response);
                         LogUtils.e("");
                     }

@@ -10,12 +10,13 @@ import android.os.Message;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
+import com.ytxd.spp.presenter.SplashPresenter;
 import com.ytxd.spp.ui.activity.login.LoginActivity;
 import com.ytxd.spp.util.PermissionsActivity;
 import com.ytxd.spp.util.PermissionsChecker;
-import com.ytxd.spp.util.SPUtil;
+import com.ytxd.spp.view.ISplashView;
 
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends BaseActivity<SplashPresenter> implements ISplashView {
 
     // 所需的全部权限
     static final String[] PERMISSIONS = new String[]{
@@ -28,6 +29,13 @@ public class SplashActivity extends BaseActivity {
     private static final int REQUEST_CODE = 0; // 请求码
 
     private PermissionsChecker mPermissionsChecker; // 权限检测器
+
+
+    @Override
+    protected void initPresenter() {
+        presenter = new SplashPresenter(this, this);
+        presenter.init();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +50,11 @@ public class SplashActivity extends BaseActivity {
                 return;
             }
         }
-
         new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                isFirst();
+                presenter.isFirst();
             }
         }.sendEmptyMessageDelayed(1, 2000);
     }
@@ -63,32 +70,50 @@ public class SplashActivity extends BaseActivity {
                 @Override
                 public void handleMessage(Message msg) {
                     super.handleMessage(msg);
-                    isFirst();
+                    presenter.isFirst();
                 }
             }.sendEmptyMessageDelayed(1, 2000);
         }
     }
 
-    private void isFirst() {
-        boolean isFirst = SPUtil.getInstance().getBoolean("isFirst", true);
-        if (isFirst) {
-            SPUtil.getInstance().putBoolean("isFirst", false);
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            AppManager.getInstance().killActivity(this);
-        } else {
-            startActivity(LoginActivity.class);
-            AppManager.getInstance().killActivity(this);
-        }
+    private void startPermissionsActivity() {
+        PermissionsActivity.startActivityForResult(this, REQUEST_CODE, PERMISSIONS);
     }
 
-    private void goToMainActivity() {
-//        showToast("自动登录失败!");
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public void loginSuccess() {
+
+    }
+
+    @Override
+    public void startToMain() {
+        startActivity(MainActivity.class);
+        AppManager.getInstance().killActivity(this);
+    }
+
+    @Override
+    public void startToLogin() {
         startActivity(LoginActivity.class);
         AppManager.getInstance().killActivity(this);
     }
 
-    private void startPermissionsActivity() {
-        PermissionsActivity.startActivityForResult(this, REQUEST_CODE, PERMISSIONS);
+    @Override
+    public void startToGuide() {
+
+    }
+
+    @Override
+    public void showDialogs() {
+        showDialog();
+    }
+
+    @Override
+    public void dismissDialogs() {
+        dismissDialog();
     }
 }
