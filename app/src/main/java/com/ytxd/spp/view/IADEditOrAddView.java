@@ -13,4 +13,6 @@ public interface IADEditOrAddView extends IBaseView {
     void addSuccess();
 
     void editSuccess();
+
+    void deleteSuccess();
 }

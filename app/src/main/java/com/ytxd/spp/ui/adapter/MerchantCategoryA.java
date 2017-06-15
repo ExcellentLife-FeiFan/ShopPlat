@@ -4,17 +4,17 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ytxd.spp.R;
-import com.ytxd.spp.model.MerhchantGoodCategoryM;
+import com.ytxd.spp.model.CatagaryM;
 import com.ytxd.spp.ui.adapter.viewholder.MerchantCategoryItemVH;
 import com.ytxd.spp.util.CommonUtils;
 
 import java.util.List;
 
 
-public class MerchantCategoryA extends BaseQuickAdapter<MerhchantGoodCategoryM, MerchantCategoryItemVH> {
+public class MerchantCategoryA extends BaseQuickAdapter<CatagaryM, MerchantCategoryItemVH> {
     public int positionS = 0;
 
-    public MerchantCategoryA(List<MerhchantGoodCategoryM> data) {
+    public MerchantCategoryA(List<CatagaryM> data) {
         super(R.layout.item_merchant_category, data);
     }
 
@@ -24,7 +24,7 @@ public class MerchantCategoryA extends BaseQuickAdapter<MerhchantGoodCategoryM, 
 
 
     @Override
-    protected void convert(MerchantCategoryItemVH helper, MerhchantGoodCategoryM item) {
+    protected void convert(MerchantCategoryItemVH helper, CatagaryM item) {
         if (positionS == helper.getAdapterPosition()) {
             CommonUtils.setBackgroundDrawable(helper.rootView, R.color.white);
             CommonUtils.setTextColor(helper.tv_name,R.color.colorPrimary);
@@ -32,7 +32,7 @@ public class MerchantCategoryA extends BaseQuickAdapter<MerhchantGoodCategoryM, 
             CommonUtils.setBackgroundDrawable(helper.rootView, R.color.bg);
             CommonUtils.setTextColor(helper.tv_name,R.color.black_overlay2);
         }
-        helper.tv_name.setText(item.getName());
+        helper.tv_name.setText(item.getGoodsTypeName());
     }
 
     public int getPositionS() {

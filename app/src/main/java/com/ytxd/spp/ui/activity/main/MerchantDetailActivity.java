@@ -20,17 +20,26 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.flyco.systembar.SystemBarHelper;
 import com.kennyc.view.MultiStateView;
+import com.litesuits.orm.db.assit.QueryBuilder;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.ytxd.spp.R;
+import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.BaseActivity;
 import com.ytxd.spp.event.CartListDialogShowEvent;
 import com.ytxd.spp.event.MerchantGoodAddEvent;
-import com.ytxd.spp.model.MerchantGoodM;
-import com.ytxd.spp.model.MerhchantGoodCategoryM;
+import com.ytxd.spp.event.MerchantGoodMinusEvent;
+import com.ytxd.spp.event.MerchantSelectGoodStandEvent;
+import com.ytxd.spp.model.CatagaryM;
+import com.ytxd.spp.model.LocalShoppingCartM;
+import com.ytxd.spp.model.MerchantM;
+import com.ytxd.spp.model.ShoppingCartM;
+import com.ytxd.spp.presenter.MerchantPresenter;
 import com.ytxd.spp.ui.activity.order.EnsureOrderActivity;
 import com.ytxd.spp.ui.activity.order.ShoppingCartActivity;
 import com.ytxd.spp.ui.adapter.MerchantCategoryA;
@@ -38,19 +47,26 @@ import com.ytxd.spp.ui.adapter.MerchantGoodA;
 import com.ytxd.spp.ui.views.FakeAddImageView;
 import com.ytxd.spp.ui.views.SimpleDividerDecoration;
 import com.ytxd.spp.ui.views.pop.MerchantCartListDialog;
+import com.ytxd.spp.ui.views.pop.SelectGoodStandDialog;
+import com.ytxd.spp.util.AbStrUtil;
+import com.ytxd.spp.util.CommonUtils;
+import com.ytxd.spp.util.ImageLoadUtil;
+import com.ytxd.spp.util.LogUtils;
 import com.ytxd.spp.util.PointFTypeEvaluator;
+import com.ytxd.spp.view.IMerchantView;
 
 import org.zakariya.stickyheaders.StickyHeaderLayoutManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MerchantDetailActivity extends BaseActivity {
+public class MerchantDetailActivity extends BaseActivity<MerchantPresenter> implements IMerchantView {
 
+    @BindView(R.id.iv_bg)
+    ImageView ivBg;
     @BindView(R.id.msv)
     MultiStateView msv;
     @BindView(R.id.rv_category)
@@ -76,15 +92,46 @@ public class MerchantDetailActivity extends BaseActivity {
         RelativeLayout rlCartList;*/
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    MerchantM merchantM;
     @BindView(R.id.collapsingToolbarLayout)
     CollapsingToolbarLayout collapsingToolbarLayout;
+    @BindView(R.id.icon)
+    RoundedImageView icon;
 
+    @BindView(R.id.shopping_cart_total_tv)
+    TextView tvShoppingCartTotalTv;
+    @BindView(R.id.shopping_cart_total_num)
+    TextView tvShoppingCartTotalNum;
+
+
+    @Override
+    protected void initPresenter() {
+        presenter = new MerchantPresenter(activity, this);
+        presenter.init();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_merchant_detail);
         ButterKnife.bind(this);
+        merchantM = (MerchantM) getIntent().getSerializableExtra("data");
+        initViews();
+        if (null != merchantM) {
+            presenter.getGoodList(merchantM.getSupermarketCode());
+        }
+
+    }
+
+    private void initViews() {
+        ImageLoadUtil.setImageNP(merchantM.getLogoUrl(), icon, this);
+        if (!AbStrUtil.isEmpty(merchantM.getHJUrl())) {
+            ImageLoadUtil.setImageNP(merchantM.getHJUrl(), ivBg, this);
+        } else if (!AbStrUtil.isEmpty(merchantM.getLogoUrl())) {
+            ImageLoadUtil.setImageNP(merchantM.getLogoUrl(), ivBg, this);
+        }
+        refreshCartLayoutData();
+
         toolbar.setTitle("肯德基宅急送");
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -103,24 +150,6 @@ public class MerchantDetailActivity extends BaseActivity {
         rvGood.setLayoutManager(goodLM);
         rvGood.addItemDecoration(new SimpleDividerDecoration(this, R.color.line_gray));
         rvGood.setAdapter(goodA);
-
-
-        List<MerchantGoodM> goods = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            MerchantGoodM good = new MerchantGoodM();
-            good.setName("产品" + i);
-            goods.add(good);
-        }
-        List<MerhchantGoodCategoryM> categoryMS = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            MerhchantGoodCategoryM categoryM = new MerhchantGoodCategoryM();
-            categoryM.setGoods(goods);
-            categoryM.setName("分类" + i);
-            categoryMS.add(categoryM);
-        }
-        setSectionAdapterPosition(categoryMS);
-
-        goodA.addAll(categoryMS);
         rvGood.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -138,8 +167,7 @@ public class MerchantDetailActivity extends BaseActivity {
             }
         });
 
-
-        categoryA = new MerchantCategoryA(categoryMS);
+        categoryA = new MerchantCategoryA(null);
         categoryLM = new LinearLayoutManager(this);
         rvCategory.setLayoutManager(categoryLM);
         rvCategory.addItemDecoration(new SimpleDividerDecoration(this, R.color.line_gray));
@@ -148,29 +176,21 @@ public class MerchantDetailActivity extends BaseActivity {
             @Override
             public void onSimpleItemClick(final BaseQuickAdapter adapter, final View view, final int position) {
                 categoryA.setPositionS(position);
-                MerhchantGoodCategoryM setion = goodA.getSection(position);
+                CatagaryM setion = goodA.getSection(position);
                 if (setion.getAdapterP() >= 0) {
                     goodLM.scrollToPosition(setion.getAdapterP());
                 }
             }
         });
 
-        msv.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
-                rl_cart.setVisibility(View.VISIBLE);
-            }
-        }, 500);
-
     }
 
-    private void setSectionAdapterPosition(List<MerhchantGoodCategoryM> categories) {
+    private void setSectionAdapterPosition(List<CatagaryM> categories) {
         int count = 0;
         for (int i = 0; i < categories.size(); i++) {
-            MerhchantGoodCategoryM one = categories.get(i);
+            CatagaryM one = categories.get(i);
             one.setAdapterP(count + 2 * i);
-            count = count + one.getGoods().size();
+            count = count + one.getChildren().size();
         }
 
     }
@@ -180,7 +200,62 @@ public class MerchantDetailActivity extends BaseActivity {
         if (null != event.getView()) {
             addGoodAnimation(event.getView());
         }
+        if (CommonUtils.isDBInit(this)) {
+            QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
+                    .whereEquals(LocalShoppingCartM.CARTCODE, merchantM.getSupermarketCode());
+            List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+            if (beans.size() > 0) {
+                LocalShoppingCartM shoppingCartM= beans.get(0);
+                shoppingCartM.getShoppingCartM().addGood(event.getGoodM());
+                int ch=App.liteOrm.update(shoppingCartM);
+                LogUtils.e(ch+"");
+            } else {
+                ShoppingCartM shoppingCartM = new ShoppingCartM();
+                shoppingCartM.setMerchantM(merchantM);
+                shoppingCartM.addGood(event.getGoodM());
+                LocalShoppingCartM localShoppingCartM = new LocalShoppingCartM(merchantM.getSupermarketCode(), shoppingCartM);
+                long cc=App.liteOrm.save(localShoppingCartM);
+                LogUtils.e(cc+"");
+            }
+            refreshCartLayoutData();
+
+        }
+
     }
+
+    public void onEvent(MerchantGoodMinusEvent event) {
+        if (CommonUtils.isDBInit(this)) {
+            QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
+                    .whereEquals(LocalShoppingCartM.CARTCODE, merchantM.getSupermarketCode());
+            List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+            if (beans.size() > 0) {
+                LocalShoppingCartM shoppingCartM= beans.get(0);
+                shoppingCartM.getShoppingCartM().removeGood(event.getGoodM());
+                int ch=App.liteOrm.update(shoppingCartM);
+                LogUtils.e(ch+"");
+                refreshCartLayoutData();
+            }
+        }
+
+    }
+
+    private void refreshCartLayoutData() {
+        QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
+                .whereEquals(LocalShoppingCartM.CARTCODE, merchantM.getSupermarketCode());
+        List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+        if (beans.size() > 0) {
+            LocalShoppingCartM shoppingCartM = beans.get(0);
+            String n = shoppingCartM.getShoppingCartM().getGoodsCounts() + "";
+            String p = "共计¥"+shoppingCartM.getShoppingCartM().getPirceTotal();
+            tvShoppingCartTotalNum.setText(n);
+            tvShoppingCartTotalTv.setText(p);
+            if(null!=cartListDialog){
+                cartListDialog.setData();
+            }
+        }
+
+    }
+
 
     private void addGoodAnimation(View view) {
         int[] addLocation = new int[2];
@@ -279,7 +354,7 @@ public class MerchantDetailActivity extends BaseActivity {
 
     private void showCart() {
         if (null == cartListDialog) {
-            cartListDialog = new MerchantCartListDialog(this);
+            cartListDialog = new MerchantCartListDialog(this,merchantM.getSupermarketCode());
         }
         Window window = cartListDialog.getWindow();
         cartListDialog.setCanceledOnTouchOutside(true);
@@ -299,6 +374,40 @@ public class MerchantDetailActivity extends BaseActivity {
         } else {
             rl_cart.setVisibility(View.VISIBLE);
         }
+
+    }
+
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public void lodeSuccess(List<CatagaryM> items) {
+        setSectionAdapterPosition(items);
+        categoryA.addData(items);
+        goodA.addAll(items);
+        if (goodA.getItemCount() > 0) {
+            msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+            rl_cart.setVisibility(View.VISIBLE);
+        } else {
+            rl_cart.setVisibility(View.GONE);
+            msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        }
+    }
+
+    @Override
+    public void lodeFailed() {
+        rl_cart.setVisibility(View.GONE);
+        msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+    }
+
+    public void onEvent(MerchantSelectGoodStandEvent event) {
+        SelectGoodStandDialog standDialog = new SelectGoodStandDialog();
+        Bundle data = new Bundle();
+        data.putSerializable("data", event.goodM);
+        standDialog.setArguments(data);
+        standDialog.show(getFragmentManager(), "SelectGoodStandDialog");
 
     }
 }

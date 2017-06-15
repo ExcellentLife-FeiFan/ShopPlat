@@ -19,7 +19,10 @@
             android:id="@+id/tv_poeple_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="非凡"
+            android:ellipsize="end"
+            android:maxWidth="100dp"
+            android:singleLine="true"
+            android:text="@string/null_s"
             android:textColor="@color/black_overlay"
             android:textSize="@dimen/text_size_common_btn"
             android:textStyle="bold" />
@@ -37,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/default_ui_margin_large"
-            android:text="182****3456"
+            android:text="@string/null_s"
             android:textColor="@color/black_overlay"
             android:textSize="@dimen/text_size_common_btn"
             android:textStyle="bold" />
@@ -51,39 +54,26 @@
         android:orientation="horizontal"
         android:paddingBottom="@dimen/default_ui_margin_large">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="【"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_size_common_btn"
-            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_address_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="公司"
+            android:layout_marginRight="@dimen/default_ui_margin"
+            android:text="默认"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_common_btn"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="】"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_size_common_btn"
-            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/default_ui_margin"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="北京市朝阳区某某某某某某地某某某某号"
+            android:text="@string/null_s"
             android:textColor="@color/gray"
             android:textSize="@dimen/text_size_common" />
 
@@ -103,8 +93,16 @@
 
 
         <TextView
+            android:id="@+id/tv_setdefault"
+            style="@style/Common_Border_Btn"
+            android:layout_marginLeft="@dimen/default_ui_margin_medium"
+            android:text="设为默认"
+            android:visibility="gone" />
+
+        <TextView
             android:id="@+id/tv_delete"
             style="@style/Common_Border_Btn"
+            android:layout_marginLeft="@dimen/default_ui_margin_medium"
             android:text="删除" />
 
 

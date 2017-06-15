@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.amap.api.services.core.LatLonPoint;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.kennyc.view.MultiStateView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.BaseFragment;
@@ -84,13 +83,12 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
         mAdapter.setOnLoadMoreListener(this, mRecyclerView);
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addOnItemTouchListener(new OnItemClickListener() {
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onSimpleItemClick(final BaseQuickAdapter adapter, final View view, final int position) {
-                startActivity(MerchantDetailActivity.class);
+            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                startActivity(MerchantDetailActivity.class,"data",mAdapter.getItem(i));
             }
         });
-
     }
 
     @Override

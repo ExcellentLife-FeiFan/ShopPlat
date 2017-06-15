@@ -18,6 +18,8 @@ import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
 import com.ytxd.spp.model.UserM;
 import com.ytxd.spp.ui.activity.main.MainActivity;
+import com.ytxd.spp.util.AbStrUtil;
+import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.SPUtil;
 import com.zxy.recovery.callback.RecoveryCallback;
 import com.zxy.recovery.core.Recovery;
@@ -37,7 +39,7 @@ import okhttp3.OkHttpClient;
 public class App extends Application {
 
     public static Context context;
-    private static LiteOrm liteOrm;
+    public static LiteOrm liteOrm;
     public static UserM user;
 
     @Override
@@ -155,21 +157,28 @@ public class App extends Application {
         SPUtil.init(getApplicationContext(), getPackageName() + "_preference", Context.MODE_MULTI_PROCESS);
     }
 
-    public static void initDataBase(Context context) {
-/*        liteOrm = LiteOrm.newSingleInstance(context, CommonUtils.getUserCachePath() + "china_cities.db");
-        liteOrm.setDebugged(true); // open the log*/
-    }
-
 
     private void initDirs() {
         File path1 = new File(G.STORAGEPATH);
         if (!path1.exists()) {
             path1.mkdirs();
         }
-//        File path2 = new File(CommonUtils.getUserCachePath());
-//        if (!path2.exists()) {
-//            path2.mkdirs();
-//        }
+        File path2 = new File(CommonUtils.getUserCachePath());
+        if (!path2.exists()) {
+            path2.mkdirs();
+        }
+    }
+
+
+    public static boolean initDataBase(Context context) {
+        String path = CommonUtils.getUserCachePath();
+        if (!AbStrUtil.isEmpty(path)) {
+            liteOrm = LiteOrm.newSingleInstance(context, CommonUtils.getUserCachePath() + "userdata.db");
+            liteOrm.setDebugged(true); // open the log
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

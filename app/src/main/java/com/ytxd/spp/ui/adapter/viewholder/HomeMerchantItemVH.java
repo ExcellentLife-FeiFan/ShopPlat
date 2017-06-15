@@ -1,11 +1,14 @@
 package com.ytxd.spp.ui.adapter.viewholder;
 
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.github.zagum.expandicon.ExpandIconView;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.ytxd.spp.R;
+import com.ytxd.spp.ui.views.MyExpandableLayout;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
@@ -25,7 +28,10 @@ public class HomeMerchantItemVH extends BaseViewHolder {
     public TextView tvPerPeoP;
     public TextView tvDistance;
     public TextView tvDistriTime;
-
+    public MyExpandableLayout expandActi;
+    public TextView tvActiNum;
+    public LinearLayout llActiExpandIndex;
+    public ExpandIconView expandv;
 
     public HomeMerchantItemVH(View rootView) {
         super(rootView);
@@ -40,6 +46,9 @@ public class HomeMerchantItemVH extends BaseViewHolder {
         this.tvPerPeoP = (TextView) rootView.findViewById(R.id.tv_per_peo_p);
         this.tvDistance = (TextView) rootView.findViewById(R.id.tv_distance);
         this.tvDistriTime = (TextView) rootView.findViewById(R.id.tv_distri_time);
+        this.expandActi = (MyExpandableLayout) rootView.findViewById(R.id.expand_acti);
+        this.tvActiNum = (TextView) rootView.findViewById(R.id.tv_acti_num);
+        this.llActiExpandIndex = (LinearLayout) rootView.findViewById(R.id.ll_acti_expand_index);
+        this.expandv = (ExpandIconView) rootView.findViewById(R.id.expandv);
     }
-
 }

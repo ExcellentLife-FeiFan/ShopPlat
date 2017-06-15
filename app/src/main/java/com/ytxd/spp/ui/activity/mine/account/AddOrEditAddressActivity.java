@@ -52,6 +52,7 @@ public class AddOrEditAddressActivity extends BaseActivity<ADEditOrAddPresenter>
     @BindView(R.id.iv_ed_ad_d)
     ImageView ivEdAdD;
     PoiItem poiItem;
+    AddressM addressM;
 
     @Override
     protected void initPresenter() {
@@ -65,14 +66,29 @@ public class AddOrEditAddressActivity extends BaseActivity<ADEditOrAddPresenter>
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_or_edit_address);
         ButterKnife.bind(this);
-        getBar().initActionBar("增加收货地址", R.drawable.ic_back_white, R.drawable.ic_garbage, this);
+        addressM = (AddressM) getIntent().getSerializableExtra("data");
+        if (null != addressM) {
+            getBar().initActionBar("修改收货地址", R.drawable.ic_back_white, R.drawable.ic_garbage, this);
+            CommonUtils.setText(etName, addressM.getContacts());
+            CommonUtils.setText(etPhone, addressM.getPhone());
+            if (addressM.getSex() == 1) {
+                rbMan.setChecked(true);
+            } else {
+                rbWoman.setChecked(true);
+            }
+            CommonUtils.setText(tvAddress, addressM.getAddressTitle());
+            CommonUtils.setText(etAdD, addressM.getAddressContent());
+        } else {
+            getBar().initActionBar("增加收货地址", R.drawable.ic_back_white, -1, this);
+        }
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_right:
-
+            case R.id.rl_v_right:
+                presenter.deleteAD(addressM.getSHAddressCode());
                 break;
             case R.id.rl_back:
                 AppManager.getInstance().killActivity(this);
@@ -91,34 +107,67 @@ public class AddOrEditAddressActivity extends BaseActivity<ADEditOrAddPresenter>
                 String name = etName.getText().toString();
                 String phone = etPhone.getText().toString();
                 String adDetail = etAdD.getText().toString();
-                if (AbStrUtil.isEmpty(name)) {
-                    showToast("请输入收货人姓名");
-                } else if (AbStrUtil.isEmpty(phone)) {
-                    showToast("请输入收货人手机号");
-                } else if (!AbStrUtil.isMobileNo(phone)) {
-                    showToast("请输入规范的手机号码");
-                }else if(null==poiItem){
-                    showToast("请选择地区地址");
-                }
-                else if(AbStrUtil.isEmpty(adDetail)){
-                    showToast("请填写详细地址");
-                }else{
-                    AddressM addressM = new AddressM();
-                    addressM.setContacts(name);
-                    addressM.setPhone(phone);
-                    addressM.setPhoneCheck(true);
-                    addressM.setAddressTitle(poiItem.getTitle());
-                    addressM.setAddressDescribe(poiItem.getCityName()+poiItem.getAdName()+poiItem.getSnippet());
-                    addressM.setAddressContent(adDetail);
-                    addressM.setLat(poiItem.getLatLonPoint().getLatitude()+"");
-                    addressM.setLng(poiItem.getLatLonPoint().getLongitude()+"");
-                    if (rgSex.getCheckedRadioButtonId()== R.id.rb_man) {
-                        addressM.setSex(1);
-                    }else{
-                        addressM.setSex(2);
+                if (null != addressM) {
+                    if (AbStrUtil.isEmpty(name)) {
+                        showToast("请输入收货人姓名");
+                    } else if (AbStrUtil.isEmpty(phone)) {
+                        showToast("请输入收货人手机号");
+                    } else if (!AbStrUtil.isMobileNo(phone)) {
+                        showToast("请输入规范的手机号码");
+                    } else if (AbStrUtil.isEmpty(adDetail)) {
+                        showToast("请填写详细地址");
+                    } else {
+                        addressM.setContacts(name);
+                        addressM.setPhone(phone);
+                        addressM.setPhoneCheck(true);
+                        if (null != poiItem) {
+                            addressM.setAddressTitle(poiItem.getTitle());
+                            addressM.setAddressDescribe(poiItem.getCityName() + poiItem.getAdName() + poiItem.getSnippet());
+                            addressM.setLat(poiItem.getLatLonPoint().getLatitude() + "");
+                            addressM.setLng(poiItem.getLatLonPoint().getLongitude() + "");
+                        }
+                        addressM.setAddressContent(adDetail);
+                        if (rgSex.getCheckedRadioButtonId() == R.id.rb_man) {
+                            addressM.setSex(1);
+                        } else {
+                            addressM.setSex(2);
+                        }
+                        presenter.editAD(addressM);
+
                     }
-                    presenter.addAD(addressM);
+
+
+                } else {
+                    if (AbStrUtil.isEmpty(name)) {
+                        showToast("请输入收货人姓名");
+                    } else if (AbStrUtil.isEmpty(phone)) {
+                        showToast("请输入收货人手机号");
+                    } else if (!AbStrUtil.isMobileNo(phone)) {
+                        showToast("请输入规范的手机号码");
+                    } else if (null == poiItem) {
+                        showToast("请选择地区地址");
+                    } else if (AbStrUtil.isEmpty(adDetail)) {
+                        showToast("请填写详细地址");
+                    } else {
+                        AddressM addressM = new AddressM();
+                        addressM.setContacts(name);
+                        addressM.setPhone(phone);
+                        addressM.setPhoneCheck(true);
+                        addressM.setAddressTitle(poiItem.getTitle());
+                        addressM.setAddressDescribe(poiItem.getCityName() + poiItem.getAdName() + poiItem.getSnippet());
+                        addressM.setAddressContent(adDetail);
+                        addressM.setLat(poiItem.getLatLonPoint().getLatitude() + "");
+                        addressM.setLng(poiItem.getLatLonPoint().getLongitude() + "");
+                        if (rgSex.getCheckedRadioButtonId() == R.id.rb_man) {
+                            addressM.setSex(1);
+                        } else {
+                            addressM.setSex(2);
+                        }
+                        presenter.addAD(addressM);
+                    }
                 }
+
+
                 break;
         }
     }
@@ -140,20 +189,29 @@ public class AddOrEditAddressActivity extends BaseActivity<ADEditOrAddPresenter>
 
     @Override
     public void addSuccess() {
+        EventBus.getDefault().post(new RefreshADEvent());
         showToast("添加成功");
         AppManager.getInstance().killActivity(this);
-        EventBus.getDefault().post(new RefreshADEvent());
     }
 
     @Override
     public void editSuccess() {
+        EventBus.getDefault().post(new RefreshADEvent());
+        showToast("保存成功");
+        AppManager.getInstance().killActivity(this);
+    }
 
+    @Override
+    public void deleteSuccess() {
+        EventBus.getDefault().post(new RefreshADEvent());
+        showToast("删除成功");
+        AppManager.getInstance().killActivity(this);
     }
 
 
     public void onEvent(ADEditSelectEvent event) {
         poiItem = event.poiItem;
         CommonUtils.setText(tvAddress, poiItem.getTitle());
-        CommonUtils.setText(etAdD, poiItem.getCityName()+poiItem.getAdName()+poiItem.getSnippet());
+        CommonUtils.setText(etAdD, poiItem.getCityName() + poiItem.getAdName() + poiItem.getSnippet());
     }
 }

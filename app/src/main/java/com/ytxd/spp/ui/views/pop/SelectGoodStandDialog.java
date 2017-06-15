@@ -7,14 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.mcxtzhang.lib.AnimShopButton;
 import com.ytxd.spp.R;
+import com.ytxd.spp.model.GoodM;
 import com.ytxd.spp.ui.adapter.GoodStandLV;
 import com.ytxd.spp.ui.views.TagCloudLayout;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.ytxd.spp.util.CommonUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +36,15 @@ public class SelectGoodStandDialog extends BaseDialogFragment {
     @BindView(R.id.btnAdd)
     AnimShopButton btnAdd;
     GoodStandLV mAdapter;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.tv_price)
+    TextView tvPrice;
+
+    GoodM goodM;
+
+    GoodM stand;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,23 +64,18 @@ public class SelectGoodStandDialog extends BaseDialogFragment {
     }
 
     private void initData() {
-        List<String> items = new ArrayList<>();
-        items.add("规格1");
-        items.add("规fas格1");
-        items.add("规格1aaa");
-        items.add("规格123123231231");
-        items.add("规格13333333");
-        items.add("规格1hhhh");
-        items.add("规格ff1");
-        items.add("规格fgagag1");
-        items.add("规格1bxc");
-        items.add("规格1gadgadggaaawws");
-        mAdapter = new GoodStandLV(items, activity);
+        goodM = (GoodM) getArguments().getSerializable("data");
+        CommonUtils.setText(tvTitle, goodM.getGoodsTitle());
+        stand=goodM.getGoods().get(0);
+        CommonUtils.setText(tvPrice, "¥"+stand.getXPrice());
+        mAdapter = new GoodStandLV(goodM.getGoods(), activity);
         tag.setAdapter(mAdapter);
         tag.setItemClickListener(new TagCloudLayout.TagItemClickListener() {
             @Override
             public void itemClick(int position) {
                 mAdapter.setPositionS(position);
+                stand = mAdapter.getItem(position);
+                CommonUtils.setText(tvPrice, "¥"+stand.getXPrice());
             }
         });
 
@@ -96,5 +100,10 @@ public class SelectGoodStandDialog extends BaseDialogFragment {
     @OnClick(R.id.v)
     public void onViewClicked() {
         this.dismiss();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 }

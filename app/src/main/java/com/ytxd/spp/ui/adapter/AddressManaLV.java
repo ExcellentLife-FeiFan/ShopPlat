@@ -1,12 +1,14 @@
 package com.ytxd.spp.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ytxd.spp.R;
 import com.ytxd.spp.model.AddressM;
+import com.ytxd.spp.ui.activity.mine.account.AddOrEditAddressActivity;
 import com.ytxd.spp.util.CommonUtils;
 
 import java.util.List;
@@ -25,7 +27,7 @@ public class AddressManaLV extends CommonListAdapter<AddressM> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         super.getView(position, convertView, parent);
         ViewHolder viewHolder;
         if (convertView == null) {
@@ -35,22 +37,41 @@ public class AddressManaLV extends CommonListAdapter<AddressM> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
+        if (item.isIsDefault()) {
+            viewHolder.tvAddressType.setVisibility(View.VISIBLE);
+            viewHolder.tvSetDefault.setVisibility(View.GONE);
+        } else {
+            viewHolder.tvAddressType.setVisibility(View.GONE);
+            viewHolder.tvSetDefault.setVisibility(View.VISIBLE);
+        }
         viewHolder.tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                presenter.deleteAD(getItem(position).getSHAddressCode());
 
             }
         });
+        viewHolder.tvSetDefault.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.setDefault(getItem(position).getSHAddressCode());
+
+            }
+        });
+
         viewHolder.tvEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(context, AddOrEditAddressActivity.class);
+                intent.putExtra("data", getItem(position));
+                context.startActivity(intent);
             }
         });
-        CommonUtils.setText(viewHolder.tvAddress,item.getAddressDescribe());
-        CommonUtils.setText(viewHolder.tvPoepleName,item.getContacts());
-        CommonUtils.setText(viewHolder.tvPoepleSex,item.getSex()==1?"（先生）":"（女士）");
-        CommonUtils.setText(viewHolder.tvPoeplePhone,item.getPhone());
+        CommonUtils.setText(viewHolder.tvAddress, item.getAddressDescribe());
+        CommonUtils.setText(viewHolder.tvPoepleName, item.getContacts());
+        CommonUtils.setText(viewHolder.tvPoepleSex, item.getSex() == 1 ? "（先生）" : "（女士）");
+        CommonUtils.setText(viewHolder.tvPoeplePhone, item.getPhone());
         return convertView;
     }
 
@@ -70,6 +91,8 @@ public class AddressManaLV extends CommonListAdapter<AddressM> {
         TextView tvDelete;
         @BindView(R.id.tv_edit)
         TextView tvEdit;
+        @BindView(R.id.tv_setdefault)
+        TextView tvSetDefault;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.ytxd.spp.presenter.AddressManaPresenter;
+
 import java.util.List;
 
 /**
@@ -100,5 +102,10 @@ public class CommonListAdapter<T> extends BaseAdapter {
         }else{
             return null;
         }
+    }
+
+    AddressManaPresenter presenter;
+    public void setPresenter(AddressManaPresenter presenter) {
+        this.presenter = presenter;
     }
 }

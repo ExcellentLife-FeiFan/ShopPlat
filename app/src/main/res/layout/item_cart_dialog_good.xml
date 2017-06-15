@@ -19,6 +19,7 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/iv"
                 android:layout_width="@dimen/dp30"
                 android:layout_height="@dimen/dp45"
                 android:src="@drawable/i7" />
@@ -54,6 +55,7 @@
                 android:textSize="@dimen/sp12" />
 
             <TextView
+                android:id="@+id/tv_now_p"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2.9"

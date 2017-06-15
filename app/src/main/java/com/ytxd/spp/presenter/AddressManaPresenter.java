@@ -37,9 +37,9 @@ public class AddressManaPresenter extends BasePresenter<IAddressManaView> {
                     public void onSuccess(Response<ApiResult<List<AddressM>>> response) {
                         ApiResult<List<AddressM>> result = response.body();
                         if (result.isSuccess()) {
-                            iView.loginSuccess(result.getObj());
+                            iView.lodeSuccess(result.getObj());
                         } else {
-                            iView.loginFailed();
+                            iView.lodeFailed();
                             ToastUtil.showToastShort(context, result.getMsg());
                         }
                         LogUtils.e("");
@@ -47,7 +47,7 @@ public class AddressManaPresenter extends BasePresenter<IAddressManaView> {
 
                     @Override
                     public void onError(Response<ApiResult<List<AddressM>>> response) {
-                        iView.loginFailed();
+                        iView.lodeFailed();
                         super.onError(response);
                         LogUtils.e("");
                     }
@@ -56,4 +56,55 @@ public class AddressManaPresenter extends BasePresenter<IAddressManaView> {
     }
 
 
+    public void deleteAD(String shAddressCode) {
+        OkGo.<ApiResult<Object>>get(Apis.DeleteSHAddress)//
+                .params("SHAddressCode", shAddressCode)
+                .execute(new JsonCallback<ApiResult<Object>>() {
+                    @Override
+                    public void onSuccess(Response<ApiResult<Object>> response) {
+                        ApiResult<Object> result = response.body();
+                        if (result.isSuccess()) {
+                            ToastUtil.showToastShort(context, "设置成功");
+                            iView.deleteSuccess();
+                        } else {
+                            ToastUtil.showToastShort(context, result.getMsg());
+                        }
+                        LogUtils.e("");
+                    }
+
+                    @Override
+                    public void onError(Response<ApiResult<Object>> response) {
+                        super.onError(response);
+                        LogUtils.e("");
+                    }
+                });
+
+
+    }
+
+    public void setDefault(String shAddressCode) {
+        OkGo.<ApiResult<Object>>get(Apis.SetDefaultSHAddress)//
+                .params("UserCode", App.user.getUserCode())
+                .params("SHAddressCode", shAddressCode)
+                .execute(new JsonCallback<ApiResult<Object>>() {
+                    @Override
+                    public void onSuccess(Response<ApiResult<Object>> response) {
+                        ApiResult<Object> result = response.body();
+                        if (result.isSuccess()) {
+                            iView.deleteSuccess();
+                        } else {
+                            ToastUtil.showToastShort(context, result.getMsg());
+                        }
+                        LogUtils.e("");
+                    }
+
+                    @Override
+                    public void onError(Response<ApiResult<Object>> response) {
+                        super.onError(response);
+                        LogUtils.e("");
+                    }
+                });
+
+
+    }
 }

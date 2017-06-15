@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.App;
+import com.ytxd.spp.base.G;
 import com.ytxd.spp.ui.views.loadview.CustomDialog;
 
 import java.text.DecimalFormat;
@@ -131,22 +132,22 @@ public class CommonUtils {
     }
 
 
-/*    public static String getUserCachePath() {
-        if (null != userBean) {
-            return G.STORAGEPATH + userBean.getUserName() + "/";
+    public static String getUserCachePath() {
+        if (null != user) {
+            return G.STORAGEPATH + user.getUserCode() + "/";
         } else {
             return G.STORAGEPATH;
         }
     }
 
     public static boolean isDBInit(Context context) {
-        if (null == liteOrm) {
+        if (null == App.liteOrm) {
             ToastUtil.showToastShort(context, "本地数据库未初始化成功");
             return false;
         } else {
             return true;
         }
-    }*/
+    }
 
     public static String getFloatString2(float f) {
         return new DecimalFormat("0.00").format(f);

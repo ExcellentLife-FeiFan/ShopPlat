@@ -197,76 +197,48 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_ui_margin_medium_s"
+
                 android:orientation="horizontal">
 
-                <LinearLayout
+                <com.ytxd.spp.ui.views.MyExpandableLayout
+                    android:id="@+id/expand_acti"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.8"
-                    android:divider="@drawable/shape_merchant_av_l_divider"
-                    android:orientation="vertical"
-                    android:showDividers="middle">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_av_jian"
-                        android:drawablePadding="@dimen/default_ui_margin_small"
-                        android:text="慢40减20，满60减30"
-                        android:textColor="@color/gray"
-                        android:textSize="@dimen/item_merchant_tv2_size" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_av_jian"
-                        android:drawablePadding="@dimen/default_ui_margin_small"
-                        android:text="慢40减20，满60减30"
-                        android:textColor="@color/gray"
-                        android:textSize="@dimen/item_merchant_tv2_size" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_av_jian"
-                        android:drawablePadding="@dimen/default_ui_margin_small"
-                        android:text="慢40减20，满60减30"
-                        android:textColor="@color/gray"
-                        android:textSize="@dimen/item_merchant_tv2_size" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_av_jian"
-                        android:drawablePadding="@dimen/default_ui_margin_small"
-                        android:text="慢40减20，满60减30"
-                        android:textColor="@color/gray"
-                        android:textSize="@dimen/item_merchant_tv2_size" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_av_jian"
-                        android:drawablePadding="@dimen/default_ui_margin_small"
-                        android:text="慢40减20，满60减30"
-                        android:textColor="@color/gray"
-                        android:textSize="@dimen/item_merchant_tv2_size" />
-                </LinearLayout>
+                    android:layout_marginTop="@dimen/default_ui_margin"
+                    android:layout_weight="1"
+                    app:el_contentLayout="@layout/expandlayout_home_merchat_item_content"
+                    app:el_headerLayout="@layout/expandlayout_home_merchat_item_header" />
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:id="@+id/ll_acti_expand_index"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
                     android:gravity="right">
 
                     <TextView
+                        android:id="@+id/tv_acti_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="5个活动"
+                        android:layout_marginBottom="@dimen/default_ui_margin"
+                        android:layout_marginTop="@dimen/default_ui_margin"
+                        android:text="0个活动"
                         android:textColor="@color/black_overlay4"
                         android:textSize="@dimen/item_merchant_tv2_size" />
 
+                    <com.github.zagum.expandicon.ExpandIconView
+                        android:id="@+id/expandv"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        app:eiv_animationDuration="300"
+                        app:eiv_color="@color/black_overlay4"
+                        android:layout_marginLeft="@dimen/default_ui_margin_small"
+                        android:layout_gravity="center_vertical"
+                        app:eiv_colorIntermediate="@color/black_overlay4"
+                        app:eiv_colorLess="@color/black_overlay4"
+                        app:eiv_colorMore="@color/black_overlay4"
+                        app:eiv_padding="0dp"
+                        app:eiv_roundedCorners="true"
+                        app:eiv_switchColor="true" />
 
                 </LinearLayout>
 

@@ -1,6 +1,5 @@
 package com.ytxd.spp.ui.activity.main;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.widget.NestedScrollView;
@@ -12,17 +11,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
-import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
-import com.bigkoo.convenientbanner.holder.Holder;
 import com.flyco.systembar.SystemBarHelper;
 import com.mcxtzhang.lib.AnimShopButton;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.BaseActivity;
+import com.ytxd.spp.model.GoodM;
 import com.ytxd.spp.ui.adapter.GoodCommentLV;
 import com.ytxd.spp.ui.views.InListView;
 import com.ytxd.spp.ui.views.pop.SelectGoodStandDialog;
 import com.ytxd.spp.util.CommonUtils;
-import com.ytxd.spp.util.LogUtils;
+import com.ytxd.spp.util.ImageLoadUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,12 +38,18 @@ public class GoodDetailActivity extends BaseActivity {
     TextView tvGoodName;
     @BindView(R.id.tv_month_sales)
     TextView tvMonthSales;
+    @BindView(R.id.iv_good)
+    ImageView ivGood;
     @BindView(R.id.tv_favor_persent)
     TextView tvFavorPersent;
     @BindView(R.id.tv_price)
     TextView tvPrice;
     @BindView(R.id.tv_origin_p)
     TextView tvOriginP;
+    @BindView(R.id.ll_no_stand)
+    LinearLayout ll_no_stand;
+    @BindView(R.id.ll_have_stand)
+    LinearLayout ll_have_stand;
     @BindView(R.id.iv_plus)
     ImageView ivPlus;
     @BindView(R.id.btnAdd)
@@ -67,13 +71,41 @@ public class GoodDetailActivity extends BaseActivity {
     NestedScrollView scrollView;
     @BindView(R.id.toolbar_layout)
     CollapsingToolbarLayout toolbarLayout;
+    GoodM goodM;
+
+
+    @BindView(R.id.shopping_cart_total_tv)
+    TextView shoppingCartTotalTv;
+    @BindView(R.id.shopping_cart)
+    ImageView shoppingCart;
+    @BindView(R.id.shopping_cart_total_num)
+    TextView shoppingCartTotalNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_good_detail);
         ButterKnife.bind(this);
-        toolbar.setTitle("[纯牛奶]/大杯");
+        goodM = (GoodM) getIntent().getSerializableExtra("data");
+        CommonUtils.setText(tvGoodName, goodM.getGoodsTitle());
+        CommonUtils.setText(tvMonthSales, goodM.getSaleNumber() + "");
+        ImageLoadUtil.setImageNP(goodM.getLogoPaths(), ivGood, this);
+
+        if (null != goodM.getGoods() && goodM.getGoods().size() > 0) {
+            ll_no_stand.setVisibility(View.GONE);
+            ll_have_stand.setVisibility(View.VISIBLE);
+            rlAddBtn.setVisibility(View.GONE);
+            tvSelectStand.setVisibility(View.VISIBLE);
+        } else {
+            CommonUtils.setText(tvPrice, goodM.getXPrice());
+            CommonUtils.setText(tvOriginP, goodM.getYPrice());
+            ll_no_stand.setVisibility(View.VISIBLE);
+            ll_have_stand.setVisibility(View.GONE);
+            rlAddBtn.setVisibility(View.VISIBLE);
+            tvSelectStand.setVisibility(View.GONE);
+        }
+
+        toolbar.setTitle(goodM.getGoodsTitle());
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +119,7 @@ public class GoodDetailActivity extends BaseActivity {
         mAdapter = new GoodCommentLV(CommonUtils.getSampleList(4), this);
         lvComment.setAdapter(mAdapter);
 
-        //自定义你的Holder，实现更多复杂的界面，不一定是图片翻页，其他任何控件翻页亦可。
+/*        //自定义你的Holder，实现更多复杂的界面，不一定是图片翻页，其他任何控件翻页亦可。
         convenientBanner.setPages(
                 new CBViewHolderCreator<LocalImageHolderView>() {
                     @Override
@@ -102,40 +134,20 @@ public class GoodDetailActivity extends BaseActivity {
                 .startTurning(3000);
         //设置翻页的效果，不需要翻页效果可用不设
         //.setPageTransformer(Transformer.DefaultTransformer);    集成特效之后会有白屏现象，新版已经分离，如果要集成特效的例子可以看Demo的点击响应。
-//        convenientBanner.setManualPageable(false);//设置不能手动影响
-
-        rlAddBtn.setVisibility(View.GONE);
-        tvSelectStand.setVisibility(View.VISIBLE);
-
-        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                LogUtils.e("scrollX:" + scrollX + "-scrollY:" + scrollY + "-oldScrollX:" + oldScrollX + "-oldScrollY" + oldScrollY);
-            }
-        });
-        toolbarLayout.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                LogUtils.e("scrollX:" + scrollX + "-scrollY:" + scrollY + "-oldScrollX:" + oldScrollX + "-oldScrollY" + oldScrollY);
-            }
-        });
-//        toolbarLayout.setO
+//        convenientBanner.setManualPageable(false);//设置不能手动影响*/
     }
-
-/*    @OnClick({R.id.rl_v_right})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.rl_v_right:
-                break;
-        }
-    }*/
 
     @OnClick({R.id.tv_select_stand, R.id.ll_comment_more, R.id.tv_num_comment})
     public void onViewClicked2(View view) {
         switch (view.getId()) {
             case R.id.tv_select_stand:
-                SelectGoodStandDialog standDialog = new SelectGoodStandDialog();
-                standDialog.show(getFragmentManager(), "SelectGoodStandDialog");
+                if (null != goodM) {
+                    SelectGoodStandDialog standDialog = new SelectGoodStandDialog();
+                    Bundle data = new Bundle();
+                    data.putSerializable("data", goodM);
+                    standDialog.setArguments(data);
+                    standDialog.show(getFragmentManager(), "SelectGoodStandDialog");
+                }
                 break;
             case R.id.ll_comment_more:
             case R.id.tv_num_comment:
@@ -144,7 +156,11 @@ public class GoodDetailActivity extends BaseActivity {
         }
     }
 
+    @OnClick(R.id.btn_ok)
+    public void onViewClicked() {
+    }
 
+/*
     public class LocalImageHolderView implements Holder<String> {
 
         @Override
@@ -163,5 +179,5 @@ public class GoodDetailActivity extends BaseActivity {
         }
 
 
-    }
+    }*/
 }

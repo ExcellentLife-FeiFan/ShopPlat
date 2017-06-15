@@ -15,9 +15,15 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.litesuits.orm.db.assit.QueryBuilder;
 import com.ytxd.spp.R;
+import com.ytxd.spp.base.App;
+import com.ytxd.spp.model.LocalShoppingCartM;
+import com.ytxd.spp.model.ShoppingCartM;
 import com.ytxd.spp.ui.adapter.CartListDialogLV;
-import com.ytxd.spp.util.CommonUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,9 +59,11 @@ public class MerchantCartListDialog extends Dialog {
     @BindView(R.id.rl_cart_btn)
     RelativeLayout rlCartBtn;
     CartListDialogLV goodListA;
+    String merchantCode;
 
-    public MerchantCartListDialog(Context context) {
+    public MerchantCartListDialog(Context context, String merchantCode) {
         super(context, R.style.cartdialog);
+        this.merchantCode = merchantCode;
     }
 
     @Override
@@ -63,14 +71,29 @@ public class MerchantCartListDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_merchant_cart_list);
         ButterKnife.bind(this);
-        goodListA = new CartListDialogLV(CommonUtils.getSampleList(10),getContext());
+        goodListA = new CartListDialogLV(new ArrayList<ShoppingCartM.Goods>(), getContext());
         lv.setAdapter(goodListA);
     }
 
     @Override
     public void show() {
         super.show();
+        setData();
         animationShow(500);
+    }
+
+    public void setData() {
+        QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
+                .whereEquals(LocalShoppingCartM.CARTCODE, merchantCode);
+        List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+        if (beans.size() > 0) {
+            LocalShoppingCartM shoppingCartM = beans.get(0);
+            goodListA.addItems(shoppingCartM.getShoppingCartM().getGoods(), true);
+            String n = shoppingCartM.getShoppingCartM().getGoodsCounts() + "";
+            String p = shoppingCartM.getShoppingCartM().getPirceTotal();
+            shoppingCartTotalNum.setText(n);
+            shoppingCartTotalTv.setText(p);
+        }
     }
 
     @Override
@@ -133,6 +156,7 @@ public class MerchantCartListDialog extends Dialog {
                 break;
         }
     }
+
 
 
    /* public void clear(){

@@ -23,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddressManaActivity extends BaseActivity<AddressManaPresenter> implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener,IAddressManaView {
+public class AddressManaActivity extends BaseActivity<AddressManaPresenter> implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, IAddressManaView {
 
     @BindView(R.id.msv)
     MultiStateView msv;
@@ -48,8 +48,9 @@ public class AddressManaActivity extends BaseActivity<AddressManaPresenter> impl
         getBar().initActionBar("地址管理", this);
         refresh.setOnRefreshListener(this);
         mAdapter = new AddressManaLV(new ArrayList<AddressM>(), this);
+        mAdapter.setPresenter(presenter);
         lv.setAdapter(mAdapter);
-        refresh.setRefreshing(true);
+//        refresh.setRefreshing(true);
         onRefresh();
     }
 
@@ -79,16 +80,26 @@ public class AddressManaActivity extends BaseActivity<AddressManaPresenter> impl
     }
 
     @Override
-    public void loginSuccess(List<AddressM> items) {
+    public void lodeSuccess(List<AddressM> items) {
         refresh.setRefreshing(false);
-        mAdapter.addItems(items,true);
-        msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+        mAdapter.addItems(items, true);
+        if (mAdapter.getCount() > 0) {
+            msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+        } else {
+            msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        }
     }
 
     @Override
-    public void loginFailed() {
+    public void lodeFailed() {
         refresh.setRefreshing(false);
         msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+    }
+
+    @Override
+    public void deleteSuccess() {
+        refresh.setRefreshing(true);
+        onRefresh();
     }
 
 

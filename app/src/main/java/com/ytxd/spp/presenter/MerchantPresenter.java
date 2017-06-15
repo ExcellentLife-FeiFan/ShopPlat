@@ -4,13 +4,13 @@ import android.content.Context;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
-import com.ytxd.spp.model.MerchantM;
+import com.ytxd.spp.model.CatagaryM;
 import com.ytxd.spp.net.ApiResult;
 import com.ytxd.spp.net.Apis;
 import com.ytxd.spp.net.JsonCallback;
 import com.ytxd.spp.util.LogUtils;
 import com.ytxd.spp.util.ToastUtil;
-import com.ytxd.spp.view.IHomeView;
+import com.ytxd.spp.view.IMerchantView;
 
 import java.util.List;
 
@@ -18,9 +18,9 @@ import java.util.List;
  * 主界面presenter
  * Created by panl on 15/12/24.
  */
-public class HomePresenter extends BasePresenter<IHomeView> {
+public class MerchantPresenter extends BasePresenter<IMerchantView> {
 
-    public HomePresenter(Context context, IHomeView iView) {
+    public MerchantPresenter(Context context, IMerchantView iView) {
         super(context, iView);
     }
 
@@ -28,16 +28,16 @@ public class HomePresenter extends BasePresenter<IHomeView> {
     public void release() {
     }
 
-    public void getSPMList(String cityName) {
-        OkGo.<ApiResult<List<MerchantM>>>get(Apis.GetSupermarkeyList)//
-                .params("CityName", cityName)
-                .execute(new JsonCallback<ApiResult<List<MerchantM>>>() {
+    public void getGoodList(String supermarketCode) {
+        OkGo.<ApiResult<List<CatagaryM>>>get(Apis.GetGoodsBySupermarket)//
+                .params("SupermarketCode", supermarketCode)
+                .execute(new JsonCallback<ApiResult<List<CatagaryM>>>() {
                     @Override
-                    public void onSuccess(Response<ApiResult<List<MerchantM>>> response) {
+                    public void onSuccess(Response<ApiResult<List<CatagaryM>>> response) {
                         try {
-                            ApiResult<List<MerchantM>> result = response.body();
+                            ApiResult<List<CatagaryM>> result = response.body();
                             if (result.isSuccess()) {
-                                iView.loginSuccess(result.getObj());
+                                iView.lodeSuccess(result.getObj());
                                 return;
                             } else {
                                 ToastUtil.showToastShort(context, result.getMsg());
@@ -45,12 +45,12 @@ public class HomePresenter extends BasePresenter<IHomeView> {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        iView.loginFailed();
+                        iView.lodeFailed();
                     }
 
                     @Override
-                    public void onError(Response<ApiResult<List<MerchantM>>> response) {
-                        iView.loginFailed();
+                    public void onError(Response<ApiResult<List<CatagaryM>>> response) {
+                        iView.lodeFailed();
                         super.onError(response);
                         LogUtils.e("");
                     }

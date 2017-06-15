@@ -63,6 +63,68 @@ public class ADEditOrAddPresenter extends BasePresenter<IADEditOrAddView> {
                 });
 
     }
+    public void editAD(AddressM addressM) {
+        iView.showDialogs();
+        OkGo.<ApiResult<Object>>get(Apis.ModifySHAddress)//
+                .params("SHAddressCode", addressM.getSHAddressCode())
+                .params("UserCode", App.user.getUserCode())
+                .params("Contacts", addressM.getContacts())
+                .params("Phone", addressM.getPhone())
+                .params("Sex", addressM.getSex())
+                .params("PhoneCheck", addressM.isPhoneCheck()?"1":"0")
+                .params("Lng", addressM.getLng())
+                .params("Lat", addressM.getLat())
+                .params("AddressTitle", addressM.getAddressTitle())
+                .params("AddressDescribe", addressM.getAddressDescribe())
+                .params("AddressContent", addressM.getAddressContent())
+                .params("IsDefault", "0")
+                .execute(new JsonCallback<ApiResult<Object>>() {
+                    @Override
+                    public void onSuccess(Response<ApiResult<Object>> response) {
+                        iView.dismissDialogs();
+                        ApiResult<Object> result = response.body();
+                        if (result.isSuccess()) {
+                            iView.editSuccess();
+                        } else {
+                            ToastUtil.showToastShort(context, result.getMsg());
+                        }
+                        LogUtils.e("");
+                    }
 
+                    @Override
+                    public void onError(Response<ApiResult<Object>> response) {
+                        iView.dismissDialogs();
+                        super.onError(response);
+                        LogUtils.e("");
+                    }
+                });
+
+    }
+
+
+    public void deleteAD(String shAddressCode) {
+        OkGo.<ApiResult<Object>>get(Apis.DeleteSHAddress)//
+                .params("SHAddressCode", shAddressCode)
+                .execute(new JsonCallback<ApiResult<Object>>() {
+                    @Override
+                    public void onSuccess(Response<ApiResult<Object>> response) {
+                        ApiResult<Object> result = response.body();
+                        if (result.isSuccess()) {
+                            iView.deleteSuccess();
+                        } else {
+                            ToastUtil.showToastShort(context, result.getMsg());
+                        }
+                        LogUtils.e("");
+                    }
+
+                    @Override
+                    public void onError(Response<ApiResult<Object>> response) {
+                        super.onError(response);
+                        LogUtils.e("");
+                    }
+                });
+
+
+    }
 
 }

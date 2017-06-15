@@ -373,7 +373,15 @@ public class MerchantM implements Serializable {
         this.ManJian = ManJian;
     }
 
-    public static class ManJianBean {
+    public static class ManJianBean implements Serializable{
+
+        public ManJianBean() {
+        }
+
+        public ManJianBean(String manJianName) {
+            ManJianName = manJianName;
+        }
+
         /**
          * ManJianCode : a95a400aa2fe4b34874dd64f7fa3d896
          * SupermarketCode : 00000001
@@ -384,6 +392,8 @@ public class MerchantM implements Serializable {
          * IsDel : 0
          * CreateTime : 2017-06-14T14:36:22
          */
+
+
 
         private String ManJianCode;
         private String SupermarketCode;

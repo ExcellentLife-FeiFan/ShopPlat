@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ytxd.spp.R;
+import com.ytxd.spp.model.GoodM;
 import com.ytxd.spp.util.CommonUtils;
 
 import java.util.List;
@@ -18,10 +19,10 @@ import butterknife.ButterKnife;
  * Created by apple on 2017/4/18.
  */
 
-public class GoodStandLV extends CommonListAdapter<String> {
+public class GoodStandLV extends CommonListAdapter<GoodM> {
     public int positionS = 0;
 
-    public GoodStandLV(List<String> items, Context activity) {
+    public GoodStandLV(List<GoodM> items, Context activity) {
         super(items, activity);
     }
 
@@ -43,7 +44,7 @@ public class GoodStandLV extends CommonListAdapter<String> {
             CommonUtils.setTextColor(viewHolder.tvName, R.color.gray);
             CommonUtils.setBackgroundDrawable(viewHolder.tvName, R.drawable.bg_gray_border_halfcircle);
         }
-        viewHolder.tvName.setText(item);
+        viewHolder.tvName.setText(item.getGoodsTitle());
         return convertView;
     }
 

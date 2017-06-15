@@ -89,7 +89,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/default_ui_margin"
-                                android:text="用户名称"
+                                android:text="@string/null_s"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/sp20" />
 
@@ -102,7 +102,7 @@
                                 android:drawableLeft="@drawable/ic_mine_phone"
                                 android:drawablePadding="@dimen/default_ui_margin_medium_s"
                                 android:gravity="center_vertical"
-                                android:text="1812340876"
+                                android:text="@string/null_s"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/text_size_common_btn" />
 

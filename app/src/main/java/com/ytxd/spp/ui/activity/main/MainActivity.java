@@ -14,6 +14,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.flyco.systembar.SystemBarHelper;
 import com.ytxd.spp.R;
+import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.BaseActivity;
 import com.ytxd.spp.ui.fm.home.HomeFM1;
 import com.ytxd.spp.ui.fm.home.HomeFM3;
@@ -51,6 +52,10 @@ public class MainActivity extends BaseActivity {
             fm3 = new HomeFM3();
             fm4 = new HomeFM4();
             switchFragment(fm1);
+        }
+
+        if(CommonUtils.isLogined2()){
+            App.initDataBase(this);
         }
 
         // Create items

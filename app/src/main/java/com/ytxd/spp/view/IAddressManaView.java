@@ -10,7 +10,9 @@ import java.util.List;
  */
 public interface IAddressManaView extends IBaseView {
 
-    void loginSuccess(List<AddressM> items);
+    void lodeSuccess(List<AddressM> items);
 
-    void loginFailed();
+    void lodeFailed();
+
+    void deleteSuccess();
 }

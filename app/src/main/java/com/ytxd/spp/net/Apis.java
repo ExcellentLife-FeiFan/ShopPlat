@@ -83,6 +83,24 @@ public class Apis {
 
 
     /**
+     * 修改收货地址
+     *
+     * @param SHAddressCode
+     * @param UserCode
+     * @param Contacts
+     * @param Phone
+     * @param PhoneCheck 电话是否验证(1/0)
+     * @param Lng
+     * @param Lat
+     * @param AddressTitle
+     * @param AddressDescribe
+     * @param AddressContent
+     * @param IsDefault  是否默认(1/0)
+     */
+    public static String ModifySHAddress = BASE_URL + "/API_User/ModifySHAddress";
+
+
+    /**
      * 获得用户收货地址列表
      *
      * @param UserCode
@@ -113,4 +131,14 @@ public class Apis {
      * @param CityName
      */
     public static String GetSupermarkeyList = BASE_URL + "/API_User/GetSupermarkeyList";
+
+
+    /**
+     * 获取超市列表
+     *
+     * @param SupermarketCode 超市编号
+     */
+    public static String GetGoodsBySupermarket = BASE_URL + "/API_User/GetGoodsBySupermarket";
+
+
 }
