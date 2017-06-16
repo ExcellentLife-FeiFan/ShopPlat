@@ -52,7 +52,7 @@
                         android:id="@+id/tv_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="肯德基宅急送"
+                        android:text="@string/null_s"
                         android:visibility="invisible"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_little_small"
@@ -75,7 +75,7 @@
                         android:isIndicator="true"
                         android:maxHeight="14dp"
                         android:minHeight="14dp"
-                        android:rating="2.5"
+                        android:rating="0.0"
                         app:mrb_progressBackgroundTint="@color/gray"
                         app:mrb_progressTint="@color/yellow"
                         app:mrb_secondaryProgressTint="@color/gray" />
@@ -85,7 +85,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/default_ui_margin_small"
-                        android:text="4.8"
+                        android:text="0.0"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/text_size_micro" />
 
@@ -101,7 +101,7 @@
                         android:id="@+id/tv_month_sales"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="214"
+                        android:text="0"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_micro" />
 
@@ -125,7 +125,7 @@
                         android:id="@+id/tv_qisong_p"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="¥0起送"
+                        android:text="¥0.0起送"
                         android:textColor="@color/white"
                         android:textSize="@dimen/item_merchant_tv2_size" />
 
@@ -140,7 +140,7 @@
                         android:id="@+id/tv_distri_p"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="配送费¥9"
+                        android:text="配送费¥0.0"
                         android:textColor="@color/white"
                         android:textSize="@dimen/item_merchant_tv2_size" />
 
@@ -155,7 +155,7 @@
                         android:id="@+id/tv_per_peo_p"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="¥48/人"
+                        android:text="¥0.0/人"
                         android:textColor="@color/white"
                         android:textSize="@dimen/item_merchant_tv2_size" />
 
@@ -189,6 +189,7 @@
             android:orientation="horizontal">
 
             <com.ytxd.spp.ui.views.MyExpandableLayout
+                android:id="@+id/expand"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
@@ -202,9 +203,10 @@
                 android:gravity="right">
 
                 <TextView
+                    android:id="@+id/tv_acti_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5个活动"
+                    android:text="0个活动"
                     android:textColor="@color/white"
                     android:textSize="@dimen/item_merchant_tv2_size" />
 

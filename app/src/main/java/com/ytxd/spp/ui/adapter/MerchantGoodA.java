@@ -12,15 +12,17 @@ import android.widget.TextView;
 import com.mcxtzhang.lib.AnimShopButton;
 import com.mcxtzhang.lib.IOnAddDelListener;
 import com.ytxd.spp.R;
-import com.ytxd.spp.event.MerchantGoodAddEvent;
-import com.ytxd.spp.event.MerchantGoodMinusEvent;
+import com.ytxd.spp.event.GoodAddEvent;
+import com.ytxd.spp.event.GoodMinusEvent;
 import com.ytxd.spp.event.MerchantSelectGoodStandEvent;
 import com.ytxd.spp.model.CatagaryM;
 import com.ytxd.spp.model.GoodM;
+import com.ytxd.spp.model.MerchantM;
 import com.ytxd.spp.ui.activity.main.GoodDetailActivity;
 import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.ImageLoadUtil;
 import com.ytxd.spp.util.LogUtils;
+import com.ytxd.spp.util.ShoppingCartUtil;
 
 import org.zakariya.stickyheaders.SectioningAdapter;
 
@@ -36,17 +38,19 @@ import de.greenrobot.event.EventBus;
 public class MerchantGoodA extends SectioningAdapter {
 
     private Context mContext;
+    private MerchantM merchantM;
 
     ArrayList<CatagaryM> items = new ArrayList<>();
 
-    public MerchantGoodA(Context context) {
+    public MerchantGoodA(Context context, MerchantM merchantM) {
         mContext = context;
+        this.merchantM = merchantM;
     }
 
     public class ItemViewHolder extends SectioningAdapter.ItemViewHolder {
         public View rootView;
-        public ImageView ivPlus,iv;
-        public TextView tvOriginP, tvNowP, tv_name,tv_select_stand;
+        public ImageView ivPlus, iv;
+        public TextView tvOriginP, tvNowP, tv_name, tv_select_stand;
         public AnimShopButton btnAdd;
         public RelativeLayout rl_add_btn;
 
@@ -60,7 +64,7 @@ public class MerchantGoodA extends SectioningAdapter {
             this.ivPlus = (ImageView) rootView.findViewById(R.id.iv_plus);
             this.iv = (ImageView) rootView.findViewById(R.id.iv);
             this.rl_add_btn = (RelativeLayout) rootView.findViewById(R.id.rl_add_btn);
-            this.tv_select_stand= (TextView) rootView.findViewById(R.id.tv_select_stand);
+            this.tv_select_stand = (TextView) rootView.findViewById(R.id.tv_select_stand);
         }
     }
 
@@ -118,26 +122,29 @@ public class MerchantGoodA extends SectioningAdapter {
             @Override
             public void onClick(View v) {
                 Intent itent = new Intent(mContext, GoodDetailActivity.class);
-                itent.putExtra("data",items.get(sectionIndex).getChildren().get(itemIndex));
+                itent.putExtra("data", items.get(sectionIndex).getChildren().get(itemIndex));
+                itent.putExtra("merchantCode", merchantM.getSupermarketCode());
+                itent.putExtra("merchant", merchantM);
                 mContext.startActivity(itent);
             }
         });
         CommonUtils.setText(holder.tv_name, good.getGoodsTitle());
         CommonUtils.setText(holder.tvOriginP, good.getYPrice());
         CommonUtils.setText(holder.tvNowP, good.getXPrice());
-        ImageLoadUtil.setImageNP(good.getLogoPaths(),holder.iv,mContext);
-        if(null!=good.getGoods()&&good.getGoods().size()>0){
+        ImageLoadUtil.setImageNP(good.getLogoPaths(), holder.iv, mContext);
+        if (null != good.getGoods() && good.getGoods().size() > 0) {
             holder.rl_add_btn.setVisibility(View.GONE);
             holder.tv_select_stand.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             holder.rl_add_btn.setVisibility(View.VISIBLE);
             holder.tv_select_stand.setVisibility(View.GONE);
         }
-
+        holder.btnAdd.setCount(ShoppingCartUtil.getLocalCartGoodCount(good.getGoodsCode(), merchantM.getSupermarketCode()));
+        holder.btnAdd.invalidate();
         holder.btnAdd.setOnAddDelListener(new IOnAddDelListener() {
             @Override
             public void onAddSuccess(int i) {
-                EventBus.getDefault().post(new MerchantGoodAddEvent(holder.ivPlus,items.get(sectionIndex).getChildren().get(itemIndex)));
+                EventBus.getDefault().post(new GoodAddEvent(holder.ivPlus, items.get(sectionIndex).getChildren().get(itemIndex),1));
             }
 
             @Override
@@ -147,7 +154,7 @@ public class MerchantGoodA extends SectioningAdapter {
 
             @Override
             public void onDelSuccess(int i) {
-                EventBus.getDefault().post(new MerchantGoodMinusEvent(items.get(sectionIndex).getChildren().get(itemIndex)));
+                EventBus.getDefault().post(new GoodMinusEvent(items.get(sectionIndex).getChildren().get(itemIndex),1));
             }
 
             @Override

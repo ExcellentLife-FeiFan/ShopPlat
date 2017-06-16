@@ -8,17 +8,20 @@ import com.ytxd.spp.model.GoodM;
  * Created by XY on 2016/11/2.
  */
 
-public class MerchantGoodAddEvent {
+public class GoodAddEvent {
     public View view;
     public GoodM goodM;
+    public int type;
 
-    public MerchantGoodAddEvent(GoodM goodM) {
+
+    public GoodAddEvent(GoodM goodM,int type) {
         this.goodM = goodM;
+        this.type=type;
     }
-
-    public MerchantGoodAddEvent(View view, GoodM goodM) {
+    public GoodAddEvent(View view, GoodM goodM,int type) {
         this.view = view;
         this.goodM = goodM;
+        this.type=type;
     }
 
     public View getView() {

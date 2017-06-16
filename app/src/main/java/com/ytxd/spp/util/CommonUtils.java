@@ -75,19 +75,33 @@ public class CommonUtils {
         listView.setEmptyView(emptyView);
     }
 
-    public static void setEmptyViewForFragment(Activity context, ViewGroup rootView, AbsListView listView) {
+    public static void setEmptyViewForFragment(Context context, ViewGroup rootView, AbsListView listView) {
         View emptyView = LayoutInflater.from(context).inflate(R.layout.common_empty_view, null);
         emptyView.setVisibility(View.GONE);
         rootView.addView(emptyView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         listView.setEmptyView(emptyView);
     }
 
-    public static void setEmptyViewForSLV(Activity context, ViewGroup rootView, AbsListView listView) {
+    public static void setEmptyViewForSLV(Context context, ViewGroup rootView, AbsListView listView) {
         View emptyView = LayoutInflater.from(context).inflate(R.layout.layout_lv_common_empty, null);
         emptyView.setVisibility(View.GONE);
         rootView.addView(emptyView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         listView.setEmptyView(emptyView);
     }
+    public static void setEmptyViewForSLV(View empty, AbsListView listView) {
+        empty.setVisibility(View.GONE);
+        listView.setEmptyView(empty);
+    }
+    public static void setEmptyViewForSLV(Context context,String txt, ViewGroup rootView, AbsListView listView) {
+        View emptyView = LayoutInflater.from(context).inflate(R.layout.layout_lv_common_empty, null);
+        ((TextView)emptyView.findViewById(R.id.tv_empty)).setText(txt);
+        emptyView.setVisibility(View.GONE);
+        rootView.addView(emptyView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        listView.setEmptyView(emptyView);
+    }
+
+
+
 
     public static void setEmptyView(View emptyView, AbsListView listView) {
         emptyView.setVisibility(View.GONE);
@@ -288,4 +302,5 @@ public class CommonUtils {
         }
         return items;
     }
+
 }

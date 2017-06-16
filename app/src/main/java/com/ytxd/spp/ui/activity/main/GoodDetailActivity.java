@@ -4,7 +4,10 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -12,19 +15,31 @@ import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.flyco.systembar.SystemBarHelper;
+import com.litesuits.orm.db.assit.QueryBuilder;
 import com.mcxtzhang.lib.AnimShopButton;
+import com.mcxtzhang.lib.IOnAddDelListener;
 import com.ytxd.spp.R;
+import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.BaseActivity;
+import com.ytxd.spp.event.CartListClearRefreshEvent;
+import com.ytxd.spp.event.GoodAddEvent;
+import com.ytxd.spp.event.GoodMinusEvent;
 import com.ytxd.spp.model.GoodM;
+import com.ytxd.spp.model.LocalShoppingCartM;
+import com.ytxd.spp.model.MerchantM;
 import com.ytxd.spp.ui.adapter.GoodCommentLV;
 import com.ytxd.spp.ui.views.InListView;
-import com.ytxd.spp.ui.views.pop.SelectGoodStandDialog;
+import com.ytxd.spp.ui.views.pop.MerchantCartListDialog;
 import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.ImageLoadUtil;
+import com.ytxd.spp.util.ShoppingCartUtil;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 import static com.ytxd.spp.R.id.rl_add_btn;
 
@@ -71,15 +86,20 @@ public class GoodDetailActivity extends BaseActivity {
     NestedScrollView scrollView;
     @BindView(R.id.toolbar_layout)
     CollapsingToolbarLayout toolbarLayout;
-    GoodM goodM;
 
-
-    @BindView(R.id.shopping_cart_total_tv)
-    TextView shoppingCartTotalTv;
     @BindView(R.id.shopping_cart)
     ImageView shoppingCart;
-    @BindView(R.id.shopping_cart_total_num)
-    TextView shoppingCartTotalNum;
+    @BindView(R.id.mainlayout)
+    RelativeLayout mainlayout;
+    @BindView(R.id.tv_total_p)
+    TextView tvShoppingCartTotalTv;
+    @BindView(R.id.tv_total_c)
+    TextView tvShoppingCartTotalNum;
+
+    String merchantCode;
+    GoodM goodM;
+    private MerchantM merchantM;
+    private MerchantCartListDialog cartListDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,10 +107,12 @@ public class GoodDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_good_detail);
         ButterKnife.bind(this);
         goodM = (GoodM) getIntent().getSerializableExtra("data");
+        merchantCode = getIntent().getStringExtra("merchantCode");
+        merchantM= (MerchantM) getIntent().getSerializableExtra("merchant");
         CommonUtils.setText(tvGoodName, goodM.getGoodsTitle());
         CommonUtils.setText(tvMonthSales, goodM.getSaleNumber() + "");
         ImageLoadUtil.setImageNP(goodM.getLogoPaths(), ivGood, this);
-
+        refreshCartLayoutData();
         if (null != goodM.getGoods() && goodM.getGoods().size() > 0) {
             ll_no_stand.setVisibility(View.GONE);
             ll_have_stand.setVisibility(View.VISIBLE);
@@ -115,9 +137,137 @@ public class GoodDetailActivity extends BaseActivity {
         });
         SystemBarHelper.immersiveStatusBar(this, 0.4f);
         SystemBarHelper.setHeightAndPadding(this, toolbar);
-
         mAdapter = new GoodCommentLV(CommonUtils.getSampleList(4), this);
         lvComment.setAdapter(mAdapter);
+        btnAdd.setCount(ShoppingCartUtil.getLocalCartGoodCount(goodM.getGoodsCode(), merchantCode));
+        btnAdd.setOnAddDelListener(new IOnAddDelListener() {
+            @Override
+            public void onAddSuccess(int i) {
+                EventBus.getDefault().post(new GoodAddEvent(ivPlus, goodM,2));
+            }
+
+            @Override
+            public void onAddFailed(int i, FailType failType) {
+
+            }
+
+            @Override
+            public void onDelSuccess(int i) {
+                EventBus.getDefault().post(new GoodMinusEvent(goodM,2));
+            }
+
+            @Override
+            public void onDelFaild(int i, FailType failType) {
+
+            }
+        });
+    }
+
+    private void showCart() {
+        if (null == cartListDialog) {
+            cartListDialog = new MerchantCartListDialog(this, merchantCode,2);
+        }
+        Window window = cartListDialog.getWindow();
+        cartListDialog.setCanceledOnTouchOutside(true);
+        cartListDialog.setCancelable(true);
+        cartListDialog.show();
+        WindowManager.LayoutParams params = window.getAttributes();
+        params.width = WindowManager.LayoutParams.MATCH_PARENT;
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        params.gravity = Gravity.BOTTOM;
+        params.dimAmount = 0.3f;
+        window.setAttributes(params);
+    }
+
+    private void refreshCartLayoutData() {
+        QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
+                .whereEquals(LocalShoppingCartM.CARTCODE, merchantCode);
+        List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+        if (beans.size() > 0) {
+            LocalShoppingCartM shoppingCartM = beans.get(0);
+            String n = shoppingCartM.getShoppingCartM().getGoodsCounts() + "";
+            String p = "共计¥" + shoppingCartM.getShoppingCartM().getPirceTotal();
+            tvShoppingCartTotalNum.setText(n);
+            tvShoppingCartTotalTv.setText(p);
+            if (null != cartListDialog) {
+                cartListDialog.setData();
+            }
+        }
+        btnAdd.setCount(ShoppingCartUtil.getLocalCartGoodCount(goodM.getGoodsCode(), merchantCode));
+        btnAdd.invalidate();
+    }
+
+    public void onEvent(GoodAddEvent event) {
+        if (null != event.getView()) {
+            ShoppingCartUtil.addGoodAnimation(this, event.getView(), shoppingCart, toolbar, mainlayout);
+        }
+        if(event.type==2){
+            if (ShoppingCartUtil.goodAddEvent(this, merchantM, event.getGoodM())) {
+                refreshCartLayoutData();
+            }
+        }else{
+            refreshCartLayoutData();
+        }
+
+    }
+
+    public void onEvent(GoodMinusEvent event) {
+        if(event.type==2){
+            if (ShoppingCartUtil.goodMinusEvent(this, merchantCode, event.getGoodM())) {
+                refreshCartLayoutData();
+            }
+        }else{
+            refreshCartLayoutData();
+        }
+
+    }
+
+    public void onEvent(CartListClearRefreshEvent event) {
+        refreshCartLayoutData();
+    }
+
+
+    @OnClick({R.id.tv_select_stand, R.id.ll_comment_more, R.id.tv_num_comment, R.id.shopping_cart_layout})
+    public void onViewClicked2(View view) {
+        switch (view.getId()) {
+            case R.id.tv_select_stand:
+                if (null != goodM) {
+                    ShoppingCartUtil.showGoodStandDialog(2,merchantCode, goodM, getFragmentManager());
+                }
+                break;
+            case R.id.ll_comment_more:
+            case R.id.tv_num_comment:
+                startActivity(GoodCommentsActivity.class);
+                break;
+            case R.id.shopping_cart_layout:
+                showCart();
+                break;
+        }
+    }
+
+    @OnClick(R.id.btn_ok)
+    public void onViewClicked() {
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*        //自定义你的Holder，实现更多复杂的界面，不一定是图片翻页，其他任何控件翻页亦可。
         convenientBanner.setPages(
@@ -135,31 +285,6 @@ public class GoodDetailActivity extends BaseActivity {
         //设置翻页的效果，不需要翻页效果可用不设
         //.setPageTransformer(Transformer.DefaultTransformer);    集成特效之后会有白屏现象，新版已经分离，如果要集成特效的例子可以看Demo的点击响应。
 //        convenientBanner.setManualPageable(false);//设置不能手动影响*/
-    }
-
-    @OnClick({R.id.tv_select_stand, R.id.ll_comment_more, R.id.tv_num_comment})
-    public void onViewClicked2(View view) {
-        switch (view.getId()) {
-            case R.id.tv_select_stand:
-                if (null != goodM) {
-                    SelectGoodStandDialog standDialog = new SelectGoodStandDialog();
-                    Bundle data = new Bundle();
-                    data.putSerializable("data", goodM);
-                    standDialog.setArguments(data);
-                    standDialog.show(getFragmentManager(), "SelectGoodStandDialog");
-                }
-                break;
-            case R.id.ll_comment_more:
-            case R.id.tv_num_comment:
-                startActivity(GoodCommentsActivity.class);
-                break;
-        }
-    }
-
-    @OnClick(R.id.btn_ok)
-    public void onViewClicked() {
-    }
-
 /*
     public class LocalImageHolderView implements Holder<String> {
 

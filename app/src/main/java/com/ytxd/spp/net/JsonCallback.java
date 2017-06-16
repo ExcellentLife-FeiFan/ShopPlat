@@ -66,7 +66,8 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
         }
         try {
             String data = null;
-            data = response.body().string();
+            data = response.body
+                    ().string();
             LogUtils.e(data);
             Gson gson = new GsonBuilder()
                     .setDateFormat("yyyy-MM-dd HH:mm:ss")

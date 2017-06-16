@@ -1,9 +1,5 @@
 package com.ytxd.spp.ui.activity.main;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,9 +10,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -31,28 +27,25 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.BaseActivity;
+import com.ytxd.spp.event.CartListClearRefreshEvent;
 import com.ytxd.spp.event.CartListDialogShowEvent;
-import com.ytxd.spp.event.MerchantGoodAddEvent;
-import com.ytxd.spp.event.MerchantGoodMinusEvent;
+import com.ytxd.spp.event.GoodAddEvent;
+import com.ytxd.spp.event.GoodMinusEvent;
 import com.ytxd.spp.event.MerchantSelectGoodStandEvent;
 import com.ytxd.spp.model.CatagaryM;
 import com.ytxd.spp.model.LocalShoppingCartM;
 import com.ytxd.spp.model.MerchantM;
-import com.ytxd.spp.model.ShoppingCartM;
 import com.ytxd.spp.presenter.MerchantPresenter;
 import com.ytxd.spp.ui.activity.order.EnsureOrderActivity;
 import com.ytxd.spp.ui.activity.order.ShoppingCartActivity;
 import com.ytxd.spp.ui.adapter.MerchantCategoryA;
 import com.ytxd.spp.ui.adapter.MerchantGoodA;
-import com.ytxd.spp.ui.views.FakeAddImageView;
+import com.ytxd.spp.ui.views.MyExpandableLayout;
 import com.ytxd.spp.ui.views.SimpleDividerDecoration;
 import com.ytxd.spp.ui.views.pop.MerchantCartListDialog;
-import com.ytxd.spp.ui.views.pop.SelectGoodStandDialog;
 import com.ytxd.spp.util.AbStrUtil;
-import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.ImageLoadUtil;
-import com.ytxd.spp.util.LogUtils;
-import com.ytxd.spp.util.PointFTypeEvaluator;
+import com.ytxd.spp.util.ShoppingCartUtil;
 import com.ytxd.spp.view.IMerchantView;
 
 import org.zakariya.stickyheaders.StickyHeaderLayoutManager;
@@ -73,10 +66,6 @@ public class MerchantDetailActivity extends BaseActivity<MerchantPresenter> impl
     RecyclerView rvCategory;
     @BindView(R.id.rv_good)
     RecyclerView rvGood;
-    MerchantGoodA goodA;
-    MerchantCategoryA categoryA;
-    StickyHeaderLayoutManager goodLM;
-    LinearLayoutManager categoryLM;
     @BindView(R.id.shopping_cart)
     ImageView shoppingCart;
     @BindView(R.id.main_layout)
@@ -86,23 +75,40 @@ public class MerchantDetailActivity extends BaseActivity<MerchantPresenter> impl
     @BindView(R.id.rl_cart)
     RelativeLayout rl_cart;
     MerchantCartListDialog cartListDialog;
-
-
     /*    @BindView(R.id.rl_cart_list)
         RelativeLayout rlCartList;*/
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    MerchantM merchantM;
     @BindView(R.id.collapsingToolbarLayout)
     CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.icon)
     RoundedImageView icon;
 
-    @BindView(R.id.shopping_cart_total_tv)
-    TextView tvShoppingCartTotalTv;
-    @BindView(R.id.shopping_cart_total_num)
-    TextView tvShoppingCartTotalNum;
+    @BindView(R.id.tv_total_p)
+    TextView tvTotalP;
+    @BindView(R.id.tv_total_c)
+    TextView tvTotalNum;
+    String merchantCode;
+    @BindView(R.id.tv_rb_score)
+    TextView tvRbScore;
+    @BindView(R.id.tv_month_sales)
+    TextView tvMonthSales;
+    @BindView(R.id.tv_qisong_p)
+    TextView tvQisongP;
+    @BindView(R.id.tv_distri_p)
+    TextView tvDistriP;
+    @BindView(R.id.tv_per_peo_p)
+    TextView tvPerPeoP;
+    @BindView(R.id.expand)
+    MyExpandableLayout expand;
+    @BindView(R.id.tv_acti_num)
+    TextView tvActiNum;
 
+    MerchantGoodA goodA;
+    MerchantCategoryA categoryA;
+    StickyHeaderLayoutManager goodLM;
+    LinearLayoutManager categoryLM;
+    MerchantM merchantM;
 
     @Override
     protected void initPresenter() {
@@ -116,6 +122,7 @@ public class MerchantDetailActivity extends BaseActivity<MerchantPresenter> impl
         setContentView(R.layout.activity_merchant_detail);
         ButterKnife.bind(this);
         merchantM = (MerchantM) getIntent().getSerializableExtra("data");
+        merchantCode = merchantM.getSupermarketCode();
         initViews();
         if (null != merchantM) {
             presenter.getGoodList(merchantM.getSupermarketCode());
@@ -130,9 +137,10 @@ public class MerchantDetailActivity extends BaseActivity<MerchantPresenter> impl
         } else if (!AbStrUtil.isEmpty(merchantM.getLogoUrl())) {
             ImageLoadUtil.setImageNP(merchantM.getLogoUrl(), ivBg, this);
         }
-        refreshCartLayoutData();
-
-        toolbar.setTitle("肯德基宅急送");
+        setActiviesData();
+        tvQisongP.setText("¥" + merchantM.getQSPrice() + "起送");
+        tvDistriP.setText("配送费¥" + merchantM.getQSPrice());
+        toolbar.setTitle(merchantM.getName());
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,7 +153,7 @@ public class MerchantDetailActivity extends BaseActivity<MerchantPresenter> impl
         SystemBarHelper.setHeightAndPadding(this, toolbar);
 
 
-        goodA = new MerchantGoodA(this);
+        goodA = new MerchantGoodA(this, merchantM);
         goodLM = new StickyHeaderLayoutManager();
         rvGood.setLayoutManager(goodLM);
         rvGood.addItemDecoration(new SimpleDividerDecoration(this, R.color.line_gray));
@@ -185,6 +193,36 @@ public class MerchantDetailActivity extends BaseActivity<MerchantPresenter> impl
 
     }
 
+    private void setActiviesData() {
+        List<MerchantM.ManJianBean> actis = merchantM.getManJian();
+        tvActiNum.setText(actis.size() + "个活动");
+        if (actis.size() > 0 && actis.size() <= 2) {
+            for (int i = 0; i < actis.size(); i++) {
+                TextView tvActi = (TextView) getLayoutInflater().inflate(R.layout.item_merchant_activity2, null);
+                tvActi.setText(actis.get(i).getManJianName());
+                ViewGroup header = (ViewGroup) expand.getHeaderRelativeLayout().findViewById(R.id.ll_ex_header);
+                header.addView(tvActi);
+            }
+
+        } else if (actis.size() > 2) {
+            List<MerchantM.ManJianBean> one = actis.subList(0, 2);
+            List<MerchantM.ManJianBean> two = actis.subList(2, actis.size());
+            for (int i = 0; i < one.size(); i++) {
+                TextView tvActi = (TextView) getLayoutInflater().inflate(R.layout.item_merchant_activity2, null);
+                tvActi.setText(one.get(i).getManJianName());
+                ViewGroup header = (ViewGroup) expand.getHeaderRelativeLayout().findViewById(R.id.ll_ex_header);
+                header.addView(tvActi);
+            }
+
+            for (int i = 0; i < two.size(); i++) {
+                TextView tvActi = (TextView) getLayoutInflater().inflate(R.layout.item_merchant_activity2, null);
+                tvActi.setText(two.get(i).getManJianName());
+                ViewGroup content = (ViewGroup) expand.getContentRelativeLayout().findViewById(R.id.ll_ex_content);
+                content.addView(tvActi);
+            }
+        }
+    }
+
     private void setSectionAdapterPosition(List<CatagaryM> categories) {
         int count = 0;
         for (int i = 0; i < categories.size(); i++) {
@@ -196,47 +234,28 @@ public class MerchantDetailActivity extends BaseActivity<MerchantPresenter> impl
     }
 
 
-    public void onEvent(MerchantGoodAddEvent event) {
+    public void onEvent(GoodAddEvent event) {
         if (null != event.getView()) {
-            addGoodAnimation(event.getView());
+            ShoppingCartUtil.addGoodAnimation(this, event.getView(), shoppingCart, toolbar, mainLayout);
         }
-        if (CommonUtils.isDBInit(this)) {
-            QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
-                    .whereEquals(LocalShoppingCartM.CARTCODE, merchantM.getSupermarketCode());
-            List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
-            if (beans.size() > 0) {
-                LocalShoppingCartM shoppingCartM= beans.get(0);
-                shoppingCartM.getShoppingCartM().addGood(event.getGoodM());
-                int ch=App.liteOrm.update(shoppingCartM);
-                LogUtils.e(ch+"");
-            } else {
-                ShoppingCartM shoppingCartM = new ShoppingCartM();
-                shoppingCartM.setMerchantM(merchantM);
-                shoppingCartM.addGood(event.getGoodM());
-                LocalShoppingCartM localShoppingCartM = new LocalShoppingCartM(merchantM.getSupermarketCode(), shoppingCartM);
-                long cc=App.liteOrm.save(localShoppingCartM);
-                LogUtils.e(cc+"");
+        if (event.type == 1) {
+            if (ShoppingCartUtil.goodAddEvent(this, merchantM, event.getGoodM())) {
+                refreshCartLayoutData();
             }
+        } else {
             refreshCartLayoutData();
-
         }
 
     }
 
-    public void onEvent(MerchantGoodMinusEvent event) {
-        if (CommonUtils.isDBInit(this)) {
-            QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
-                    .whereEquals(LocalShoppingCartM.CARTCODE, merchantM.getSupermarketCode());
-            List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
-            if (beans.size() > 0) {
-                LocalShoppingCartM shoppingCartM= beans.get(0);
-                shoppingCartM.getShoppingCartM().removeGood(event.getGoodM());
-                int ch=App.liteOrm.update(shoppingCartM);
-                LogUtils.e(ch+"");
+    public void onEvent(GoodMinusEvent event) {
+        if (event.type == 1) {
+            if (ShoppingCartUtil.goodMinusEvent(this, merchantM.getSupermarketCode(), event.getGoodM())) {
                 refreshCartLayoutData();
             }
+        } else {
+            refreshCartLayoutData();
         }
-
     }
 
     private void refreshCartLayoutData() {
@@ -246,77 +265,20 @@ public class MerchantDetailActivity extends BaseActivity<MerchantPresenter> impl
         if (beans.size() > 0) {
             LocalShoppingCartM shoppingCartM = beans.get(0);
             String n = shoppingCartM.getShoppingCartM().getGoodsCounts() + "";
-            String p = "共计¥"+shoppingCartM.getShoppingCartM().getPirceTotal();
-            tvShoppingCartTotalNum.setText(n);
-            tvShoppingCartTotalTv.setText(p);
-            if(null!=cartListDialog){
+            String p = "共计¥" + shoppingCartM.getShoppingCartM().getPirceTotal();
+            tvTotalNum.setText(n);
+            tvTotalP.setText(p);
+            if (null != cartListDialog) {
                 cartListDialog.setData();
             }
         }
+        if (null != goodA) {
+            goodA.notifyDataSetChanged();
+        }
+
 
     }
 
-
-    private void addGoodAnimation(View view) {
-        int[] addLocation = new int[2];
-        int[] cartLocation = new int[2];
-        int[] recycleLocation = new int[2];
-        view.getLocationInWindow(addLocation);
-        shoppingCart.getLocationInWindow(cartLocation);
-        toolbar.getLocationInWindow(recycleLocation);
-
-        PointF startP = new PointF();
-        PointF endP = new PointF();
-        PointF controlP = new PointF();
-
-        startP.x = addLocation[0];
-        startP.y = addLocation[1] - recycleLocation[1] + 90
-        ;
-        endP.x = cartLocation[0];
-        endP.y = cartLocation[1] - recycleLocation[1];
-        controlP.x = endP.x;
-        controlP.y = startP.y;
-
-        final FakeAddImageView fakeAddImageView = new FakeAddImageView(this);
-        mainLayout.addView(fakeAddImageView);
-        fakeAddImageView.setImageResource(R.drawable.ic_good_plus);
-        fakeAddImageView.getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.dp24);
-        fakeAddImageView.getLayoutParams().height = getResources().getDimensionPixelSize(R.dimen.dp24);
-        fakeAddImageView.setVisibility(View.VISIBLE);
-        ObjectAnimator addAnimator = ObjectAnimator.ofObject(fakeAddImageView, "mPointF",
-                new PointFTypeEvaluator(controlP), startP, endP);
-        addAnimator.setInterpolator(new AccelerateInterpolator());
-        addAnimator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-                fakeAddImageView.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                fakeAddImageView.setVisibility(View.GONE);
-                mainLayout.removeView(fakeAddImageView);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-
-            }
-        });
-        ObjectAnimator scaleAnimatorX = new ObjectAnimator().ofFloat(shoppingCart, "scaleX", 0.6f, 1.0f);
-        ObjectAnimator scaleAnimatorY = new ObjectAnimator().ofFloat(shoppingCart, "scaleY", 0.6f, 1.0f);
-        scaleAnimatorX.setInterpolator(new AccelerateInterpolator());
-        scaleAnimatorY.setInterpolator(new AccelerateInterpolator());
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(scaleAnimatorX).with(scaleAnimatorY).after(addAnimator);
-        animatorSet.setDuration(800);
-        animatorSet.start();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -344,7 +306,9 @@ public class MerchantDetailActivity extends BaseActivity<MerchantPresenter> impl
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_ok:
-                startActivity(EnsureOrderActivity.class);
+                if(!tvTotalNum.getText().toString().equals("0")){
+                    startActivity(EnsureOrderActivity.class,"merchantCode",merchantCode);
+                }
                 break;
             case R.id.shopping_cart_layout:
                 showCart();
@@ -354,7 +318,7 @@ public class MerchantDetailActivity extends BaseActivity<MerchantPresenter> impl
 
     private void showCart() {
         if (null == cartListDialog) {
-            cartListDialog = new MerchantCartListDialog(this,merchantM.getSupermarketCode());
+            cartListDialog = new MerchantCartListDialog(this, merchantCode, 1);
         }
         Window window = cartListDialog.getWindow();
         cartListDialog.setCanceledOnTouchOutside(true);
@@ -375,6 +339,11 @@ public class MerchantDetailActivity extends BaseActivity<MerchantPresenter> impl
             rl_cart.setVisibility(View.VISIBLE);
         }
 
+    }
+
+    public void onEvent(CartListClearRefreshEvent event) {
+        refreshCartLayoutData();
+        goodA.notifyDataSetChanged();
     }
 
     @Override
@@ -403,11 +372,15 @@ public class MerchantDetailActivity extends BaseActivity<MerchantPresenter> impl
     }
 
     public void onEvent(MerchantSelectGoodStandEvent event) {
-        SelectGoodStandDialog standDialog = new SelectGoodStandDialog();
-        Bundle data = new Bundle();
-        data.putSerializable("data", event.goodM);
-        standDialog.setArguments(data);
-        standDialog.show(getFragmentManager(), "SelectGoodStandDialog");
+        ShoppingCartUtil.showGoodStandDialog(1, merchantCode, event.goodM, getFragmentManager());
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        refreshCartLayoutData();
+        if (null != goodA) {
+            goodA.notifyDataSetChanged();
+        }
     }
 }

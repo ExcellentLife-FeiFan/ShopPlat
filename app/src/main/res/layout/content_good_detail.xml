@@ -216,14 +216,14 @@
                         android:layout_height="wrap_content"
                         android:text="商品评价"
                         android:textColor="@color/black_overlay"
-                        android:textSize="@dimen/text_size_medium" />
+                        android:textSize="@dimen/text_size_common_btn" />
 
                     <TextView
                         android:id="@+id/tv_good_comment_persent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/default_ui_margin"
-                        android:text="（好评率96%）"
+                        android:layout_marginLeft="@dimen/default_ui_margin_medium_small"
+                        android:text="(好评率96%)"
                         android:textColor="@color/black_overlay"
                         android:textSize="@dimen/text_size_small" />
 
@@ -235,7 +235,7 @@
                     style="@style/TV_VG_RGIHT_TO_graycolor"
                     android:drawablePadding="@dimen/default_ui_margin_small"
                     android:text="40余条评论"
-                    android:textSize="@dimen/text_size_small" />
+                    android:textSize="@dimen/text_size_common_s" />
 
 
             </RelativeLayout>
@@ -270,7 +270,7 @@
                         android:drawableRight="@drawable/ic_gray_right"
                         android:text="全部评论"
                         android:textColor="@color/gray"
-                        android:textSize="@dimen/text_size_common_btn" />
+                        android:textSize="@dimen/text_size_common" />
 
                 </RelativeLayout>
 

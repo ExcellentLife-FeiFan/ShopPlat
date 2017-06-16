@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ytxd.spp.R;
+import com.ytxd.spp.model.ShoppingCartM;
+import com.ytxd.spp.util.CommonUtils;
 
 import java.util.List;
 
@@ -17,8 +19,8 @@ import butterknife.ButterKnife;
  * Created by apple on 2017/4/18.
  */
 
-public class OrderSubGoodsLV extends CommonListAdapter<String> {
-    public OrderSubGoodsLV(List<String> items, Activity activity) {
+public class OrderSubGoodsLV extends CommonListAdapter<ShoppingCartM.Goods> {
+    public OrderSubGoodsLV(List<ShoppingCartM.Goods> items, Activity activity) {
         super(items, activity);
     }
 
@@ -33,7 +35,10 @@ public class OrderSubGoodsLV extends CommonListAdapter<String> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
+        CommonUtils.setText(viewHolder.tvName, item.getGoodM().getGoodsTitle());
+        CommonUtils.setText(viewHolder.tvNum, "x" + item.getCount());
+        CommonUtils.setText(viewHolder.tvOriginP, "¥ " + item.getGoodM().getYPrice());
+        CommonUtils.setText(viewHolder.tvCurrentP, "¥" + item.getGoodM().getXPrice());
         return convertView;
     }
 

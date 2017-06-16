@@ -7,10 +7,12 @@ import android.widget.LinearLayout;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
+import com.ytxd.spp.model.ShoppingCartM;
 import com.ytxd.spp.ui.activity.main.MerchantDetailActivity;
 import com.ytxd.spp.ui.adapter.OrderSubGoodsLV;
 import com.ytxd.spp.ui.views.InListView;
-import com.ytxd.spp.util.CommonUtils;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,7 +32,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_order_detail);
         ButterKnife.bind(this);
         getBar().initActionBar("订单详情", this);
-        mAdapter = new OrderSubGoodsLV(CommonUtils.getSampleList(7), this);
+        mAdapter = new OrderSubGoodsLV(new ArrayList<ShoppingCartM.Goods>(), this);
         lvSubGoods.setAdapter(mAdapter);
     }
 

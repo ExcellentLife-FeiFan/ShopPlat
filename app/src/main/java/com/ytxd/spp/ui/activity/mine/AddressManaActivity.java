@@ -3,6 +3,7 @@ package com.ytxd.spp.ui.activity.mine;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.kennyc.view.MultiStateView;
@@ -10,10 +11,12 @@ import com.ytxd.spp.R;
 import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
 import com.ytxd.spp.event.RefreshADEvent;
+import com.ytxd.spp.event.SelectAddressEvent;
 import com.ytxd.spp.model.AddressM;
 import com.ytxd.spp.presenter.AddressManaPresenter;
 import com.ytxd.spp.ui.activity.mine.account.AddOrEditAddressActivity;
 import com.ytxd.spp.ui.adapter.AddressManaLV;
+import com.ytxd.spp.util.AbStrUtil;
 import com.ytxd.spp.view.IAddressManaView;
 
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 public class AddressManaActivity extends BaseActivity<AddressManaPresenter> implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, IAddressManaView {
 
@@ -32,6 +36,7 @@ public class AddressManaActivity extends BaseActivity<AddressManaPresenter> impl
     ListView lv;
     @BindView(R.id.refresh)
     SwipeRefreshLayout refresh;
+    String selectAddress;
 
     @Override
     protected void initPresenter() {
@@ -45,11 +50,22 @@ public class AddressManaActivity extends BaseActivity<AddressManaPresenter> impl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_address_mana);
         ButterKnife.bind(this);
+        selectAddress=getIntent().getStringExtra("selectAddress");
         getBar().initActionBar("地址管理", this);
         refresh.setOnRefreshListener(this);
         mAdapter = new AddressManaLV(new ArrayList<AddressM>(), this);
         mAdapter.setPresenter(presenter);
         lv.setAdapter(mAdapter);
+        if(!AbStrUtil.isEmpty(selectAddress)){
+            getBar().initActionBar("选择地址", this);
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    EventBus.getDefault().post(new SelectAddressEvent(mAdapter.getItem(position)));
+                    AppManager.getInstance().killActivity(activity);
+                }
+            });
+        }
 //        refresh.setRefreshing(true);
         onRefresh();
     }
@@ -87,6 +103,11 @@ public class AddressManaActivity extends BaseActivity<AddressManaPresenter> impl
             msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
         } else {
             msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        }
+        if(!AbStrUtil.isEmpty(selectAddress)){
+            if(mAdapter.getCount()==0){
+                EventBus.getDefault().post(new SelectAddressEvent(null));
+            }
         }
     }
 

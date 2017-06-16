@@ -140,6 +140,7 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
             addressM = address;
             if (AbStrUtil.isEmpty(address.getTitle())) {
                 tvAddress.setText(getString(R.string.loc_fail));
+                presenter.getSPMList("北京市");
             } else {
                 presenter.getSPMList(addressM.getCity());
                 tvAddress.setText(address.getTitle());
@@ -148,6 +149,7 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
         } else {
             addressM = null;
             tvAddress.setText(getString(R.string.loc_fail));
+            presenter.getSPMList("北京市");
         }
         loginFailed();
     }

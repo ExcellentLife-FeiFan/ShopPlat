@@ -22,7 +22,7 @@
                 android:id="@+id/iv"
                 android:layout_width="@dimen/dp30"
                 android:layout_height="@dimen/dp45"
-                android:src="@drawable/i7" />
+                android:src="@color/img_bg" />
 
             <TextView
                 android:id="@+id/tv_name"
@@ -33,7 +33,7 @@
                 android:ellipsize="end"
                 android:maxWidth="150dp"
                 android:singleLine="true"
-                android:text="好吃的纯牛奶"
+                android:text="@string/null_s"
                 android:textColor="@color/black_overlay"
                 android:textSize="@dimen/text_size_medium" />
 
@@ -58,7 +58,7 @@
                 android:id="@+id/tv_now_p"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2.9"
+                android:text="0.0"
                 android:textColor="@color/price_color"
                 android:textSize="@dimen/text_size_medium" />
 
@@ -72,7 +72,7 @@
                     android:id="@+id/tv_origin_p"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="¥ 3.5"
+                    android:text="¥ 0.0"
                     android:textColor="@color/gray"
                     android:textSize="@dimen/sp12" />
 

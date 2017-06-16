@@ -12,8 +12,8 @@
 
         <ImageView
             android:id="@+id/iv_plus"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
             android:layout_alignRight="@+id/btnAdd"
             android:scaleType="fitXY"
             android:src="@drawable/ic_good_plus" />
@@ -33,10 +33,10 @@
             android:layout_height="wrap_content"
             app:addEnableBgColor="@color/colorPrimary"
             app:addEnableFgColor="#ffffff"
-            app:count="0"
+            app:count="1"
             app:delEnableBgColor="@color/gray"
             app:delEnableFgColor="@color/gray"
-            app:gapBetweenCircle="15dp"
+            app:gapBetweenCircle="22dp"
             app:hingTextSize="@dimen/text_size_tag_small"
             app:hintBgColor="@color/price_color"
             app:hintBgRoundValue="15dp"

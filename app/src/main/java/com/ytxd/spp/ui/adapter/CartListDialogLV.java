@@ -9,8 +9,8 @@ import android.widget.TextView;
 import com.mcxtzhang.lib.AnimShopButton;
 import com.mcxtzhang.lib.IOnAddDelListener;
 import com.ytxd.spp.R;
-import com.ytxd.spp.event.MerchantGoodAddEvent;
-import com.ytxd.spp.event.MerchantGoodMinusEvent;
+import com.ytxd.spp.event.GoodAddEvent;
+import com.ytxd.spp.event.GoodMinusEvent;
 import com.ytxd.spp.model.ShoppingCartM;
 import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.ImageLoadUtil;
@@ -27,8 +27,10 @@ import de.greenrobot.event.EventBus;
  */
 
 public class CartListDialogLV extends CommonListAdapter<ShoppingCartM.Goods> {
-    public CartListDialogLV(List<ShoppingCartM.Goods> items, Context activity) {
+    int type;
+    public CartListDialogLV(List<ShoppingCartM.Goods> items, Context activity, int type) {
         super(items, activity);
+        this.type = type;
     }
 
     @Override
@@ -50,7 +52,7 @@ public class CartListDialogLV extends CommonListAdapter<ShoppingCartM.Goods> {
         viewHolder.btnAdd.setOnAddDelListener(new IOnAddDelListener() {
             @Override
             public void onAddSuccess(int i) {
-                EventBus.getDefault().post(new MerchantGoodAddEvent(items.get(position).getGoodM()));
+                EventBus.getDefault().post(new GoodAddEvent(items.get(position).getGoodM(),type));
             }
 
             @Override
@@ -60,7 +62,7 @@ public class CartListDialogLV extends CommonListAdapter<ShoppingCartM.Goods> {
 
             @Override
             public void onDelSuccess(int i) {
-                EventBus.getDefault().post(new MerchantGoodMinusEvent(items.get(position).getGoodM()));
+                EventBus.getDefault().post(new GoodMinusEvent(items.get(position).getGoodM(),type));
             }
 
             @Override

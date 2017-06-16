@@ -11,13 +11,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/padding_left"
-        android:paddingLeft="@dimen/padding_left2"
-        android:paddingRight="@dimen/padding_left2"
+        android:paddingLeft="@dimen/default_ui_margin"
+        android:paddingRight="@dimen/default_ui_margin"
         android:paddingTop="@dimen/padding_left">
 
         <RelativeLayout
-            android:layout_width="@dimen/dp80"
-            android:layout_height="@dimen/dp100"
+            android:layout_width="@dimen/dp65"
+            android:layout_height="@dimen/dp85"
             android:padding="@dimen/dp3">
 
             <ImageView
@@ -33,7 +33,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/default_ui_margin_small"
+            android:layout_marginLeft="@dimen/default_ui_margin_micro"
             android:layout_marginTop="@dimen/default_ui_margin_large"
             android:orientation="vertical">
 
@@ -43,12 +43,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/null_s"
                 android:textColor="@color/black_overlay"
-                android:textSize="@dimen/text_size_medium" />
+                android:textSize="@dimen/text_size_small" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_ui_margin_huge"
+                android:layout_marginTop="@dimen/default_ui_margin_great"
                 android:orientation="horizontal">
 
                 <TextView
@@ -64,13 +64,13 @@
                     android:layout_height="wrap_content"
                     android:text="0.0"
                     android:textColor="@color/price_color"
-                    android:textSize="@dimen/text_size_medium" />
+                    android:textSize="@dimen/text_size_small" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/default_ui_margin_medium_small">
+                    android:layout_marginLeft="@dimen/default_ui_margin_micro">
 
                     <LinearLayout
                         android:id="@+id/ll_p"
@@ -83,7 +83,7 @@
                             android:layout_height="wrap_content"
                             android:text="¥ "
                             android:textColor="@color/gray"
-                            android:textSize="@dimen/sp12" />
+                            android:textSize="@dimen/sp10" />
 
                         <TextView
                             android:id="@+id/tv_origin_p"
@@ -91,7 +91,7 @@
                             android:layout_height="wrap_content"
                             android:text="0.0"
                             android:textColor="@color/gray"
-                            android:textSize="@dimen/sp12" />
+                            android:textSize="@dimen/sp10" />
 
                     </LinearLayout>
 

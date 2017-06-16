@@ -93,6 +93,9 @@ public class ShoppingCartM implements Serializable {
         }
         return count;
     }
+    public void clearGoods(){
+        goods.clear();
+    }
 
 
     public static class Goods implements Serializable {

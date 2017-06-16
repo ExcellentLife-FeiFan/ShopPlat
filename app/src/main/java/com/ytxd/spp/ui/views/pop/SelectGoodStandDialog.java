@@ -10,15 +10,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mcxtzhang.lib.AnimShopButton;
+import com.mcxtzhang.lib.IOnAddDelListener;
 import com.ytxd.spp.R;
+import com.ytxd.spp.event.GoodAddEvent;
+import com.ytxd.spp.event.GoodMinusEvent;
 import com.ytxd.spp.model.GoodM;
 import com.ytxd.spp.ui.adapter.GoodStandLV;
 import com.ytxd.spp.ui.views.TagCloudLayout;
 import com.ytxd.spp.util.CommonUtils;
+import com.ytxd.spp.util.LogUtils;
+import com.ytxd.spp.util.ShoppingCartUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 
 /**
@@ -42,8 +48,9 @@ public class SelectGoodStandDialog extends BaseDialogFragment {
     TextView tvPrice;
 
     GoodM goodM;
-
+    String merchantCode;
     GoodM stand;
+    int type;
 
 
     @Override
@@ -57,7 +64,7 @@ public class SelectGoodStandDialog extends BaseDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_select_good_stand, container, false);
         ButterKnife.bind(this, view);
-        initView(view);
+        initView();
         initData();
         return view;
 
@@ -65,8 +72,11 @@ public class SelectGoodStandDialog extends BaseDialogFragment {
 
     private void initData() {
         goodM = (GoodM) getArguments().getSerializable("data");
+        merchantCode = getArguments().getString("merchantCode");
+        type= getArguments().getInt("type");
         CommonUtils.setText(tvTitle, goodM.getGoodsTitle());
         stand=goodM.getGoods().get(0);
+        btnAdd.setCount(ShoppingCartUtil.getLocalCartGoodCount(stand.getGoodsCode(), merchantCode));
         CommonUtils.setText(tvPrice, "¥"+stand.getXPrice());
         mAdapter = new GoodStandLV(goodM.getGoods(), activity);
         tag.setAdapter(mAdapter);
@@ -75,6 +85,11 @@ public class SelectGoodStandDialog extends BaseDialogFragment {
             public void itemClick(int position) {
                 mAdapter.setPositionS(position);
                 stand = mAdapter.getItem(position);
+                int count=ShoppingCartUtil.getLocalCartGoodCount(stand.getGoodsCode(), merchantCode);
+                int cc=btnAdd.getCount();
+                LogUtils.e(cc+"");
+                btnAdd.setCount(count);
+                btnAdd.invalidate();
                 CommonUtils.setText(tvPrice, "¥"+stand.getXPrice());
             }
         });
@@ -93,7 +108,30 @@ public class SelectGoodStandDialog extends BaseDialogFragment {
         super.onDismiss(dialog);
     }
 
-    private void initView(View view) {
+    private void initView() {
+
+        btnAdd.setOnAddDelListener(new IOnAddDelListener() {
+            @Override
+            public void onAddSuccess(int i) {
+                EventBus.getDefault().post(new GoodAddEvent(ivPlus,stand,type));
+//                dismissAllowingStateLoss();
+            }
+
+            @Override
+            public void onAddFailed(int i, FailType failType) {
+
+            }
+
+            @Override
+            public void onDelSuccess(int i) {
+                EventBus.getDefault().post(new GoodMinusEvent(stand,type));
+            }
+
+            @Override
+            public void onDelFaild(int i, FailType failType) {
+
+            }
+        });
 
     }
 

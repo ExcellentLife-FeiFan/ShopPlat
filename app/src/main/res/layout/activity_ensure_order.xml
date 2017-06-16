@@ -35,83 +35,116 @@
                     android:background="@drawable/bg_wihte_corner"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:id="@+id/ll_address"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/selector_bg_viewgroup_click5"
-                        android:orientation="horizontal"
-                        android:paddingBottom="@dimen/drawable_padding"
-                        android:paddingLeft="@dimen/default_ui_margin"
-                        android:paddingTop="@dimen/default_ui_margin">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/default_ui_margin_medium"
-                            android:src="@drawable/ic_adress_1" />
+                        android:layout_height="wrap_content">
 
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:id="@+id/ll_address"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/default_ui_margin_small"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:background="@drawable/selector_bg_viewgroup_click5"
+                            android:orientation="horizontal"
+                            android:paddingBottom="@dimen/drawable_padding"
+                            android:paddingLeft="@dimen/default_ui_margin"
+                            android:paddingTop="@dimen/default_ui_margin"
+                            android:visibility="visible">
 
-                            <TextView
+                            <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:ellipsize="end"
-                                android:lineSpacingExtra="@dimen/default_ui_margin_small"
-                                android:maxLines="2"
-                                android:text="朝阳区百子湾路百子园5号楼2单元2单元2单元2单元901"
-                                android:textColor="@color/black_overlay2"
-                                android:textSize="@dimen/text_size_common" />
+                                android:layout_marginRight="@dimen/default_ui_margin_medium"
+                                android:src="@drawable/ic_adress_1" />
 
                             <LinearLayout
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/default_ui_margin_medium_small"
-                                android:orientation="horizontal">
+                                android:layout_marginRight="@dimen/default_ui_margin_small"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
 
                                 <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginRight="@dimen/default_ui_margin_medium"
-                                    android:ellipsize="end"
-                                    android:text="凡先生"
-                                    android:textColor="@color/black_overlay4"
-                                    android:textSize="@dimen/text_size_common" />
-
-                                <TextView
+                                    android:id="@+id/tv_address"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:ellipsize="end"
-                                    android:text="18123409876"
-                                    android:textColor="@color/black_overlay4"
+                                    android:lineSpacingExtra="@dimen/default_ui_margin_small"
+                                    android:maxLines="2"
+                                    android:text="@string/null_s"
+                                    android:textColor="@color/black_overlay2"
                                     android:textSize="@dimen/text_size_common" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/default_ui_margin_medium_small"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/tv_address_name"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="@dimen/default_ui_margin_medium"
+                                        android:ellipsize="end"
+                                        android:text="@string/null_s"
+                                        android:textColor="@color/black_overlay4"
+                                        android:textSize="@dimen/text_size_common" />
+
+                                    <TextView
+                                        android:id="@+id/tv_address_phone"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:ellipsize="end"
+                                        android:text="@string/null_s"
+                                        android:textColor="@color/black_overlay4"
+                                        android:textSize="@dimen/text_size_common" />
+
+                                </LinearLayout>
+
 
                             </LinearLayout>
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginRight="@dimen/default_ui_margin_small"
+                                    android:src="@drawable/ic_gray_to" />
+
+
+                            </RelativeLayout>
 
 
                         </LinearLayout>
 
                         <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent">
+                            android:id="@+id/ll_no_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:visibility="gone"
+                            android:background="@drawable/selector_bg_viewgroup_click5">
 
-                            <ImageView
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="@dimen/default_ui_margin_small"
-                                android:src="@drawable/ic_gray_to" />
+                                android:layout_centerInParent="true"
+                                android:background="@drawable/selectable_login_btn_bg_halfcircle"
+                                android:paddingBottom="@dimen/default_ui_margin_small"
+                                android:paddingLeft="@dimen/default_ui_margin_large"
+                                android:paddingRight="@dimen/default_ui_margin_large"
+                                android:paddingTop="@dimen/default_ui_margin_small"
+                                android:text="+添加收货地址"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_common_s" />
 
 
                         </RelativeLayout>
+                    </RelativeLayout>
 
-
-                    </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
@@ -190,6 +223,7 @@
                             android:gravity="right">
 
                             <TextView
+                                android:id="@+id/tv_remark"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:drawableRight="@drawable/ic_gray_to"
@@ -226,18 +260,20 @@
                         android:paddingTop="@dimen/default_ui_margin_medium">
 
                         <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/civ_merchant"
                             android:layout_width="@dimen/dp30"
                             android:layout_height="@dimen/dp30"
                             android:layout_marginRight="@dimen/default_ui_margin_medium"
                             android:src="@drawable/ic_no_people" />
 
                         <TextView
+                            android:id="@+id/tv_merchant_name"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:drawableRight="@drawable/ic_gray_to"
                             android:paddingRight="@dimen/default_ui_margin_small"
-                            android:text="酒来酒往"
+                            android:text="@string/null_s"
                             android:textColor="@color/black_overlay"
                             android:textSize="@dimen/text_size_actionbar_title" />
 
@@ -249,10 +285,10 @@
                         android:id="@+id/lv_sub_goods"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="@dimen/default_ui_margin_medium"
-                        android:paddingLeft="@dimen/default_ui_margin_small"
                         android:divider="@color/transparent"
                         android:dividerHeight="0dp"
+                        android:paddingBottom="@dimen/default_ui_margin_medium"
+                        android:paddingLeft="@dimen/default_ui_margin_small"
                         android:paddingRight="@dimen/default_ui_margin_small"
                         android:paddingTop="@dimen/default_ui_margin_medium" />
 
@@ -267,19 +303,21 @@
 
 
                         <TextView
+                            android:id="@+id/tv_total_p"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingRight="@dimen/default_ui_margin_small"
-                            android:text="总计 ¥124"
+                            android:text="总计 ¥0.0"
                             android:textColor="@color/gray"
                             android:textSize="@dimen/text_size_common" />
 
 
                         <TextView
+                            android:id="@+id/tv_discount_p"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/default_ui_margin"
-                            android:text="优惠 ¥12"
+                            android:text="优惠 ¥0.0"
 
                             android:textColor="@color/gray"
                             android:textSize="@dimen/text_size_common" />
@@ -297,11 +335,12 @@
                                 android:textSize="@dimen/text_size_common" />
 
                             <TextView
+                                android:id="@+id/tv_real_pay"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/default_ui_margin_medium_s"
                                 android:layout_marginRight="@dimen/default_ui_margin"
-                                android:text="¥112"
+                                android:text="¥0.0"
                                 android:textColor="@color/price_color"
                                 android:textSize="@dimen/text_size_common" />
 
@@ -317,70 +356,74 @@
                     android:layout_marginTop="@dimen/drawable_padding"
                     android:background="@drawable/bg_wihte_corner"
                     android:orientation="vertical">
-
-                    <LinearLayout
+                    <com.ytxd.spp.ui.views.MutilRadioGroup
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/common_viewgroup_height"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingLeft="@dimen/default_ui_margin">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingRight="@dimen/default_ui_margin_small"
-                            android:text="在线支付"
-                            android:textColor="@color/black_overlay"
-                            android:textSize="@dimen/text_size_common" />
-
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right">
+                            android:layout_height="@dimen/common_viewgroup_height"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingLeft="@dimen/default_ui_margin">
 
-                            <CheckBox
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginRight="@dimen/default_ui_margin"
-                                android:button="@drawable/selectable_common_cb_bg" />
+                                android:paddingRight="@dimen/default_ui_margin_small"
+                                android:text="在线支付"
+                                android:textColor="@color/black_overlay"
+                                android:textSize="@dimen/text_size_common" />
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="right">
+
+                                <CheckBox
+                                    android:id="@+id/cb_p_online"
+                                    android:checked="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="@dimen/default_ui_margin"
+                                    android:button="@drawable/selectable_common_cb_bg" />
+
+
+                            </LinearLayout>
 
                         </LinearLayout>
-
-                    </LinearLayout>
-
-                    <include layout="@layout/line_gray"></include>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/common_viewgroup_height"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingLeft="@dimen/default_ui_margin">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingRight="@dimen/default_ui_margin_small"
-                            android:text="货到付款"
-                            android:textColor="@color/black_overlay"
-                            android:textSize="@dimen/text_size_common" />
-
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right">
+                            android:layout_height="@dimen/common_viewgroup_height"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingLeft="@dimen/default_ui_margin">
 
-                            <CheckBox
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginRight="@dimen/default_ui_margin"
-                                android:button="@drawable/selectable_common_cb_bg" />
+                                android:paddingRight="@dimen/default_ui_margin_small"
+                                android:text="货到付款"
+                                android:textColor="@color/black_overlay"
+                                android:textSize="@dimen/text_size_common" />
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="right">
+
+                                <CheckBox
+                                    android:id="@+id/cb_p_onget"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="@dimen/default_ui_margin"
+                                    android:button="@drawable/selectable_common_cb_bg" />
+
+
+                            </LinearLayout>
 
                         </LinearLayout>
-
-                    </LinearLayout>
+                    </com.ytxd.spp.ui.views.MutilRadioGroup>
 
                     <include layout="@layout/line_gray"></include>
 
@@ -407,6 +450,7 @@
                             android:gravity="right">
 
                             <TextView
+                                android:id="@+id/tv_youhuiquan"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:drawableRight="@drawable/ic_gray_to"
@@ -445,6 +489,7 @@
                             android:textSize="@dimen/text_size_common" />
 
                         <TextView
+                            android:id="@+id/tv_total_p_2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
@@ -471,6 +516,7 @@
                             android:textSize="@dimen/text_size_common" />
 
                         <TextView
+                            android:id="@+id/tv_distri_p"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
@@ -490,6 +536,7 @@
                         android:paddingRight="@dimen/default_ui_margin">
 
                         <TextView
+
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="活动减免"
@@ -497,6 +544,7 @@
                             android:textSize="@dimen/text_size_common" />
 
                         <TextView
+                            android:id="@+id/tv_activity_discount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
@@ -523,6 +571,7 @@
                             android:textSize="@dimen/text_size_common" />
 
                         <TextView
+                            android:id="@+id/tv_youhuiquan_discount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
@@ -564,11 +613,12 @@
                     android:textSize="@dimen/text_size_common_btn" />
 
                 <TextView
+                    android:id="@+id/tv_total_p_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/default_ui_margin_micro"
                     android:layout_marginRight="@dimen/default_ui_margin_micro"
-                    android:text="¥112"
+                    android:text="¥0.0"
                     android:textColor="@color/price_color"
                     android:textSize="@dimen/text_size_large" />
 
@@ -587,6 +637,7 @@
 
 
                 <Button
+                    android:id="@+id/btn_pay"
                     style="@style/Common_PriceBtn_NoCorner"
                     android:layout_width="110dp"
                     android:layout_height="match_parent"
