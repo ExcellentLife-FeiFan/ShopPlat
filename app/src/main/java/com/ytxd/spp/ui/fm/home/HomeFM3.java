@@ -13,11 +13,15 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kennyc.view.MultiStateView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.BaseFragment;
+import com.ytxd.spp.model.OrderM;
+import com.ytxd.spp.presenter.HomeOrderPresenter;
 import com.ytxd.spp.ui.activity.order.MyOrderActivity;
 import com.ytxd.spp.ui.activity.order.OrderDetailActivity;
 import com.ytxd.spp.ui.adapter.HomeOrderA;
 import com.ytxd.spp.ui.views.SimpleDividerDecoration;
-import com.ytxd.spp.util.CommonUtils;
+import com.ytxd.spp.view.IHomeOrderView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +33,7 @@ import butterknife.Unbinder;
  * Created by apple on 2017/3/29.
  */
 
-public class HomeFM3 extends BaseFragment implements  SwipeRefreshLayout.OnRefreshListener{
+public class HomeFM3 extends BaseFragment<HomeOrderPresenter> implements SwipeRefreshLayout.OnRefreshListener, IHomeOrderView {
 
     @BindView(R.id.swipeLayout)
     SwipeRefreshLayout refreshLayout;
@@ -41,6 +45,13 @@ public class HomeFM3 extends BaseFragment implements  SwipeRefreshLayout.OnRefre
     HomeOrderA orderA;
 
     @Override
+    protected void initPresenter() {
+        presenter = new HomeOrderPresenter(activity, this);
+        presenter.init();
+    }
+
+
+    @Override
     public int getLayoutRes() {
         return R.layout.fm_home_3;
     }
@@ -50,7 +61,7 @@ public class HomeFM3 extends BaseFragment implements  SwipeRefreshLayout.OnRefre
         refreshLayout.setOnRefreshListener(this);
         rvOrder.setLayoutManager(new LinearLayoutManager(activity));
         rvOrder.addItemDecoration(new SimpleDividerDecoration(activity, R.color.bg, R.dimen.divider_height3));
-        orderA = new HomeOrderA(CommonUtils.getSampleList(7));
+        orderA = new HomeOrderA(null);
         orderA.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         rvOrder.setAdapter(orderA);
 //        rvOrder.addOnItemTouchListener(new OnItemClickListener() {
@@ -65,7 +76,7 @@ public class HomeFM3 extends BaseFragment implements  SwipeRefreshLayout.OnRefre
                 startActivity(OrderDetailActivity.class);
             }
         });
-
+        presenter.getOrderList();
     }
 
     @Override
@@ -91,15 +102,31 @@ public class HomeFM3 extends BaseFragment implements  SwipeRefreshLayout.OnRefre
     public void onViewClicked() {
         startActivity(MyOrderActivity.class);
     }
+
     @Override
     public void onRefresh() {
+        presenter.getOrderList();
+    }
+
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public void lodeSuccess(List<OrderM> items) {
+        refreshLayout.setRefreshing(false);
+        orderA.setNewData(items);
+        if (orderA.getItemCount() > 0) {
+            msvOrder.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+        } else {
+            msvOrder.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        }
+    }
+
+    @Override
+    public void lodeFailed() {
+        refreshLayout.setRefreshing(false);
         msvOrder.setViewState(MultiStateView.VIEW_STATE_EMPTY);
-        refreshLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                refreshLayout.setRefreshing(false);
-                msvOrder.setViewState(MultiStateView.VIEW_STATE_CONTENT);
-            }
-        }, 1000);
     }
 }

@@ -1,5 +1,6 @@
 package com.ytxd.spp.ui.activity.order;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -9,6 +10,7 @@ import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
 import com.ytxd.spp.ui.adapter.TagOrderRemarkLV;
 import com.ytxd.spp.ui.views.TagCloudLayout;
+import com.ytxd.spp.util.AbStrUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +62,12 @@ public class OrderRemarkEditActivity extends BaseActivity implements View.OnClic
 
     @OnClick(R.id.btn_ok)
     public void onViewClicked() {
+        String remarks = et.getText().toString();
+        if(!AbStrUtil.isEmpty(remarks)){
+            Intent intent = new Intent();
+            intent.putExtra("remark", remarks);
+            setResult(EnsureOrderActivity.REMARKS,intent);
+        }
         AppManager.getInstance().killActivity(this);
     }
 }

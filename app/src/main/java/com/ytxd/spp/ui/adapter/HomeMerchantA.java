@@ -31,11 +31,14 @@ public class HomeMerchantA extends BaseQuickAdapter<MerchantM, HomeMerchantItemV
         ImageLoadUtil.setImageNP(item.getLogoUrl(), helper.icon, mContext);
         List<MerchantM.ManJianBean> actis = item.getManJian();
         helper.tvActiNum.setText(actis.size() + "个活动");
+        ViewGroup header = (ViewGroup) helper.expandActi.getHeaderRelativeLayout().findViewById(R.id.ll_ex_header);
+        ViewGroup content = (ViewGroup) helper.expandActi.getContentRelativeLayout().findViewById(R.id.ll_ex_content);
+        header.removeAllViews();
+        content.removeAllViews();
         if (actis.size() > 0 && actis.size() <= 2) {
             for (int i = 0; i < actis.size(); i++) {
                 TextView tvActi = (TextView) mLayoutInflater.inflate(R.layout.item_merchant_activity, null);
                 tvActi.setText(actis.get(i).getManJianName());
-                ViewGroup header = (ViewGroup) helper.expandActi.getHeaderRelativeLayout().findViewById(R.id.ll_ex_header);
                 header.addView(tvActi);
             }
 
@@ -45,14 +48,12 @@ public class HomeMerchantA extends BaseQuickAdapter<MerchantM, HomeMerchantItemV
             for (int i = 0; i < one.size(); i++) {
                 TextView tvActi = (TextView) mLayoutInflater.inflate(R.layout.item_merchant_activity, null);
                 tvActi.setText(one.get(i).getManJianName());
-                ViewGroup header = (ViewGroup) helper.expandActi.getHeaderRelativeLayout().findViewById(R.id.ll_ex_header);
                 header.addView(tvActi);
             }
 
             for (int i = 0; i < two.size(); i++) {
                 TextView tvActi = (TextView) mLayoutInflater.inflate(R.layout.item_merchant_activity, null);
                 tvActi.setText(two.get(i).getManJianName());
-                ViewGroup content = (ViewGroup) helper.expandActi.getContentRelativeLayout().findViewById(R.id.ll_ex_content);
                 content.addView(tvActi);
             }
 
@@ -64,7 +65,7 @@ public class HomeMerchantA extends BaseQuickAdapter<MerchantM, HomeMerchantItemV
                 helper.expandv.switchState(true);
                 if (helper.expandActi.isOpened()) {
                     helper.expandActi.hide();
-                }else{
+                } else {
                     helper.expandActi.show();
                 }
             }

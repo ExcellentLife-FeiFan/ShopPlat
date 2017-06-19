@@ -141,4 +141,46 @@ public class Apis {
     public static String GetGoodsBySupermarket = BASE_URL + "/API_User/GetGoodsBySupermarket";
 
 
+    /**
+     * 生成未付款订单
+     *
+     * @param UserCode
+     * @param SupermarketCode
+     * @param SHAddressCode
+     * @param UserCouponCode
+     * @param ManJianCode
+     * @param GoodsInfo :商品信息格式为：商品编号[商品数量, s001[2,s002[1
+     * @param SDTime
+     * @param Remarks
+     * @param PayType
+     * @param YPrice:原总价
+     * @param SJPrice:现总价(所有优惠后价格)
+     */
+    public static String GenerateWFKOrder = BASE_URL + "/API_User/GenerateWFKOrder";
+
+
+    /**
+     * 获取订单列表
+     *
+     * @param UserCode
+     * @param PageIndex
+     * @param PageSize
+     */
+    public static String GetUserOrderList = BASE_URL + "/API_User/GetUserOrderList";
+
+
+    /**
+     * 更新订单已付款
+     *
+     * @param OrderCode
+     */
+    public static String UpdateOrderPay = BASE_URL + "/API_User/UpdateOrderPay";
+
+    /**
+     * 确认收货（完成订单）
+     *
+     * @param OrderCode
+     */
+    public static String DetermineSH = BASE_URL + "/API_User/DetermineSH";
+
 }

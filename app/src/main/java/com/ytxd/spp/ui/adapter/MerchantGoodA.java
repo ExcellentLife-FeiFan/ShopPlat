@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.mcxtzhang.lib.AnimShopButton;
 import com.mcxtzhang.lib.IOnAddDelListener;
 import com.ytxd.spp.R;
@@ -49,8 +50,9 @@ public class MerchantGoodA extends SectioningAdapter {
 
     public class ItemViewHolder extends SectioningAdapter.ItemViewHolder {
         public View rootView;
-        public ImageView ivPlus, iv;
-        public TextView tvOriginP, tvNowP, tv_name, tv_select_stand;
+        public RoundedImageView iv;
+        public ImageView ivPlus;
+        public TextView tvOriginP, tvNowP, tv_name, tv_select_stand, tvSalesNum;
         public AnimShopButton btnAdd;
         public RelativeLayout rl_add_btn;
 
@@ -62,9 +64,10 @@ public class MerchantGoodA extends SectioningAdapter {
             this.tv_name = (TextView) rootView.findViewById(R.id.tv_name);
             this.btnAdd = (AnimShopButton) rootView.findViewById(R.id.btnAdd);
             this.ivPlus = (ImageView) rootView.findViewById(R.id.iv_plus);
-            this.iv = (ImageView) rootView.findViewById(R.id.iv);
+            this.iv = (RoundedImageView) rootView.findViewById(R.id.iv);
             this.rl_add_btn = (RelativeLayout) rootView.findViewById(R.id.rl_add_btn);
             this.tv_select_stand = (TextView) rootView.findViewById(R.id.tv_select_stand);
+            this.tvSalesNum = (TextView) rootView.findViewById(R.id.tv_month_sales);
         }
     }
 
@@ -129,6 +132,7 @@ public class MerchantGoodA extends SectioningAdapter {
             }
         });
         CommonUtils.setText(holder.tv_name, good.getGoodsTitle());
+        holder.tvSalesNum.setText("已售" + good.getSaleNumber() + "份");
         CommonUtils.setText(holder.tvOriginP, good.getYPrice());
         CommonUtils.setText(holder.tvNowP, good.getXPrice());
         ImageLoadUtil.setImageNP(good.getLogoPaths(), holder.iv, mContext);
@@ -144,7 +148,7 @@ public class MerchantGoodA extends SectioningAdapter {
         holder.btnAdd.setOnAddDelListener(new IOnAddDelListener() {
             @Override
             public void onAddSuccess(int i) {
-                EventBus.getDefault().post(new GoodAddEvent(holder.ivPlus, items.get(sectionIndex).getChildren().get(itemIndex),1));
+                EventBus.getDefault().post(new GoodAddEvent(holder.ivPlus, items.get(sectionIndex).getChildren().get(itemIndex), 1));
             }
 
             @Override
@@ -154,7 +158,7 @@ public class MerchantGoodA extends SectioningAdapter {
 
             @Override
             public void onDelSuccess(int i) {
-                EventBus.getDefault().post(new GoodMinusEvent(items.get(sectionIndex).getChildren().get(itemIndex),1));
+                EventBus.getDefault().post(new GoodMinusEvent(items.get(sectionIndex).getChildren().get(itemIndex), 1));
             }
 
             @Override

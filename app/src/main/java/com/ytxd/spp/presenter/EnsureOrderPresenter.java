@@ -6,6 +6,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.ytxd.spp.base.App;
 import com.ytxd.spp.model.AddressM;
+import com.ytxd.spp.model.OrderM;
 import com.ytxd.spp.net.ApiResult;
 import com.ytxd.spp.net.Apis;
 import com.ytxd.spp.net.JsonCallback;
@@ -39,13 +40,13 @@ public class EnsureOrderPresenter extends BasePresenter<IEnsureOrderView> {
                             if (result.isSuccess()) {
                                 AddressM addressM = null;
                                 for (int i = 0; i < result.getObj().size(); i++) {
-                                    if(result.getObj().get(i).isIsDefault()){
+                                    if (result.getObj().get(i).isIsDefault()) {
                                         addressM = result.getObj().get(i);
                                         break;
                                     }
 
                                 }
-                                if(null==addressM){
+                                if (null == addressM) {
                                     addressM = result.getObj().get(0);
                                 }
                                 iView.lodeAddress(addressM);
@@ -65,6 +66,50 @@ public class EnsureOrderPresenter extends BasePresenter<IEnsureOrderView> {
                         super.onError(response);
                     }
                 });
+
+    }
+
+    public void ensureOrder(final OrderM order) {
+        iView.showDialogs();
+        OkGo.<ApiResult<Object>>get(Apis.GenerateWFKOrder)//
+                .params("UserCode", App.user.getUserCode())
+                .params("SupermarketCode", order.getSupermarketCode())
+                .params("SHAddressCode", order.getSHAddressCode())
+                .params("UserCouponCode", order.getUserCouponCode())
+                .params("ManJianCode", order.getManJianCode())
+                .params("GoodsInfo", order.getGoodsInfo())
+                .params("SDTime", order.getSDTime())
+                .params("Remarks", order.getRemarks())
+                .params("PayType", order.getPayType())
+                .params("YPrice", order.getYPrice())
+                .params("SJPrice", order.getSJPrice())
+                .execute(new JsonCallback<ApiResult<Object>>() {
+                    @Override
+                    public void onSuccess(Response<ApiResult<Object>> response) {
+                        iView.dismissDialogs();
+                        try {
+                            ApiResult<Object> result = response.body();
+                            if (result.isSuccess()) {
+                                iView.ensureOrderSuccess(order);
+                            } else {
+                                ToastUtil.showToastShort(context, result.getMsg());
+                            }
+                        } catch (Exception e) {
+                            ToastUtil.showToastShort(context, "订单提交失败");
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<ApiResult<Object>> response) {
+                        ToastUtil.showToastShort(context, "订单提交失败");
+                        iView.dismissDialogs();
+                        super.onError(response);
+                    }
+                });
+
+
+
 
     }
 

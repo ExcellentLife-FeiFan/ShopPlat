@@ -5,6 +5,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +22,7 @@ import com.ytxd.spp.base.App;
 import com.ytxd.spp.event.CartListClearRefreshEvent;
 import com.ytxd.spp.model.LocalShoppingCartM;
 import com.ytxd.spp.model.ShoppingCartM;
+import com.ytxd.spp.ui.activity.order.EnsureOrderActivity;
 import com.ytxd.spp.ui.adapter.CartListDialogLV;
 import com.ytxd.spp.util.ShoppingCartUtil;
 import com.ytxd.spp.util.ToastUtil;
@@ -42,8 +44,8 @@ public class MerchantCartListDialog extends Dialog {
 
     @BindView(R.id.tv_clear)
     TextView tvClear;
-/*    @BindView(R.id.tv_empty)
-    TextView tvEmpty;*/
+    /*    @BindView(R.id.tv_empty)
+        TextView tvEmpty;*/
     @BindView(R.id.rl_content)
     RelativeLayout rl_content;
     @BindView(R.id.lv)
@@ -70,7 +72,7 @@ public class MerchantCartListDialog extends Dialog {
     String merchantCode;
     int type;
 
-    public MerchantCartListDialog(Context context, String merchantCode,int type) {
+    public MerchantCartListDialog(Context context, String merchantCode, int type) {
         super(context, R.style.cartdialog);
         this.merchantCode = merchantCode;
         this.type = type;
@@ -81,7 +83,7 @@ public class MerchantCartListDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_merchant_cart_list);
         ButterKnife.bind(this);
-        goodListA = new CartListDialogLV(new ArrayList<ShoppingCartM.Goods>(), getContext(),type);
+        goodListA = new CartListDialogLV(new ArrayList<ShoppingCartM.Goods>(), getContext(), type);
         lv.setAdapter(goodListA);
 //        CommonUtils.setEmptyViewForSLV(getContext(),"购物车暂时没有商品",rl_content,lv);
     }
@@ -101,7 +103,7 @@ public class MerchantCartListDialog extends Dialog {
             LocalShoppingCartM shoppingCartM = beans.get(0);
             goodListA.addItems(shoppingCartM.getShoppingCartM().getGoods(), true);
             String n = shoppingCartM.getShoppingCartM().getGoodsCounts() + "";
-            String p = "共计¥"+shoppingCartM.getShoppingCartM().getPirceTotal();
+            String p = "共计¥" + shoppingCartM.getShoppingCartM().getPirceTotal();
             shoppingCartTotalNum.setText(n);
             shoppingCartTotalTv.setText(p);
         }
@@ -160,12 +162,15 @@ public class MerchantCartListDialog extends Dialog {
         switch (view.getId()) {
             case R.id.tv_clear:
                 if (ShoppingCartUtil.goodClearEvent(getContext(), merchantCode)) {
-                    ToastUtil.showToastShort(getContext(),"清除成功！");
+                    ToastUtil.showToastShort(getContext(), "清除成功！");
                     setData();
                     EventBus.getDefault().post(new CartListClearRefreshEvent());
                 }
                 break;
             case R.id.btn_ok:
+                Intent intent = new Intent(getContext(), EnsureOrderActivity.class);
+                intent.putExtra("merchantCode", merchantCode);
+                getContext().startActivity(intent);
                 break;
             case R.id.shopping_cart_layout:
                 dismiss();

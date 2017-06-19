@@ -76,7 +76,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:msv_emptyView="@layout/empty_order_none"
-                        app:msv_viewState="empty">
+                        app:msv_loadingView="@layout/common_progress_view"
+                        app:msv_viewState="loading">
 
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/rv_order"

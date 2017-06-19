@@ -16,25 +16,23 @@
         android:paddingTop="@dimen/padding_left">
 
         <RelativeLayout
-            android:layout_width="@dimen/dp65"
-            android:layout_height="@dimen/dp85"
-            android:padding="@dimen/dp3">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-            <ImageView
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/iv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="@dimen/dp65"
+                android:layout_height="@dimen/dp65"
                 android:layout_centerInParent="true"
+                android:scaleType="centerCrop"
+                app:riv_corner_radius="@dimen/common_radius"
                 android:src="@color/img_bg" />
-
-
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/default_ui_margin_micro"
-            android:layout_marginTop="@dimen/default_ui_margin_large"
+            android:layout_marginLeft="@dimen/default_ui_margin_medium_s"
             android:orientation="vertical">
 
             <TextView
@@ -45,10 +43,20 @@
                 android:textColor="@color/black_overlay"
                 android:textSize="@dimen/text_size_small" />
 
+            <TextView
+                android:id="@+id/tv_month_sales"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="已售0份"
+                android:layout_marginTop="@dimen/default_ui_margin_small"
+                android:textColor="@color/black_overlay"
+                android:textSize="@dimen/text_size_common_s" />
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_ui_margin_great"
+                android:layout_marginTop="@dimen/default_ui_margin_small"
                 android:orientation="horizontal">
 
                 <TextView

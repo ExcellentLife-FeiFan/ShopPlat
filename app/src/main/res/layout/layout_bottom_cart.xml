@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="共计¥0.0"
+                android:text="未选购商品"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp18"

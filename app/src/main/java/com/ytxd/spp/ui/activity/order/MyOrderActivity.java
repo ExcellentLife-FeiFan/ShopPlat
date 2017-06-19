@@ -11,14 +11,19 @@ import com.kennyc.view.MultiStateView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
+import com.ytxd.spp.model.OrderM;
+import com.ytxd.spp.presenter.OrderActivityPresenter;
 import com.ytxd.spp.ui.adapter.HomeOrderA;
 import com.ytxd.spp.ui.views.SimpleDividerDecoration;
 import com.ytxd.spp.util.CommonUtils;
+import com.ytxd.spp.view.IOrderActivityView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MyOrderActivity extends BaseActivity implements View.OnClickListener,BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener{
+public class MyOrderActivity extends BaseActivity<OrderActivityPresenter> implements View.OnClickListener, BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener, IOrderActivityView {
 
 
     @BindView(R.id.rv_list)
@@ -28,6 +33,15 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
     @BindView(R.id.msv_order)
     MultiStateView msvOrder;
     HomeOrderA mAdapter;
+    int page = 1;
+
+
+    @Override
+    protected void initPresenter() {
+        presenter = new OrderActivityPresenter(activity, this);
+        presenter.init();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,15 +61,7 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
                 startActivity(OrderDetailActivity.class);
             }
         });
-
-        refreshLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mAdapter.addData(CommonUtils.getSampleList(15));
-                msvOrder.setViewState(MultiStateView.VIEW_STATE_CONTENT);
-            }
-        }, 2000);
-
+        presenter.getOrderList(CommonUtils.REFRESH, page);
     }
 
     @Override
@@ -67,23 +73,56 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
         }
 
     }
+
     @Override
     public void onRefresh() {
-        refreshLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                refreshLayout.setRefreshing(false);
-            }
-        }, 3000);
+        presenter.getOrderList(CommonUtils.REFRESH, 1);
     }
 
     @Override
     public void onLoadMoreRequested() {
-        refreshLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mAdapter.loadMoreEnd(true);
-            }
-        }, 3000);
+        presenter.getOrderList(CommonUtils.LODEMORE, ++page);
+    }
+
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public void refreshSuccess(List<OrderM> items) {
+        refreshLayout.setRefreshing(false);
+        mAdapter.setNewData(items);
+        page = 1;
+        showContent();
+    }
+
+    @Override
+    public void refreshFailed() {
+        refreshLayout.setRefreshing(false);
+        showContent();
+    }
+
+
+    @Override
+    public void lodeMoreSuccess(List<OrderM> items) {
+        mAdapter.addData(items);
+        mAdapter.loadMoreComplete();
+        showContent();
+    }
+
+    @Override
+    public void lodeMoreFailed() {
+        page--;
+        mAdapter.loadMoreEnd();
+        showContent();
+    }
+
+    private void showContent() {
+        if (mAdapter.getItemCount() > 0) {
+            msvOrder.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+        } else {
+            msvOrder.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        }
     }
 }

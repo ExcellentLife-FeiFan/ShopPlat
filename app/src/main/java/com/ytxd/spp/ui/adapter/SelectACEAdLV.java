@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ytxd.spp.R;
+import com.ytxd.spp.model.AddressM;
+import com.ytxd.spp.util.CommonUtils;
 
 import java.util.List;
 
@@ -17,8 +19,8 @@ import butterknife.ButterKnife;
  * Created by apple on 2017/4/18.
  */
 
-public class SelectACEAdLV extends CommonListAdapter<String> {
-    public SelectACEAdLV(List<String> items, Activity activity) {
+public class SelectACEAdLV extends CommonListAdapter<AddressM> {
+    public SelectACEAdLV(List<AddressM> items, Activity activity) {
         super(items, activity);
     }
 
@@ -33,7 +35,9 @@ public class SelectACEAdLV extends CommonListAdapter<String> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
+        CommonUtils.setText(viewHolder.tvName,item.getContacts());
+        CommonUtils.setText(viewHolder.tvPhone,item.getPhone());
+        CommonUtils.setText(viewHolder.tvAddress,item.getAddressDescribe());
         return convertView;
     }
 

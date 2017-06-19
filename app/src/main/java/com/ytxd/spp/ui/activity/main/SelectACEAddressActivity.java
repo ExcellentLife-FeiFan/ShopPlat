@@ -26,13 +26,16 @@ import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
 import com.ytxd.spp.event.AMapLocationUpdateEvent;
 import com.ytxd.spp.event.HomeAddressChangeEvent;
+import com.ytxd.spp.model.AddressM;
 import com.ytxd.spp.model.HomeAddressM;
+import com.ytxd.spp.presenter.HomeSelectACEPresenter;
 import com.ytxd.spp.ui.adapter.AddressSearchLV;
 import com.ytxd.spp.ui.adapter.SelectACEAdLV;
 import com.ytxd.spp.ui.views.InListView;
 import com.ytxd.spp.util.AMapLocationUtil;
 import com.ytxd.spp.util.AbStrUtil;
 import com.ytxd.spp.util.CommonUtils;
+import com.ytxd.spp.view.IHomeSelectACEView;
 import com.zaaach.citypicker.CityPickerActivity;
 import com.zaaach.citypicker.model.City;
 
@@ -44,7 +47,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
-public class SelectACEAddressActivity extends BaseActivity implements View.OnClickListener, GeocodeSearch.OnGeocodeSearchListener, PoiSearch.OnPoiSearchListener {
+public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresenter> implements View.OnClickListener, GeocodeSearch.OnGeocodeSearchListener, PoiSearch.OnPoiSearchListener,IHomeSelectACEView {
 
     @BindView(R.id.tv_city)
     TextView tvCity;
@@ -79,14 +82,25 @@ public class SelectACEAddressActivity extends BaseActivity implements View.OnCli
     private HomeAddressM addressM;
 
     @Override
+    protected void initPresenter() {
+        presenter = new HomeSelectACEPresenter(activity, this);
+        presenter.init();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_aceaddress);
         ButterKnife.bind(this);
         getBar().initActionBar("选择收货地址", "", "", R.drawable.ic_back_white, -1, this);
+        initView();
+        presenter.getADList();
+    }
+
+    private void initView() {
         CommonUtils.setEmptyViewForSLV(this, rl_lv_ad_data, lvAdData);
         CommonUtils.setEmptyViewForSLV(this, rl_lv_near_ad, lvNearAd);
-        selectACEAdLV = new SelectACEAdLV(CommonUtils.getSampleList(4), this);
+        selectACEAdLV = new SelectACEAdLV(new ArrayList<AddressM>(), this);
         lvAdData.setAdapter(selectACEAdLV);
         mNearAddAdapter = new AddressSearchLV(new ArrayList<PoiItem>(), this);
         lvNearAd.setAdapter(mNearAddAdapter);
@@ -273,5 +287,20 @@ public class SelectACEAddressActivity extends BaseActivity implements View.OnCli
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public void lodeSuccess(List<AddressM> items) {
+        selectACEAdLV.addItems(items,true);
+    }
+
+    @Override
+    public void lodeFailed() {
+
     }
 }

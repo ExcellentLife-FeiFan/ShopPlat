@@ -88,11 +88,10 @@
             android:name="me.iwf.photopicker.PhotoPagerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".ui.activity.main.GoodCommentsActivity" />
-        <activity android:name=".ui.activity.order.ShoppingCartActivity"></activity>
-
-
+        <activity android:name=".ui.activity.order.ShoppingCartActivity" />
         <activity android:name=".ui.activity.mine.account.BindNewPhone1Activity" />
         <activity android:name=".ui.activity.mine.account.BindNewPhone2Activity" />
+        <activity android:name=".ui.activity.order.PayActivity"></activity>
     </application>
 
 </manifest>

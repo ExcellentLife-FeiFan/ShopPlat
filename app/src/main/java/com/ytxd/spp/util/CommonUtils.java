@@ -32,6 +32,9 @@ import static com.ytxd.spp.base.App.user;
 
 public class CommonUtils {
 
+    public static final int REFRESH = 1;
+    public static final int LODEMORE = 2;
+
     private static CustomDialog dialog;
 
     public static boolean isLogined(final Activity context) {
@@ -88,19 +91,19 @@ public class CommonUtils {
         rootView.addView(emptyView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         listView.setEmptyView(emptyView);
     }
+
     public static void setEmptyViewForSLV(View empty, AbsListView listView) {
         empty.setVisibility(View.GONE);
         listView.setEmptyView(empty);
     }
-    public static void setEmptyViewForSLV(Context context,String txt, ViewGroup rootView, AbsListView listView) {
+
+    public static void setEmptyViewForSLV(Context context, String txt, ViewGroup rootView, AbsListView listView) {
         View emptyView = LayoutInflater.from(context).inflate(R.layout.layout_lv_common_empty, null);
-        ((TextView)emptyView.findViewById(R.id.tv_empty)).setText(txt);
+        ((TextView) emptyView.findViewById(R.id.tv_empty)).setText(txt);
         emptyView.setVisibility(View.GONE);
         rootView.addView(emptyView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         listView.setEmptyView(emptyView);
     }
-
-
 
 
     public static void setEmptyView(View emptyView, AbsListView listView) {

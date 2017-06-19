@@ -181,4 +181,18 @@ public class ShoppingCartUtil {
         animatorSet.setDuration(800);
         animatorSet.start();
     }
+
+    public static  void deleteCart(Context context, String merchantCode){
+        if (CommonUtils.isDBInit(context)) {
+            QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
+                    .whereEquals(LocalShoppingCartM.CARTCODE, merchantCode);
+            List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+            if (beans.size() > 0) {
+                LocalShoppingCartM shoppingCartM= beans.get(0);
+                App.liteOrm.delete(shoppingCartM);
+            }
+        }
+
+    }
+
 }

@@ -140,6 +140,7 @@
                     android:textSize="@dimen/item_merchant_tv2_size" />
 
                 <View
+                    android:visibility="gone"
                     android:layout_width="1.0dp"
                     android:layout_height="@dimen/dp10"
                     android:layout_marginLeft="@dimen/default_ui_margin_small"
@@ -147,6 +148,7 @@
                     android:background="@color/hint_gray"></View>
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/tv_per_peo_p"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

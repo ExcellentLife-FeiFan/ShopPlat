@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.amap.api.maps2d.AMapUtils;
+import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.services.core.LatLonPoint;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kennyc.view.MultiStateView;
@@ -86,7 +88,7 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                startActivity(MerchantDetailActivity.class,"data",mAdapter.getItem(i));
+                startActivity(MerchantDetailActivity.class, "data", mAdapter.getItem(i));
             }
         });
     }
@@ -172,7 +174,7 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
             public void run() {
                 mAdapter.loadMoreEnd(true);
             }
-        }, 3000);
+        }, 100);
     }
 
     @Override
@@ -181,10 +183,25 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
     }
 
     @Override
-    public void loginSuccess(List<MerchantM> items) {
+    public void loginSuccess(List<MerchantM> datas) {
+        List<MerchantM> items = new ArrayList<>();
         refreshLayout.setRefreshing(false);
+        for (int i = 0; i < datas.size(); i++) {
+            LatLng shop_l = new LatLng(Double.valueOf(datas.get(i).getLat()), Double.valueOf(datas.get(i).getLng()));
+            LatLng location_l = new LatLng(Double.valueOf(addressM.getLatLng().getLatitude()), Double.valueOf(addressM.getLatLng().getLongitude()));
+            float distance = AMapUtils.calculateLineDistance(shop_l, location_l);
+            float distruF = Float.valueOf(datas.get(i).getConfines());
+            if (distruF >= distance) {
+                items.add(datas.get(i));
+            }
+        }
         mAdapter.setNewData(items);
-        msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+        if (mAdapter.getItemCount() > 0) {
+            msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+        } else {
+            msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        }
+
     }
 
     @Override

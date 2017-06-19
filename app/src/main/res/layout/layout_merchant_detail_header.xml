@@ -24,7 +24,6 @@
             <RelativeLayout
                 android:layout_width="65dp"
                 android:layout_height="65dp"
-                android:layout_marginRight="@dimen/padding_left2"
                 android:background="@drawable/bg_merchant_icon_border">
 
                 <com.makeramen.roundedimageview.RoundedImageView
@@ -40,6 +39,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="12dp"
+                android:layout_marginStart="12dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -53,10 +57,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/null_s"
-                        android:visibility="invisible"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_little_small"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="invisible" />
 
 
                 </LinearLayout>
@@ -66,7 +70,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/default_ui_margin"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <me.zhanghai.android.materialratingbar.MaterialRatingBar
                         android:id="@+id/rb"
@@ -145,6 +150,7 @@
                         android:textSize="@dimen/item_merchant_tv2_size" />
 
                     <View
+                        android:visibility="gone"
                         android:layout_width="1.0dp"
                         android:layout_height="@dimen/dp10"
                         android:layout_marginLeft="@dimen/default_ui_margin_small"
@@ -152,6 +158,7 @@
                         android:background="@color/hint_gray"></View>
 
                     <TextView
+                        android:visibility="gone"
                         android:id="@+id/tv_per_peo_p"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -172,7 +179,6 @@
                 </LinearLayout>
 
             </LinearLayout>
-
         </LinearLayout>
 
         <View

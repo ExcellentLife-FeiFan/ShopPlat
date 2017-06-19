@@ -1,9 +1,9 @@
 package com.ytxd.spp.ui.activity.order;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -13,29 +13,36 @@ import com.ytxd.spp.R;
 import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
+import com.ytxd.spp.event.CartListClearRefreshEvent;
 import com.ytxd.spp.event.SelectAddressEvent;
 import com.ytxd.spp.model.AddressM;
 import com.ytxd.spp.model.LocalShoppingCartM;
 import com.ytxd.spp.model.MerchantM;
+import com.ytxd.spp.model.OrderM;
 import com.ytxd.spp.model.ShoppingCartM;
 import com.ytxd.spp.presenter.EnsureOrderPresenter;
 import com.ytxd.spp.ui.activity.mine.AddressManaActivity;
 import com.ytxd.spp.ui.adapter.OrderSubGoodsLV;
 import com.ytxd.spp.ui.views.InListView;
+import com.ytxd.spp.ui.views.MutilRadioGroup;
+import com.ytxd.spp.util.AbDateUtil;
 import com.ytxd.spp.util.AbStrUtil;
 import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.ImageLoadUtil;
+import com.ytxd.spp.util.ShoppingCartUtil;
 import com.ytxd.spp.view.IEnsureOrderView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> implements View.OnClickListener,IEnsureOrderView {
+public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> implements View.OnClickListener, IEnsureOrderView {
 
     @BindView(R.id.lv_sub_goods)
     InListView lvSubGoods;
@@ -70,10 +77,12 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
     TextView tvDiscountP;
     @BindView(R.id.tv_real_pay)
     TextView tvRealPay;
-    @BindView(R.id.cb_p_online)
-    CheckBox cbPOnline;
-    @BindView(R.id.cb_p_onget)
-    CheckBox cbPOnget;
+    /*   @BindView(R.id.cb_p_wechat)
+       CheckBox cb_p_wechat;
+       @BindView(R.id.cb_p_alipay)
+       CheckBox cb_p_alipay;
+       @BindView(R.id.cb_p_onget)
+       CheckBox cbPOnget;*/
     @BindView(R.id.tv_youhuiquan)
     TextView tvYouhuiquan;
     @BindView(R.id.ll_youhuiquan)
@@ -92,6 +101,11 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
     Button btnPay;
     AddressM addressM;
     MerchantM merchant;
+    @BindView(R.id.mrg_pay)
+    MutilRadioGroup mrgPay;
+    String payType = "0002";
+    String remark = "无其他要求";
+    public static final int REMARKS = 1001;
 
     @Override
     protected void initPresenter() {
@@ -116,17 +130,29 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
             if (beans.size() > 0) {
                 shoppingCartM = beans.get(0).getShoppingCartM();
                 mAdapter.addItems(shoppingCartM.getGoods(), true);
-                merchant=shoppingCartM.getMerchantM();
-                if(null!=merchant){
-                    CommonUtils.setText(tvMerchantName,merchant.getName());
-                    ImageLoadUtil.setImageNP(merchant.getLogoUrl(),civMerchant,this);
-                    tvTotalP.setText("总计 ¥"+shoppingCartM.getPirceTotal());
-                    tvRealPay.setText("¥"+shoppingCartM.getPirceTotal());
-                    tvTotalP2.setText("¥"+shoppingCartM.getPirceTotal());
-                    tvTotalP3.setText("¥"+shoppingCartM.getPirceTotal());
+                merchant = shoppingCartM.getMerchantM();
+                if (null != merchant) {
+                    CommonUtils.setText(tvMerchantName, merchant.getName());
+                    ImageLoadUtil.setImageNP(merchant.getLogoUrl(), civMerchant, this);
+                    tvTotalP.setText("总计 ¥" + shoppingCartM.getPirceTotal());
+                    tvRealPay.setText("¥" + shoppingCartM.getPirceTotal());
+                    tvTotalP2.setText("¥" + shoppingCartM.getPirceTotal());
+                    tvTotalP3.setText("¥" + shoppingCartM.getPirceTotal());
                 }
             }
         }
+        mrgPay.setOnCheckedChangeListener(new MutilRadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(MutilRadioGroup group, int checkedId) {
+                if (checkedId == R.id.cb_p_wechat) {
+                    payType = "0002";
+                } else if (checkedId == R.id.cb_p_alipay) {
+                    payType = "0001";
+                } else if (checkedId == R.id.cb_p_onget) {
+                    payType = "0003";
+                }
+            }
+        });
     }
 
     @Override
@@ -140,16 +166,15 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
     }
 
 
-
     @OnClick({R.id.ll_address, R.id.ll_no_address, R.id.ll_remark, R.id.ll_shop, R.id.ll_youhuiquan, R.id.btn_pay})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_address:
             case R.id.ll_no_address:
-                startActivity(AddressManaActivity.class,"selectAddress","true");
+                startActivity(AddressManaActivity.class, "selectAddress", "true");
                 break;
             case R.id.ll_remark:
-                startActivity(OrderRemarkEditActivity.class);
+                startActivityForResult(OrderRemarkEditActivity.class, REMARKS);
                 break;
             case R.id.ll_shop:
 //                startActivity(MerchantDetailActivity.class);
@@ -158,6 +183,30 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
                 startActivity(DiscountCouponActivity.class);
                 break;
             case R.id.btn_pay:
+                if (null == addressM) {
+                    showToast("请选择收货地址");
+                } else {
+                    OrderM orderM = new OrderM();
+                    String goodsInfo = "";
+                    for (int i = 0; i < shoppingCartM.getGoods().size(); i++) {
+                        if (i == shoppingCartM.getGoods().size() - 1) {
+                            goodsInfo = goodsInfo + shoppingCartM.getGoods().get(i).getGoodM().getGoodsCode() + "[" + shoppingCartM.getGoods().get(i).getCount();
+                        } else {
+                            goodsInfo = goodsInfo + shoppingCartM.getGoods().get(i).getGoodM().getGoodsCode() + "[" + shoppingCartM.getGoods().get(i).getCount() + ",";
+                        }
+                    }
+                    orderM.setGoodsInfo(goodsInfo);
+                    orderM.setPayType(payType);
+                    orderM.setManJianCode("0");
+                    orderM.setUserCouponCode("0");
+                    orderM.setRemarks(remark);
+                    orderM.setSHAddressCode(addressM.getSHAddressCode());
+                    orderM.setSJPrice(shoppingCartM.getPirceTotal());
+                    orderM.setYPrice(shoppingCartM.getPirceTotal());
+                    orderM.setSupermarketCode(merchantCode);
+                    orderM.setSDTime(AbDateUtil.getStringByFormat(new Date(), AbDateUtil.dateFormatYMDHMS));
+                    presenter.ensureOrder(orderM);
+                }
                 break;
         }
     }
@@ -169,22 +218,43 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
 
     @Override
     public void lodeAddress(AddressM address) {
-         setAddressData(address);
+        setAddressData(address);
     }
-    private void setAddressData(AddressM address){
-        if(null==address){
+
+    @Override
+    public void showDialogs() {
+        showDialog();
+    }
+
+    @Override
+    public void dismissDialogs() {
+        dismissDialog();
+    }
+
+    @Override
+    public void ensureOrderSuccess(OrderM orderM) {
+        ShoppingCartUtil.deleteCart(this, merchantCode);
+        showToast("订单提交成功");
+        startActivity(PayActivity.class, "data", orderM);
+        EventBus.getDefault().post(new CartListClearRefreshEvent());
+        AppManager.getInstance().killActivity(this);
+    }
+
+    private void setAddressData(AddressM address) {
+        if (null == address) {
             llAddress.setVisibility(View.GONE);
             llNoAddress.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             addressM = address;
             llAddress.setVisibility(View.VISIBLE);
             llNoAddress.setVisibility(View.GONE);
-            CommonUtils.setText(tvAddress,address.getAddressDescribe());
-            CommonUtils.setText(tvAddressName,address.getContacts());
-            CommonUtils.setText(tvAddressPhone,address.getPhone());
+            CommonUtils.setText(tvAddress, address.getAddressDescribe());
+            CommonUtils.setText(tvAddressName, address.getContacts());
+            CommonUtils.setText(tvAddressPhone, address.getPhone());
 
         }
     }
+
     public void onEvent(SelectAddressEvent event) {
         setAddressData(event.addressM);
     }
@@ -195,5 +265,14 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
 //        if(null!=presenter){
 //            presenter.getADList();
 //        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == REMARKS) {
+            remark = data.getStringExtra("remark");
+            tvRemark.setText(remark);
+        }
     }
 }

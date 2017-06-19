@@ -84,14 +84,14 @@ public class MainActivity extends BaseActivity {
         // Use colored navigation with circle reveal effect
         bottomBar.setColored(false);
         // Add or remove notification for each item
-        bottomBar.setNotification("1", 0);
+//        bottomBar.setNotification("1", 0);
         // OR
         AHNotification notification = new AHNotification.Builder()
                 .setText("1")
                 .setBackgroundColor(ContextCompat.getColor(this, R.color.yellow))
                 .setTextColor(ContextCompat.getColor(this, R.color.black_overlay))
                 .build();
-        bottomBar.setNotification(notification, 2);
+//        bottomBar.setNotification(notification, 2);
 
         // Set listeners
         bottomBar.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
