@@ -27,4 +27,6 @@
 
     <string name="loc_fail">定位失败</string>
     <string name="loc_doing">正在定位....</string>
+
+    <string name="none_goods">未选购商品</string>
 </resources>

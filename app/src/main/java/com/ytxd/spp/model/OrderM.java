@@ -1,6 +1,7 @@
 package com.ytxd.spp.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by XY on 2017/6/19.
@@ -74,6 +75,7 @@ public class OrderM implements Serializable {
     private Object ModifyTime;
     private String SupermarketCode1;
     private String Name;
+    private List<ShoppingCartM.Goods> goods;
 
     public String getOrderCode() {
         return OrderCode;
@@ -329,5 +331,13 @@ public class OrderM implements Serializable {
 
     public void setName(String Name) {
         this.Name = Name;
+    }
+
+    public List<ShoppingCartM.Goods> getGoods() {
+        return goods;
+    }
+
+    public void setGoods(List<ShoppingCartM.Goods> goods) {
+        this.goods = goods;
     }
 }

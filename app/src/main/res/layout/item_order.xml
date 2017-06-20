@@ -40,7 +40,7 @@
                         android:id="@+id/tv_mer_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="匿名用户"
+                        android:text="@string/null_s"
                         android:textColor="@color/black_overlay"
                         android:textSize="@dimen/text_size_common_btn" />
 
@@ -50,7 +50,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right"
-                        android:text="订单已完成"
+                        android:text="@string/null_s"
                         android:textColor="@color/hint_gray"
                         android:textSize="@dimen/text_size_small" />
 
@@ -62,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_ui_margin_small"
-                    android:text="2013-03-23 09:12"
+                    android:text="@string/null_s"
                     android:textColor="@color/hint_gray"
                     android:textSize="@dimen/text_size_micro" />
 
@@ -77,7 +77,7 @@
                         android:id="@+id/tv_goods_desr"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="猪肉炖粉条等5件商品"
+                        android:text="@string/null_s"
                         android:textColor="@color/gray"
                         android:textSize="@dimen/text_size_common_s" />
 
@@ -93,7 +93,7 @@
                         android:id="@+id/tv_total_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="¥45.0"
+                        android:text="¥0.00"
                         android:textColor="@color/price_color"
                         android:textSize="@dimen/text_size_common_s" />
 
@@ -101,6 +101,7 @@
 
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_ui_margin_large"
@@ -146,12 +147,23 @@
             android:orientation="horizontal">
 
             <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_pay"
+                style="@style/Common_Border_Btn"
+                android:layout_marginRight="@dimen/default_ui_margin_medium"
+                android:background="@drawable/selectable_pricecolor_border_btn"
+                android:text="去支付"
+                android:textColor="@color/price_color" />
+
+            <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_again"
                 style="@style/Common_Border_Btn"
                 android:layout_marginRight="@dimen/default_ui_margin_medium"
                 android:text="再来一单" />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_evaluate"
                 style="@style/Common_Border_Btn"
                 android:background="@drawable/selectable_pricecolor_border_btn"

@@ -71,7 +71,7 @@ public class ShoppingCartM implements Serializable {
         double price = 0;
         try {
             for (int i = 0; i < goods.size(); i++) {
-                price = goods.get(i).getCount() * Double.valueOf(goods.get(i).getGoodM().getXPrice());
+                price =price+ goods.get(i).getCount() * Double.valueOf(goods.get(i).getGoodM().getXPrice());
             }
             priceS= CommonUtils.getFloatString2(Float.valueOf(price+""));
             return priceS;

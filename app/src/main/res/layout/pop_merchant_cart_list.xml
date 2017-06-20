@@ -4,6 +4,14 @@
     android:layout_height="match_parent"
     android:background="@color/transparent">
 
+    <View
+        android:id="@+id/v"
+        android:background="@color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/linearlayout"
+        android:layout_alignParentTop="true"></View>
+
     <LinearLayout
         android:id="@+id/linearlayout"
         android:layout_width="match_parent"
@@ -50,29 +58,30 @@
             android:id="@+id/rl_content"
             android:layout_width="match_parent"
             android:layout_height="340.0dip">
+
             <ListView
                 android:id="@+id/lv"
-                android:cacheColorHint="@color/transparent"
-                android:listSelector="@color/transparent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:cacheColorHint="@color/transparent"
                 android:divider="@color/common_divider_color"
                 android:dividerHeight="@dimen/common_divider_height"
+                android:listSelector="@color/transparent"
                 android:paddingLeft="@dimen/padding_left"
                 android:paddingRight="@dimen/padding_left"
                 android:scrollbars="none" />
 
-         <!--   <TextView
-                android:id="@+id/tv_empty"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:gravity="center"
-                android:visibility="gone"
-                android:textSize="@dimen/sp12"
-                android:textColor="@color/gray"
-                android:text="购物车没有任何商品"/>
--->
+            <!--   <TextView
+                   android:id="@+id/tv_empty"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:background="@color/white"
+                   android:gravity="center"
+                   android:visibility="gone"
+                   android:textSize="@dimen/sp12"
+                   android:textColor="@color/gray"
+                   android:text="购物车没有任何商品"/>
+   -->
         </RelativeLayout>
 
     </LinearLayout>
@@ -103,7 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="共计¥0.0"
+                    android:text="未选购商品"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp18"

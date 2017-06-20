@@ -38,7 +38,7 @@ public class ShoppingCartUtil {
         if (beans.size() > 0) {
             LocalShoppingCartM shoppingCartM = beans.get(0);
             for (int i = 0; i < shoppingCartM.getShoppingCartM().goods.size(); i++) {
-                if (shoppingCartM.getShoppingCartM().goods.get(i).getGoodM().getGoodsCode().equals(goodCode) ) {
+                if (shoppingCartM.getShoppingCartM().goods.get(i).getGoodM().getGoodsCode().equals(goodCode)) {
                     c = shoppingCartM.getShoppingCartM().goods.get(i).getCount();
                     break;
                 }
@@ -49,17 +49,17 @@ public class ShoppingCartUtil {
 
     }
 
-    public static  boolean goodMinusEvent(Context context, String merchantCode, GoodM goodM){
+    public static boolean goodMinusEvent(Context context, String merchantCode, GoodM goodM) {
         boolean canrefresh = false;
         if (CommonUtils.isDBInit(context)) {
             QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
                     .whereEquals(LocalShoppingCartM.CARTCODE, merchantCode);
             List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
             if (beans.size() > 0) {
-                LocalShoppingCartM shoppingCartM= beans.get(0);
+                LocalShoppingCartM shoppingCartM = beans.get(0);
                 shoppingCartM.getShoppingCartM().removeGood(goodM);
-                int ch=App.liteOrm.update(shoppingCartM);
-                LogUtils.e(ch+"");
+                int ch = App.liteOrm.update(shoppingCartM);
+                LogUtils.e(ch + "");
                 canrefresh = true;
 
             }
@@ -68,24 +68,24 @@ public class ShoppingCartUtil {
 
     }
 
-    public static  boolean goodAddEvent(Context context, MerchantM merchant, GoodM goodM){
+    public static boolean goodAddEvent(Context context, MerchantM merchant, GoodM goodM) {
         boolean canrefresh = false;
         if (CommonUtils.isDBInit(context)) {
             QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
                     .whereEquals(LocalShoppingCartM.CARTCODE, merchant.getSupermarketCode());
             List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
             if (beans.size() > 0) {
-                LocalShoppingCartM shoppingCartM= beans.get(0);
+                LocalShoppingCartM shoppingCartM = beans.get(0);
                 shoppingCartM.getShoppingCartM().addGood(goodM);
-                int ch=App.liteOrm.update(shoppingCartM);
-                LogUtils.e(ch+"");
+                int ch = App.liteOrm.update(shoppingCartM);
+                LogUtils.e(ch + "");
             } else {
                 ShoppingCartM shoppingCartM = new ShoppingCartM();
                 shoppingCartM.setMerchantM(merchant);
                 shoppingCartM.addGood(goodM);
                 LocalShoppingCartM localShoppingCartM = new LocalShoppingCartM(merchant.getSupermarketCode(), shoppingCartM);
-                long cc=App.liteOrm.save(localShoppingCartM);
-                LogUtils.e(cc+"");
+                long cc = App.liteOrm.save(localShoppingCartM);
+                LogUtils.e(cc + "");
             }
             canrefresh = true;
         }
@@ -93,17 +93,17 @@ public class ShoppingCartUtil {
 
     }
 
-    public static  boolean goodClearEvent(Context context, String merchantCode){
+    public static boolean goodClearEvent(Context context, String merchantCode) {
         boolean canrefresh = false;
         if (CommonUtils.isDBInit(context)) {
             QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
                     .whereEquals(LocalShoppingCartM.CARTCODE, merchantCode);
             List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
             if (beans.size() > 0) {
-                LocalShoppingCartM shoppingCartM= beans.get(0);
+                LocalShoppingCartM shoppingCartM = beans.get(0);
                 shoppingCartM.getShoppingCartM().clearGoods();
-                int ch=App.liteOrm.update(shoppingCartM);
-                LogUtils.e(ch+"");
+                int ch = App.liteOrm.update(shoppingCartM);
+                LogUtils.e(ch + "");
                 canrefresh = true;
             }
         }
@@ -111,17 +111,17 @@ public class ShoppingCartUtil {
 
     }
 
-    public static  void showGoodStandDialog(int type,String merchantCode, GoodM goodM, FragmentManager fragmentManager){
+    public static void showGoodStandDialog(int type, String merchantCode, GoodM goodM, FragmentManager fragmentManager) {
         SelectGoodStandDialog standDialog = new SelectGoodStandDialog();
         Bundle data = new Bundle();
         data.putSerializable("data", goodM);
         data.putInt("type", type);
-        data.putCharSequence("merchantCode",merchantCode);
+        data.putCharSequence("merchantCode", merchantCode);
         standDialog.setArguments(data);
         standDialog.show(fragmentManager, "SelectGoodStandDialog");
     }
 
-    public static  void addGoodAnimation(Context context, View view, ImageView shoppingCart, View top, final ViewGroup mainLayout){
+    public static void addGoodAnimation(Context context, View view, ImageView shoppingCart, View top, final ViewGroup mainLayout) {
         int[] addLocation = new int[2];
         int[] cartLocation = new int[2];
         int[] recycleLocation = new int[2];
@@ -182,16 +182,19 @@ public class ShoppingCartUtil {
         animatorSet.start();
     }
 
-    public static  void deleteCart(Context context, String merchantCode){
+    public static boolean deleteCart(Context context, String merchantCode) {
+        boolean isR = false;
         if (CommonUtils.isDBInit(context)) {
             QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
                     .whereEquals(LocalShoppingCartM.CARTCODE, merchantCode);
             List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
             if (beans.size() > 0) {
-                LocalShoppingCartM shoppingCartM= beans.get(0);
+                LocalShoppingCartM shoppingCartM = beans.get(0);
                 App.liteOrm.delete(shoppingCartM);
+                isR = true;
             }
         }
+        return isR;
 
     }
 

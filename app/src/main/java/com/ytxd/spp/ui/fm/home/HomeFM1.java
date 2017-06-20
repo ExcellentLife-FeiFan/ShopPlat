@@ -128,6 +128,7 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
         if (null != event.getAddressM()) {
             addressM = event.getAddressM();
             tvAddress.setText(event.getAddressM().getTitle());
+            msv.setViewState(MultiStateView.VIEW_STATE_LOADING);
             presenter.getSPMList(addressM.getCity());
         }
     }

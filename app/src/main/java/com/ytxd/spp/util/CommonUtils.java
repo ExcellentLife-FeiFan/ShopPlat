@@ -34,7 +34,8 @@ public class CommonUtils {
 
     public static final int REFRESH = 1;
     public static final int LODEMORE = 2;
-
+    public static final String UN_PAY = "0001";
+    public static final String HAVE_PAY = "0002";
     private static CustomDialog dialog;
 
     public static boolean isLogined(final Activity context) {
@@ -142,6 +143,9 @@ public class CommonUtils {
 
     public static int getColor(Context context, int res) {
         return context.getResources().getColor(res);
+    }
+    public static String getString(int res) {
+        return App.context.getResources().getString(res);
     }
 
     public static Drawable getDrawable(Context context, int res) {

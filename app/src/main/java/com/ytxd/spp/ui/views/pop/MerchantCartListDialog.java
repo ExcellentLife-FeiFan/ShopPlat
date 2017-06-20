@@ -24,6 +24,7 @@ import com.ytxd.spp.model.LocalShoppingCartM;
 import com.ytxd.spp.model.ShoppingCartM;
 import com.ytxd.spp.ui.activity.order.EnsureOrderActivity;
 import com.ytxd.spp.ui.adapter.CartListDialogLV;
+import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.ShoppingCartUtil;
 import com.ytxd.spp.util.ToastUtil;
 
@@ -102,11 +103,15 @@ public class MerchantCartListDialog extends Dialog {
         if (beans.size() > 0) {
             LocalShoppingCartM shoppingCartM = beans.get(0);
             goodListA.addItems(shoppingCartM.getShoppingCartM().getGoods(), true);
-            String n = shoppingCartM.getShoppingCartM().getGoodsCounts() + "";
-            String p = "共计¥" + shoppingCartM.getShoppingCartM().getPirceTotal();
-            shoppingCartTotalNum.setText(n);
-            shoppingCartTotalTv.setText(p);
+            int count = shoppingCartM.getShoppingCartM().getGoodsCounts();
+            if (count != 0) {
+                shoppingCartTotalNum.setText(count + "");
+                shoppingCartTotalTv.setText("共计¥" + shoppingCartM.getShoppingCartM().getPirceTotal());
+                return;
+            }
         }
+        shoppingCartTotalNum.setText("0");
+        shoppingCartTotalTv.setText(CommonUtils.getString(R.string.none_goods));
     }
 
     @Override
@@ -157,7 +162,7 @@ public class MerchantCartListDialog extends Dialog {
     }
 
 
-    @OnClick({R.id.tv_clear, R.id.btn_ok, R.id.shopping_cart_layout})
+    @OnClick({R.id.v,R.id.tv_clear, R.id.btn_ok, R.id.shopping_cart_layout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_clear:
@@ -172,6 +177,7 @@ public class MerchantCartListDialog extends Dialog {
                 intent.putExtra("merchantCode", merchantCode);
                 getContext().startActivity(intent);
                 break;
+            case R.id.v:
             case R.id.shopping_cart_layout:
                 dismiss();
                 break;

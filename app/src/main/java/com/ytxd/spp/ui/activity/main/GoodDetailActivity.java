@@ -20,7 +20,7 @@ import com.mcxtzhang.lib.AnimShopButton;
 import com.mcxtzhang.lib.IOnAddDelListener;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.App;
-import com.ytxd.spp.base.BaseActivity;
+import com.ytxd.spp.base.BaseActivity2;
 import com.ytxd.spp.event.CartListClearRefreshEvent;
 import com.ytxd.spp.event.GoodAddEvent;
 import com.ytxd.spp.event.GoodMinusEvent;
@@ -43,7 +43,7 @@ import de.greenrobot.event.EventBus;
 
 import static com.ytxd.spp.R.id.rl_add_btn;
 
-public class GoodDetailActivity extends BaseActivity {
+public class GoodDetailActivity extends BaseActivity2 {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -92,9 +92,9 @@ public class GoodDetailActivity extends BaseActivity {
     @BindView(R.id.mainlayout)
     RelativeLayout mainlayout;
     @BindView(R.id.tv_total_p)
-    TextView tvShoppingCartTotalTv;
+    TextView tvTotalP;
     @BindView(R.id.tv_total_c)
-    TextView tvShoppingCartTotalNum;
+    TextView tvTotalNum;
 
     String merchantCode;
     GoodM goodM;
@@ -106,6 +106,7 @@ public class GoodDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_good_detail);
         ButterKnife.bind(this);
+        SystemBarHelper.immersiveStatusBar(this,0f);
         goodM = (GoodM) getIntent().getSerializableExtra("data");
         merchantCode = getIntent().getStringExtra("merchantCode");
         merchantM= (MerchantM) getIntent().getSerializableExtra("merchant");
@@ -185,13 +186,20 @@ public class GoodDetailActivity extends BaseActivity {
         List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
         if (beans.size() > 0) {
             LocalShoppingCartM shoppingCartM = beans.get(0);
-            String n = shoppingCartM.getShoppingCartM().getGoodsCounts() + "";
-            String p = "共计¥" + shoppingCartM.getShoppingCartM().getPirceTotal();
-            tvShoppingCartTotalNum.setText(n);
-            tvShoppingCartTotalTv.setText(p);
+            int count = shoppingCartM.getShoppingCartM().getGoodsCounts();
+            if (count != 0) {
+                tvTotalNum.setText(count + "");
+                tvTotalP.setText("共计¥" + shoppingCartM.getShoppingCartM().getPirceTotal());
+            }else{
+                tvTotalNum.setText("0");
+                tvTotalP.setText(CommonUtils.getString(R.string.none_goods));
+            }
             if (null != cartListDialog) {
                 cartListDialog.setData();
             }
+        }else{
+            tvTotalNum.setText("0");
+            tvTotalP.setText(CommonUtils.getString(R.string.none_goods));
         }
         btnAdd.setCount(ShoppingCartUtil.getLocalCartGoodCount(goodM.getGoodsCode(), merchantCode));
         btnAdd.invalidate();

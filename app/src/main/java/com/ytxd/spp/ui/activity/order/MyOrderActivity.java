@@ -11,6 +11,7 @@ import com.kennyc.view.MultiStateView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
+import com.ytxd.spp.event.RefreshOrderListEvent;
 import com.ytxd.spp.model.OrderM;
 import com.ytxd.spp.presenter.OrderActivityPresenter;
 import com.ytxd.spp.ui.adapter.HomeOrderA;
@@ -58,7 +59,7 @@ public class MyOrderActivity extends BaseActivity<OrderActivityPresenter> implem
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                startActivity(OrderDetailActivity.class);
+                startActivity(OrderDetailActivity.class,"data",mAdapter.getItem(i));
             }
         });
         presenter.getOrderList(CommonUtils.REFRESH, page);
@@ -124,5 +125,11 @@ public class MyOrderActivity extends BaseActivity<OrderActivityPresenter> implem
         } else {
             msvOrder.setViewState(MultiStateView.VIEW_STATE_EMPTY);
         }
+    }
+
+    public void onEvent(RefreshOrderListEvent event) {
+        msvOrder.setViewState(MultiStateView.VIEW_STATE_LOADING);
+        presenter.getOrderList(CommonUtils.REFRESH, 1);
+
     }
 }

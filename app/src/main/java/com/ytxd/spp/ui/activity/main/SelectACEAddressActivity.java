@@ -47,7 +47,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
-public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresenter> implements View.OnClickListener, GeocodeSearch.OnGeocodeSearchListener, PoiSearch.OnPoiSearchListener,IHomeSelectACEView {
+public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresenter> implements View.OnClickListener, PoiSearch.OnPoiSearchListener, IHomeSelectACEView {
 
     @BindView(R.id.tv_city)
     TextView tvCity;
@@ -102,6 +102,12 @@ public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresente
         CommonUtils.setEmptyViewForSLV(this, rl_lv_near_ad, lvNearAd);
         selectACEAdLV = new SelectACEAdLV(new ArrayList<AddressM>(), this);
         lvAdData.setAdapter(selectACEAdLV);
+        lvAdData.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                searchPoint2(selectACEAdLV.getItem(position),new LatLonPoint(Double.valueOf(selectACEAdLV.getItem(position).getLat()), Double.valueOf(selectACEAdLV.getItem(position).getLng())));
+            }
+        });
         mNearAddAdapter = new AddressSearchLV(new ArrayList<PoiItem>(), this);
         lvNearAd.setAdapter(mNearAddAdapter);
         mSearchAddAdapter = new AddressSearchLV(new ArrayList<PoiItem>(), this);
@@ -109,7 +115,7 @@ public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresente
         lvNearAd.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                EventBus.getDefault().post(new HomeAddressChangeEvent(new HomeAddressM(mNearAddAdapter.getItem(position).getCityName(),mNearAddAdapter.getItem(position).getTitle()
+                EventBus.getDefault().post(new HomeAddressChangeEvent(new HomeAddressM(mNearAddAdapter.getItem(position).getCityName(), mNearAddAdapter.getItem(position).getTitle()
                         , mNearAddAdapter.getItem(position).toString()
                         , mNearAddAdapter.getItem(position).getLatLonPoint())));
                 AppManager.getInstance().killActivity(activity);
@@ -119,7 +125,7 @@ public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresente
         lvSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                EventBus.getDefault().post(new HomeAddressChangeEvent(new HomeAddressM(mNearAddAdapter.getItem(position).getCityName(),mSearchAddAdapter.getItem(position).getTitle()
+                EventBus.getDefault().post(new HomeAddressChangeEvent(new HomeAddressM(mNearAddAdapter.getItem(position).getCityName(), mSearchAddAdapter.getItem(position).getTitle()
                         , mSearchAddAdapter.getItem(position).toString()
                         , mSearchAddAdapter.getItem(position).getLatLonPoint())));
                 AppManager.getInstance().killActivity(activity);
@@ -157,9 +163,52 @@ public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresente
         });
     }
 
-    public void searchN(LatLonPoint point) {
+    public void searchPoint1(LatLonPoint point) {
         GeocodeSearch geocoderSearch = new GeocodeSearch(this);
-        geocoderSearch.setOnGeocodeSearchListener(this);
+        geocoderSearch.setOnGeocodeSearchListener(new GeocodeSearch.OnGeocodeSearchListener() {
+            @Override
+            public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
+                try {
+                    List<PoiItem> items = regeocodeResult.getRegeocodeAddress().getPois();
+                    if (items.size() > 0) {
+                        items.get(0).setCityName(regeocodeResult.getRegeocodeAddress().getCity());
+                        items.get(0).setAdName(regeocodeResult.getRegeocodeAddress().getDistrict());
+                    }
+                    mNearAddAdapter.addItems(items, true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
+
+            }
+        });
+        RegeocodeQuery query = new RegeocodeQuery(point, 200, GeocodeSearch.AMAP);
+        geocoderSearch.getFromLocationAsyn(query);
+    }
+
+    public void searchPoint2(final AddressM item, final LatLonPoint point) {
+        GeocodeSearch geocoderSearch = new GeocodeSearch(this);
+        geocoderSearch.setOnGeocodeSearchListener(new GeocodeSearch.OnGeocodeSearchListener() {
+            @Override
+            public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
+                regeocodeResult.getRegeocodeAddress().getBusinessAreas();
+                HomeAddressM addressM = new HomeAddressM();
+                addressM.setCity(regeocodeResult.getRegeocodeAddress().getCity());
+                addressM.setTitle(item.getAddressTitle());
+                addressM.setAddress(item.getAddressDescribe());
+                addressM.setLatLng(point);
+                EventBus.getDefault().post(new HomeAddressChangeEvent(addressM));
+                AppManager.getInstance().killActivity(activity);
+            }
+
+            @Override
+            public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
+
+            }
+        });
         RegeocodeQuery query = new RegeocodeQuery(point, 200, GeocodeSearch.AMAP);
         geocoderSearch.getFromLocationAsyn(query);
     }
@@ -211,20 +260,18 @@ public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresente
     }
 
     public void onEvent(AMapLocationUpdateEvent event) {
-        if (event.getaMapLocation() != null) {
-
+        if (event.getaMapLocation() != null && event.getaMapLocation().getErrorCode() == 0) {
             HomeAddressM address = new HomeAddressM();
             address.setTitle(event.getaMapLocation().getPoiName());
             address.setAddress(event.getaMapLocation().getAddress());
             address.setCity(event.getaMapLocation().getCity());
             address.setLatLng(new LatLonPoint(event.getaMapLocation().getLatitude(), event.getaMapLocation().getLongitude()));
             addressM = address;
-
             tvLocAd.setText(event.getaMapLocation().getAddress());
             loc = event.getaMapLocation();
             city = event.getaMapLocation().getCity();
             tvCity.setText(event.getaMapLocation().getCity());
-            searchN(new LatLonPoint(event.getaMapLocation().getLatitude(), event.getaMapLocation().getLongitude()));
+            searchPoint1(new LatLonPoint(event.getaMapLocation().getLatitude(), event.getaMapLocation().getLongitude()));
         } else {
             tvLocAd.setText(getString(R.string.loc_fail));
             tvCity.setText(getString(R.string.loc_fail));
@@ -244,21 +291,6 @@ public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresente
                 this.city = city.getAreaName();
             }
         }
-    }
-
-    @Override
-    public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
-        List<PoiItem> items = regeocodeResult.getRegeocodeAddress().getPois();
-        if (items.size() > 0) {
-            items.get(0).setCityName(regeocodeResult.getRegeocodeAddress().getCity());
-            items.get(0).setAdName(regeocodeResult.getRegeocodeAddress().getDistrict());
-        }
-        mNearAddAdapter.addItems(items, true);
-    }
-
-    @Override
-    public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
-
     }
 
     @Override
@@ -296,7 +328,7 @@ public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresente
 
     @Override
     public void lodeSuccess(List<AddressM> items) {
-        selectACEAdLV.addItems(items,true);
+        selectACEAdLV.addItems(items, true);
     }
 
     @Override

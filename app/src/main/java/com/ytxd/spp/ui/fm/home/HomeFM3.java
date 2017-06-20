@@ -13,6 +13,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kennyc.view.MultiStateView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.BaseFragment;
+import com.ytxd.spp.event.RefreshOrderListEvent;
 import com.ytxd.spp.model.OrderM;
 import com.ytxd.spp.presenter.HomeOrderPresenter;
 import com.ytxd.spp.ui.activity.order.MyOrderActivity;
@@ -73,7 +74,7 @@ public class HomeFM3 extends BaseFragment<HomeOrderPresenter> implements SwipeRe
         orderA.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                startActivity(OrderDetailActivity.class);
+                startActivity(OrderDetailActivity.class,"data",orderA.getItem(i));
             }
         });
         presenter.getOrderList();
@@ -128,5 +129,12 @@ public class HomeFM3 extends BaseFragment<HomeOrderPresenter> implements SwipeRe
     public void lodeFailed() {
         refreshLayout.setRefreshing(false);
         msvOrder.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+    }
+
+
+    public void onEvent(RefreshOrderListEvent event) {
+        msvOrder.setViewState(MultiStateView.VIEW_STATE_LOADING);
+        presenter.getOrderList();
+
     }
 }

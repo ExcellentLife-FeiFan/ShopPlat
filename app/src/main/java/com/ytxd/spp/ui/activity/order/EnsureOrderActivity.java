@@ -77,18 +77,10 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
     TextView tvDiscountP;
     @BindView(R.id.tv_real_pay)
     TextView tvRealPay;
-    /*   @BindView(R.id.cb_p_wechat)
-       CheckBox cb_p_wechat;
-       @BindView(R.id.cb_p_alipay)
-       CheckBox cb_p_alipay;
-       @BindView(R.id.cb_p_onget)
-       CheckBox cbPOnget;*/
     @BindView(R.id.tv_youhuiquan)
     TextView tvYouhuiquan;
     @BindView(R.id.ll_youhuiquan)
     LinearLayout llYouhuiquan;
-    @BindView(R.id.tv_total_p_2)
-    TextView tvTotalP2;
     @BindView(R.id.tv_distri_p)
     TextView tvDistriP;
     @BindView(R.id.tv_activity_discount)
@@ -136,12 +128,11 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
                     ImageLoadUtil.setImageNP(merchant.getLogoUrl(), civMerchant, this);
                     tvTotalP.setText("总计 ¥" + shoppingCartM.getPirceTotal());
                     tvRealPay.setText("¥" + shoppingCartM.getPirceTotal());
-                    tvTotalP2.setText("¥" + shoppingCartM.getPirceTotal());
                     tvTotalP3.setText("¥" + shoppingCartM.getPirceTotal());
                 }
             }
         }
-        mrgPay.setOnCheckedChangeListener(new MutilRadioGroup.OnCheckedChangeListener() {
+/*        mrgPay.setOnCheckedChangeListener(new MutilRadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(MutilRadioGroup group, int checkedId) {
                 if (checkedId == R.id.cb_p_wechat) {
@@ -152,7 +143,7 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
                     payType = "0003";
                 }
             }
-        });
+        });*/
     }
 
     @Override
@@ -204,6 +195,7 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
                     orderM.setSJPrice(shoppingCartM.getPirceTotal());
                     orderM.setYPrice(shoppingCartM.getPirceTotal());
                     orderM.setSupermarketCode(merchantCode);
+                    orderM.setName(shoppingCartM.getMerchantM().getName());
                     orderM.setSDTime(AbDateUtil.getStringByFormat(new Date(), AbDateUtil.dateFormatYMDHMS));
                     presenter.ensureOrder(orderM);
                 }

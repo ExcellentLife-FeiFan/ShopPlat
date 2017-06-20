@@ -32,6 +32,7 @@
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
                     android:src="@color/img_bg"
+                    android:scaleType="centerCrop"
                     app:riv_corner_radius="@dimen/common_radius" />
 
             </RelativeLayout>

@@ -26,7 +26,7 @@ import com.litesuits.orm.db.assit.QueryBuilder;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.App;
-import com.ytxd.spp.base.BaseActivity;
+import com.ytxd.spp.base.BaseActivity2;
 import com.ytxd.spp.event.CartListClearRefreshEvent;
 import com.ytxd.spp.event.CartListDialogShowEvent;
 import com.ytxd.spp.event.GoodAddEvent;
@@ -44,6 +44,7 @@ import com.ytxd.spp.ui.views.MyExpandableLayout;
 import com.ytxd.spp.ui.views.SimpleDividerDecoration;
 import com.ytxd.spp.ui.views.pop.MerchantCartListDialog;
 import com.ytxd.spp.util.AbStrUtil;
+import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.ImageLoadUtil;
 import com.ytxd.spp.util.ShoppingCartUtil;
 import com.ytxd.spp.view.IMerchantView;
@@ -56,7 +57,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MerchantDetailActivity extends BaseActivity<MerchantPresenter> implements IMerchantView {
+public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> implements IMerchantView {
 
     @BindView(R.id.iv_bg)
     ImageView ivBg;
@@ -121,6 +122,7 @@ public class MerchantDetailActivity extends BaseActivity<MerchantPresenter> impl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_merchant_detail);
         ButterKnife.bind(this);
+        SystemBarHelper.immersiveStatusBar(this,0f);
         merchantM = (MerchantM) getIntent().getSerializableExtra("data");
         merchantCode = merchantM.getSupermarketCode();
         initViews();
@@ -264,13 +266,20 @@ public class MerchantDetailActivity extends BaseActivity<MerchantPresenter> impl
         List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
         if (beans.size() > 0) {
             LocalShoppingCartM shoppingCartM = beans.get(0);
-            String n = shoppingCartM.getShoppingCartM().getGoodsCounts() + "";
-            String p = "共计¥" + shoppingCartM.getShoppingCartM().getPirceTotal();
-            tvTotalNum.setText(n);
-            tvTotalP.setText(p);
+            int count = shoppingCartM.getShoppingCartM().getGoodsCounts();
+            if (count != 0) {
+                tvTotalNum.setText(count + "");
+                tvTotalP.setText("共计¥" + shoppingCartM.getShoppingCartM().getPirceTotal());
+            }else{
+                tvTotalNum.setText("0");
+                tvTotalP.setText(CommonUtils.getString(R.string.none_goods));
+            }
             if (null != cartListDialog) {
                 cartListDialog.setData();
             }
+        }else{
+            tvTotalNum.setText("0");
+            tvTotalP.setText(CommonUtils.getString(R.string.none_goods));
         }
         if (null != goodA) {
             goodA.notifyDataSetChanged();
@@ -279,27 +288,6 @@ public class MerchantDetailActivity extends BaseActivity<MerchantPresenter> impl
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_merchant_detail, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-
-            case R.id.cart:
-                startActivity(ShoppingCartActivity.class);
-                break;
-
-            case R.id.more:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
 
     @OnClick({R.id.btn_ok, R.id.shopping_cart_layout})
@@ -373,6 +361,26 @@ public class MerchantDetailActivity extends BaseActivity<MerchantPresenter> impl
 
     public void onEvent(MerchantSelectGoodStandEvent event) {
         ShoppingCartUtil.showGoodStandDialog(1, merchantCode, event.goodM, getFragmentManager());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_merchant_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.cart:
+                startActivity(ShoppingCartActivity.class);
+                break;
+
+            case R.id.more:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

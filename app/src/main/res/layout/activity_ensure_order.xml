@@ -187,57 +187,6 @@
 
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp2"
-                        android:background="@drawable/shape_gray_line_dash"
-                        android:layerType="software" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_remark"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/common_viewgroup_height"
-                        android:background="@drawable/selector_bg_viewgroup_click5"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-
-                        android:paddingLeft="@dimen/default_ui_margin">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/default_ui_margin_medium"
-                            android:src="@drawable/ic_edit" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingRight="@dimen/default_ui_margin_small"
-                            android:text="备注"
-                            android:textColor="@color/black_overlay2"
-                            android:textSize="@dimen/text_size_common" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right">
-
-                            <TextView
-                                android:id="@+id/tv_remark"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:drawableRight="@drawable/ic_gray_to"
-                                android:maxLength="11"
-                                android:paddingRight="@dimen/default_ui_margin_small"
-                                android:text="输入其他的要求"
-                                android:textColor="@color/hint_gray"
-                                android:textSize="@dimen/text_size_common" />
-
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
 
                 </LinearLayout>
 
@@ -295,6 +244,86 @@
 
                     <include layout="@layout/line_gray"></include>
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/common_viewgroup_height"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/default_ui_margin"
+                        android:paddingRight="@dimen/default_ui_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="配送费"
+                            android:textColor="@color/black_overlay4"
+                            android:textSize="@dimen/text_size_common" />
+
+                        <TextView
+                            android:id="@+id/tv_distri_p"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="¥0"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_common" />
+
+                    </RelativeLayout>
+
+                    <include layout="@layout/line_gray"></include>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/common_viewgroup_height"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/default_ui_margin"
+                        android:paddingRight="@dimen/default_ui_margin">
+
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="活动减免"
+                            android:textColor="@color/black_overlay4"
+                            android:textSize="@dimen/text_size_common" />
+
+                        <TextView
+                            android:id="@+id/tv_activity_discount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="¥0"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_common" />
+
+                    </RelativeLayout>
+
+                    <include layout="@layout/line_gray"></include>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/common_viewgroup_height"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/default_ui_margin"
+                        android:paddingRight="@dimen/default_ui_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="优惠券"
+                            android:textColor="@color/black_overlay4"
+                            android:textSize="@dimen/text_size_common" />
+
+                        <TextView
+                            android:id="@+id/tv_youhuiquan_discount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="¥0"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_common" />
+
+                    </RelativeLayout>
+                    <include layout="@layout/line_gray"></include>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/common_viewgroup_height"
@@ -360,6 +389,7 @@
 
                     <com.ytxd.spp.ui.views.MutilRadioGroup
                         android:id="@+id/mrg_pay"
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -462,6 +492,24 @@
                         </LinearLayout>
                     </com.ytxd.spp.ui.views.MutilRadioGroup>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/common_viewgroup_height"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/default_ui_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="@dimen/default_ui_margin_small"
+                            android:text="在线支付"
+                            android:textColor="@color/black_overlay"
+                            android:textSize="@dimen/text_size_common" />
+
+
+                    </LinearLayout>
+
                     <include layout="@layout/line_gray"></include>
 
                     <LinearLayout
@@ -501,126 +549,57 @@
 
                     </LinearLayout>
 
+                    <include layout="@layout/line_gray"></include>
+
+                    <LinearLayout
+                        android:id="@+id/ll_remark"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/common_viewgroup_height"
+                        android:background="@drawable/selector_bg_viewgroup_click5"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+
+                        android:paddingLeft="@dimen/default_ui_margin">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/default_ui_margin_medium"
+                            android:src="@drawable/ic_edit" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="@dimen/default_ui_margin_small"
+                            android:text="备注"
+                            android:textColor="@color/black_overlay2"
+                            android:textSize="@dimen/text_size_common" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right">
+
+                            <TextView
+                                android:id="@+id/tv_remark"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableRight="@drawable/ic_gray_to"
+                                android:maxLength="11"
+                                android:paddingRight="@dimen/default_ui_margin_small"
+                                android:text="输入其他的要求"
+                                android:textColor="@color/hint_gray"
+                                android:textSize="@dimen/text_size_common" />
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
                 </LinearLayout>
 
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/drawable_padding"
-                    android:background="@drawable/bg_wihte_corner"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/common_viewgroup_height"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="@dimen/default_ui_margin"
-                        android:paddingRight="@dimen/default_ui_margin">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="商品总额"
-                            android:textColor="@color/black_overlay4"
-                            android:textSize="@dimen/text_size_common" />
-
-                        <TextView
-                            android:id="@+id/tv_total_p_2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:text="¥112"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_common" />
-
-                    </RelativeLayout>
-
-                    <include layout="@layout/line_gray"></include>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/common_viewgroup_height"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="@dimen/default_ui_margin"
-                        android:paddingRight="@dimen/default_ui_margin">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="配送费"
-                            android:textColor="@color/black_overlay4"
-                            android:textSize="@dimen/text_size_common" />
-
-                        <TextView
-                            android:id="@+id/tv_distri_p"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:text="¥0"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_common" />
-
-                    </RelativeLayout>
-
-                    <include layout="@layout/line_gray"></include>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/common_viewgroup_height"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="@dimen/default_ui_margin"
-                        android:paddingRight="@dimen/default_ui_margin">
-
-                        <TextView
-
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="活动减免"
-                            android:textColor="@color/black_overlay4"
-                            android:textSize="@dimen/text_size_common" />
-
-                        <TextView
-                            android:id="@+id/tv_activity_discount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:text="¥0"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_common" />
-
-                    </RelativeLayout>
-
-                    <include layout="@layout/line_gray"></include>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/common_viewgroup_height"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="@dimen/default_ui_margin"
-                        android:paddingRight="@dimen/default_ui_margin">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="优惠券"
-                            android:textColor="@color/black_overlay4"
-                            android:textSize="@dimen/text_size_common" />
-
-                        <TextView
-                            android:id="@+id/tv_youhuiquan_discount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:text="¥0"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_common" />
-
-                    </RelativeLayout>
-                </LinearLayout>
 
                 <android.support.v4.widget.Space
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/common_viewgroup_height_big"
                     android:layout_marginTop="@dimen/default_ui_margin" />
 

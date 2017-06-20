@@ -90,6 +90,7 @@ public class EnsureOrderPresenter extends BasePresenter<IEnsureOrderView> {
                         try {
                             ApiResult<Object> result = response.body();
                             if (result.isSuccess()) {
+                                order.setOrderCode((String) result.getObj());
                                 iView.ensureOrderSuccess(order);
                             } else {
                                 ToastUtil.showToastShort(context, result.getMsg());

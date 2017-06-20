@@ -56,16 +56,18 @@
                         android:paddingTop="@dimen/default_ui_margin_medium">
 
                         <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/civ"
                             android:layout_width="@dimen/dp30"
                             android:layout_height="@dimen/dp30"
                             android:layout_marginRight="@dimen/default_ui_margin_medium"
                             android:src="@drawable/ic_no_people" />
 
                         <TextView
+                            android:id="@+id/tv_mer_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingRight="@dimen/default_ui_margin_small"
-                            android:text="酒来酒往"
+                            android:text="@string/null_s"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_actionbar_title" />
 
@@ -78,6 +80,7 @@
 
 
                             <TextView
+                                android:id="@+id/tv_order_state"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:drawableLeft="@drawable/ic_gray_to"
@@ -116,19 +119,21 @@
 
 
                         <TextView
+                            android:id="@+id/tv_total_p"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingRight="@dimen/default_ui_margin_small"
-                            android:text="总计 ¥124"
+                            android:text="总计 ¥0.00"
                             android:textColor="@color/gray"
                             android:textSize="@dimen/text_size_common" />
 
 
                         <TextView
+                            android:id="@+id/tv_discount_p"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/default_ui_margin"
-                            android:text="优惠 ¥12"
+                            android:text="优惠 ¥0.00"
                             android:textColor="@color/gray"
                             android:textSize="@dimen/text_size_common" />
 
@@ -145,11 +150,12 @@
                                 android:textSize="@dimen/text_size_common" />
 
                             <TextView
+                                android:id="@+id/tv_real_pay"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/default_ui_margin_medium_s"
                                 android:layout_marginRight="@dimen/default_ui_margin"
-                                android:text="¥112"
+                                android:text="¥0.00"
                                 android:textColor="@color/price_color"
                                 android:textSize="@dimen/text_size_common" />
 
@@ -188,12 +194,13 @@
                             android:textSize="@dimen/text_size_common" />
 
                         <TextView
+                            android:id="@+id/tv_address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:lineSpacingExtra="@dimen/default_ui_margin_small"
                             android:maxLines="2"
-                            android:text="朝阳区百子湾路百子园5号楼2单元2单元2单元2单元901"
+                            android:text="@string/null_s"
                             android:textColor="@color/black_overlay"
                             android:textSize="@dimen/text_size_common" />
 
@@ -214,12 +221,13 @@
                             android:textSize="@dimen/text_size_common" />
 
                         <TextView
+                            android:id="@+id/tv_distri_type"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:lineSpacingExtra="@dimen/default_ui_margin_small"
                             android:maxLines="2"
-                            android:text="起手"
+                            android:text="@string/null_s"
                             android:textColor="@color/black_overlay"
                             android:textSize="@dimen/text_size_common" />
 
@@ -284,12 +292,13 @@
                             android:textSize="@dimen/text_size_common" />
 
                         <TextView
+                            android:id="@+id/tv_order_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:lineSpacingExtra="@dimen/default_ui_margin_small"
                             android:maxLines="2"
-                            android:text="2017-02-01 09:45"
+                            android:text="@string/null_s"
                             android:textColor="@color/black_overlay"
                             android:textSize="@dimen/text_size_common" />
 
@@ -310,12 +319,13 @@
                             android:textSize="@dimen/text_size_common" />
 
                         <TextView
+                            android:id="@+id/tv_order_code"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:lineSpacingExtra="@dimen/default_ui_margin_small"
                             android:maxLines="2"
-                            android:text="23423464625464565467"
+                            android:text="@string/null_s"
                             android:textColor="@color/black_overlay"
                             android:textSize="@dimen/text_size_common" />
 
@@ -341,24 +351,36 @@
                             android:ellipsize="end"
                             android:lineSpacingExtra="@dimen/default_ui_margin_small"
                             android:maxLines="2"
-                            android:text="及时送达"
+                            android:text="在线支付"
                             android:textColor="@color/black_overlay"
                             android:textSize="@dimen/text_size_common" />
 
                     </LinearLayout>
 
 
-
                 </LinearLayout>
             </LinearLayout>
         </com.ytxd.spp.ui.views.SpringScrollView>
 
-        <Button
-            android:id="@+id/btn_one_more"
-            style="@style/Common_PriceBtn_NoCorner"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/common_viewgroup_height"
-            android:layout_alignParentBottom="true"
-            android:text="再来一单" />
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+            <Button
+                android:id="@+id/btn_pay"
+                android:visibility="gone"
+                style="@style/Common_Btn_NoCorner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/common_viewgroup_height"
+                android:text="立即支付" />
+            <Button
+                android:id="@+id/btn_one_more"
+                android:visibility="gone"
+                style="@style/Common_PriceBtn_NoCorner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/common_viewgroup_height"
+                android:text="再来一单" />
+        </RelativeLayout>
+
     </RelativeLayout>
 </LinearLayout>

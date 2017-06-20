@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.flyco.systembar.SystemBarHelper;
 import com.ytxd.spp.R;
 import com.ytxd.spp.event.EmptyEvent;
 import com.ytxd.spp.presenter.BasePresenter;
@@ -21,7 +20,6 @@ import com.ytxd.spp.ui.views.ActionBarView;
 import com.ytxd.spp.ui.views.loadview.CustomDialog;
 import com.ytxd.spp.util.AbStrUtil;
 import com.ytxd.spp.util.AbWifiUtil;
-import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.LogUtils;
 import com.ytxd.spp.util.ToastUtil;
 
@@ -35,7 +33,7 @@ import de.greenrobot.event.EventBus;
  * Created by XY on 2016/11/2.
  */
 
-public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity {
+public abstract class BaseActivity2<T extends BasePresenter> extends AppCompatActivity {
     protected Activity activity;
     private CustomDialog dialog;//进度条
     protected ActionBarView actionBar;
@@ -53,7 +51,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        SystemBarHelper.tintStatusBar(this, CommonUtils.getColor(this,R.color.colorPrimary),0.1f);
         activity = this;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setupWindowAnimations();
