@@ -12,7 +12,11 @@
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp55"
+            android:paddingLeft="@dimen/default_ui_margin_small"
+            android:paddingRight="@dimen/default_ui_margin_small"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/default_ui_margin_medium"
+            android:paddingBottom="@dimen/default_ui_margin_medium"
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="2"

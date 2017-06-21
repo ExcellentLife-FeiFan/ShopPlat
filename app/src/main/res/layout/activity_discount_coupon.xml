@@ -11,12 +11,27 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/actionbar_height" />
 
-    <LinearLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <com.kennyc.view.MultiStateView
+            android:id="@+id/msv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:msv_emptyView="@layout/common_empty_view"
+            app:msv_loadingView="@layout/common_progress_view"
+            app:msv_viewState="loading">
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    </LinearLayout>
+        </com.kennyc.view.MultiStateView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

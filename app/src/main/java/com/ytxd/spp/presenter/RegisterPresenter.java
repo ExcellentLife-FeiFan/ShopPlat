@@ -34,7 +34,7 @@ public class RegisterPresenter extends BasePresenter<IRegisterView> {
                     public void onSuccess(Response<ApiResult<Object>> response) {
                         ApiResult result = response.body();
                         if (response.body().isSuccess()) {
-                            iView.startTimer();
+                            iView.sendCodeSuccess((String)result.getObj());
                             ToastUtil.showToastShort(context, "发送验证码成功");
                         } else {
                             ToastUtil.showToastShort(context, result.getMsg());

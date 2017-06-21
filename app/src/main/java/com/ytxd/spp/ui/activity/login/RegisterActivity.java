@@ -29,6 +29,7 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
     TextView tvGetSmscode;
     @BindView(R.id.et_pwd)
     EditText etPwd;
+    String smsCode;
 
     @Override
     protected void initPresenter() {
@@ -70,6 +71,7 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
             case R.id.btn_register:
                 String phone = etPhone.getText().toString();
                 String pwd = etPwd.getText().toString();
+                String code = etSmscode.getText().toString();
                 if (AbStrUtil.isEmpty(phone)) {
                     ToastUtil.showToastShort(this, "请输入手机号");
                 } else if (AbStrUtil.isEmpty(pwd)) {
@@ -89,8 +91,9 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
     }
 
     @Override
-    public void startTimer() {
+    public void sendCodeSuccess(String code) {
         time.start();
+        this.smsCode = code;
     }
 
     @Override

@@ -144,6 +144,7 @@ public class CommonUtils {
     public static int getColor(Context context, int res) {
         return context.getResources().getColor(res);
     }
+
     public static String getString(int res) {
         return App.context.getResources().getString(res);
     }
@@ -308,6 +309,11 @@ public class CommonUtils {
             items.add("");
         }
         return items;
+    }
+
+    public static String getFormatTimeString(String string) {
+
+        return string.replace("T", " ");
     }
 
 }

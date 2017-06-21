@@ -6,9 +6,10 @@ package com.ytxd.spp.view;
  */
 public interface IRegisterView extends IBaseView {
 
-    void startTimer();
 
     void stopTimer();
 
     void finishRegister();
+
+    void sendCodeSuccess(String code);
 }

@@ -17,7 +17,7 @@ import com.ytxd.spp.util.ToastUtil;
 import com.ytxd.spp.view.IHomeOrderView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -68,7 +68,7 @@ public class HomeOrderPresenter extends BasePresenter<IHomeOrderView> {
     }
 
     private void loadData(List<OrderM2> items) {
-        Map<String, List<OrderM2>> maps = new HashMap<>();
+        Map<String, List<OrderM2>> maps = new LinkedHashMap<>();
         for (int i = 0; i < items.size(); i++) {
             if (maps.containsKey(items.get(i).getOrderCode())) {
                 maps.get(items.get(i).getOrderCode()).add(items.get(i));

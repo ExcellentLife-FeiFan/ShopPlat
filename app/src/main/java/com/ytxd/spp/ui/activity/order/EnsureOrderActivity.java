@@ -22,6 +22,7 @@ import com.ytxd.spp.model.OrderM;
 import com.ytxd.spp.model.ShoppingCartM;
 import com.ytxd.spp.presenter.EnsureOrderPresenter;
 import com.ytxd.spp.ui.activity.mine.AddressManaActivity;
+import com.ytxd.spp.ui.activity.mine.DiscountCouponActivity;
 import com.ytxd.spp.ui.adapter.OrderSubGoodsLV;
 import com.ytxd.spp.ui.views.InListView;
 import com.ytxd.spp.ui.views.MutilRadioGroup;

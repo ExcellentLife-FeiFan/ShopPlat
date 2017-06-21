@@ -13,6 +13,7 @@ import com.ytxd.spp.base.BaseFragment;
 import com.ytxd.spp.ui.activity.mine.AccountActivity;
 import com.ytxd.spp.ui.activity.mine.AddressManaActivity;
 import com.ytxd.spp.ui.activity.mine.SettingsActivity;
+import com.ytxd.spp.ui.activity.mine.DiscountCouponActivity;
 import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.ImageLoadUtil;
 
@@ -70,7 +71,7 @@ public class HomeFM4 extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.rl_v_right, R.id.civ, R.id.rl_address_mana, R.id.rl_commnet})
+    @OnClick({R.id.rl_v_right, R.id.civ, R.id.rl_coupon, R.id.rl_address_mana, R.id.rl_commnet})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_v_right:
@@ -84,6 +85,9 @@ public class HomeFM4 extends BaseFragment {
                 break;
             case R.id.rl_commnet:
 
+                break;
+            case R.id.rl_coupon:
+                startActivity(DiscountCouponActivity.class);
                 break;
         }
     }

@@ -183,4 +183,12 @@ public class Apis {
      */
     public static String DetermineSH = BASE_URL + "/API_User/DetermineSH";
 
+    /**
+     * 获取用户优惠券
+     *
+     * @param UserCode
+     */
+    public static String GetUserCoupon = BASE_URL + "/API_User/GetUserCoupon";
+
+
 }

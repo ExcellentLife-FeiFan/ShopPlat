@@ -27,8 +27,8 @@ public class HomeMerchantA extends BaseQuickAdapter<MerchantM, HomeMerchantItemV
     protected void convert(final HomeMerchantItemVH helper, MerchantM item) {
         helper.tvName.setText(item.getName());
         helper.tvQisongP.setText("¥" + item.getQSPrice() + "起送");
-        helper.tvDistriP.setText("配送费¥" + item.getQSPrice());
-        ImageLoadUtil.setImageNP(item.getLogoUrl(), helper.icon, mContext);
+        helper.tvDistriP.setText("配送费¥" + item.getPSPrice());
+        ImageLoadUtil.setImageNP(item.getLogoUrl(), helper.icon, mContext,0.8f);
         List<MerchantM.ManJianBean> actis = item.getManJian();
         helper.tvActiNum.setText(actis.size() + "个活动");
         ViewGroup header = (ViewGroup) helper.expandActi.getHeaderRelativeLayout().findViewById(R.id.ll_ex_header);

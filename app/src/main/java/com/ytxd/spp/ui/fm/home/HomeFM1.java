@@ -91,6 +91,13 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
                 startActivity(MerchantDetailActivity.class, "data", mAdapter.getItem(i));
             }
         });
+        msv.getView(MultiStateView.VIEW_STATE_EMPTY)
+                .findViewById(R.id.tv_try_o).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(SelectACEAddressActivity.class);
+            }
+        });
     }
 
     @Override
@@ -143,7 +150,7 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
             addressM = address;
             if (AbStrUtil.isEmpty(address.getTitle())) {
                 tvAddress.setText(getString(R.string.loc_fail));
-                presenter.getSPMList("北京市");
+//                presenter.getSPMList("北京市");
             } else {
                 presenter.getSPMList(addressM.getCity());
                 tvAddress.setText(address.getTitle());
@@ -152,7 +159,7 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
         } else {
             addressM = null;
             tvAddress.setText(getString(R.string.loc_fail));
-            presenter.getSPMList("北京市");
+//            presenter.getSPMList("北京市");
         }
         loginFailed();
     }

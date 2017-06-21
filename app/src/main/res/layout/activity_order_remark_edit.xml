@@ -11,64 +11,72 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/actionbar_height" />
 
-    <LinearLayout
+    <com.ytxd.spp.ui.views.SpringScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
+        android:fillViewport="true"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.ytxd.spp.ui.views.TagCloudLayout
-                android:id="@+id/tag"
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/padding_left2"
-                android:layout_marginLeft="@dimen/padding_left"
-                android:layout_marginRight="@dimen/padding_left"
-                android:layout_marginTop="@dimen/padding_left2"
-                app:lineSpacing="@dimen/default_ui_margin"
-                app:tagSpacing="@dimen/default_ui_margin_large" />
+                android:background="@color/white"
+                android:orientation="vertical">
 
-            <include layout="@layout/line_gray_padding_left"></include>
+                <com.ytxd.spp.ui.views.TagCloudLayout
+                    android:id="@+id/tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_left2"
+                    android:layout_marginLeft="@dimen/padding_left"
+                    android:layout_marginRight="@dimen/padding_left"
+                    android:layout_marginTop="@dimen/padding_left2"
+                    app:lineSpacing="@dimen/default_ui_margin"
+                    app:tagSpacing="@dimen/default_ui_margin_large" />
+
+                <include layout="@layout/line_gray_padding_left"></include>
 
 
-            <EditText
-                android:id="@+id/et"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:gravity="top"
-                android:hint="给商家留言，可输入对商家的需求（可不填）"
-                android:maxLength="300"
-                android:minHeight="200dp"
-                android:padding="@dimen/padding_left"
-                android:textColor="@color/black_overlay"
-                android:textColorHint="@color/gray"
-                android:textSize="@dimen/text_size_common" />
+                <EditText
+                    android:id="@+id/et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="top"
+                    android:hint="给商家留言，可输入对商家的需求（可不填）"
+                    android:maxLength="300"
+                    android:minHeight="200dp"
+                    android:padding="@dimen/padding_left"
+                    android:textColor="@color/black_overlay"
+                    android:textColorHint="@color/gray"
+                    android:textSize="@dimen/text_size_common" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_bottom"
+                    android:layout_marginLeft="@dimen/padding_left"
+                    android:layout_marginRight="@dimen/padding_left"
+                    android:gravity="right"
+                    android:text="300字以内"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_common" />
+            </LinearLayout>+
+
+            <Button
+                android:id="@+id/btn_ok"
+                style="@style/Common_Btn"
+                android:layout_marginTop="@dimen/default_ui_margin_great"
                 android:layout_marginBottom="@dimen/padding_bottom"
-                android:layout_marginLeft="@dimen/padding_left"
-                android:layout_marginRight="@dimen/padding_left"
-                android:gravity="right"
-                android:text="300字以内"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/text_size_common" />
+                android:text="完成" />
+
+
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_ok"
-            style="@style/Common_Btn"
-            android:layout_marginTop="@dimen/default_ui_margin_great"
-            android:text="完成" />
-
-
-    </LinearLayout>
+    </com.ytxd.spp.ui.views.SpringScrollView>
 </LinearLayout>

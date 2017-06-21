@@ -115,6 +115,33 @@ public class ImageLoadUtil {
                 .into(imageView);
     }
 
+
+    public static void setImage(String imageUrl, final ImageView imageView, Activity activity,float sc) {
+        if (AbStrUtil.isEmpty(imageUrl)) {
+            return;
+        }
+        imageUrl = Apis.AddPATH(imageUrl);
+        Glide.with(activity).load(imageUrl)
+                .thumbnail(sc)
+                .error(R.color.img_bg)           //设置错误图片
+                .placeholder(R.color.img_bg)     //设置占位图片
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)//缓存全尺寸
+                .into(imageView);
+    }
+
+    public static void setImage(String imageUrl, final ImageView imageView, Context activity,float sc) {
+        if (AbStrUtil.isEmpty(imageUrl)) {
+            return;
+        }
+        imageUrl = Apis.AddPATH(imageUrl);
+        Glide.with(activity).load(imageUrl)
+                .error(R.color.img_bg)
+                .thumbnail(sc)
+                .placeholder(R.color.img_bg)     //设置占位图片
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)//缓存全尺寸
+                .into(imageView);
+    }
+
     public static void setImage(String imageUrl, final ImageView imageView, Activity activity, int res) {
         if (AbStrUtil.isEmpty(imageUrl)) {
             return;
@@ -126,6 +153,9 @@ public class ImageLoadUtil {
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)//缓存全尺寸
                 .into(imageView);
     }
+
+
+
 
     public static void setImage(String imageUrl, final ImageView imageView, Context activity, int res) {
         if (AbStrUtil.isEmpty(imageUrl)) {
@@ -183,12 +213,34 @@ public class ImageLoadUtil {
                 .into(imageView);
     }
 
-    public static void setImageNP(String imageUrl, final ImageView imageView, Activity activity, int res) {
+    public static void setImageNP(String imageUrl, final ImageView imageView, Activity activity) {
         if (AbStrUtil.isEmpty(imageUrl)) {
             return;
         }
         imageUrl = Apis.AddPATH(imageUrl);
         Glide.with(activity).load(imageUrl)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)//缓存全尺寸
+                .into(imageView);
+    }
+
+    public static void setImageNP(String imageUrl, final ImageView imageView, Context activity,float sc) {
+        if (AbStrUtil.isEmpty(imageUrl)) {
+            return;
+        }
+        imageUrl = Apis.AddPATH(imageUrl);
+        Glide.with(activity).load(imageUrl)
+                .thumbnail(sc)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)//缓存全尺寸
+                .into(imageView);
+    }
+
+    public static void setImageNP(String imageUrl, final ImageView imageView, Activity activity,float sc) {
+        if (AbStrUtil.isEmpty(imageUrl)) {
+            return;
+        }
+        imageUrl = Apis.AddPATH(imageUrl);
+        Glide.with(activity).load(imageUrl)
+                .thumbnail(sc)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)//缓存全尺寸
                 .into(imageView);
     }
