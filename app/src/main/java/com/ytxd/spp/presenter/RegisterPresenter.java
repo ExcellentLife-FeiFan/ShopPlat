@@ -4,10 +4,12 @@ import android.content.Context;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
+import com.lzy.okgo.request.PostRequest;
 import com.ytxd.spp.model.UserM;
 import com.ytxd.spp.net.ApiResult;
 import com.ytxd.spp.net.Apis;
 import com.ytxd.spp.net.JsonCallback;
+import com.ytxd.spp.util.AbStrUtil;
 import com.ytxd.spp.util.LogUtils;
 import com.ytxd.spp.util.ToastUtil;
 import com.ytxd.spp.view.IRegisterView;
@@ -34,50 +36,48 @@ public class RegisterPresenter extends BasePresenter<IRegisterView> {
                     public void onSuccess(Response<ApiResult<Object>> response) {
                         ApiResult result = response.body();
                         if (response.body().isSuccess()) {
-                            iView.sendCodeSuccess((String)result.getObj());
+                            iView.sendCodeSuccess((String) result.getObj());
                             ToastUtil.showToastShort(context, "发送验证码成功");
                         } else {
                             ToastUtil.showToastShort(context, result.getMsg());
                         }
-                        LogUtils.e("");
                     }
 
                     @Override
                     public void onError(Response<ApiResult<Object>> response) {
                         super.onError(response);
                         ToastUtil.showToastShort(context, "发送验证码失败");
-                        LogUtils.e("");
                     }
                 });
 
     }
 
 
-    public void registerPhone(String phone, String pwd) {
-        OkGo.<ApiResult<UserM>>post(Apis.PhoneRegister)//
+    public void registerPhone(String phone, String pwd, String invitecode) {
+        PostRequest postRequest = OkGo.<ApiResult<UserM>>post(Apis.PhoneRegister)//
                 .params("Phone", phone)
-                .params("LoginPwd", pwd)
-                .params("InvitationCode", "")
-                .execute(new JsonCallback<ApiResult<UserM>>() {
-                    @Override
-                    public void onSuccess(Response<ApiResult<UserM>> response) {
-                        ApiResult result = response.body();
-                        if (response.body().isSuccess()) {
-                            ToastUtil.showToastShort(context, "注册成功");
-                            iView.finishRegister();
-                        } else {
-                            ToastUtil.showToastShort(context, result.getMsg());
-                        }
-                        LogUtils.e("");
-                    }
+                .params("LoginPwd", pwd);
+        if (!AbStrUtil.isEmpty(invitecode)) {
+            postRequest.params("InvitationCode", invitecode);
+        }
+        postRequest.execute(new JsonCallback<ApiResult<UserM>>() {
+            @Override
+            public void onSuccess(Response<ApiResult<UserM>> response) {
+                ApiResult result = response.body();
+                if (response.body().isSuccess()) {
+                    ToastUtil.showToastShort(context, "注册成功");
+                    iView.finishRegister();
+                } else {
+                    ToastUtil.showToastShort(context, result.getMsg());
+                }
+            }
 
-                    @Override
-                    public void onError(Response<ApiResult<UserM>> response) {
-                        super.onError(response);
-                        ToastUtil.showToastShort(context, "注册失败");
-                        LogUtils.e("");
-                    }
-                });
+            @Override
+            public void onError(Response<ApiResult<UserM>> response) {
+                super.onError(response);
+                ToastUtil.showToastShort(context, "注册失败");
+            }
+        });
 
 
     }

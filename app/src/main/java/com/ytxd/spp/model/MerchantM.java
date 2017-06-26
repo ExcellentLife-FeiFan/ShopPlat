@@ -84,6 +84,7 @@ public class MerchantM implements Serializable {
     private Object CreateTime;
     private Object ModifyTime;
     private List<ManJianBean> ManJian;
+    private float distance;
 
     public String getSupermarketCode() {
         return SupermarketCode;
@@ -363,6 +364,14 @@ public class MerchantM implements Serializable {
 
     public void setModifyTime(Object ModifyTime) {
         this.ModifyTime = ModifyTime;
+    }
+
+    public float getDistance() {
+        return distance;
+    }
+
+    public void setDistance(float distance) {
+        this.distance = distance;
     }
 
     public List<ManJianBean> getManJian() {

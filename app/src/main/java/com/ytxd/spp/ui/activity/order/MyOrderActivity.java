@@ -53,7 +53,8 @@ public class MyOrderActivity extends BaseActivity<OrderActivityPresenter> implem
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
         mRecyclerView.addItemDecoration(new SimpleDividerDecoration(activity, R.color.bg, R.dimen.divider_height3));
         mAdapter = new HomeOrderA(null);
-        mAdapter.setOnLoadMoreListener(this, mRecyclerView);
+        mAdapter.setEnableLoadMore(false);
+//        mAdapter.setOnLoadMoreListener(this, mRecyclerView);
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {

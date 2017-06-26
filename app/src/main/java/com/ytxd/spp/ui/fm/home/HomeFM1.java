@@ -199,6 +199,7 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
             LatLng location_l = new LatLng(Double.valueOf(addressM.getLatLng().getLatitude()), Double.valueOf(addressM.getLatLng().getLongitude()));
             float distance = AMapUtils.calculateLineDistance(shop_l, location_l);
             float distruF = Float.valueOf(datas.get(i).getConfines());
+            datas.get(i).setDistance(distruF);
             if (distruF >= distance) {
                 items.add(datas.get(i));
             }

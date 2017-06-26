@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ytxd.spp.R;
 import com.ytxd.spp.model.MerchantM;
 import com.ytxd.spp.ui.adapter.viewholder.HomeMerchantItemVH;
+import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.ImageLoadUtil;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class HomeMerchantA extends BaseQuickAdapter<MerchantM, HomeMerchantItemV
         ImageLoadUtil.setImageNP(item.getLogoUrl(), helper.icon, mContext,0.8f);
         List<MerchantM.ManJianBean> actis = item.getManJian();
         helper.tvActiNum.setText(actis.size() + "个活动");
+        helper.tvDistance.setText(CommonUtils.getFloatString2(item.getDistance()/1000f)+"km");
         ViewGroup header = (ViewGroup) helper.expandActi.getHeaderRelativeLayout().findViewById(R.id.ll_ex_header);
         ViewGroup content = (ViewGroup) helper.expandActi.getContentRelativeLayout().findViewById(R.id.ll_ex_content);
         header.removeAllViews();

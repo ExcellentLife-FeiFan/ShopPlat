@@ -72,7 +72,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
             tvRealPay.setText("¥" + orderM.getSJPrice());
             CommonUtils.setText(tvOrderCode, orderM.getOrderCode());
             CommonUtils.setText(tvOrderTime, orderM.getCreateTime().replace("T", " "));
-
+            CommonUtils.setText(tvAddress, orderM.getAddressDescribe());
             if (orderM.getOrderStateCode().equals(CommonUtils.UN_PAY)) {
                 CommonUtils.setText(tvOrderState, "等待支付");
                 btnPay.setVisibility(View.VISIBLE);

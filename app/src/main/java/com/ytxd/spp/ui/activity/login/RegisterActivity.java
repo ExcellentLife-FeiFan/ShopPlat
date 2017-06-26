@@ -30,6 +30,8 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
     @BindView(R.id.et_pwd)
     EditText etPwd;
     String smsCode;
+    @BindView(R.id.et_invite_code)
+    EditText etInviteCode;
 
     @Override
     protected void initPresenter() {
@@ -72,12 +74,13 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
                 String phone = etPhone.getText().toString();
                 String pwd = etPwd.getText().toString();
                 String code = etSmscode.getText().toString();
+                String invitecode = etInviteCode.getText().toString();
                 if (AbStrUtil.isEmpty(phone)) {
                     ToastUtil.showToastShort(this, "请输入手机号");
                 } else if (AbStrUtil.isEmpty(pwd)) {
                     ToastUtil.showToastShort(this, "请输入密码");
                 } else {
-                    presenter.registerPhone(phone, pwd);
+                    presenter.registerPhone(phone, pwd,invitecode);
                 }
                 break;
         }

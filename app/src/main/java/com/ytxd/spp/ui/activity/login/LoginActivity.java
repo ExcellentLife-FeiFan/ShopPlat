@@ -6,6 +6,7 @@ import android.widget.EditText;
 
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.BaseActivity;
+import com.ytxd.spp.model.UserM;
 import com.ytxd.spp.presenter.LoginPresenter;
 import com.ytxd.spp.ui.activity.main.MainActivity;
 import com.ytxd.spp.util.AbStrUtil;
@@ -17,6 +18,7 @@ import com.ytxd.spp.view.ILoginView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.sharesdk.framework.ShareSDK;
 
 public class LoginActivity extends BaseActivity<LoginPresenter> implements ILoginView {
 
@@ -31,6 +33,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         HideUtil.init(this);
+        ShareSDK.initSDK(this);
+        presenter.initHandler();
         String phone = SPUtil.getInstance().getString("phone");
         if(!AbStrUtil.isEmpty(phone)){
             etPhone.setText(phone);
@@ -68,8 +72,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                 }
                 break;
             case R.id.ll_wechat:
+                presenter.loginWechat();
                 break;
             case R.id.ll_qq:
+                presenter.loginQQ();
                 break;
         }
     }
@@ -83,6 +89,16 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     public void loginSuccess() {
         startActivity(MainActivity.class);
     }
+
+    @Override
+    public void loginOtherSuccess(UserM userM) {
+ /*       if(userM.getIsRegister()){
+
+        }*/
+
+
+    }
+
 
     @Override
     public void startToMain() {
