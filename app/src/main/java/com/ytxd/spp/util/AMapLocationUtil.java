@@ -21,17 +21,17 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by Administrator on 2015/12/18.
  */
-public class AMapLocationUtil implements
-        AMapLocationListener {
+public class AMapLocationUtil implements AMapLocationListener {
     private static AMapLocationUtil instance;
     private AMapLocationClient mLocationClient;
 
     private AMapLocationUtil() {
-        if(null==mLocationClient){
+        if (null == mLocationClient) {
             mLocationClient = new AMapLocationClient(App.context);
             AMapLocationClientOption option = new AMapLocationClientOption();
             option.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
             option.setOnceLocation(true);
+            option.setNeedAddress(true);
             mLocationClient.setLocationOption(option);
             mLocationClient.setLocationListener(this);
         }
@@ -57,7 +57,6 @@ public class AMapLocationUtil implements
         }
 
     }
-
 
 
     public void stopLocation() {
@@ -103,14 +102,14 @@ public class AMapLocationUtil implements
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
-        if (aMapLocation == null) {
+        if (aMapLocation == null || aMapLocation.getErrorCode() != 0) {
             ToastUtil.showToastShort(App.context, "定位失败！");
+            EventBus.getDefault().post(new AMapLocationUpdateEvent(null));
             return;
         }
-        String aa=aMapLocation.getCity();
-        aa.toString();
         this.stopLocation();
         EventBus.getDefault().post(new AMapLocationUpdateEvent(aMapLocation));
     }
+
 
 }

@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.lzy.okgo.callback.AbsCallback;
-import com.lzy.okgo.request.Request;
+import com.lzy.okgo.request.base.Request;
 import com.ytxd.spp.base.App;
 import com.ytxd.spp.util.LogUtils;
 
@@ -47,9 +47,7 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
         if (null != App.user) {
             request.params("UserCode", App.user.getUserCode());//
         }
-
     }
-
 
     @Override
     public T convertResponse(Response response) throws Throwable {

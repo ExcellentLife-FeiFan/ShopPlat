@@ -4,8 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
-import com.baidu.mapapi.CoordType;
-import com.baidu.mapapi.SDKInitializer;
 import com.litesuits.orm.LiteOrm;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheEntity;
@@ -47,11 +45,6 @@ public class App extends Application {
         super.onCreate();
         ButterKnife.setDebug(BuildConfig.DEBUG);//设置ButterKnife调试模式
         context = this;
-        // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
-        SDKInitializer.initialize(this);
-        //自4.3.0起，百度地图SDK所有接口均支持百度坐标和国测局坐标，用此方法设置您使用的坐标类型.
-        //包括BD09LL和GCJ02两种坐标，默认是BD09LL坐标。
-        SDKInitializer.setCoordType(CoordType.BD09LL);
         initPrefs();
         initDirs();//初始化APP文件夹
         initOkGo();//初始化OkGo网络请求工具

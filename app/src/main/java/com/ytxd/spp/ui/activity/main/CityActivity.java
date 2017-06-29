@@ -2,8 +2,8 @@ package com.ytxd.spp.ui.activity.main;
 
 import android.os.Bundle;
 
-import com.ytxd.spp.event.LocationUpdateEvent;
-import com.ytxd.spp.util.BaiduLocationUtil;
+import com.ytxd.spp.event.AMapLocationUpdateEvent;
+import com.ytxd.spp.util.AMapLocationUtil;
 import com.ytxd.spp.util.HideUtil;
 import com.zaaach.citypicker.CityPickerActivity;
 import com.zaaach.citypicker.model.City;
@@ -23,7 +23,7 @@ public class CityActivity extends CityPickerActivity {
         HideUtil.init(this);
         EventBus.getDefault().register(this);
         mCityAdapter.updateLocateState(LocateState.LOCATING, null);
-        BaiduLocationUtil.getInstance().updataMyLocation();
+        AMapLocationUtil.getInstance().startLocation();
         getCities();
     }
 
@@ -40,11 +40,10 @@ public class CityActivity extends CityPickerActivity {
         setHotCities(hots);
     }
 
-    public void onEvent(LocationUpdateEvent event) {
-        BaiduLocationUtil.getInstance().stopLocation();
-        if (null != event.bdLocation) {
-            String city = event.bdLocation.getAddress().city;
-            String district = event.bdLocation.getAddress().district;
+    public void onEvent(AMapLocationUpdateEvent event) {
+        if (null != event.getaMapLocation()) {
+            String city = event.getaMapLocation().getCity();
+            String district = event.getaMapLocation().getDistrict();
             String location = StringUtils.extractLocation(city, district);
             mCityAdapter.updateLocateState(LocateState.SUCCESS, location);
         } else {
@@ -56,6 +55,6 @@ public class CityActivity extends CityPickerActivity {
     @Override
     protected void lacationCityClick() {
         mCityAdapter.updateLocateState(LocateState.LOCATING, null);
-        BaiduLocationUtil.getInstance().updataMyLocation();
+        AMapLocationUtil.getInstance().startLocation();
     }
 }

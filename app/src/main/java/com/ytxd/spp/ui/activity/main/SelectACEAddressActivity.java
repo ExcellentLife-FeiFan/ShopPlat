@@ -260,7 +260,7 @@ public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresente
     }
 
     public void onEvent(AMapLocationUpdateEvent event) {
-        if (event.getaMapLocation() != null && event.getaMapLocation().getErrorCode() == 0) {
+        if (event.getaMapLocation() != null) {
             HomeAddressM address = new HomeAddressM();
             address.setTitle(event.getaMapLocation().getPoiName());
             address.setAddress(event.getaMapLocation().getAddress());

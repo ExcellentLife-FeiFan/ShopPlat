@@ -34,16 +34,6 @@
         <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
         <service android:name="com.amap.api.location.APSService" />
 
-        <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="KlVzooDznlz7kE8flrbE6MPExPvavzN6" />
-
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote" />
-
-
         <!-- 微信分享回调 -->
         <activity
             android:name=".wxapi.WXEntryActivity"
