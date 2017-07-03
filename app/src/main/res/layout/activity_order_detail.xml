@@ -103,6 +103,7 @@
                         android:layout_height="wrap_content"
                         android:divider="@color/transparent"
                         android:dividerHeight="0dp"
+                        android:minHeight="100dp"
                         android:paddingBottom="@dimen/default_ui_margin_medium"
                         android:paddingLeft="@dimen/default_ui_margin_small"
                         android:paddingRight="@dimen/default_ui_margin_small"
@@ -132,10 +133,12 @@
                             android:id="@+id/tv_discount_p"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/default_ui_margin"
+                            android:layout_marginLeft="@dimen/default_ui_margin_small"
                             android:text="优惠 ¥0.00"
                             android:textColor="@color/gray"
                             android:textSize="@dimen/text_size_common" />
+
+
 
                         <LinearLayout
                             android:layout_width="match_parent"

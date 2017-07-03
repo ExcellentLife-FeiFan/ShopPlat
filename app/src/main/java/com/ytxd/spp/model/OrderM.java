@@ -9,59 +9,27 @@ import java.util.List;
 
 public class OrderM implements Serializable {
 
-    /**
-     * OrderCode : 868d30e5cf2e4db29f326e7564a1ca5a
-     * OrderStateCode : 0001
-     * UserCode : 665adfdfa9a445b8b98876f1560ca3d7
-     * SupermarketCode : 00000001
-     * DeliveryStaffCode : null
-     * SHAddressCode : a940d22faa0c497da274d6e42317cf10
-     * Contacts : 吴秀聪
-     * Sex : 1
-     * Phone : 18811389063
-     * Lng : 116.484379
-     * Lat : 39.900254
-     * AddressTitle : 唯我唯时尚杂志社
-     * AddressDescribe : 北京市朝阳区后现代城B区4号楼C座A202
-     * AddressContent : 北京市朝阳区后现代城B区4号楼C座A202
-     * SDTime : 2017-06-19 16:47:51
-     * Remarks : 无其他要求
-     * PayType : 0002
-     * PayReturnCode : null
-     * YPrice : 8.00
-     * ManJianCode : 0
-     * ManJianName :
-     * MMoney :
-     * JMoney :
-     * UserCouponCode : 0
-     * CouponPrice :
-     * SJPrice : 8.00
-     * IsDel : 0
-     * CreateTime : 2017-06-19T16:47:57
-     * ModifyTime : null
-     * SupermarketCode1 : 00000001
-     * Name : 测试超市1
-     */
+
+    public static final String WATING_PAY = "0001", HAVE_PAY_WATING_ACE = "0002", FASE_PAY_WATING_ACE = "0003", HAVE_ACE_WATING_SEND = "0004", SENDING = "0005", SUCCESS = "0006", CANCEL = "0007";
 
     private String OrderCode;
     private String OrderStateCode;
     private String GoodsInfo;
+    private MerchantM SuperMarketModel;
     private String UserCode;
     private String SupermarketCode;
-    private Object DeliveryStaffCode;
+    private String DeliveryStaffCode;
     private String SHAddressCode;
     private String Contacts;
     private int Sex;
     private String Phone;
-    private String Lng;
-    private String Lat;
     private String AddressTitle;
     private String AddressDescribe;
     private String AddressContent;
     private String SDTime;
     private String Remarks;
     private String PayType;
-    private Object PayReturnCode;
+    private String PayReturnCode;
     private String YPrice;
     private String ManJianCode;
     private String ManJianName;
@@ -70,11 +38,10 @@ public class OrderM implements Serializable {
     private String UserCouponCode;
     private String CouponPrice;
     private String SJPrice;
-    private int IsDel;
+    private String PSPrice;
+    private int IsEvaluate;
     private String CreateTime;
-    private Object ModifyTime;
-    private String SupermarketCode1;
-    private String Name;
+
     private List<ShoppingCartM.Goods> goods;
 
     public String getOrderCode() {
@@ -101,6 +68,14 @@ public class OrderM implements Serializable {
         GoodsInfo = goodsInfo;
     }
 
+    public MerchantM getSuperMarketModel() {
+        return SuperMarketModel;
+    }
+
+    public void setSuperMarketModel(MerchantM superMarketModel) {
+        SuperMarketModel = superMarketModel;
+    }
+
     public String getUserCode() {
         return UserCode;
     }
@@ -117,11 +92,11 @@ public class OrderM implements Serializable {
         this.SupermarketCode = SupermarketCode;
     }
 
-    public Object getDeliveryStaffCode() {
+    public String getDeliveryStaffCode() {
         return DeliveryStaffCode;
     }
 
-    public void setDeliveryStaffCode(Object DeliveryStaffCode) {
+    public void setDeliveryStaffCode(String DeliveryStaffCode) {
         this.DeliveryStaffCode = DeliveryStaffCode;
     }
 
@@ -157,21 +132,6 @@ public class OrderM implements Serializable {
         this.Phone = Phone;
     }
 
-    public String getLng() {
-        return Lng;
-    }
-
-    public void setLng(String Lng) {
-        this.Lng = Lng;
-    }
-
-    public String getLat() {
-        return Lat;
-    }
-
-    public void setLat(String Lat) {
-        this.Lat = Lat;
-    }
 
     public String getAddressTitle() {
         return AddressTitle;
@@ -221,11 +181,11 @@ public class OrderM implements Serializable {
         this.PayType = PayType;
     }
 
-    public Object getPayReturnCode() {
+    public String getPayReturnCode() {
         return PayReturnCode;
     }
 
-    public void setPayReturnCode(Object PayReturnCode) {
+    public void setPayReturnCode(String PayReturnCode) {
         this.PayReturnCode = PayReturnCode;
     }
 
@@ -293,12 +253,21 @@ public class OrderM implements Serializable {
         this.SJPrice = SJPrice;
     }
 
-    public int getIsDel() {
-        return IsDel;
+    public String getPSPrice() {
+        return PSPrice;
     }
 
-    public void setIsDel(int IsDel) {
-        this.IsDel = IsDel;
+    public void setPSPrice(String PSPrice) {
+        this.PSPrice = PSPrice;
+    }
+
+
+    public int getIsEvaluate() {
+        return IsEvaluate;
+    }
+
+    public void setIsEvaluate(int isEvaluate) {
+        IsEvaluate = isEvaluate;
     }
 
     public String getCreateTime() {
@@ -309,29 +278,6 @@ public class OrderM implements Serializable {
         this.CreateTime = CreateTime;
     }
 
-    public Object getModifyTime() {
-        return ModifyTime;
-    }
-
-    public void setModifyTime(Object ModifyTime) {
-        this.ModifyTime = ModifyTime;
-    }
-
-    public String getSupermarketCode1() {
-        return SupermarketCode1;
-    }
-
-    public void setSupermarketCode1(String SupermarketCode1) {
-        this.SupermarketCode1 = SupermarketCode1;
-    }
-
-    public String getName() {
-        return Name;
-    }
-
-    public void setName(String Name) {
-        this.Name = Name;
-    }
 
     public List<ShoppingCartM.Goods> getGoods() {
         return goods;

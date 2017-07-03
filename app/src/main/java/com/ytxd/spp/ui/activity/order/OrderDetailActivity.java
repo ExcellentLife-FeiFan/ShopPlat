@@ -9,26 +9,31 @@ import android.widget.TextView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
+import com.ytxd.spp.model.OrderGoodM;
 import com.ytxd.spp.model.OrderM;
-import com.ytxd.spp.model.ShoppingCartM;
-import com.ytxd.spp.ui.adapter.OrderSubGoodsLV;
+import com.ytxd.spp.presenter.OrderDetailPresenter;
+import com.ytxd.spp.ui.activity.main.MerchantDetailActivity;
+import com.ytxd.spp.ui.adapter.OrderSubGoodsLV2;
 import com.ytxd.spp.ui.views.InListView;
 import com.ytxd.spp.util.CommonUtils;
+import com.ytxd.spp.util.ImageLoadUtil;
+import com.ytxd.spp.view.IOrderDetailView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class OrderDetailActivity extends BaseActivity implements View.OnClickListener {
+public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> implements View.OnClickListener ,IOrderDetailView{
 
     @BindView(R.id.ll_shop)
     LinearLayout llShop;
     @BindView(R.id.lv_sub_goods)
     InListView lvSubGoods;
-    OrderSubGoodsLV mAdapter;
+    OrderSubGoodsLV2 mAdapter;
     OrderM orderM;
     @BindView(R.id.civ)
     CircleImageView civ;
@@ -55,6 +60,13 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     @BindView(R.id.btn_one_more)
     Button btnOneMore;
 
+
+    @Override
+    protected void initPresenter() {
+        presenter = new OrderDetailPresenter(activity, this);
+        presenter.init();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,14 +74,17 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         ButterKnife.bind(this);
         getBar().initActionBar("订单详情", this);
         orderM = (OrderM) getIntent().getSerializableExtra("data");
-        mAdapter = new OrderSubGoodsLV(new ArrayList<ShoppingCartM.Goods>(), this);
+        mAdapter = new OrderSubGoodsLV2(new ArrayList<OrderGoodM>(), this);
         lvSubGoods.setAdapter(mAdapter);
         if (null != orderM) {
-            mAdapter.addItems(orderM.getGoods(), true);
-            CommonUtils.setText(tvMerName, orderM.getName());
-//            ImageLoadUtil.setImageNP(orderM.get, civMerchant, this);
+            CommonUtils.setText(tvMerName, orderM.getSuperMarketModel().getName());
+            ImageLoadUtil.setImageNP(orderM.getSuperMarketModel().getLogoUrl(), civ, this);
             tvTotalP.setText("总计 ¥" + orderM.getYPrice());
             tvRealPay.setText("¥" + orderM.getSJPrice());
+            float dp=Float.valueOf(orderM.getYPrice())-Float.valueOf(orderM.getSJPrice());
+            if(dp>0){
+                tvDiscountP.setText("优惠 ¥" + CommonUtils.getFloatString2(dp));
+            }
             CommonUtils.setText(tvOrderCode, orderM.getOrderCode());
             CommonUtils.setText(tvOrderTime, orderM.getCreateTime().replace("T", " "));
             CommonUtils.setText(tvAddress, orderM.getAddressDescribe());
@@ -83,6 +98,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                 btnOneMore.setVisibility(View.VISIBLE);
             }
         }
+        presenter.getGoodsInfo(orderM.getOrderCode());
     }
 
     @Override
@@ -99,7 +115,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_shop:
-//                startActivity(MerchantDetailActivity.class);
+                startActivity(MerchantDetailActivity.class,"data",orderM.getSuperMarketModel());
                 break;
             case R.id.btn_pay:
                 if(null!=orderM){
@@ -109,5 +125,15 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
             case R.id.btn_one_more:
                 break;
         }
+    }
+
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public void lodeGoodsSuccess(List<OrderGoodM> items) {
+        mAdapter.addItems(items, true);
     }
 }

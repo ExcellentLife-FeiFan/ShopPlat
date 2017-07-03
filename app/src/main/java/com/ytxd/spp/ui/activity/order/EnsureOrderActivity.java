@@ -34,6 +34,7 @@ import com.ytxd.spp.util.ShoppingCartUtil;
 import com.ytxd.spp.view.IEnsureOrderView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -99,6 +100,9 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
     String payType = "0002";
     String remark = "无其他要求";
     public static final int REMARKS = 1001;
+    String goodsInfo = "";
+    float yp/*原价*/, sp/*实际支付*/, dp/*优惠价格*/;
+    MerchantM.ManJianBean manJian;
 
     @Override
     protected void initPresenter() {
@@ -122,29 +126,58 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
             List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
             if (beans.size() > 0) {
                 shoppingCartM = beans.get(0).getShoppingCartM();
-                mAdapter.addItems(shoppingCartM.getGoods(), true);
                 merchant = shoppingCartM.getMerchantM();
+                for (int i = 0; i < shoppingCartM.getGoods().size(); i++) {
+                    if (i == shoppingCartM.getGoods().size() - 1) {
+                        goodsInfo = goodsInfo + shoppingCartM.getGoods().get(i).getGoodM().getGoodsCode() + "[" + shoppingCartM.getGoods().get(i).getCount();
+                    } else {
+                        goodsInfo = goodsInfo + shoppingCartM.getGoods().get(i).getGoodM().getGoodsCode() + "[" + shoppingCartM.getGoods().get(i).getCount() + ",";
+                    }
+                }
+                //计算满减优惠/////////////////////////////
+                List<MerchantM.ManJianBean> manJianBeans = merchant.getManJian();
+                for (int i = 0; i < manJianBeans.size() - 1; i++) {
+                    for (int j = 0; j < manJianBeans.size() - 1 - i; j++) {
+                        if (manJianBeans.get(j).getMMoney() > manJianBeans.get(j + 1).getMMoney()) {
+                            MerchantM.ManJianBean temp = manJianBeans.get(j);
+                            manJianBeans.set(j, manJianBeans.get(j + 1));
+                            manJianBeans.set(j + 1, temp);
+                        }
+                    }
+                }
+                Collections.reverse(manJianBeans);
+                manJian = null;
+                yp = Float.valueOf(shoppingCartM.getPirceTotal());
+                for (int i = 0; i < manJianBeans.size(); i++) {
+                    float mm = manJianBeans.get(i).getMMoney();
+                    if (yp >= mm) {
+                        manJian = manJianBeans.get(i);
+                        break;
+                    }
+                }
+                sp = yp;
+                if (null != manJian) {
+                    sp = sp - manJian.getJMoney();
+                    dp = manJian.getJMoney();
+                    tvActivityDiscount.setText("¥" + manJian.getJMoney());
+                }
+                ///////////////////////////////////
+                mAdapter.addItems(shoppingCartM.getGoods(), true);
                 if (null != merchant) {
+                    float ps=Float.valueOf(merchant.getPSPrice());
+                    sp=sp+ps;
+                    yp=yp+ps;
                     CommonUtils.setText(tvMerchantName, merchant.getName());
+                    CommonUtils.setText(tvDistriP, "¥" + merchant.getPSPrice());
                     ImageLoadUtil.setImageNP(merchant.getLogoUrl(), civMerchant, this);
-                    tvTotalP.setText("总计 ¥" + shoppingCartM.getPirceTotal());
-                    tvRealPay.setText("¥" + shoppingCartM.getPirceTotal());
-                    tvTotalP3.setText("¥" + shoppingCartM.getPirceTotal());
+                    tvTotalP.setText("总计 ¥" + yp);
+                    tvRealPay.setText("¥" + CommonUtils.getFloatString2(sp));
+                    tvTotalP3.setText("¥" + CommonUtils.getFloatString2(sp));
+                    tvDiscountP.setText("¥" + CommonUtils.getFloatString2(dp));
                 }
             }
         }
-/*        mrgPay.setOnCheckedChangeListener(new MutilRadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(MutilRadioGroup group, int checkedId) {
-                if (checkedId == R.id.cb_p_wechat) {
-                    payType = "0002";
-                } else if (checkedId == R.id.cb_p_alipay) {
-                    payType = "0001";
-                } else if (checkedId == R.id.cb_p_onget) {
-                    payType = "0003";
-                }
-            }
-        });*/
+
     }
 
     @Override
@@ -179,25 +212,21 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
                     showToast("请选择收货地址");
                 } else {
                     OrderM orderM = new OrderM();
-                    String goodsInfo = "";
-                    for (int i = 0; i < shoppingCartM.getGoods().size(); i++) {
-                        if (i == shoppingCartM.getGoods().size() - 1) {
-                            goodsInfo = goodsInfo + shoppingCartM.getGoods().get(i).getGoodM().getGoodsCode() + "[" + shoppingCartM.getGoods().get(i).getCount();
-                        } else {
-                            goodsInfo = goodsInfo + shoppingCartM.getGoods().get(i).getGoodM().getGoodsCode() + "[" + shoppingCartM.getGoods().get(i).getCount() + ",";
-                        }
-                    }
                     orderM.setGoodsInfo(goodsInfo);
                     orderM.setPayType(payType);
-                    orderM.setManJianCode("0");
+                    orderM.setManJianCode(null == manJian ? "0" : manJian.getManJianCode());
                     orderM.setUserCouponCode("0");
                     orderM.setRemarks(remark);
                     orderM.setSHAddressCode(addressM.getSHAddressCode());
-                    orderM.setSJPrice(shoppingCartM.getPirceTotal());
-                    orderM.setYPrice(shoppingCartM.getPirceTotal());
+                    orderM.setSJPrice(CommonUtils.getFloatString2(sp) + "");
+                    orderM.setYPrice(CommonUtils.getFloatString2(yp) + "");
                     orderM.setSupermarketCode(merchantCode);
-                    orderM.setName(shoppingCartM.getMerchantM().getName());
+                    MerchantM merchantM = new MerchantM();
+                    merchantM.setSupermarketCode(shoppingCartM.getMerchantM().getSupermarketCode());
+                    merchantM.setName(shoppingCartM.getMerchantM().getName());
+                    orderM.setSuperMarketModel(merchantM);
                     orderM.setSDTime(AbDateUtil.getStringByFormat(new Date(), AbDateUtil.dateFormatYMDHMS));
+                    orderM.setPSPrice(merchant.getPSPrice());
                     presenter.ensureOrder(orderM);
                 }
                 break;

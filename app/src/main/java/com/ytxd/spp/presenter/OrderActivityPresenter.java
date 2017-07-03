@@ -5,10 +5,7 @@ import android.content.Context;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.ytxd.spp.base.App;
-import com.ytxd.spp.model.GoodM;
 import com.ytxd.spp.model.OrderM;
-import com.ytxd.spp.model.OrderM2;
-import com.ytxd.spp.model.ShoppingCartM;
 import com.ytxd.spp.net.ApiResult;
 import com.ytxd.spp.net.Apis;
 import com.ytxd.spp.net.JsonCallback;
@@ -16,10 +13,7 @@ import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.ToastUtil;
 import com.ytxd.spp.view.IOrderActivityView;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 主界面presenter
@@ -36,28 +30,28 @@ public class OrderActivityPresenter extends BasePresenter<IOrderActivityView> {
     }
 
     public void getOrderList(final int mode, int pageIndex) {
-        OkGo.<ApiResult<List<OrderM2>>>get(Apis.GetUserOrderList)//
+        OkGo.<ApiResult<List<OrderM>>>get(Apis.GetUserOrderList)//
                 .params("UserCode", App.user.getUserCode())
                 .params("PageIndex", pageIndex)
-                .params("PageSize", "10000")
-                .execute(new JsonCallback<ApiResult<List<OrderM2>>>() {
+                .params("PageSize", "10")
+                .execute(new JsonCallback<ApiResult<List<OrderM>>>() {
                     @Override
-                    public void onSuccess(Response<ApiResult<List<OrderM2>>> response) {
+                    public void onSuccess(Response<ApiResult<List<OrderM>>> response) {
                         try {
-                            ApiResult<List<OrderM2>> result = response.body();
+                            ApiResult<List<OrderM>> result = response.body();
                             if (result.isSuccess()) {
-                                List<OrderM2> datas = result.getObj();
+                                List<OrderM> datas = result.getObj();
                                 if (mode == CommonUtils.LODEMORE) {
                                     if (null == datas || datas.size() == 0) {
                                         iView.lodeMoreFailed();
                                     } else {
-                                        loadData(datas,mode);
+                                        iView.lodeMoreSuccess(result.getObj());
                                     }
                                 } else {
                                     if (null == datas || datas.size() == 0) {
                                         iView.refreshFailed();
                                     } else {
-                                        loadData(datas,mode);
+                                        iView.refreshSuccess(datas);
 //                                        currentPage = 1;
 //                                        mAdapter.setNewData(datas);
                                     }
@@ -77,7 +71,7 @@ public class OrderActivityPresenter extends BasePresenter<IOrderActivityView> {
                     }
 
                     @Override
-                    public void onError(Response<ApiResult<List<OrderM2>>> response) {
+                    public void onError(Response<ApiResult<List<OrderM>>> response) {
                         if (mode == CommonUtils.LODEMORE) {
                             iView.lodeMoreFailed();
                         } else {
@@ -89,7 +83,7 @@ public class OrderActivityPresenter extends BasePresenter<IOrderActivityView> {
 
     }
 
-    private void loadData(List<OrderM2> items,int type) {
+   /* private void loadData(List<OrderM2> items,int type) {
         Map<String, List<OrderM2>> maps = new LinkedHashMap<>();
         for (int i = 0; i < items.size(); i++) {
             if (maps.containsKey(items.get(i).getOrderCode())) {
@@ -121,7 +115,7 @@ public class OrderActivityPresenter extends BasePresenter<IOrderActivityView> {
                 good.setGoodM(goodM);
                 goods.add(good);
             }
-            order.setGoods(goods);
+//            order.setGoods(goods);
             datas.add(order);
         }
         if (type == CommonUtils.LODEMORE) {
@@ -129,7 +123,7 @@ public class OrderActivityPresenter extends BasePresenter<IOrderActivityView> {
         }else{
             iView.refreshSuccess(datas);
         }
-    }
+    }*/
 
 
 }

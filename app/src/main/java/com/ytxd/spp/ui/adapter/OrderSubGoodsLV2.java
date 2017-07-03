@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ytxd.spp.R;
-import com.ytxd.spp.model.ShoppingCartM;
+import com.ytxd.spp.model.OrderGoodM;
 import com.ytxd.spp.util.CommonUtils;
 
 import java.util.List;
@@ -19,8 +19,8 @@ import butterknife.ButterKnife;
  * Created by apple on 2017/4/18.
  */
 
-public class OrderSubGoodsLV extends CommonListAdapter<ShoppingCartM.Goods> {
-    public OrderSubGoodsLV(List<ShoppingCartM.Goods> items, Activity activity) {
+public class OrderSubGoodsLV2 extends CommonListAdapter<OrderGoodM> {
+    public OrderSubGoodsLV2(List<OrderGoodM> items, Activity activity) {
         super(items, activity);
     }
 
@@ -35,10 +35,10 @@ public class OrderSubGoodsLV extends CommonListAdapter<ShoppingCartM.Goods> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        CommonUtils.setText(viewHolder.tvName, item.getGoodM().getGoodsTitle());
-        CommonUtils.setText(viewHolder.tvNum, "x" + item.getCount());
-        CommonUtils.setText(viewHolder.tvOriginP, "¥ " + item.getGoodM().getYPrice());
-        CommonUtils.setText(viewHolder.tvCurrentP, "¥" + item.getGoodM().getXPrice());
+        CommonUtils.setText(viewHolder.tvName, item.getGoodsTitle());
+        CommonUtils.setText(viewHolder.tvNum, "x" + item.getBuyNumber());
+        CommonUtils.setText(viewHolder.tvOriginP, "¥ " + item.getYPrice());
+        CommonUtils.setText(viewHolder.tvCurrentP, "¥" + item.getXPrice());
         return convertView;
     }
 

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -35,6 +36,7 @@ import com.ytxd.spp.event.MerchantSelectGoodStandEvent;
 import com.ytxd.spp.model.CatagaryM;
 import com.ytxd.spp.model.LocalShoppingCartM;
 import com.ytxd.spp.model.MerchantM;
+import com.ytxd.spp.model.OrderGoodM;
 import com.ytxd.spp.presenter.MerchantPresenter;
 import com.ytxd.spp.ui.activity.order.EnsureOrderActivity;
 import com.ytxd.spp.ui.activity.order.ShoppingCartActivity;
@@ -51,6 +53,7 @@ import com.ytxd.spp.view.IMerchantView;
 
 import org.zakariya.stickyheaders.StickyHeaderLayoutManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -110,6 +113,11 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
     StickyHeaderLayoutManager goodLM;
     LinearLayoutManager categoryLM;
     MerchantM merchantM;
+    @BindView(R.id.btn_ok)
+    Button btnOk;
+    String orderCode;
+    public List<OrderGoodM> orderGoods = new ArrayList<>();
+    public boolean isAgain = false;
 
     @Override
     protected void initPresenter() {
@@ -122,13 +130,18 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_merchant_detail);
         ButterKnife.bind(this);
-        SystemBarHelper.immersiveStatusBar(this,0f);
+        SystemBarHelper.immersiveStatusBar(this, 0f);
         merchantM = (MerchantM) getIntent().getSerializableExtra("data");
         merchantCode = merchantM.getSupermarketCode();
-        initViews();
-        if (null != merchantM) {
-            presenter.getGoodList(merchantM.getSupermarketCode());
+        orderCode = getIntent().getStringExtra("orderCode");
+        if (!AbStrUtil.isEmpty(orderCode)) {
+            isAgain = true;
+            presenter.getGoodFromOrder(orderCode);
+        } else {
+            isAgain = false;
+            presenter.getGoodList(merchantCode);
         }
+        initViews();
 
     }
 
@@ -139,9 +152,13 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
         } else if (!AbStrUtil.isEmpty(merchantM.getLogoUrl())) {
             ImageLoadUtil.setImageNP(merchantM.getLogoUrl(), ivBg, this);
         }
-        setActiviesData();
+        if (null != merchantM.getManJian()) {
+            setActiviesData(merchantM.getManJian());
+        } else {
+            presenter.getManjian(merchantCode);
+        }
         tvQisongP.setText("¥" + merchantM.getQSPrice() + "起送");
-        tvDistriP.setText("配送费¥" + merchantM.getQSPrice());
+        tvDistriP.setText("配送费¥" + merchantM.getPSPrice());
         toolbar.setTitle(merchantM.getName());
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -153,7 +170,6 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
         //method 1
         SystemBarHelper.immersiveStatusBar(this, 0);
         SystemBarHelper.setHeightAndPadding(this, toolbar);
-
 
         goodA = new MerchantGoodA(this, merchantM);
         goodLM = new StickyHeaderLayoutManager();
@@ -195,8 +211,8 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
 
     }
 
-    private void setActiviesData() {
-        List<MerchantM.ManJianBean> actis = merchantM.getManJian();
+    private void setActiviesData(List<MerchantM.ManJianBean> actis) {
+        actis = merchantM.getManJian();
         tvActiNum.setText(actis.size() + "个活动");
         if (actis.size() > 0 && actis.size() <= 2) {
             for (int i = 0; i < actis.size(); i++) {
@@ -266,20 +282,32 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
         List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
         if (beans.size() > 0) {
             LocalShoppingCartM shoppingCartM = beans.get(0);
+            shoppingCartM.getShoppingCartM().setMerchantM(merchantM);
+            App.liteOrm.update(shoppingCartM);
             int count = shoppingCartM.getShoppingCartM().getGoodsCounts();
             if (count != 0) {
                 tvTotalNum.setText(count + "");
                 tvTotalP.setText("共计¥" + shoppingCartM.getShoppingCartM().getPirceTotal());
-            }else{
+
+                float qs = Float.valueOf(merchantM.getQSPrice());
+                float p = Float.valueOf(shoppingCartM.getShoppingCartM().getPirceTotal());
+                if (p >= qs) {
+                    btnOk.setEnabled(true);
+                } else {
+                    btnOk.setEnabled(false);
+                }
+            } else {
                 tvTotalNum.setText("0");
                 tvTotalP.setText(CommonUtils.getString(R.string.none_goods));
+                btnOk.setEnabled(false);
             }
             if (null != cartListDialog) {
                 cartListDialog.setData();
             }
-        }else{
+        } else {
             tvTotalNum.setText("0");
             tvTotalP.setText(CommonUtils.getString(R.string.none_goods));
+            btnOk.setEnabled(false);
         }
         if (null != goodA) {
             goodA.notifyDataSetChanged();
@@ -289,13 +317,12 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
     }
 
 
-
     @OnClick({R.id.btn_ok, R.id.shopping_cart_layout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_ok:
-                if(!tvTotalNum.getText().toString().equals("0")){
-                    startActivity(EnsureOrderActivity.class,"merchantCode",merchantCode);
+                if (!tvTotalNum.getText().toString().equals("0")) {
+                    startActivity(EnsureOrderActivity.class, "merchantCode", merchantCode);
                 }
                 break;
             case R.id.shopping_cart_layout:
@@ -306,7 +333,7 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
 
     private void showCart() {
         if (null == cartListDialog) {
-            cartListDialog = new MerchantCartListDialog(this, merchantCode, 1);
+            cartListDialog = new MerchantCartListDialog(this, merchantM, 1);
         }
         Window window = cartListDialog.getWindow();
         cartListDialog.setCanceledOnTouchOutside(true);
@@ -351,6 +378,31 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
             rl_cart.setVisibility(View.GONE);
             msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
         }
+        for (int i = 0; i < items.size(); i++) {
+            for (int i1 = 0; i1 < items.get(i).getChildren().size(); i1++) {
+                ShoppingCartUtil.refreshLocalCartGood(items.get(i).getChildren().get(i1), merchantCode);
+            }
+        }
+    }
+
+    @Override
+    public void lodeManjianSuccess(List<MerchantM.ManJianBean> items) {
+        merchantM.setManJian(items);
+        setActiviesData(items);
+    }
+
+    @Override
+    public void lodeOrderGoodsSuccess(List<OrderGoodM> items) {
+        this.orderGoods = items;
+        if(items.size()>0){
+            ShoppingCartUtil.deleteCart(this,merchantCode);
+        }
+        presenter.getGoodList(merchantCode);
+    }
+
+    @Override
+    public void lodeOrderGoodsFail() {
+        presenter.getGoodList(merchantCode);
     }
 
     @Override

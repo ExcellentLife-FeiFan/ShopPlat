@@ -49,6 +49,24 @@ public class ShoppingCartUtil {
 
     }
 
+    public static void refreshLocalCartGood(GoodM good, String merchantCode) {
+        QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
+                .whereEquals(LocalShoppingCartM.CARTCODE, merchantCode);
+        List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+        if (beans.size() > 0) {
+            LocalShoppingCartM shoppingCartM = beans.get(0);
+            for (int i = 0; i < shoppingCartM.getShoppingCartM().goods.size(); i++) {
+                if (shoppingCartM.getShoppingCartM().goods.get(i).getGoodM().getGoodsCode().equals(good.getGoodsCode())) {
+                    shoppingCartM.getShoppingCartM().goods.get(i).setGoodM(good);
+                    App.liteOrm.update(shoppingCartM);
+                    break;
+                }
+
+            }
+        }
+
+    }
+
     public static boolean goodMinusEvent(Context context, String merchantCode, GoodM goodM) {
         boolean canrefresh = false;
         if (CommonUtils.isDBInit(context)) {

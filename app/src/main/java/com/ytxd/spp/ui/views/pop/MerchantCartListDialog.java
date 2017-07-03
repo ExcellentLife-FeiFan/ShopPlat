@@ -21,6 +21,7 @@ import com.ytxd.spp.R;
 import com.ytxd.spp.base.App;
 import com.ytxd.spp.event.CartListClearRefreshEvent;
 import com.ytxd.spp.model.LocalShoppingCartM;
+import com.ytxd.spp.model.MerchantM;
 import com.ytxd.spp.model.ShoppingCartM;
 import com.ytxd.spp.ui.activity.order.EnsureOrderActivity;
 import com.ytxd.spp.ui.adapter.CartListDialogLV;
@@ -71,11 +72,14 @@ public class MerchantCartListDialog extends Dialog {
     RelativeLayout rlCartBtn;
     CartListDialogLV goodListA;
     String merchantCode;
+    MerchantM merchantM;
     int type;
 
-    public MerchantCartListDialog(Context context, String merchantCode, int type) {
+
+    public MerchantCartListDialog(Context context, MerchantM merchant, int type) {
         super(context, R.style.cartdialog);
-        this.merchantCode = merchantCode;
+        this.merchantM = merchant;
+        merchantCode = merchantM.getSupermarketCode();
         this.type = type;
     }
 
@@ -107,9 +111,17 @@ public class MerchantCartListDialog extends Dialog {
             if (count != 0) {
                 shoppingCartTotalNum.setText(count + "");
                 shoppingCartTotalTv.setText("共计¥" + shoppingCartM.getShoppingCartM().getPirceTotal());
+                float qs = Float.valueOf(merchantM.getQSPrice());
+                float p = Float.valueOf(shoppingCartM.getShoppingCartM().getPirceTotal());
+                if (p >= qs) {
+                    btnOk.setEnabled(true);
+                } else {
+                    btnOk.setEnabled(false);
+                }
                 return;
             }
         }
+        btnOk.setEnabled(false);
         shoppingCartTotalNum.setText("0");
         shoppingCartTotalTv.setText(CommonUtils.getString(R.string.none_goods));
     }
@@ -162,7 +174,7 @@ public class MerchantCartListDialog extends Dialog {
     }
 
 
-    @OnClick({R.id.v,R.id.tv_clear, R.id.btn_ok, R.id.shopping_cart_layout})
+    @OnClick({R.id.v, R.id.tv_clear, R.id.btn_ok, R.id.shopping_cart_layout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_clear:

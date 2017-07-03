@@ -44,7 +44,7 @@ public class PayActivity extends BaseActivity<PayPresenter> implements View.OnCl
         ButterKnife.bind(this);
         orderM = (OrderM) getIntent().getSerializableExtra("data");
         if (null != orderM) {
-            CommonUtils.setText(tvMerName, orderM.getName());
+            CommonUtils.setText(tvMerName, orderM.getSuperMarketModel().getName());
             CommonUtils.setText(tvRealPay, "¥" + orderM.getSJPrice());
         }
         getBar().initActionBar("支付订单", this);

@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -27,6 +28,7 @@ import com.ytxd.spp.event.GoodMinusEvent;
 import com.ytxd.spp.model.GoodM;
 import com.ytxd.spp.model.LocalShoppingCartM;
 import com.ytxd.spp.model.MerchantM;
+import com.ytxd.spp.ui.activity.order.EnsureOrderActivity;
 import com.ytxd.spp.ui.adapter.GoodCommentLV;
 import com.ytxd.spp.ui.views.InListView;
 import com.ytxd.spp.ui.views.pop.MerchantCartListDialog;
@@ -98,6 +100,8 @@ public class GoodDetailActivity extends BaseActivity2 {
 
     String merchantCode;
     GoodM goodM;
+    @BindView(R.id.btn_ok)
+    Button btnOk;
     private MerchantM merchantM;
     private MerchantCartListDialog cartListDialog;
 
@@ -106,10 +110,10 @@ public class GoodDetailActivity extends BaseActivity2 {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_good_detail);
         ButterKnife.bind(this);
-        SystemBarHelper.immersiveStatusBar(this,0f);
+        SystemBarHelper.immersiveStatusBar(this, 0f);
         goodM = (GoodM) getIntent().getSerializableExtra("data");
         merchantCode = getIntent().getStringExtra("merchantCode");
-        merchantM= (MerchantM) getIntent().getSerializableExtra("merchant");
+        merchantM = (MerchantM) getIntent().getSerializableExtra("merchant");
         CommonUtils.setText(tvGoodName, goodM.getGoodsTitle());
         CommonUtils.setText(tvMonthSales, goodM.getSaleNumber() + "");
         ImageLoadUtil.setImageNP(goodM.getLogoPaths(), ivGood, this);
@@ -144,7 +148,7 @@ public class GoodDetailActivity extends BaseActivity2 {
         btnAdd.setOnAddDelListener(new IOnAddDelListener() {
             @Override
             public void onAddSuccess(int i) {
-                EventBus.getDefault().post(new GoodAddEvent(ivPlus, goodM,2));
+                EventBus.getDefault().post(new GoodAddEvent(ivPlus, goodM, 2));
             }
 
             @Override
@@ -154,7 +158,7 @@ public class GoodDetailActivity extends BaseActivity2 {
 
             @Override
             public void onDelSuccess(int i) {
-                EventBus.getDefault().post(new GoodMinusEvent(goodM,2));
+                EventBus.getDefault().post(new GoodMinusEvent(goodM, 2));
             }
 
             @Override
@@ -166,7 +170,7 @@ public class GoodDetailActivity extends BaseActivity2 {
 
     private void showCart() {
         if (null == cartListDialog) {
-            cartListDialog = new MerchantCartListDialog(this, merchantCode,2);
+            cartListDialog = new MerchantCartListDialog(this, merchantM, 2);
         }
         Window window = cartListDialog.getWindow();
         cartListDialog.setCanceledOnTouchOutside(true);
@@ -186,20 +190,31 @@ public class GoodDetailActivity extends BaseActivity2 {
         List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
         if (beans.size() > 0) {
             LocalShoppingCartM shoppingCartM = beans.get(0);
+            shoppingCartM.getShoppingCartM().setMerchantM(merchantM);
+            App.liteOrm.update(shoppingCartM);
             int count = shoppingCartM.getShoppingCartM().getGoodsCounts();
             if (count != 0) {
                 tvTotalNum.setText(count + "");
                 tvTotalP.setText("共计¥" + shoppingCartM.getShoppingCartM().getPirceTotal());
-            }else{
+                float qs = Float.valueOf(merchantM.getQSPrice());
+                float p = Float.valueOf(shoppingCartM.getShoppingCartM().getPirceTotal());
+                if (p >= qs) {
+                    btnOk.setEnabled(true);
+                } else {
+                    btnOk.setEnabled(false);
+                }
+            } else {
                 tvTotalNum.setText("0");
                 tvTotalP.setText(CommonUtils.getString(R.string.none_goods));
+                btnOk.setEnabled(false);
             }
             if (null != cartListDialog) {
                 cartListDialog.setData();
             }
-        }else{
+        } else {
             tvTotalNum.setText("0");
             tvTotalP.setText(CommonUtils.getString(R.string.none_goods));
+            btnOk.setEnabled(false);
         }
         btnAdd.setCount(ShoppingCartUtil.getLocalCartGoodCount(goodM.getGoodsCode(), merchantCode));
         btnAdd.invalidate();
@@ -209,22 +224,22 @@ public class GoodDetailActivity extends BaseActivity2 {
         if (null != event.getView()) {
             ShoppingCartUtil.addGoodAnimation(this, event.getView(), shoppingCart, toolbar, mainlayout);
         }
-        if(event.type==2){
+        if (event.type == 2) {
             if (ShoppingCartUtil.goodAddEvent(this, merchantM, event.getGoodM())) {
                 refreshCartLayoutData();
             }
-        }else{
+        } else {
             refreshCartLayoutData();
         }
 
     }
 
     public void onEvent(GoodMinusEvent event) {
-        if(event.type==2){
+        if (event.type == 2) {
             if (ShoppingCartUtil.goodMinusEvent(this, merchantCode, event.getGoodM())) {
                 refreshCartLayoutData();
             }
-        }else{
+        } else {
             refreshCartLayoutData();
         }
 
@@ -240,7 +255,7 @@ public class GoodDetailActivity extends BaseActivity2 {
         switch (view.getId()) {
             case R.id.tv_select_stand:
                 if (null != goodM) {
-                    ShoppingCartUtil.showGoodStandDialog(2,merchantCode, goodM, getFragmentManager());
+                    ShoppingCartUtil.showGoodStandDialog(2, merchantCode, goodM, getFragmentManager());
                 }
                 break;
             case R.id.ll_comment_more:
@@ -255,6 +270,9 @@ public class GoodDetailActivity extends BaseActivity2 {
 
     @OnClick(R.id.btn_ok)
     public void onViewClicked() {
+        if (!tvTotalNum.getText().toString().equals("0")) {
+            startActivity(EnsureOrderActivity.class, "merchantCode", merchantCode);
+        }
     }
 
 

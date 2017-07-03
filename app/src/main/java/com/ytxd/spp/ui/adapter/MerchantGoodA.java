@@ -1,6 +1,6 @@
 package com.ytxd.spp.ui.adapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +20,7 @@ import com.ytxd.spp.model.CatagaryM;
 import com.ytxd.spp.model.GoodM;
 import com.ytxd.spp.model.MerchantM;
 import com.ytxd.spp.ui.activity.main.GoodDetailActivity;
+import com.ytxd.spp.ui.activity.main.MerchantDetailActivity;
 import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.ImageLoadUtil;
 import com.ytxd.spp.util.LogUtils;
@@ -38,12 +39,12 @@ import de.greenrobot.event.EventBus;
 
 public class MerchantGoodA extends SectioningAdapter {
 
-    private Context mContext;
+    private Activity  mContext;
     private MerchantM merchantM;
 
     ArrayList<CatagaryM> items = new ArrayList<>();
 
-    public MerchantGoodA(Context context, MerchantM merchantM) {
+    public MerchantGoodA(Activity context, MerchantM merchantM) {
         mContext = context;
         this.merchantM = merchantM;
     }
@@ -143,8 +144,6 @@ public class MerchantGoodA extends SectioningAdapter {
             holder.rl_add_btn.setVisibility(View.VISIBLE);
             holder.tv_select_stand.setVisibility(View.GONE);
         }
-        holder.btnAdd.setCount(ShoppingCartUtil.getLocalCartGoodCount(good.getGoodsCode(), merchantM.getSupermarketCode()));
-        holder.btnAdd.invalidate();
         holder.btnAdd.setOnAddDelListener(new IOnAddDelListener() {
             @Override
             public void onAddSuccess(int i) {
@@ -172,7 +171,17 @@ public class MerchantGoodA extends SectioningAdapter {
                 EventBus.getDefault().post(new MerchantSelectGoodStandEvent(items.get(sectionIndex).getChildren().get(itemIndex)));
             }
         });
+
+        if (((MerchantDetailActivity)mContext).isAgain) {
+            isContained(good);
+        }else{
+            holder.btnAdd.setCount(ShoppingCartUtil.getLocalCartGoodCount(good.getGoodsCode(), merchantM.getSupermarketCode()));
+            holder.btnAdd.invalidate();
+        }
+
     }
+
+
 
     @Override
     public void onBindHeaderViewHolder(SectioningAdapter.HeaderViewHolder viewHolder, int sectionIndex, int headerType) {
@@ -194,6 +203,11 @@ public class MerchantGoodA extends SectioningAdapter {
         } else {
             return null;
         }
+    }
+
+    private void isContained(GoodM good) {
+
+
     }
 
 }

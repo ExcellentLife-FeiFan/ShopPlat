@@ -71,6 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_ui_margin"
+                    android:visibility="gone"
                     android:orientation="horizontal">
 
                     <TextView
@@ -145,6 +146,7 @@
             android:layout_marginTop="@dimen/default_ui_margin"
             android:gravity="right"
             android:orientation="horizontal">
+
 
             <TextView
                 android:visibility="gone"

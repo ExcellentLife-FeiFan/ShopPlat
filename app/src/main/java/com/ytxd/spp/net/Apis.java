@@ -134,7 +134,7 @@ public class Apis {
 
 
     /**
-     * 获取超市列表
+     * 获取超市商品列表
      *
      * @param SupermarketCode 超市编号
      */
@@ -184,11 +184,65 @@ public class Apis {
     public static String DetermineSH = BASE_URL + "/API_User/DetermineSH";
 
     /**
+     * 取消订单
+     *
+     * @param OrderCode
+     * @param UserCouponCode:用户优惠券编号,没有传0(用于恢复优惠券可以使用.)
+     */
+    public static String CancelOrder = BASE_URL + "/API_User/DeleteOrder";
+
+
+    /**
      * 获取用户优惠券
      *
      * @param UserCode
      */
     public static String GetUserCoupon = BASE_URL + "/API_User/GetUserCoupon";
+
+    /**
+     * 设置优惠券已读
+     *
+     * @param UserCode:用户编号
+     */
+    public static String SetUserCouponAllRead = BASE_URL + "/API_User/SetUserCouponAllRead";
+
+    /**
+     * 获取订单商品详情
+     *
+     * @param OrderCode:订单编号
+     */
+    public static String GetOrderGoodsInfo = BASE_URL + "/API_User/GetOrderInfo";
+
+    /**
+     * 获取超市满减信息
+     *
+     * @param SupermarketCode 超市编号
+     */
+    public static String GetSupermarketManJianList = BASE_URL + "/API_User/GetSupermarketManJianList";
+
+    /**
+     * 添加评价
+     *
+     * @param OrderCode:订单编号
+     * @param SupermarketCode:超市编号
+     * @param OrderCode:订单编号
+     * @param UserCode:用户编号
+     * @param EvaluateContent:评价内容
+     * @param GoodsStar:商品星级（1-5）
+     * @param PSStar:配送星级（1-5）
+     * @param PicPath:晒图图片地址","逗号分隔(有上传文件的接口，自动返回逗号分隔的格式)
+     * @param GoodsEvaluateInfo:商品评价信息，商品ID+$$$$+评价内容+$$$$+(赞/踩)赞=1踩=2 +$fg$
+     */
+    public static String AddEvaluate = BASE_URL + "/API_User/AddEvaluate";
+
+    /**
+     * 提交订单校验
+     *
+     * @param SupermarketCode:超市编号
+     * @param GoodsCodes:商品编号逗号分隔
+     * @param ManJianCode:满减编号
+     */
+    public static String SubmitOrderCheck = BASE_URL + "/API_User/SubmitOrderCheck";
 
 
 }

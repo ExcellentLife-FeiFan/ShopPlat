@@ -70,6 +70,7 @@ public class EnsureOrderPresenter extends BasePresenter<IEnsureOrderView> {
     }
 
     public void ensureOrder(final OrderM order) {
+
         iView.showDialogs();
         OkGo.<ApiResult<Object>>get(Apis.GenerateWFKOrder)//
                 .params("UserCode", App.user.getUserCode())
@@ -83,6 +84,7 @@ public class EnsureOrderPresenter extends BasePresenter<IEnsureOrderView> {
                 .params("PayType", order.getPayType())
                 .params("YPrice", order.getYPrice())
                 .params("SJPrice", order.getSJPrice())
+                .params("PSPrice", order.getPSPrice())
                 .execute(new JsonCallback<ApiResult<Object>>() {
                     @Override
                     public void onSuccess(Response<ApiResult<Object>> response) {
@@ -108,8 +110,6 @@ public class EnsureOrderPresenter extends BasePresenter<IEnsureOrderView> {
                         super.onError(response);
                     }
                 });
-
-
 
 
     }

@@ -5,21 +5,14 @@ import android.content.Context;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.ytxd.spp.base.App;
-import com.ytxd.spp.model.GoodM;
 import com.ytxd.spp.model.OrderM;
-import com.ytxd.spp.model.OrderM2;
-import com.ytxd.spp.model.ShoppingCartM;
 import com.ytxd.spp.net.ApiResult;
 import com.ytxd.spp.net.Apis;
 import com.ytxd.spp.net.JsonCallback;
-import com.ytxd.spp.util.LogUtils;
 import com.ytxd.spp.util.ToastUtil;
 import com.ytxd.spp.view.IHomeOrderView;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 主界面presenter
@@ -36,17 +29,18 @@ public class HomeOrderPresenter extends BasePresenter<IHomeOrderView> {
     }
 
     public void getOrderList() {
-        OkGo.<ApiResult<List<OrderM2>>>get(Apis.GetUserOrderList)//
+        OkGo.<ApiResult<List<OrderM>>>get(Apis.GetUserOrderList)//
                 .params("UserCode", App.user.getUserCode())
                 .params("PageIndex", "1")
-                .params("PageSize", "10000")
-                .execute(new JsonCallback<ApiResult<List<OrderM2>>>() {
+                .params("PageSize", "10")
+                .execute(new JsonCallback<ApiResult<List<OrderM>>>() {
                     @Override
-                    public void onSuccess(Response<ApiResult<List<OrderM2>>> response) {
+                    public void onSuccess(Response<ApiResult<List<OrderM>>> response) {
                         try {
-                            ApiResult<List<OrderM2>> result = response.body();
+                            ApiResult<List<OrderM>> result = response.body();
                             if (result.isSuccess()) {
-                                loadData(result.getObj());
+                                iView.lodeSuccess(result.getObj());
+//                                loadData(result.getObj());
                                 return;
                             } else {
                                 ToastUtil.showToastShort(context, result.getMsg());
@@ -58,16 +52,15 @@ public class HomeOrderPresenter extends BasePresenter<IHomeOrderView> {
                     }
 
                     @Override
-                    public void onError(Response<ApiResult<List<OrderM2>>> response) {
+                    public void onError(Response<ApiResult<List<OrderM>>> response) {
                         iView.lodeFailed();
                         super.onError(response);
-                        LogUtils.e("");
                     }
                 });
 
     }
 
-    private void loadData(List<OrderM2> items) {
+    /*private void loadData(List<OrderM2> items) {
         Map<String, List<OrderM2>> maps = new LinkedHashMap<>();
         for (int i = 0; i < items.size(); i++) {
             if (maps.containsKey(items.get(i).getOrderCode())) {
@@ -80,7 +73,7 @@ public class HomeOrderPresenter extends BasePresenter<IHomeOrderView> {
         }
         List<OrderM> datas = new ArrayList<>();
         String[] keyss = new String[]{};
-        String[] keys=maps.keySet().toArray(keyss);
+        String[] keys = maps.keySet().toArray(keyss);
         for (int i = 0; i < keys.length; i++) {
             List<OrderM2> ors = maps.get(keys[i]);
             OrderM order = ors.get(0);
@@ -99,15 +92,15 @@ public class HomeOrderPresenter extends BasePresenter<IHomeOrderView> {
                 good.setGoodM(goodM);
                 goods.add(good);
             }
-            order.setGoods(goods);
+//            order.setGoods(goods);
             datas.add(order);
         }
-        if(datas.size()>5){
-            datas=datas.subList(0,5);
+        if (datas.size() > 5) {
+            datas = datas.subList(0, 5);
         }
         iView.lodeSuccess(datas);
 
-    }
+    }*/
 
 
 }

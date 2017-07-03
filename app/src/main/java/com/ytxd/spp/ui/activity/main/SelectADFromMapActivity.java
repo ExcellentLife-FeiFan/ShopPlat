@@ -188,7 +188,7 @@ public class SelectADFromMapActivity extends BaseActivity implements LocationSou
             @Override
             public void onCameraChangeFinish(CameraPosition cameraPosition) {
                 if (!isFirst) {
-                    searchN2(new LatLonPoint(cameraPosition.target.latitude, cameraPosition.target.longitude));
+//                    searchN2(new LatLonPoint(cameraPosition.target.latitude, cameraPosition.target.longitude));
                     searchN(new LatLonPoint(cameraPosition.target.latitude, cameraPosition.target.longitude));
                     return;
                 }
@@ -208,11 +208,11 @@ public class SelectADFromMapActivity extends BaseActivity implements LocationSou
     }
 
     public void searchN2(LatLonPoint point) {
-        query = new PoiSearch.Query("后现代","", cityCurrent);// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
-        query.setPageSize(20);// 设置每页最多返回多少条poiitem
-        query.setPageNum(1);// 设置查第一页
+        query = new PoiSearch.Query("","商务住宅|楼宇|商务写字楼", cityCurrent);
+        query.setPageSize(20);
+        query.setPageNum(1);
         poiSearch = new PoiSearch(this, query);
-        poiSearch.setBound(new PoiSearch.SearchBound(point, 2000));//设置周边搜索的中心点以及半径
+        poiSearch.setBound(new PoiSearch.SearchBound(point, 1000));
         poiSearch.setOnPoiSearchListener(new PoiSearch.OnPoiSearchListener() {
             @Override
             public void onPoiSearched(PoiResult poiResult, int i) {
@@ -224,7 +224,7 @@ public class SelectADFromMapActivity extends BaseActivity implements LocationSou
 
             }
         });
-        poiSearch.searchPOIAsyn();// 异步搜索
+        poiSearch.searchPOIAsyn();
     }
 
     public void searchCity(String keyword) {
