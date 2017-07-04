@@ -21,6 +21,9 @@ public class OrderGoodM extends GoodM {
     private int OrderBy;
     private String CreateTime;
 
+    public String comment;
+    public int zan=1;
+
     public String getOrderGoodsCode() {
         return OrderGoodsCode;
     }
@@ -59,5 +62,21 @@ public class OrderGoodM extends GoodM {
 
     public void setCreateTime(String CreateTime) {
         this.CreateTime = CreateTime;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public int getZan() {
+        return zan;
+    }
+
+    public void setZan(int zan) {
+        this.zan = zan;
     }
 }

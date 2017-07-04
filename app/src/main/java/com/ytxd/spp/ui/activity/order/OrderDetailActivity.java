@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.kennyc.view.MultiStateView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
@@ -59,6 +60,8 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     Button btnPay;
     @BindView(R.id.btn_one_more)
     Button btnOneMore;
+    @BindView(R.id.msv)
+    MultiStateView msv;
 
 
     @Override
@@ -134,6 +137,9 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
 
     @Override
     public void lodeGoodsSuccess(List<OrderGoodM> items) {
-        mAdapter.addItems(items, true);
+        if (null != items) {
+            mAdapter.addItems(items, true);
+        }
+        msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
     }
 }

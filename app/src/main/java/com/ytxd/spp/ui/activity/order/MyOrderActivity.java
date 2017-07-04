@@ -51,7 +51,7 @@ public class MyOrderActivity extends BaseActivity<OrderActivityPresenter> implem
         getBar().initActionBar("订单", this);
         refreshLayout.setOnRefreshListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        mRecyclerView.addItemDecoration(new SimpleDividerDecoration(activity, R.color.bg, R.dimen.divider_height3));
+        mRecyclerView.addItemDecoration(new SimpleDividerDecoration(activity, R.color.common_divider_color, R.dimen.divider_height));
         mAdapter = new HomeOrderA(null);
         mAdapter.setEnableLoadMore(false);
 //        mAdapter.setOnLoadMoreListener(this, mRecyclerView);

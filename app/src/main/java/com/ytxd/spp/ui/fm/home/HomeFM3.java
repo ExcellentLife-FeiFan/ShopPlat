@@ -61,7 +61,7 @@ public class HomeFM3 extends BaseFragment<HomeOrderPresenter> implements SwipeRe
     public void initView() {
         refreshLayout.setOnRefreshListener(this);
         rvOrder.setLayoutManager(new LinearLayoutManager(activity));
-        rvOrder.addItemDecoration(new SimpleDividerDecoration(activity, R.color.bg, R.dimen.divider_height3));
+        rvOrder.addItemDecoration(new SimpleDividerDecoration(activity, R.color.common_divider_color, R.dimen.divider_height));
         orderA = new HomeOrderA(null);
         orderA.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         rvOrder.setAdapter(orderA);

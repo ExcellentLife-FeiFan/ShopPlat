@@ -19,6 +19,8 @@ import com.ytxd.spp.event.MerchantSelectGoodStandEvent;
 import com.ytxd.spp.model.CatagaryM;
 import com.ytxd.spp.model.GoodM;
 import com.ytxd.spp.model.MerchantM;
+import com.ytxd.spp.model.OrderGoodM;
+import com.ytxd.spp.model.ShoppingCartM;
 import com.ytxd.spp.ui.activity.main.GoodDetailActivity;
 import com.ytxd.spp.ui.activity.main.MerchantDetailActivity;
 import com.ytxd.spp.util.CommonUtils;
@@ -39,7 +41,7 @@ import de.greenrobot.event.EventBus;
 
 public class MerchantGoodA extends SectioningAdapter {
 
-    private Activity  mContext;
+    private Activity mContext;
     private MerchantM merchantM;
 
     ArrayList<CatagaryM> items = new ArrayList<>();
@@ -136,7 +138,7 @@ public class MerchantGoodA extends SectioningAdapter {
         holder.tvSalesNum.setText("已售" + good.getSaleNumber() + "份");
         CommonUtils.setText(holder.tvOriginP, good.getYPrice());
         CommonUtils.setText(holder.tvNowP, good.getXPrice());
-        ImageLoadUtil.setImageNP(good.getLogoPaths(), holder.iv, mContext,0.8f);
+        ImageLoadUtil.setImageNP(good.getLogoPaths(), holder.iv, mContext, 0.8f);
         if (null != good.getGoods() && good.getGoods().size() > 0) {
             holder.rl_add_btn.setVisibility(View.GONE);
             holder.tv_select_stand.setVisibility(View.VISIBLE);
@@ -172,15 +174,66 @@ public class MerchantGoodA extends SectioningAdapter {
             }
         });
 
-        if (((MerchantDetailActivity)mContext).isAgain) {
-            isContained(good);
-        }else{
+        if (((MerchantDetailActivity) mContext).isAgain) {
+            List<OrderGoodM> orderGoods = (((MerchantDetailActivity) mContext).orderGoods);
+
+            if (null != good.getGoods() && good.getGoods().size() > 0) {
+                List<ShoppingCartM.Goods> gAs = new ArrayList<>();
+                for (int i = 0; i < orderGoods.size(); i++) {
+                    for (int j = 0; j < good.getGoods().size(); j++) {
+                        if (good.getGoods().get(j).getGoodsCode().equals(orderGoods.get(i).getGoodsCode())) {
+                            ShoppingCartM.Goods g=new ShoppingCartM.Goods();
+                            g.setCount(orderGoods.get(i).getBuyNumber());
+                            g.setGoodM(good.getGoods().get(j));
+                            gAs.add(g);
+                        }
+
+                    }
+                }
+                for (int i = 0; i < gAs.size(); i++) {
+                    ShoppingCartUtil.addGoods(mContext, merchantM, gAs.get(i).getGoodM(), gAs.get(i).getCount());
+                    ((MerchantDetailActivity) mContext).refreshCartLayoutData2();
+                    for (int j = 0; j < orderGoods.size(); j++) {
+                        if (gAs.get(i).getGoodM().getGoodsCode().equals(orderGoods.get(j).getGoodsCode())) {
+                            orderGoods.remove(j);
+                            break
+                                    ;
+                        }
+                    }
+
+                }
+            } else {
+                int count = 0;
+                boolean isCotained = false;
+                GoodM gA = null;
+                for (int i = 0; i < orderGoods.size(); i++) {
+                    if (good.getGoodsCode().equals(orderGoods.get(i).getGoodsCode())) {
+                        count = orderGoods.get(i).getBuyNumber();
+                        orderGoods.remove(i);
+                        isCotained = true;
+                        gA = good;
+                        break;
+                    }
+                }
+                if (isCotained) {
+                    if (holder.rl_add_btn.getVisibility() == View.VISIBLE) {
+                        holder.btnAdd.setCount(count);
+                        holder.btnAdd.invalidate();
+                    }
+                    ShoppingCartUtil.addGoods(mContext, merchantM, gA, count);
+                    ((MerchantDetailActivity) mContext).refreshCartLayoutData2();
+                }
+            }
+
+            if (orderGoods.size() == 0) {
+                ((MerchantDetailActivity) mContext).isAgain = false;
+            }
+        } else {
             holder.btnAdd.setCount(ShoppingCartUtil.getLocalCartGoodCount(good.getGoodsCode(), merchantM.getSupermarketCode()));
             holder.btnAdd.invalidate();
         }
 
     }
-
 
 
     @Override
@@ -205,9 +258,15 @@ public class MerchantGoodA extends SectioningAdapter {
         }
     }
 
-    private void isContained(GoodM good) {
-
-
+    private boolean isContained(GoodM good, int count) {
+        List<OrderGoodM> goods = (((MerchantDetailActivity) mContext).orderGoods);
+        for (int i = 0; i < goods.size(); i++) {
+            if (good.getGoodsCode().equals(goods.get(i).getGoodsCode())) {
+                count = goods.get(i).getBuyNumber();
+                return true;
+            }
+        }
+        return false;
     }
 
 }

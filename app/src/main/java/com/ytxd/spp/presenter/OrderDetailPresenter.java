@@ -37,12 +37,14 @@ public class OrderDetailPresenter extends BasePresenter<IOrderDetailView> {
                         if (result.isSuccess()) {
                             iView.lodeGoodsSuccess(result.getObj());
                         } else {
+                            iView.lodeGoodsSuccess(null);
                             ToastUtil.showToastShort(context, result.getMsg());
                         }
                     }
 
                     @Override
                     public void onError(Response<ApiResult<List<OrderGoodM>>> response) {
+                        iView.lodeGoodsSuccess(null);
                         super.onError(response);
                     }
                 });

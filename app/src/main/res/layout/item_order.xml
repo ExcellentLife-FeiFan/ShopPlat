@@ -2,14 +2,17 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true"
-    android:background="@drawable/selector_bg_viewgroup_click4">
+    android:background="@drawable/selector_bg_viewgroup_click4"
+    android:clickable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/padding_left2">
+        android:paddingTop="@dimen/default_ui_margin_large"
+        android:paddingBottom="@dimen/default_ui_margin_large"
+        android:paddingLeft="@dimen/padding_left2"
+        android:paddingRight="@dimen/padding_left2">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,7 +25,8 @@
                 android:layout_height="@dimen/data_icon_size_middle"
                 android:layout_marginRight="@dimen/default_ui_margin"
                 android:background="@drawable/bg_graycolor_border"
-                android:padding="@dimen/dp4"
+                android:padding="@dimen/dp2"
+                android:scaleType="centerInside"
                 android:src="@color/img_bg" />
 
             <LinearLayout
@@ -51,8 +55,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:text="@string/null_s"
-                        android:textColor="@color/hint_gray"
-                        android:textSize="@dimen/text_size_small" />
+                        android:textColor="@color/black_overlay2"
+                        android:textSize="@dimen/text_size_common_s" />
 
                 </LinearLayout>
 
@@ -71,8 +75,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_ui_margin"
-                    android:visibility="gone"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/tv_goods_desr"
@@ -87,7 +91,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/default_ui_margin_small"
+                    android:layout_marginTop="@dimen/drawable_padding"
                     android:orientation="horizontal">
 
                     <TextView
@@ -102,11 +106,11 @@
 
 
                 <LinearLayout
-                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_ui_margin_large"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -149,28 +153,32 @@
 
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/tv_pay"
                 style="@style/Common_Border_Btn"
-                android:layout_marginRight="@dimen/default_ui_margin_medium"
+                android:layout_marginLeft="@dimen/default_ui_margin_medium"
                 android:background="@drawable/selectable_pricecolor_border_btn"
                 android:text="去支付"
-                android:textColor="@color/price_color" />
+                android:textColor="@color/price_color"
+                android:textSize="@dimen/text_size_common"
+                android:visibility="visible" />
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/tv_again"
                 style="@style/Common_Border_Btn"
-                android:layout_marginRight="@dimen/default_ui_margin_medium"
-                android:text="再来一单" />
+                android:layout_marginLeft="@dimen/default_ui_margin_medium"
+                android:text="再来一单"
+                android:textSize="@dimen/text_size_common"
+                android:visibility="gone" />
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/tv_evaluate"
                 style="@style/Common_Border_Btn"
+                android:layout_marginLeft="@dimen/default_ui_margin_medium"
                 android:background="@drawable/selectable_pricecolor_border_btn"
                 android:text="评价"
-                android:textColor="@color/price_color" />
+                android:textColor="@color/price_color"
+                android:textSize="@dimen/text_size_common"
+                android:visibility="gone" />
 
 
         </LinearLayout>

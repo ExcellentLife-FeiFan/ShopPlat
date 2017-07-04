@@ -111,6 +111,35 @@ public class ShoppingCartUtil {
 
     }
 
+    public static boolean addGoods(Context context, MerchantM merchant, GoodM goodM,int count) {
+        boolean canrefresh = false;
+        if (CommonUtils.isDBInit(context)) {
+            QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
+                    .whereEquals(LocalShoppingCartM.CARTCODE, merchant.getSupermarketCode());
+            List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+            if (beans.size() > 0) {
+                LocalShoppingCartM shoppingCartM = beans.get(0);
+                for (int i = 0; i < count; i++) {
+                    shoppingCartM.getShoppingCartM().addGood(goodM);
+                }
+                int ch = App.liteOrm.update(shoppingCartM);
+                LogUtils.e(ch + "");
+            } else {
+                ShoppingCartM shoppingCartM = new ShoppingCartM();
+                shoppingCartM.setMerchantM(merchant);
+                for (int i = 0; i < count; i++) {
+                    shoppingCartM.addGood(goodM);
+                }
+                LocalShoppingCartM localShoppingCartM = new LocalShoppingCartM(merchant.getSupermarketCode(), shoppingCartM);
+                long cc = App.liteOrm.save(localShoppingCartM);
+                LogUtils.e(cc + "");
+            }
+            canrefresh = true;
+        }
+        return canrefresh;
+
+    }
+
     public static boolean goodClearEvent(Context context, String merchantCode) {
         boolean canrefresh = false;
         if (CommonUtils.isDBInit(context)) {

@@ -276,7 +276,7 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
         }
     }
 
-    private void refreshCartLayoutData() {
+    public void refreshCartLayoutData() {
         QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
                 .whereEquals(LocalShoppingCartM.CARTCODE, merchantM.getSupermarketCode());
         List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
@@ -288,7 +288,6 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
             if (count != 0) {
                 tvTotalNum.setText(count + "");
                 tvTotalP.setText("共计¥" + shoppingCartM.getShoppingCartM().getPirceTotal());
-
                 float qs = Float.valueOf(merchantM.getQSPrice());
                 float p = Float.valueOf(shoppingCartM.getShoppingCartM().getPirceTotal());
                 if (p >= qs) {
@@ -314,6 +313,37 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
         }
 
 
+    }
+    public void refreshCartLayoutData2() {
+        QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
+                .whereEquals(LocalShoppingCartM.CARTCODE, merchantM.getSupermarketCode());
+        List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+        if (beans.size() > 0) {
+            LocalShoppingCartM shoppingCartM = beans.get(0);
+            int count = shoppingCartM.getShoppingCartM().getGoodsCounts();
+            if (count != 0) {
+                tvTotalNum.setText(count + "");
+                tvTotalP.setText("共计¥" + shoppingCartM.getShoppingCartM().getPirceTotal());
+                float qs = Float.valueOf(merchantM.getQSPrice());
+                float p = Float.valueOf(shoppingCartM.getShoppingCartM().getPirceTotal());
+                if (p >= qs) {
+                    btnOk.setEnabled(true);
+                } else {
+                    btnOk.setEnabled(false);
+                }
+                if (null != cartListDialog) {
+                    cartListDialog.setData();
+                }
+            } else {
+                tvTotalNum.setText("0");
+                tvTotalP.setText(CommonUtils.getString(R.string.none_goods));
+                btnOk.setEnabled(false);
+            }
+        } else {
+            tvTotalNum.setText("0");
+            tvTotalP.setText(CommonUtils.getString(R.string.none_goods));
+            btnOk.setEnabled(false);
+        }
     }
 
 
@@ -394,8 +424,8 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
     @Override
     public void lodeOrderGoodsSuccess(List<OrderGoodM> items) {
         this.orderGoods = items;
-        if(items.size()>0){
-            ShoppingCartUtil.deleteCart(this,merchantCode);
+        if (items.size() > 0) {
+            ShoppingCartUtil.deleteCart(this, merchantCode);
         }
         presenter.getGoodList(merchantCode);
     }

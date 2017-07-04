@@ -41,6 +41,7 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, AddCommentActivity.class);
+                intent.putExtra("data",item);
                 mContext.startActivity(intent);
             }
         });
@@ -52,7 +53,7 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
                 mContext.startActivity(intent);
             }
         });
-        ImageLoadUtil.setImageNP(item.getSuperMarketModel().getLogoUrl(), helper.civ, mContext);
+        ImageLoadUtil.setImage(item.getSuperMarketModel().getLogoUrl(), helper.civ, mContext);
         CommonUtils.setText(helper.tvMerName, item.getSuperMarketModel().getName());
         CommonUtils.setText(helper.tvTime, item.getCreateTime().replace("T", " "));
         CommonUtils.setText(helper.tvTotalPrice, "￥" + item.getSJPrice());
@@ -65,6 +66,8 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
                 helper.tvPay.setVisibility(View.VISIBLE);
                 break;
             case OrderM.HAVE_PAY_WATING_ACE:
+                helper.tvEvaluate.setVisibility(View.VISIBLE);
+                helper.tvAgain.setVisibility(View.VISIBLE);
                 CommonUtils.setText(helper.tvState, "等待接单");
                 break;
             case OrderM.FASE_PAY_WATING_ACE:
@@ -83,6 +86,7 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
                 break;
             case OrderM.CANCEL:
                 CommonUtils.setText(helper.tvState, "已取消");
+                helper.tvAgain.setVisibility(View.VISIBLE);
                 helper.tvAgain.setVisibility(View.VISIBLE);
                 break;
         }

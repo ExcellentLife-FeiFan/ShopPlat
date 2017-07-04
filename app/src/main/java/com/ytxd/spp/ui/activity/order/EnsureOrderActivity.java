@@ -164,7 +164,13 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
                 ///////////////////////////////////
                 mAdapter.addItems(shoppingCartM.getGoods(), true);
                 if (null != merchant) {
-                    float ps=Float.valueOf(merchant.getPSPrice());
+                    float ps= 0.0f;
+                    try {
+                        ps = Float.valueOf(merchant.getPSPrice());
+                    } catch (Exception e) {
+                        merchant.setPSPrice("0.0");
+                        e.printStackTrace();
+                    }
                     sp=sp+ps;
                     yp=yp+ps;
                     CommonUtils.setText(tvMerchantName, merchant.getName());

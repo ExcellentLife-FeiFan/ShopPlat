@@ -3,60 +3,96 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
-
-    <TextView
-        android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="火龙果"
-        android:textColor="@color/black_overlay"
-        android:textSize="@dimen/text_size_common" />
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="right"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
-
-        <RelativeLayout
+        <TextView
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/default_ui_margin_large"
-            android:background="@drawable/bg_pricecolor_border_halfcircle"
-            android:paddingBottom="@dimen/default_ui_margin_small"
-            android:paddingLeft="@dimen/default_ui_margin_large"
-            android:paddingRight="@dimen/default_ui_margin_large"
-            android:paddingTop="@dimen/default_ui_margin_small">
+            android:text="火龙果"
+            android:textColor="@color/black_overlay"
+            android:textSize="@dimen/text_size_common" />
 
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_zan_t_s" />
-
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        <com.ytxd.spp.ui.views.MutilRadioGroup
+            android:id="@+id/mrg_zan"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_gray_border_halfcircle"
-            android:paddingBottom="@dimen/default_ui_margin_small"
-            android:paddingLeft="@dimen/default_ui_margin_large"
-            android:paddingRight="@dimen/default_ui_margin_large"
-            android:paddingTop="@dimen/default_ui_margin_small">
+            android:gravity="right"
+            android:orientation="horizontal">
 
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_zan_b_ns" />
+            <RelativeLayout
+                android:id="@+id/rl_zan"
+                android:layout_width="50dp"
+                android:layout_height="23dp"
+                android:layout_marginRight="@dimen/default_ui_margin_large"
 
-        </RelativeLayout>
+                >
+
+                <ImageView
+                    android:id="@+id/iv_zan"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/bg_pricecolor_border_halfcircle" />
+
+                <RadioButton
+                    android:id="@+id/rb_zan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/selector_zan_rb_bg"
+                    android:button="@null"
+                    android:checked="true" />
 
 
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/rl_cai"
+                android:layout_width="50dp"
+                android:layout_height="23dp">
+
+                <ImageView
+                    android:id="@+id/iv_cai"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/bg_gray_border_halfcircle" />
+
+                <RadioButton
+                    android:id="@+id/rb_cai"
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/selector_un_zan_rb_bg"
+                    android:button="@null"
+                    android:checked="false" />
+
+            </RelativeLayout>
+
+
+        </com.ytxd.spp.ui.views.MutilRadioGroup>
     </LinearLayout>
+
+    <EditText
+        android:id="@+id/et"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginBottom="@dimen/default_ui_margin_small"
+        android:layout_marginTop="@dimen/default_ui_margin"
+        android:background="@drawable/bg_graycolor_border2"
+        android:gravity="left"
+        android:hint="点评一下吧"
+        android:padding="@dimen/drawable_padding"
+        android:textColor="@color/black_overlay2"
+        android:textColorHint="@color/hint_gray"
+        android:textSize="@dimen/text_size_common_s" />
+
 
 </LinearLayout>

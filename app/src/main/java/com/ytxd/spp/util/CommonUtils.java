@@ -229,6 +229,9 @@ public class CommonUtils {
     public static void setBackgroundDrawable(View v, int res) {
         v.setBackgroundDrawable(App.context.getResources().getDrawable(res));
     }
+    public static void setBackgroundDrawable(Context context,View v, int res) {
+        v.setBackgroundDrawable(context.getResources().getDrawable(res));
+    }
 
     public static void setTextColor(TextView v, int res) {
         v.setTextColor(App.context.getResources().getColor(res));

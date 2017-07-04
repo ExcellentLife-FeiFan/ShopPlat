@@ -244,5 +244,12 @@ public class Apis {
      */
     public static String SubmitOrderCheck = BASE_URL + "/API_User/SubmitOrderCheck";
 
+    /**
+     * 上传文件
+     *
+     */
+    public static String UpFiles = BASE_URL + "/API_Global/UpFiles";
+
+
 
 }
