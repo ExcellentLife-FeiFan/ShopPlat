@@ -36,7 +36,7 @@ public class GoodCommentsActivity extends BaseActivity implements View.OnClickLi
         getBar().initActionBar("商品评价", this);
         refreshLayout.setOnRefreshListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        mRecyclerView.addItemDecoration(new SimpleDividerDecoration(activity, R.color.common_divider_color, R.dimen.common_divider_height));
+        mRecyclerView.addItemDecoration(new SimpleDividerDecoration(activity, R.color.common_divider_color, R.dimen.divider_height));
         mAdapter = new GoodCommentsA(null);
         mAdapter.setOnLoadMoreListener(this, mRecyclerView);
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);

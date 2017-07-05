@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.litesuits.orm.LiteOrm;
+import com.lzy.ninegrid.NineGridView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheEntity;
 import com.lzy.okgo.cache.CacheMode;
@@ -14,10 +15,12 @@ import com.lzy.okgo.https.HttpsUtils;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
+import com.wonderkiln.blurkit.BlurKit;
 import com.ytxd.spp.model.UserM;
 import com.ytxd.spp.ui.activity.main.MainActivity;
 import com.ytxd.spp.util.AbStrUtil;
 import com.ytxd.spp.util.CommonUtils;
+import com.ytxd.spp.util.GlideImageLoader;
 import com.ytxd.spp.util.SPUtil;
 import com.zxy.recovery.callback.RecoveryCallback;
 import com.zxy.recovery.core.Recovery;
@@ -43,8 +46,10 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        BlurKit.init(this);
         ButterKnife.setDebug(BuildConfig.DEBUG);//设置ButterKnife调试模式
         context = this;
+        NineGridView.setImageLoader(new GlideImageLoader());
         initPrefs();
         initDirs();//初始化APP文件夹
         initOkGo();//初始化OkGo网络请求工具

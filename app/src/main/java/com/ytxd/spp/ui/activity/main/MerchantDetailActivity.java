@@ -2,8 +2,10 @@ package com.ytxd.spp.ui.activity.main;
 
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
@@ -13,18 +15,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.flyco.systembar.SystemBarHelper;
-import com.kennyc.view.MultiStateView;
+import com.flyco.tablayout.SlidingTabLayout;
 import com.litesuits.orm.db.assit.QueryBuilder;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.wonderkiln.blurkit.BlurKit;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.BaseActivity2;
@@ -33,17 +36,15 @@ import com.ytxd.spp.event.CartListDialogShowEvent;
 import com.ytxd.spp.event.GoodAddEvent;
 import com.ytxd.spp.event.GoodMinusEvent;
 import com.ytxd.spp.event.MerchantSelectGoodStandEvent;
-import com.ytxd.spp.model.CatagaryM;
+import com.ytxd.spp.event.RefreshGoodRVEvent;
 import com.ytxd.spp.model.LocalShoppingCartM;
 import com.ytxd.spp.model.MerchantM;
-import com.ytxd.spp.model.OrderGoodM;
 import com.ytxd.spp.presenter.MerchantPresenter;
 import com.ytxd.spp.ui.activity.order.EnsureOrderActivity;
 import com.ytxd.spp.ui.activity.order.ShoppingCartActivity;
-import com.ytxd.spp.ui.adapter.MerchantCategoryA;
-import com.ytxd.spp.ui.adapter.MerchantGoodA;
+import com.ytxd.spp.ui.fm.merchant.MerchantEvaluateFM;
+import com.ytxd.spp.ui.fm.merchant.MerchantGoodFM;
 import com.ytxd.spp.ui.views.MyExpandableLayout;
-import com.ytxd.spp.ui.views.SimpleDividerDecoration;
 import com.ytxd.spp.ui.views.pop.MerchantCartListDialog;
 import com.ytxd.spp.util.AbStrUtil;
 import com.ytxd.spp.util.CommonUtils;
@@ -51,25 +52,17 @@ import com.ytxd.spp.util.ImageLoadUtil;
 import com.ytxd.spp.util.ShoppingCartUtil;
 import com.ytxd.spp.view.IMerchantView;
 
-import org.zakariya.stickyheaders.StickyHeaderLayoutManager;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> implements IMerchantView {
 
     @BindView(R.id.iv_bg)
     ImageView ivBg;
-    @BindView(R.id.msv)
-    MultiStateView msv;
-    @BindView(R.id.rv_category)
-    RecyclerView rvCategory;
-    @BindView(R.id.rv_good)
-    RecyclerView rvGood;
     @BindView(R.id.shopping_cart)
     ImageView shoppingCart;
     @BindView(R.id.main_layout)
@@ -77,10 +70,8 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
     @BindView(R.id.shopping_cart_bottom)
     LinearLayout shopping_cart_bottom;
     @BindView(R.id.rl_cart)
-    RelativeLayout rl_cart;
+    RelativeLayout rlCart;
     MerchantCartListDialog cartListDialog;
-    /*    @BindView(R.id.rl_cart_list)
-        RelativeLayout rlCartList;*/
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.collapsingToolbarLayout)
@@ -107,17 +98,16 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
     MyExpandableLayout expand;
     @BindView(R.id.tv_acti_num)
     TextView tvActiNum;
-
-    MerchantGoodA goodA;
-    MerchantCategoryA categoryA;
-    StickyHeaderLayoutManager goodLM;
-    LinearLayoutManager categoryLM;
-    MerchantM merchantM;
     @BindView(R.id.btn_ok)
     Button btnOk;
+    @BindView(R.id.tab)
+    SlidingTabLayout tab;
+    @BindView(R.id.vp)
+    ViewPager vp;
+
+    MerchantM merchantM;
     String orderCode;
-    public List<OrderGoodM> orderGoods = new ArrayList<>();
-    public boolean isAgain = false;
+    String[] titles={"商品","评价"};
 
     @Override
     protected void initPresenter() {
@@ -134,24 +124,48 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
         merchantM = (MerchantM) getIntent().getSerializableExtra("data");
         merchantCode = merchantM.getSupermarketCode();
         orderCode = getIntent().getStringExtra("orderCode");
-        if (!AbStrUtil.isEmpty(orderCode)) {
-            isAgain = true;
-            presenter.getGoodFromOrder(orderCode);
-        } else {
-            isAgain = false;
-            presenter.getGoodList(merchantCode);
-        }
         initViews();
 
     }
 
     private void initViews() {
+        MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());
+        vp.setAdapter(adapter);
+        vp.setOffscreenPageLimit(2);
+        tab.setViewPager(vp, titles);
+        vp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position==0){
+                    showBottomCart();
+                }else{
+                    dissmissBottomCart();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         ImageLoadUtil.setImageNP(merchantM.getLogoUrl(), icon, this);
         if (!AbStrUtil.isEmpty(merchantM.getHJUrl())) {
             ImageLoadUtil.setImageNP(merchantM.getHJUrl(), ivBg, this);
         } else if (!AbStrUtil.isEmpty(merchantM.getLogoUrl())) {
             ImageLoadUtil.setImageNP(merchantM.getLogoUrl(), ivBg, this);
         }
+        ivBg.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                BlurKit.getInstance().blur(ivBg, 20);
+            }
+        },2000);
+
         if (null != merchantM.getManJian()) {
             setActiviesData(merchantM.getManJian());
         } else {
@@ -170,45 +184,6 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
         //method 1
         SystemBarHelper.immersiveStatusBar(this, 0);
         SystemBarHelper.setHeightAndPadding(this, toolbar);
-
-        goodA = new MerchantGoodA(this, merchantM);
-        goodLM = new StickyHeaderLayoutManager();
-        rvGood.setLayoutManager(goodLM);
-        rvGood.addItemDecoration(new SimpleDividerDecoration(this, R.color.line_gray));
-        rvGood.setAdapter(goodA);
-        rvGood.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                MerchantGoodA.HeaderViewHolder headerViewHolder = (MerchantGoodA.HeaderViewHolder) goodLM.getFirstVisibleHeaderViewHolder(true);
-                int section = headerViewHolder.getSection();
-                categoryLM.scrollToPositionWithOffset(section, 0);
-                categoryA.setPositionS(section);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-            }
-        });
-
-        categoryA = new MerchantCategoryA(null);
-        categoryLM = new LinearLayoutManager(this);
-        rvCategory.setLayoutManager(categoryLM);
-        rvCategory.addItemDecoration(new SimpleDividerDecoration(this, R.color.line_gray));
-        rvCategory.setAdapter(categoryA);
-        rvCategory.addOnItemTouchListener(new OnItemClickListener() {
-            @Override
-            public void onSimpleItemClick(final BaseQuickAdapter adapter, final View view, final int position) {
-                categoryA.setPositionS(position);
-                CatagaryM setion = goodA.getSection(position);
-                if (setion.getAdapterP() >= 0) {
-                    goodLM.scrollToPosition(setion.getAdapterP());
-                }
-            }
-        });
-
     }
 
     private void setActiviesData(List<MerchantM.ManJianBean> actis) {
@@ -239,16 +214,6 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
                 content.addView(tvActi);
             }
         }
-    }
-
-    private void setSectionAdapterPosition(List<CatagaryM> categories) {
-        int count = 0;
-        for (int i = 0; i < categories.size(); i++) {
-            CatagaryM one = categories.get(i);
-            one.setAdapterP(count + 2 * i);
-            count = count + one.getChildren().size();
-        }
-
     }
 
 
@@ -308,12 +273,9 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
             tvTotalP.setText(CommonUtils.getString(R.string.none_goods));
             btnOk.setEnabled(false);
         }
-        if (null != goodA) {
-            goodA.notifyDataSetChanged();
-        }
-
-
+        EventBus.getDefault().post(new RefreshGoodRVEvent());
     }
+
     public void refreshCartLayoutData2() {
         QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
                 .whereEquals(LocalShoppingCartM.CARTCODE, merchantM.getSupermarketCode());
@@ -379,16 +341,16 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
 
     public void onEvent(CartListDialogShowEvent event) {
         if (event.show) {
-            rl_cart.setVisibility(View.INVISIBLE);
+            rlCart.setVisibility(View.INVISIBLE);
         } else {
-            rl_cart.setVisibility(View.VISIBLE);
+            rlCart.setVisibility(View.VISIBLE);
         }
 
     }
 
     public void onEvent(CartListClearRefreshEvent event) {
         refreshCartLayoutData();
-        goodA.notifyDataSetChanged();
+        EventBus.getDefault().post(new RefreshGoodRVEvent());
     }
 
     @Override
@@ -396,24 +358,6 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
 
     }
 
-    @Override
-    public void lodeSuccess(List<CatagaryM> items) {
-        setSectionAdapterPosition(items);
-        categoryA.addData(items);
-        goodA.addAll(items);
-        if (goodA.getItemCount() > 0) {
-            msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
-            rl_cart.setVisibility(View.VISIBLE);
-        } else {
-            rl_cart.setVisibility(View.GONE);
-            msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
-        }
-        for (int i = 0; i < items.size(); i++) {
-            for (int i1 = 0; i1 < items.get(i).getChildren().size(); i1++) {
-                ShoppingCartUtil.refreshLocalCartGood(items.get(i).getChildren().get(i1), merchantCode);
-            }
-        }
-    }
 
     @Override
     public void lodeManjianSuccess(List<MerchantM.ManJianBean> items) {
@@ -421,28 +365,46 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
         setActiviesData(items);
     }
 
-    @Override
-    public void lodeOrderGoodsSuccess(List<OrderGoodM> items) {
-        this.orderGoods = items;
-        if (items.size() > 0) {
-            ShoppingCartUtil.deleteCart(this, merchantCode);
-        }
-        presenter.getGoodList(merchantCode);
-    }
-
-    @Override
-    public void lodeOrderGoodsFail() {
-        presenter.getGoodList(merchantCode);
-    }
-
-    @Override
-    public void lodeFailed() {
-        rl_cart.setVisibility(View.GONE);
-        msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
-    }
-
     public void onEvent(MerchantSelectGoodStandEvent event) {
         ShoppingCartUtil.showGoodStandDialog(1, merchantCode, event.goodM, getFragmentManager());
+    }
+
+
+    public class MyPagerAdapter extends FragmentPagerAdapter {
+
+
+        public MyPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titles[position];
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (position == 0) {
+                MerchantGoodFM fragment1 = new MerchantGoodFM();
+                Bundle data = new Bundle();
+                data.putSerializable("data",merchantM);
+                data.putString("orderCode",orderCode);
+                fragment1.setArguments(data);
+                return fragment1;
+            } else if (position == 1) {
+                MerchantEvaluateFM fragment2 = new MerchantEvaluateFM();
+                Bundle data = new Bundle();
+                data.putSerializable("data",merchantM);
+                fragment2.setArguments(data);
+                return fragment2;
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return titles.length;
+        }
     }
 
     @Override
@@ -469,8 +431,48 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
     protected void onStart() {
         super.onStart();
         refreshCartLayoutData();
-        if (null != goodA) {
+      /*  if (null != goodA) {
             goodA.notifyDataSetChanged();
-        }
+        }*/
+    }
+    public void showBottomCart(){
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.push_bottom_in);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                rlCart.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        rlCart.startAnimation(animation);
+    }
+    public void dissmissBottomCart(){
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.push_bottom_out);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                rlCart.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        rlCart.startAnimation(animation);
     }
 }

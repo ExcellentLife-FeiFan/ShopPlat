@@ -20,6 +20,15 @@ public class Apis {
             return BASE_SRC_URL + url;
         }
     }
+    public static String AddPATH2(String url) {
+        Pattern pattern = Pattern.compile("http://(([a-zA-z0-9]|-){1,}\\.){1,}[a-zA-z0-9]{1,}-*");
+        Matcher matcher = pattern.matcher(url);
+        if (matcher.find()) {
+            return url;
+        } else {
+            return BASE_URL + url;
+        }
+    }
 
     /**
      * 根据手机号注册

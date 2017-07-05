@@ -26,4 +26,7 @@
     <color name="tv_top_card">#C85E38</color>
     <color name="black_half_tran">#44000000</color>
     <color name="black_half_tran2">#88000000</color>
+
+
+    <color name="bottom_cart_dark">#fd383838</color>
 </resources>

@@ -1,5 +1,6 @@
 package com.ytxd.spp.ui.activity.order;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import com.kennyc.view.MultiStateView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
+import com.ytxd.spp.event.OrderChangevent;
 import com.ytxd.spp.event.RefreshOrderListEvent;
 import com.ytxd.spp.model.OrderM;
 import com.ytxd.spp.presenter.OrderActivityPresenter;
@@ -53,14 +55,18 @@ public class MyOrderActivity extends BaseActivity<OrderActivityPresenter> implem
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
         mRecyclerView.addItemDecoration(new SimpleDividerDecoration(activity, R.color.common_divider_color, R.dimen.divider_height));
         mAdapter = new HomeOrderA(null);
-        mAdapter.setEnableLoadMore(false);
-//        mAdapter.setOnLoadMoreListener(this, mRecyclerView);
+        mAdapter.setEnableLoadMore(true);
+        mAdapter.setOnLoadMoreListener(this, mRecyclerView);
+        mAdapter.isFirstOnly(true);
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                startActivity(OrderDetailActivity.class,"data",mAdapter.getItem(i));
+                Intent intent = new Intent(activity, OrderDetailActivity.class);
+                intent.putExtra("data", mAdapter.getItem(i));
+                intent.putExtra("position", i);
+                startActivity(intent);
             }
         });
         presenter.getOrderList(CommonUtils.REFRESH, page);
@@ -131,6 +137,13 @@ public class MyOrderActivity extends BaseActivity<OrderActivityPresenter> implem
     public void onEvent(RefreshOrderListEvent event) {
         msvOrder.setViewState(MultiStateView.VIEW_STATE_LOADING);
         presenter.getOrderList(CommonUtils.REFRESH, 1);
+
+    }
+    public void onEvent(OrderChangevent event) {
+        if(event.position!=-1&&event.position<mAdapter.getItemCount()-1){
+            mAdapter.getItem(event.position).setOrderStateCode(event.state);
+            mAdapter.notifyItemChanged(event.position);
+        }
 
     }
 }

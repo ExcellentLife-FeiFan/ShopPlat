@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/padding_left"
     android:paddingLeft="@dimen/padding_left2"
     android:paddingRight="@dimen/padding_left2"
-    android:paddingTop="@dimen/padding_left">
+    android:paddingTop="@dimen/default_ui_margin_large"
+    android:paddingBottom="@dimen/default_ui_margin_large">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/civ"
@@ -54,22 +54,48 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="商品:"
+                android:text="配送服务"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/text_size_micro" />
 
+            <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                android:id="@+id/rb_distr"
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_ui_margin_small"
+                android:isIndicator="true"
+                android:maxHeight="11dp"
+                android:minHeight="11dp"
+                android:rating="0.0"
+                app:mrb_progressBackgroundTint="@color/gray"
+                app:mrb_progressTint="#FFAA0C"
+                app:mrb_secondaryProgressTint="@color/gray" />
+
+
             <TextView
-                android:id="@+id/tv_zan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/default_ui_margin"
-                android:text="满意"
-                android:textColor="@color/tomato"
+                android:text="商品评价"
+                android:textColor="@color/gray"
                 android:textSize="@dimen/text_size_micro" />
+
+            <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                android:id="@+id/rb_good"
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_ui_margin_small"
+                android:isIndicator="true"
+                android:maxHeight="11dp"
+                android:minHeight="11dp"
+                android:rating="0.0"
+                app:mrb_progressBackgroundTint="@color/gray"
+                app:mrb_progressTint="#FFAA0C"
+                app:mrb_secondaryProgressTint="@color/gray" />
+
         </LinearLayout>
 
 
@@ -77,10 +103,22 @@
             android:id="@+id/tv_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_ui_margin"
             android:lineSpacingExtra="@dimen/dp2"
             android:text="非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃"
             android:textColor="@color/black_overlay2"
             android:textSize="@dimen/text_size_micro" />
+
+        <com.lzy.ninegrid.NineGridView
+            android:id="@+id/gv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ngv_gridSpacing="3dp"
+            app:ngv_maxSize="4"
+            app:ngv_mode="grid"
+            app:ngv_singleImageRatio="1.7"
+            app:ngv_singleImageSize="250dp" />
+
 
     </LinearLayout>
 

@@ -12,4 +12,6 @@ public interface IOrderDetailView extends IBaseView {
 
     void lodeGoodsSuccess(List<OrderGoodM> items);
 
+    void cancelSuccess();
+
 }

@@ -144,6 +144,7 @@ public class MerchantCartListDialog extends Dialog {
     }
 
     private void animationHide(int mDuration) {
+
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(
                 ObjectAnimator.ofFloat(linearlayout, "translationY", 0, 50).setDuration(mDuration)

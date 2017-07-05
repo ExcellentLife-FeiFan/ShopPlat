@@ -1,6 +1,7 @@
 package com.ytxd.spp.ui.fm.home;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kennyc.view.MultiStateView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.BaseFragment;
+import com.ytxd.spp.event.OrderChangevent;
 import com.ytxd.spp.event.RefreshOrderListEvent;
 import com.ytxd.spp.model.OrderM;
 import com.ytxd.spp.presenter.HomeOrderPresenter;
@@ -63,6 +65,7 @@ public class HomeFM3 extends BaseFragment<HomeOrderPresenter> implements SwipeRe
         rvOrder.setLayoutManager(new LinearLayoutManager(activity));
         rvOrder.addItemDecoration(new SimpleDividerDecoration(activity, R.color.common_divider_color, R.dimen.divider_height));
         orderA = new HomeOrderA(null);
+        orderA.isFirstOnly(true);
         orderA.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         rvOrder.setAdapter(orderA);
 //        rvOrder.addOnItemTouchListener(new OnItemClickListener() {
@@ -74,7 +77,10 @@ public class HomeFM3 extends BaseFragment<HomeOrderPresenter> implements SwipeRe
         orderA.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                startActivity(OrderDetailActivity.class,"data",orderA.getItem(i));
+                Intent intent = new Intent(activity, OrderDetailActivity.class);
+                intent.putExtra("data", orderA.getItem(i));
+                intent.putExtra("position", i);
+                startActivity(intent);
             }
         });
         presenter.getOrderList();
@@ -135,6 +141,12 @@ public class HomeFM3 extends BaseFragment<HomeOrderPresenter> implements SwipeRe
     public void onEvent(RefreshOrderListEvent event) {
         msvOrder.setViewState(MultiStateView.VIEW_STATE_LOADING);
         presenter.getOrderList();
+    }
+    public void onEvent(OrderChangevent event) {
+        if(event.position!=-1&&event.position<orderA.getItemCount()-1){
+            orderA.getItem(event.position).setOrderStateCode(event.state);
+            orderA.notifyItemChanged(event.position);
+        }
 
     }
 }

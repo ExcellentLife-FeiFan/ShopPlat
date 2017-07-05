@@ -8,6 +8,6 @@ public interface IPayView extends IBaseView {
 
     void paySuccess();
     void pay();
-//    void showDialogs();
-//    void dismissDialogs();
+    void showDialogs();
+    void dismissDialogs();
 }

@@ -3,6 +3,7 @@ package com.ytxd.spp.base;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ import de.greenrobot.event.EventBus;
 
 public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
 
-    public BaseActivity activity;
+    public AppCompatActivity activity;
     private View mLayoutView;
 
     private boolean isVisible;                  //是否可见状态
@@ -52,7 +53,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = (BaseActivity) getActivity();
+        activity = (AppCompatActivity) getActivity();
         if(!EventBus.getDefault().isRegistered(this)){
             EventBus.getDefault().register(this);
         }
@@ -97,7 +98,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
      *
      * @return
      */
-    public BaseActivity getBaseActivity() {
+    public AppCompatActivity getBaseActivity() {
         if (activity == null) {
             activity = (BaseActivity) getActivity();
         }

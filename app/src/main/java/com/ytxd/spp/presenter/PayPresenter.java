@@ -26,11 +26,13 @@ public class PayPresenter extends BasePresenter<IPayView> {
 
 
     public void payUpload(final String orderC) {
+        iView.showDialogs();
         OkGo.<ApiResult<Object>>get(Apis.UpdateOrderPay)//
                 .params("OrderCode", orderC)
                 .execute(new JsonCallback<ApiResult<Object>>() {
                     @Override
                     public void onSuccess(Response<ApiResult<Object>> response) {
+                        iView.dismissDialogs();
                         try {
                             ApiResult<Object> result = response.body();
                             if (result.isSuccess()) {
@@ -46,6 +48,7 @@ public class PayPresenter extends BasePresenter<IPayView> {
 
                     @Override
                     public void onError(Response<ApiResult<Object>> response) {
+                        iView.dismissDialogs();
                         ToastUtil.showToastShort(context, "支付失败");
                         super.onError(response);
                     }

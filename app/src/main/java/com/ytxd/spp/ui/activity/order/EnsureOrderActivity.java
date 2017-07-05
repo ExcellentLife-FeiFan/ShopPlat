@@ -14,6 +14,7 @@ import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
 import com.ytxd.spp.event.CartListClearRefreshEvent;
+import com.ytxd.spp.event.RefreshOrderListEvent;
 import com.ytxd.spp.event.SelectAddressEvent;
 import com.ytxd.spp.model.AddressM;
 import com.ytxd.spp.model.LocalShoppingCartM;
@@ -265,6 +266,7 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
         showToast("订单提交成功");
         startActivity(PayActivity.class, "data", orderM);
         EventBus.getDefault().post(new CartListClearRefreshEvent());
+        EventBus.getDefault().post(new RefreshOrderListEvent());
         AppManager.getInstance().killActivity(this);
     }
 

@@ -319,4 +319,12 @@ public class CommonUtils {
         return string.replace("T", " ");
     }
 
+    public static List<String> getStringList(String[] strings) {
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < strings.length; i++) {
+            list.add(strings[i]);
+        }
+        return list;
+    }
+
 }

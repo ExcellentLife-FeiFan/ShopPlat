@@ -42,6 +42,7 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, AddCommentActivity.class);
                 intent.putExtra("data",item);
+                intent.putExtra("position", getParentPosition(item));
                 mContext.startActivity(intent);
             }
         });
@@ -50,6 +51,7 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, PayActivity.class);
                 intent.putExtra("data", item);
+                intent.putExtra("position", getData().indexOf(item));
                 mContext.startActivity(intent);
             }
         });
@@ -86,7 +88,6 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
                 break;
             case OrderM.CANCEL:
                 CommonUtils.setText(helper.tvState, "已取消");
-                helper.tvAgain.setVisibility(View.VISIBLE);
                 helper.tvAgain.setVisibility(View.VISIBLE);
                 break;
         }

@@ -8,7 +8,7 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/dp50">
+        >
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -70,45 +70,35 @@
         </android.support.design.widget.AppBarLayout>
 
 
-        <com.kennyc.view.MultiStateView
-            android:id="@+id/msv"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:msv_emptyView="@layout/common_empty_view"
-            app:msv_loadingView="@layout/common_progress_view"
-            app:msv_viewState="loading">
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
+            <com.flyco.tablayout.SlidingTabLayout
+                android:id="@+id/tab"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:visibility="visible"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                android:layout_height="48.0dip"
+                android:background="@color/white"
+                android:layout_gravity="center_horizontal"
+                app:tl_indicator_style="NORMAL"
+                app:tl_tab_padding="0dp"
+                app:tl_tab_space_equal="true"
+                app:tl_indicator_color="@color/colorPrimary"
+                app:tl_indicator_height="@dimen/dp3"
+                app:tl_underline_color="@color/line_gray"
+                app:tl_underline_height="@dimen/common_divider_height"
+                app:tl_textSelectColor="@color/colorPrimary"
+                app:tl_textUnselectColor="@color/black_overlay2"
+                app:tl_textsize="@dimen/text_size_small" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_category"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/bg" />
+            <android.support.v4.view.ViewPager
+                android:id="@+id/vp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
 
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rv_good"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@android:color/white"
-                        android:clipToPadding="true"
-                        android:saveEnabled="false" />
-
-                </RelativeLayout>
-            </LinearLayout>
-        </com.kennyc.view.MultiStateView>
 
     </android.support.design.widget.CoordinatorLayout>
 
@@ -118,7 +108,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:visibility="gone">
+        android:visibility="gone"
+        >
+
         <include layout="@layout/layout_bottom_cart"></include>
 
     </RelativeLayout>

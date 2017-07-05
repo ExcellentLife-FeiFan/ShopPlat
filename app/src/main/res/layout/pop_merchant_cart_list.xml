@@ -6,11 +6,11 @@
 
     <View
         android:id="@+id/v"
-        android:background="@color/transparent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/linearlayout"
-        android:layout_alignParentTop="true"></View>
+        android:layout_alignParentTop="true"
+        android:background="@color/transparent"></View>
 
     <LinearLayout
         android:id="@+id/linearlayout"
@@ -97,7 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp50"
             android:layout_alignParentBottom="true"
-            android:background="#383838"
+            android:background="@color/bottom_cart_dark"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/dp90">
 
@@ -115,7 +115,7 @@
                     android:text="未选购商品"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/sp18"
+                    android:textSize="@dimen/text_size_common_s"
                     android:textStyle="bold"
                     android:visibility="visible" />
             </LinearLayout>
@@ -127,7 +127,7 @@
                 android:background="@drawable/selectable_pricecolor_btn_bg_nocoener"
                 android:text="选好了"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_medium" />
+                android:textSize="@dimen/text_size_common" />
 
         </LinearLayout>
 

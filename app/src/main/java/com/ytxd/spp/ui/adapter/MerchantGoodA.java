@@ -23,6 +23,7 @@ import com.ytxd.spp.model.OrderGoodM;
 import com.ytxd.spp.model.ShoppingCartM;
 import com.ytxd.spp.ui.activity.main.GoodDetailActivity;
 import com.ytxd.spp.ui.activity.main.MerchantDetailActivity;
+import com.ytxd.spp.ui.fm.merchant.MerchantGoodFM;
 import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.ImageLoadUtil;
 import com.ytxd.spp.util.LogUtils;
@@ -43,12 +44,14 @@ public class MerchantGoodA extends SectioningAdapter {
 
     private Activity mContext;
     private MerchantM merchantM;
+    private MerchantGoodFM merchantGoodFM;
 
     ArrayList<CatagaryM> items = new ArrayList<>();
 
-    public MerchantGoodA(Activity context, MerchantM merchantM) {
+    public MerchantGoodA(Activity context, MerchantM merchantM, MerchantGoodFM merchantGoodFM) {
         mContext = context;
         this.merchantM = merchantM;
+        this.merchantGoodFM=merchantGoodFM;
     }
 
     public class ItemViewHolder extends SectioningAdapter.ItemViewHolder {
@@ -174,8 +177,8 @@ public class MerchantGoodA extends SectioningAdapter {
             }
         });
 
-        if (((MerchantDetailActivity) mContext).isAgain) {
-            List<OrderGoodM> orderGoods = (((MerchantDetailActivity) mContext).orderGoods);
+        if (merchantGoodFM.isAgain) {
+            List<OrderGoodM> orderGoods = (merchantGoodFM.orderGoods);
 
             if (null != good.getGoods() && good.getGoods().size() > 0) {
                 List<ShoppingCartM.Goods> gAs = new ArrayList<>();
@@ -226,7 +229,7 @@ public class MerchantGoodA extends SectioningAdapter {
             }
 
             if (orderGoods.size() == 0) {
-                ((MerchantDetailActivity) mContext).isAgain = false;
+                merchantGoodFM.isAgain = false;
             }
         } else {
             holder.btnAdd.setCount(ShoppingCartUtil.getLocalCartGoodCount(good.getGoodsCode(), merchantM.getSupermarketCode()));
@@ -259,7 +262,7 @@ public class MerchantGoodA extends SectioningAdapter {
     }
 
     private boolean isContained(GoodM good, int count) {
-        List<OrderGoodM> goods = (((MerchantDetailActivity) mContext).orderGoods);
+        List<OrderGoodM> goods = (merchantGoodFM.orderGoods);
         for (int i = 0; i < goods.size(); i++) {
             if (good.getGoodsCode().equals(goods.get(i).getGoodsCode())) {
                 count = goods.get(i).getBuyNumber();

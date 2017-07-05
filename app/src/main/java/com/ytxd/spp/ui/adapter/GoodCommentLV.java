@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ytxd.spp.R;
-import com.ytxd.spp.ui.views.InGridView;
 
 import java.util.List;
 
@@ -48,10 +47,10 @@ public class GoodCommentLV extends CommonListAdapter<String> {
         TextView tvName;
         @BindView(R.id.tv_time)
         TextView tvTime;
+        @BindView(R.id.tv_zan)
+        TextView tvZan;
         @BindView(R.id.tv_content)
         TextView tvContent;
-        @BindView(R.id.gv_pic)
-        InGridView gvPic;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kennyc.view.MultiStateView;
@@ -58,6 +59,8 @@ public class AddCommentActivity extends BaseActivity<AddCommentPresenter> implem
     AddCommGoodsLV goodsLV;
     @BindView(R.id.lv_goods)
     InListView lvGoods;
+    @BindView(R.id.rl_lv)
+    RelativeLayout rlLv;
     @BindView(R.id.msv)
     MultiStateView msv;
     private PicsSelectA photoAdapter;
@@ -83,6 +86,7 @@ public class AddCommentActivity extends BaseActivity<AddCommentPresenter> implem
         ImageLoadUtil.setImageNP(orderM.getSuperMarketModel().getLogoUrl(), civ, this);
         goodsLV = new AddCommGoodsLV(new ArrayList<OrderGoodM>(), this);
         lvGoods.setAdapter(goodsLV);
+        CommonUtils.setEmptyViewForSLV(this, rlLv, lvGoods);
         photoAdapter = new PicsSelectA(this, selectedPhotos);
         rv_pics.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
         rv_pics.setAdapter(photoAdapter);
