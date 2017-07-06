@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.flyco.systembar.SystemBarHelper;
 import com.ytxd.spp.R;
 import com.ytxd.spp.event.EmptyEvent;
@@ -53,6 +54,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+        Glide.get(this).clearMemory();
         SystemBarHelper.tintStatusBar(this, CommonUtils.getColor(this,R.color.colorPrimary),0.1f);
         activity = this;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -273,6 +275,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         if (null != presenter) {
             presenter.release();
         }
+        Glide.get(this).clearMemory();
         System.gc();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);

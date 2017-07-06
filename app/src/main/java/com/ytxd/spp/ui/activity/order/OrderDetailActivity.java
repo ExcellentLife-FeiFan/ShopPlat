@@ -77,7 +77,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     LinearLayout llPay;
     @BindView(R.id.btn_ensure)
     Button btnEnsure;
-    int position=-1;
+    int position = -1;
 
 
     @Override
@@ -93,7 +93,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         ButterKnife.bind(this);
         getBar().initActionBar("订单详情", this);
         orderM = (OrderM) getIntent().getSerializableExtra("data");
-        position=getIntent().getIntExtra("position",-1);
+        position = getIntent().getIntExtra("position", -1);
         mAdapter = new OrderSubGoodsLV2(new ArrayList<OrderGoodM>(), this);
         lvSubGoods.setAdapter(mAdapter);
         CommonUtils.setEmptyViewForSLV(this, rlLv, lvSubGoods);
@@ -113,7 +113,6 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
                 CommonUtils.setText(tvOrderState, "等待支付");
                 llPay.setVisibility(View.VISIBLE);
             } else if (orderM.getOrderStateCode().equals(OrderM.HAVE_PAY_WATING_ACE)) {
-                btnOneMore.setVisibility(View.VISIBLE);
                 CommonUtils.setText(tvOrderState, "等待接单");
             } else if (orderM.getOrderStateCode().equals(OrderM.CANCEL)) {
                 CommonUtils.setText(tvOrderState, "已取消");
@@ -147,6 +146,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
                 break;
             case R.id.btn_pay:
                 if (null != orderM) {
+
                     Intent intent = new Intent(activity, PayActivity.class);
                     intent.putExtra("data", orderM);
                     intent.putExtra("position", position);
@@ -166,6 +166,10 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
                 }
                 break;
             case R.id.btn_one_more:
+                Intent intent = new Intent(this, MerchantDetailActivity.class);
+                intent.putExtra("data",orderM.getSuperMarketModel());
+                intent.putExtra("orderCode",orderM.getOrderCode());
+                startActivity(intent);
                 break;
             case R.id.btn_ensure:
                 break;
@@ -192,6 +196,11 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         orderM.setOrderCode(OrderM.CANCEL);
         llPay.setVisibility(View.GONE);
         btnOneMore.setVisibility(View.VISIBLE);
-        EventBus.getDefault().post(new OrderChangevent(position,OrderM.CANCEL));
+        EventBus.getDefault().post(new OrderChangevent(position, OrderM.CANCEL));
+    }
+
+    @Override
+    public void ensureSuccess() {
+
     }
 }

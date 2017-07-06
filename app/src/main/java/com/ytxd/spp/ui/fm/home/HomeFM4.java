@@ -12,8 +12,8 @@ import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.BaseFragment;
 import com.ytxd.spp.ui.activity.mine.AccountActivity;
 import com.ytxd.spp.ui.activity.mine.AddressManaActivity;
-import com.ytxd.spp.ui.activity.mine.SettingsActivity;
 import com.ytxd.spp.ui.activity.mine.DiscountCouponActivity;
+import com.ytxd.spp.ui.activity.mine.SettingsActivity;
 import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.ImageLoadUtil;
 
@@ -49,7 +49,6 @@ public class HomeFM4 extends BaseFragment {
             CommonUtils.setText(tvNickname, App.user.getNickName());
             CommonUtils.setText(tvPhone, App.user.getPhone());
         }
-
     }
 
     @Override

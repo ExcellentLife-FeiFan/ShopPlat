@@ -141,7 +141,7 @@ public class MerchantGoodA extends SectioningAdapter {
         holder.tvSalesNum.setText("已售" + good.getSaleNumber() + "份");
         CommonUtils.setText(holder.tvOriginP, good.getYPrice());
         CommonUtils.setText(holder.tvNowP, good.getXPrice());
-        ImageLoadUtil.setImageNP(good.getLogoPaths(), holder.iv, mContext, 0.8f);
+        ImageLoadUtil.setImageNP(good.getLogoPaths(), holder.iv, mContext, 0.6f);
         if (null != good.getGoods() && good.getGoods().size() > 0) {
             holder.rl_add_btn.setVisibility(View.GONE);
             holder.tv_select_stand.setVisibility(View.VISIBLE);

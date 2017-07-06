@@ -1,6 +1,7 @@
 package com.ytxd.spp.ui.activity.main;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,11 +24,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.flyco.systembar.SystemBarHelper;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.litesuits.orm.db.assit.QueryBuilder;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.wonderkiln.blurkit.BlurKit;
+import com.qiushui.blurredview.BlurredView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.BaseActivity2;
@@ -39,6 +45,7 @@ import com.ytxd.spp.event.MerchantSelectGoodStandEvent;
 import com.ytxd.spp.event.RefreshGoodRVEvent;
 import com.ytxd.spp.model.LocalShoppingCartM;
 import com.ytxd.spp.model.MerchantM;
+import com.ytxd.spp.net.Apis;
 import com.ytxd.spp.presenter.MerchantPresenter;
 import com.ytxd.spp.ui.activity.order.EnsureOrderActivity;
 import com.ytxd.spp.ui.activity.order.ShoppingCartActivity;
@@ -61,8 +68,8 @@ import de.greenrobot.event.EventBus;
 
 public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> implements IMerchantView {
 
-    @BindView(R.id.iv_bg)
-    ImageView ivBg;
+    /*    @BindView(R.id.iv_bg)
+        ImageView ivBg;*/
     @BindView(R.id.shopping_cart)
     ImageView shoppingCart;
     @BindView(R.id.main_layout)
@@ -107,7 +114,12 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
 
     MerchantM merchantM;
     String orderCode;
-    String[] titles={"商品","评价"};
+    String[] titles = {"商品", "评价"};
+    @BindView(R.id.blurredview)
+    BlurredView blurredview;
+    @BindView(R.id.app_bar)
+    AppBarLayout appBar;
+
 
     @Override
     protected void initPresenter() {
@@ -129,6 +141,7 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
     }
 
     private void initViews() {
+
         MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());
         vp.setAdapter(adapter);
         vp.setOffscreenPageLimit(2);
@@ -141,9 +154,9 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
 
             @Override
             public void onPageSelected(int position) {
-                if(position==0){
+                if (position == 0) {
                     showBottomCart();
-                }else{
+                } else {
                     dissmissBottomCart();
                 }
             }
@@ -155,17 +168,33 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
         });
         ImageLoadUtil.setImageNP(merchantM.getLogoUrl(), icon, this);
         if (!AbStrUtil.isEmpty(merchantM.getHJUrl())) {
-            ImageLoadUtil.setImageNP(merchantM.getHJUrl(), ivBg, this);
+            Glide.with(this)
+                    .load(Apis.AddPATH(merchantM.getHJUrl()))
+                    .error(R.color.img_bg)
+                    .placeholder(R.color.img_bg)
+                    .into(new SimpleTarget<GlideDrawable>() {
+                        @Override
+                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                            blurredview.setBlurredLevel(99);
+                            blurredview.setBlurredImg(resource);
+                        }
+                    });
+//            ImageLoadUtil.setImageNP(merchantM.getHJUrl(), ivBg, this);
         } else if (!AbStrUtil.isEmpty(merchantM.getLogoUrl())) {
-            ImageLoadUtil.setImageNP(merchantM.getLogoUrl(), ivBg, this);
+            Glide.with(this)
+                    .load(Apis.AddPATH(merchantM.getLogoUrl()))
+                    .error(R.color.img_bg)
+                    .placeholder(R.color.img_bg)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)//缓存全尺寸
+                    .into(new SimpleTarget<GlideDrawable>() {
+                        @Override
+                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                            blurredview.setBlurredLevel(99);
+                            blurredview.setBlurredImg(resource);
+                        }
+                    });
+//            ImageLoadUtil.setImageNP(merchantM.getLogoUrl(), ivBg, this);
         }
-        ivBg.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                BlurKit.getInstance().blur(ivBg, 20);
-            }
-        },2000);
-
         if (null != merchantM.getManJian()) {
             setActiviesData(merchantM.getManJian());
         } else {
@@ -219,6 +248,7 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
 
     public void onEvent(GoodAddEvent event) {
         if (null != event.getView()) {
+            showBottomCart();
             ShoppingCartUtil.addGoodAnimation(this, event.getView(), shoppingCart, toolbar, mainLayout);
         }
         if (event.type == 1) {
@@ -387,14 +417,14 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
             if (position == 0) {
                 MerchantGoodFM fragment1 = new MerchantGoodFM();
                 Bundle data = new Bundle();
-                data.putSerializable("data",merchantM);
-                data.putString("orderCode",orderCode);
+                data.putSerializable("data", merchantM);
+                data.putString("orderCode", orderCode);
                 fragment1.setArguments(data);
                 return fragment1;
             } else if (position == 1) {
                 MerchantEvaluateFM fragment2 = new MerchantEvaluateFM();
                 Bundle data = new Bundle();
-                data.putSerializable("data",merchantM);
+                data.putSerializable("data", merchantM);
                 fragment2.setArguments(data);
                 return fragment2;
             }
@@ -435,7 +465,11 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
             goodA.notifyDataSetChanged();
         }*/
     }
-    public void showBottomCart(){
+
+    public void showBottomCart() {
+        if(rlCart.getVisibility()==View.VISIBLE){
+            return;
+        }
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.push_bottom_in);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -455,7 +489,11 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
         });
         rlCart.startAnimation(animation);
     }
-    public void dissmissBottomCart(){
+
+    public void dissmissBottomCart() {
+        if(rlCart.getVisibility()==View.GONE){
+            return;
+        }
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.push_bottom_out);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override

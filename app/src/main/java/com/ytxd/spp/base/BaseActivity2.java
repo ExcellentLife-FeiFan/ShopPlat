@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.ytxd.spp.R;
 import com.ytxd.spp.event.EmptyEvent;
 import com.ytxd.spp.presenter.BasePresenter;
@@ -51,6 +52,7 @@ public abstract class BaseActivity2<T extends BasePresenter> extends AppCompatAc
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+        Glide.get(this).clearMemory();
         activity = this;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setupWindowAnimations();
@@ -270,6 +272,7 @@ public abstract class BaseActivity2<T extends BasePresenter> extends AppCompatAc
         if (null != presenter) {
             presenter.release();
         }
+        Glide.get(this).clearMemory();
         System.gc();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);

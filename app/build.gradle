@@ -44,6 +44,7 @@ dependencies {
 
     compile 'com.github.todou:appbarspring:1.0.3'
     compile 'com.github.todou:appbarspring:1.0.3'
+    //noinspection GradleCompatible
     compile 'com.android.support:support-dynamic-animation:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.github.bumptech.glide:glide:3.7.0'
@@ -75,5 +76,5 @@ dependencies {
 
 
     compile 'com.lzy.widget:ninegridview:0.2.1'
-    compile 'com.wonderkiln:blurkit:1.0.0'
+    compile 'com.qiushui:blurredview:0.8.1'
 }

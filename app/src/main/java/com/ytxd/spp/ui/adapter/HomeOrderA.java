@@ -69,7 +69,6 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
                 break;
             case OrderM.HAVE_PAY_WATING_ACE:
                 helper.tvEvaluate.setVisibility(View.VISIBLE);
-                helper.tvAgain.setVisibility(View.VISIBLE);
                 CommonUtils.setText(helper.tvState, "等待接单");
                 break;
             case OrderM.FASE_PAY_WATING_ACE:

@@ -236,6 +236,8 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
                     orderM.setPSPrice(merchant.getPSPrice());
                     presenter.ensureOrder(orderM);
                 }
+
+
                 break;
         }
     }

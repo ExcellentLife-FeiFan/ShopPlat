@@ -156,6 +156,17 @@ public class MerchantGoodFM extends BaseFragment<MerchantGoodPresenter> implemen
         setSectionAdapterPosition(items);
         categoryA.addData(items);
         goodA.addAll(items);
+
+        if(!AbStrUtil.isEmpty(orderCode)){
+            rvGood.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    rvGood.smoothScrollToPosition(goodA.getItemCount()-1);
+                }
+            },1500);
+
+        }
+
         if (goodA.getItemCount() > 0) {
             msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
             factivity.showBottomCart();

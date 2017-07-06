@@ -14,4 +14,5 @@ public interface IOrderDetailView extends IBaseView {
 
     void cancelSuccess();
 
+    void ensureSuccess();
 }

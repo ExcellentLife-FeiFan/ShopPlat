@@ -15,7 +15,6 @@ import com.lzy.okgo.https.HttpsUtils;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
-import com.wonderkiln.blurkit.BlurKit;
 import com.ytxd.spp.model.UserM;
 import com.ytxd.spp.ui.activity.main.MainActivity;
 import com.ytxd.spp.util.AbStrUtil;
@@ -46,7 +45,6 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        BlurKit.init(this);
         ButterKnife.setDebug(BuildConfig.DEBUG);//设置ButterKnife调试模式
         context = this;
         NineGridView.setImageLoader(new GlideImageLoader());

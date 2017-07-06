@@ -78,4 +78,29 @@ public class OrderDetailPresenter extends BasePresenter<IOrderDetailView> {
 
 
     }
+
+
+    public void ensure(String orderCode) {
+        OkGo.<ApiResult<Object>>get(Apis.DetermineSH)//
+                .params("OrderCode", orderCode)
+                .execute(new JsonCallback<ApiResult<Object>>() {
+                    @Override
+                    public void onSuccess(Response<ApiResult<Object>> response) {
+                        ApiResult<Object> result = response.body();
+                        if (result.isSuccess()) {
+                            iView.ensureSuccess();
+                        } else {
+                            ToastUtil.showToastShort(context, "收货失败:"+result.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<ApiResult<Object>> response) {
+                        super.onError(response);
+                        ToastUtil.showToastShort(context, CommonUtils.getString(R.string.action_failure));
+                    }
+                });
+
+
+    }
 }
