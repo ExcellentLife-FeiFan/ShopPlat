@@ -17,8 +17,6 @@ import android.widget.TextView;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.flyco.systembar.SystemBarHelper;
 import com.litesuits.orm.db.assit.QueryBuilder;
-import com.mcxtzhang.lib.AnimShopButton;
-import com.mcxtzhang.lib.IOnAddDelListener;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.BaseActivity2;
@@ -30,8 +28,9 @@ import com.ytxd.spp.model.LocalShoppingCartM;
 import com.ytxd.spp.model.MerchantM;
 import com.ytxd.spp.ui.activity.order.EnsureOrderActivity;
 import com.ytxd.spp.ui.adapter.GoodCommentLV;
+import com.ytxd.spp.ui.views.AnimShopButton;
 import com.ytxd.spp.ui.views.InListView;
-import com.ytxd.spp.ui.views.pop.MerchantCartListDialog;
+import com.ytxd.spp.ui.dialog.MerchantCartListDialog;
 import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.ImageLoadUtil;
 import com.ytxd.spp.util.ShoppingCartUtil;
@@ -121,7 +120,7 @@ public class GoodDetailActivity extends BaseActivity2 {
         if (null != goodM.getGoods() && goodM.getGoods().size() > 0) {
             ll_no_stand.setVisibility(View.GONE);
             ll_have_stand.setVisibility(View.VISIBLE);
-            rlAddBtn.setVisibility(View.GONE);
+            rlAddBtn.setVisibility(View.INVISIBLE);
             tvSelectStand.setVisibility(View.VISIBLE);
         } else {
             CommonUtils.setText(tvPrice, goodM.getXPrice());
@@ -129,7 +128,7 @@ public class GoodDetailActivity extends BaseActivity2 {
             ll_no_stand.setVisibility(View.VISIBLE);
             ll_have_stand.setVisibility(View.GONE);
             rlAddBtn.setVisibility(View.VISIBLE);
-            tvSelectStand.setVisibility(View.GONE);
+            tvSelectStand.setVisibility(View.INVISIBLE);
         }
 
         toolbar.setTitle(goodM.getGoodsTitle());
@@ -145,7 +144,7 @@ public class GoodDetailActivity extends BaseActivity2 {
         mAdapter = new GoodCommentLV(CommonUtils.getSampleList(4), this);
         lvComment.setAdapter(mAdapter);
         btnAdd.setCount(ShoppingCartUtil.getLocalCartGoodCount(goodM.getGoodsCode(), merchantCode));
-        btnAdd.setOnAddDelListener(new IOnAddDelListener() {
+        btnAdd.setOnAddDelListener(new AnimShopButton.IOnAddDelListener() {
             @Override
             public void onAddSuccess(int i) {
                 EventBus.getDefault().post(new GoodAddEvent(ivPlus, goodM, 2));

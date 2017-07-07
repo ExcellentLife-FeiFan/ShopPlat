@@ -39,7 +39,7 @@ import butterknife.Unbinder;
  * Created by apple on 2017/3/29.
  */
 
-public class MerchantGoodFM extends BaseFragment<MerchantGoodPresenter> implements IMerchantGoodView{
+public class MerchantGoodFM extends BaseFragment<MerchantGoodPresenter> implements IMerchantGoodView {
     Unbinder unbinder;
     @BindView(R.id.rv_category)
     RecyclerView rvCategory;
@@ -74,9 +74,9 @@ public class MerchantGoodFM extends BaseFragment<MerchantGoodPresenter> implemen
 
     @Override
     public void initView() {
-        merchantM= (MerchantM) getArguments().getSerializable("data");
+        merchantM = (MerchantM) getArguments().getSerializable("data");
         merchantCode = merchantM.getSupermarketCode();
-        factivity= (MerchantDetailActivity) getActivity();
+        factivity = (MerchantDetailActivity) getActivity();
         orderCode = getArguments().getString("orderCode");
         if (!AbStrUtil.isEmpty(orderCode)) {
             isAgain = true;
@@ -86,7 +86,7 @@ public class MerchantGoodFM extends BaseFragment<MerchantGoodPresenter> implemen
             presenter.getGoodList(merchantCode);
         }
 
-        goodA = new MerchantGoodA(activity, merchantM,this);
+        goodA = new MerchantGoodA(activity, merchantM, this);
         goodLM = new StickyHeaderLayoutManager();
         rvGood.setLayoutManager(goodLM);
         rvGood.addItemDecoration(new SimpleDividerDecoration(activity, R.color.line_gray));
@@ -156,17 +156,6 @@ public class MerchantGoodFM extends BaseFragment<MerchantGoodPresenter> implemen
         setSectionAdapterPosition(items);
         categoryA.addData(items);
         goodA.addAll(items);
-
-        if(!AbStrUtil.isEmpty(orderCode)){
-            rvGood.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    rvGood.smoothScrollToPosition(goodA.getItemCount()-1);
-                }
-            },1500);
-
-        }
-
         if (goodA.getItemCount() > 0) {
             msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
             factivity.showBottomCart();
@@ -177,7 +166,14 @@ public class MerchantGoodFM extends BaseFragment<MerchantGoodPresenter> implemen
         for (int i = 0; i < items.size(); i++) {
             for (int i1 = 0; i1 < items.get(i).getChildren().size(); i1++) {
                 ShoppingCartUtil.refreshLocalCartGood(items.get(i).getChildren().get(i1), merchantCode);
+                if (!AbStrUtil.isEmpty(orderCode) && orderGoods.size() > 0) {
+                    presenter.addOrderGood(items.get(i).getChildren().get(i1), merchantM, orderGoods);
+                }
+
             }
+        }
+        if (!AbStrUtil.isEmpty(orderCode)) {
+            ((MerchantDetailActivity) activity).refreshCartLayoutData2();
         }
     }
 
@@ -197,7 +193,7 @@ public class MerchantGoodFM extends BaseFragment<MerchantGoodPresenter> implemen
 
     @Override
     public void lodeFailed() {
-         factivity.dissmissBottomCart();
+        factivity.dissmissBottomCart();
         msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
     }
 
@@ -210,6 +206,7 @@ public class MerchantGoodFM extends BaseFragment<MerchantGoodPresenter> implemen
         }
 
     }
+
     public void onEvent(RefreshGoodRVEvent event) {
         if (null != goodA) {
             goodA.notifyDataSetChanged();

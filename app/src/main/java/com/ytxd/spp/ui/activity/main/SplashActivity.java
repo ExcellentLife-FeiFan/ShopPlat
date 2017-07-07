@@ -24,6 +24,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements ISp
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.CAMERA,
             Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.READ_CONTACTS,
             Manifest.permission.ACCESS_COARSE_LOCATION
     };
     private static final int REQUEST_CODE = 0; // 请求码

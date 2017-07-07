@@ -10,8 +10,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.mcxtzhang.lib.AnimShopButton;
-import com.mcxtzhang.lib.IOnAddDelListener;
 import com.ytxd.spp.R;
 import com.ytxd.spp.event.GoodAddEvent;
 import com.ytxd.spp.event.GoodMinusEvent;
@@ -20,10 +18,9 @@ import com.ytxd.spp.model.CatagaryM;
 import com.ytxd.spp.model.GoodM;
 import com.ytxd.spp.model.MerchantM;
 import com.ytxd.spp.model.OrderGoodM;
-import com.ytxd.spp.model.ShoppingCartM;
 import com.ytxd.spp.ui.activity.main.GoodDetailActivity;
-import com.ytxd.spp.ui.activity.main.MerchantDetailActivity;
 import com.ytxd.spp.ui.fm.merchant.MerchantGoodFM;
+import com.ytxd.spp.ui.views.AnimShopButton;
 import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.ImageLoadUtil;
 import com.ytxd.spp.util.LogUtils;
@@ -143,13 +140,13 @@ public class MerchantGoodA extends SectioningAdapter {
         CommonUtils.setText(holder.tvNowP, good.getXPrice());
         ImageLoadUtil.setImageNP(good.getLogoPaths(), holder.iv, mContext, 0.6f);
         if (null != good.getGoods() && good.getGoods().size() > 0) {
-            holder.rl_add_btn.setVisibility(View.GONE);
+            holder.rl_add_btn.setVisibility(View.INVISIBLE);
             holder.tv_select_stand.setVisibility(View.VISIBLE);
         } else {
             holder.rl_add_btn.setVisibility(View.VISIBLE);
-            holder.tv_select_stand.setVisibility(View.GONE);
+            holder.tv_select_stand.setVisibility(View.INVISIBLE);
         }
-        holder.btnAdd.setOnAddDelListener(new IOnAddDelListener() {
+        holder.btnAdd.setOnAddDelListener(new AnimShopButton.IOnAddDelListener() {
             @Override
             public void onAddSuccess(int i) {
                 EventBus.getDefault().post(new GoodAddEvent(holder.ivPlus, items.get(sectionIndex).getChildren().get(itemIndex), 1));
@@ -176,66 +173,8 @@ public class MerchantGoodA extends SectioningAdapter {
                 EventBus.getDefault().post(new MerchantSelectGoodStandEvent(items.get(sectionIndex).getChildren().get(itemIndex)));
             }
         });
-
-        if (merchantGoodFM.isAgain) {
-            List<OrderGoodM> orderGoods = (merchantGoodFM.orderGoods);
-
-            if (null != good.getGoods() && good.getGoods().size() > 0) {
-                List<ShoppingCartM.Goods> gAs = new ArrayList<>();
-                for (int i = 0; i < orderGoods.size(); i++) {
-                    for (int j = 0; j < good.getGoods().size(); j++) {
-                        if (good.getGoods().get(j).getGoodsCode().equals(orderGoods.get(i).getGoodsCode())) {
-                            ShoppingCartM.Goods g=new ShoppingCartM.Goods();
-                            g.setCount(orderGoods.get(i).getBuyNumber());
-                            g.setGoodM(good.getGoods().get(j));
-                            gAs.add(g);
-                        }
-
-                    }
-                }
-                for (int i = 0; i < gAs.size(); i++) {
-                    ShoppingCartUtil.addGoods(mContext, merchantM, gAs.get(i).getGoodM(), gAs.get(i).getCount());
-                    ((MerchantDetailActivity) mContext).refreshCartLayoutData2();
-                    for (int j = 0; j < orderGoods.size(); j++) {
-                        if (gAs.get(i).getGoodM().getGoodsCode().equals(orderGoods.get(j).getGoodsCode())) {
-                            orderGoods.remove(j);
-                            break
-                                    ;
-                        }
-                    }
-
-                }
-            } else {
-                int count = 0;
-                boolean isCotained = false;
-                GoodM gA = null;
-                for (int i = 0; i < orderGoods.size(); i++) {
-                    if (good.getGoodsCode().equals(orderGoods.get(i).getGoodsCode())) {
-                        count = orderGoods.get(i).getBuyNumber();
-                        orderGoods.remove(i);
-                        isCotained = true;
-                        gA = good;
-                        break;
-                    }
-                }
-                if (isCotained) {
-                    if (holder.rl_add_btn.getVisibility() == View.VISIBLE) {
-                        holder.btnAdd.setCount(count);
-                        holder.btnAdd.invalidate();
-                    }
-                    ShoppingCartUtil.addGoods(mContext, merchantM, gA, count);
-                    ((MerchantDetailActivity) mContext).refreshCartLayoutData2();
-                }
-            }
-
-            if (orderGoods.size() == 0) {
-                merchantGoodFM.isAgain = false;
-            }
-        } else {
-            holder.btnAdd.setCount(ShoppingCartUtil.getLocalCartGoodCount(good.getGoodsCode(), merchantM.getSupermarketCode()));
-            holder.btnAdd.invalidate();
-        }
-
+        holder.btnAdd.setCount(ShoppingCartUtil.getLocalCartGoodCount(good.getGoodsCode(), merchantM.getSupermarketCode()));
+        holder.btnAdd.invalidate();
     }
 
 

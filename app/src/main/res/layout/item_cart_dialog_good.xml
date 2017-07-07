@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="@dimen/default_ui_margin"
-        android:paddingTop="@dimen/default_ui_margin">
+        android:paddingBottom="@dimen/default_ui_margin_small"
+        android:paddingTop="@dimen/default_ui_margin_small">
 
 
         <LinearLayout
@@ -44,48 +44,54 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:gravity="right"
+            android:gravity="right|center_vertical"
             android:orientation="horizontal">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="¥  "
-                android:textColor="@color/price_color"
-                android:textSize="@dimen/sp12" />
-
-            <TextView
-                android:id="@+id/tv_now_p"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0.0"
-                android:textColor="@color/price_color"
-                android:textSize="@dimen/text_size_medium" />
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/default_ui_margin_medium_small">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_origin_p"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="¥ 0.0"
-                    android:textColor="@color/gray"
+                    android:text="¥  "
+                    android:textColor="@color/price_color"
                     android:textSize="@dimen/sp12" />
 
-                <View
+                <TextView
+                    android:id="@+id/tv_now_p"
                     android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/tv_origin_p"
-                    android:layout_alignRight="@+id/tv_origin_p"
-                    android:layout_centerVertical="true"
-                    android:background="@color/gray"></View>
+                    android:layout_height="wrap_content"
+                    android:text="0.0"
+                    android:textColor="@color/price_color"
+                    android:textSize="@dimen/text_size_medium" />
 
-            </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/default_ui_margin_medium_small">
 
+                    <TextView
+                        android:id="@+id/tv_origin_p"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¥ 0.0"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/sp12" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/tv_origin_p"
+                        android:layout_alignRight="@+id/tv_origin_p"
+                        android:layout_centerVertical="true"
+                        android:background="@color/gray"></View>
+
+                </RelativeLayout>
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="wrap_content"

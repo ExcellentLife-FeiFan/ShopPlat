@@ -6,12 +6,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mcxtzhang.lib.AnimShopButton;
-import com.mcxtzhang.lib.IOnAddDelListener;
 import com.ytxd.spp.R;
 import com.ytxd.spp.event.GoodAddEvent;
 import com.ytxd.spp.event.GoodMinusEvent;
 import com.ytxd.spp.model.ShoppingCartM;
+import com.ytxd.spp.ui.views.AnimShopButton;
 import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.ImageLoadUtil;
 
@@ -49,7 +48,7 @@ public class CartListDialogLV extends CommonListAdapter<ShoppingCartM.Goods> {
         CommonUtils.setText(viewHolder.tvOriginP, "¥ " + item.getGoodM().getYPrice());
         CommonUtils.setText(viewHolder.tvNowP, item.getGoodM().getXPrice());
         viewHolder.btnAdd.setCount(item.getCount());
-        viewHolder.btnAdd.setOnAddDelListener(new IOnAddDelListener() {
+        viewHolder.btnAdd.setOnAddDelListener(new AnimShopButton.IOnAddDelListener() {
             @Override
             public void onAddSuccess(int i) {
                 EventBus.getDefault().post(new GoodAddEvent(items.get(position).getGoodM(),type));

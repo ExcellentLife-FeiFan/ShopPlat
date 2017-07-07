@@ -5,12 +5,13 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.mcxtzhang.lib.AnimShopButton
+    <com.ytxd.spp.ui.views.AnimShopButton
         android:id="@+id/btnAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:addEnableBgColor="@color/colorPrimary"
         app:addEnableFgColor="#ffffff"
+        android:padding="8dp"
         app:count="0"
         app:delEnableBgColor="@color/gray"
         app:delEnableFgColor="@color/gray"

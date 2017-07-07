@@ -144,8 +144,9 @@
                         android:textSize="@dimen/text_size_little_small" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:orientation="horizontal"
                         android:paddingRight="@dimen/default_ui_margin_medium_s">
 
@@ -172,6 +173,16 @@
                             android:src="@drawable/ic_e_d"
                             android:visibility="gone" />
                     </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_contact"
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/selector_bg_view_click"
+                        android:gravity="center"
+                        android:textColor="@color/black_overlay2"
+                        android:text="+通讯录"
+                        android:textSize="@dimen/text_size_common_s" />
 
 
                 </LinearLayout>

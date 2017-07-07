@@ -52,7 +52,7 @@ import com.ytxd.spp.ui.activity.order.ShoppingCartActivity;
 import com.ytxd.spp.ui.fm.merchant.MerchantEvaluateFM;
 import com.ytxd.spp.ui.fm.merchant.MerchantGoodFM;
 import com.ytxd.spp.ui.views.MyExpandableLayout;
-import com.ytxd.spp.ui.views.pop.MerchantCartListDialog;
+import com.ytxd.spp.ui.dialog.MerchantCartListDialog;
 import com.ytxd.spp.util.AbStrUtil;
 import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.ImageLoadUtil;

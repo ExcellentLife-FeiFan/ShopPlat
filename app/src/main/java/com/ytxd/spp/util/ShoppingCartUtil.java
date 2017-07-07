@@ -20,7 +20,7 @@ import com.ytxd.spp.model.LocalShoppingCartM;
 import com.ytxd.spp.model.MerchantM;
 import com.ytxd.spp.model.ShoppingCartM;
 import com.ytxd.spp.ui.views.FakeAddImageView;
-import com.ytxd.spp.ui.views.pop.SelectGoodStandDialog;
+import com.ytxd.spp.ui.dialog.SelectGoodStandDialog;
 
 import java.util.List;
 

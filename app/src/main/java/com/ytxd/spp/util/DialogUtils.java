@@ -96,6 +96,23 @@ public class DialogUtils {
         }
         myDialog.show();
     }
+    public static void showDialog(Context context, String title, String content, MaterialDialog.SingleButtonCallback callback) {
+        if (myDialog == null) {
+            myDialog = new MaterialDialog.Builder(context)
+                    .title(title)
+                    .content(content)
+                    .canceledOnTouchOutside(false)
+                    .positiveText("确定")
+                    .negativeText("取消")
+                    .positiveColor(context.getResources().getColor(R.color.red))
+                    .negativeColor(context.getResources().getColor(R.color.gray))
+                    .onAny(callback)
+                    .show();
+            myDialog.setOnDismissListener(myDissmissListener);
+            return;
+        }
+        myDialog.show();
+    }
 
 
     public static MaterialDialog showProDialog(Activity activity, String title/*, DialogInterface.OnShowListener showListener*/) {

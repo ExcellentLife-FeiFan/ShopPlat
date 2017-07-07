@@ -7,30 +7,26 @@
 
     <RelativeLayout
         android:id="@+id/rl_add_btn"
+        android:visibility="visible"
         android:layout_width="wrap_content"
-        android:layout_height="26dp">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/iv_plus"
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_alignRight="@+id/btnAdd"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_good_plus" />
 
-        <!--    <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignLeft="@+id/btnAdd"
-                android:layout_centerVertical="true"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_good_minus"
-                android:visibility="invisible" />-->
 
-        <com.mcxtzhang.lib.AnimShopButton
+        <com.ytxd.spp.ui.views.AnimShopButton
             android:id="@+id/btnAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             app:addEnableBgColor="@color/colorPrimary"
             app:addEnableFgColor="#ffffff"
             app:count="0"
@@ -53,9 +49,9 @@
         android:background="@drawable/selectable_pricecolor_btn_bg_halfcircle"
         android:gravity="center"
         android:text="选规格"
+        android:layout_centerInParent="true"
         android:textColor="@drawable/selector_text_white_color"
         android:textSize="@dimen/text_size_tag_small"
-        android:visibility="gone" />
-
+        android:visibility="invisible" />
 
 </RelativeLayout>

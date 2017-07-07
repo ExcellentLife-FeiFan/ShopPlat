@@ -1,4 +1,4 @@
-package com.ytxd.spp.ui.views.pop;
+package com.ytxd.spp.ui.dialog;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -16,6 +17,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.litesuits.orm.db.assit.QueryBuilder;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.App;
@@ -26,6 +29,7 @@ import com.ytxd.spp.model.ShoppingCartM;
 import com.ytxd.spp.ui.activity.order.EnsureOrderActivity;
 import com.ytxd.spp.ui.adapter.CartListDialogLV;
 import com.ytxd.spp.util.CommonUtils;
+import com.ytxd.spp.util.DialogUtils;
 import com.ytxd.spp.util.ShoppingCartUtil;
 import com.ytxd.spp.util.ToastUtil;
 
@@ -179,11 +183,18 @@ public class MerchantCartListDialog extends Dialog {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_clear:
-                if (ShoppingCartUtil.goodClearEvent(getContext(), merchantCode)) {
-                    ToastUtil.showToastShort(getContext(), "清除成功！");
-                    setData();
-                    EventBus.getDefault().post(new CartListClearRefreshEvent());
-                }
+                DialogUtils.showDialog(getContext(), "提示", "确定清空购物车吗？", new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        if (which.name().equals(DialogAction.POSITIVE.name())) {
+                            if (ShoppingCartUtil.goodClearEvent(getContext(), merchantCode)) {
+                                ToastUtil.showToastShort(getContext(), "清除成功！");
+                                setData();
+                                EventBus.getDefault().post(new CartListClearRefreshEvent());
+                            }
+                        }
+                    }
+                });
                 break;
             case R.id.btn_ok:
                 Intent intent = new Intent(getContext(), EnsureOrderActivity.class);
