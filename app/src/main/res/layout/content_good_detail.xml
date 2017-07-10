@@ -30,8 +30,8 @@
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical">
 
                     <LinearLayout
                         android:id="@+id/ll_no_stand"
@@ -170,7 +170,7 @@
                     android:id="@+id/tv_num_comment"
                     style="@style/TV_VG_RGIHT_TO_graycolor"
                     android:drawablePadding="@dimen/default_ui_margin_small"
-                    android:text="40余条评论"
+                    android:text="0条评论"
                     android:textSize="@dimen/text_size_common_s" />
 
 
@@ -178,13 +178,23 @@
 
             <include layout="@layout/line_gray_padding_left"></include>
 
-            <com.ytxd.spp.ui.views.InListView
-                android:id="@+id/lv_comment"
+            <com.kennyc.view.MultiStateView
+                android:id="@+id/msv_comment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@color/common_divider_color"
-                android:dividerHeight="@dimen/divider_height"
-                android:scrollbars="none" />
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:msv_emptyView="@layout/empty_comment_none"
+                app:msv_loadingView="@layout/common_progress_view"
+                app:msv_viewState="loading">
+
+                <com.ytxd.spp.ui.views.InListView
+                    android:id="@+id/lv_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@color/common_divider_color"
+                    android:dividerHeight="@dimen/divider_height"
+                    android:scrollbars="none" />
+            </com.kennyc.view.MultiStateView>
 
             <LinearLayout
                 android:id="@+id/ll_comment_more"
@@ -195,7 +205,9 @@
 
                 <include layout="@layout/line_gray"></include>
 
-                <RelativeLayout style="@style/VG_padding">
+                <RelativeLayout
+                    style="@style/VG_padding"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"

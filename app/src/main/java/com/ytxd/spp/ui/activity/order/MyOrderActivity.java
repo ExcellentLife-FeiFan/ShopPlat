@@ -139,10 +139,18 @@ public class MyOrderActivity extends BaseActivity<OrderActivityPresenter> implem
         presenter.getOrderList(CommonUtils.REFRESH, 1);
 
     }
+
     public void onEvent(OrderChangevent event) {
-        if(event.position!=-1&&event.position<mAdapter.getItemCount()-1){
-            mAdapter.getItem(event.position).setOrderStateCode(event.state);
-            mAdapter.notifyItemChanged(event.position);
+        if (event.isEvaluate) {
+            if (event.position != -1) {
+                mAdapter.getItem(event.position).setIsEvaluate(1);
+                mAdapter.notifyItemChanged(event.position);
+            }
+        } else {
+            if (event.position != -1 && event.position < mAdapter.getItemCount() - 1) {
+                mAdapter.getItem(event.position).setOrderStateCode(event.state);
+                mAdapter.notifyItemChanged(event.position);
+            }
         }
 
     }

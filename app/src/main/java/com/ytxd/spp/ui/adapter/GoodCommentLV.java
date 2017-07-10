@@ -6,6 +6,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ytxd.spp.R;
+import com.ytxd.spp.model.GoodEvaluateM;
+import com.ytxd.spp.util.CommonUtils;
+import com.ytxd.spp.util.ImageLoadUtil;
 
 import java.util.List;
 
@@ -18,9 +21,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by apple on 2017/4/18.
  */
 
-public class GoodCommentLV extends CommonListAdapter<String> {
+public class GoodCommentLV extends CommonListAdapter<GoodEvaluateM> {
 
-    public GoodCommentLV(List<String> items, Context activity) {
+    public GoodCommentLV(List<GoodEvaluateM> items, Context activity) {
         super(items, activity);
     }
 
@@ -35,6 +38,16 @@ public class GoodCommentLV extends CommonListAdapter<String> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
+        CommonUtils.setText(viewHolder.tvName, item.getNickName());
+        CommonUtils.setText(viewHolder.tvTime, CommonUtils.getFormatTimeString(item.getCreateTime()));
+        if (item.getZOrC() == 1) {
+            viewHolder.tvZan.setText("满意");
+        } else {
+            viewHolder.tvZan.setText("不满意");
+        }
+        CommonUtils.setText(viewHolder.tvContent, item.getEvaluateContent());
+        ImageLoadUtil.setImageNP2(item.getTitlePath(), viewHolder.civ, context);
 
         return convertView;
     }

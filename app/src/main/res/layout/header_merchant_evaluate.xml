@@ -85,7 +85,9 @@
                     android:isIndicator="true"
                     android:maxHeight="14dp"
                     android:minHeight="14dp"
-                    android:rating="0.0" />
+                    android:rating="0"
+                    android:stepSize="1"
+                    android:max="5" />
 
                 <TextView
                     android:id="@+id/tv_distr_score"
@@ -123,7 +125,9 @@
                     android:isIndicator="true"
                     android:maxHeight="14dp"
                     android:minHeight="14dp"
-                    android:rating="0.0" />
+                    android:rating="0"
+                    android:stepSize="1"
+                    android:max="5" />
 
                 <TextView
                     android:id="@+id/tv_good_score"

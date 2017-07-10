@@ -16,10 +16,12 @@ import android.widget.TextView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.G;
+import com.ytxd.spp.model.CouponM;
 import com.ytxd.spp.ui.views.loadview.CustomDialog;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -229,7 +231,8 @@ public class CommonUtils {
     public static void setBackgroundDrawable(View v, int res) {
         v.setBackgroundDrawable(App.context.getResources().getDrawable(res));
     }
-    public static void setBackgroundDrawable(Context context,View v, int res) {
+
+    public static void setBackgroundDrawable(Context context, View v, int res) {
         v.setBackgroundDrawable(context.getResources().getDrawable(res));
     }
 
@@ -325,6 +328,23 @@ public class CommonUtils {
             list.add(strings[i]);
         }
         return list;
+    }
+
+    public static boolean getBoolean(int b) {
+        return b == 1 ? true : false;
+    }
+
+    public static boolean isCouponPast(CouponM item) {
+        String b = CommonUtils.getFormatTimeString(item.getUseBeginTime());
+        String e = CommonUtils.getFormatTimeString(item.getUseEndTime());
+        long now = new Date().getTime();
+        long b1 = AbDateUtil.getDateByFormat(b, AbDateUtil.dateFormatYMDHMS).getTime();
+        long e1 = AbDateUtil.getDateByFormat(e, AbDateUtil.dateFormatYMDHMS).getTime();
+        if (now >= b1 && now <= e1) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }

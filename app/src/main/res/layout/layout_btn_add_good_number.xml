@@ -35,7 +35,7 @@
             app:gapBetweenCircle="22dp"
             app:hingTextSize="@dimen/text_size_tag_small"
             app:hintBgColor="@color/price_color"
-            app:hintBgRoundValue="15dp"
+            app:hintBgRoundValue="13.0dip"
             app:hintFgColor="#ffffff"
             app:maxCount="99"
             app:radius="12dp"

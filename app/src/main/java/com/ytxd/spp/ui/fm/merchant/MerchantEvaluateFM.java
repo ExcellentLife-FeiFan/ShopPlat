@@ -13,12 +13,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kennyc.view.MultiStateView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.BaseFragment;
+import com.ytxd.spp.model.MerchantEvaluateM;
 import com.ytxd.spp.model.MerchantM;
-import com.ytxd.spp.model.OrderM;
 import com.ytxd.spp.presenter.MCommnetPresenter;
 import com.ytxd.spp.ui.adapter.MerchantCommentA;
 import com.ytxd.spp.ui.views.SimpleDividerDecoration;
-import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.view.IMCommentView;
 
 import java.util.List;
@@ -63,7 +62,7 @@ public class MerchantEvaluateFM extends BaseFragment<MCommnetPresenter> implemen
         View headerView = activity.getLayoutInflater().inflate(R.layout.header_merchant_evaluate, (ViewGroup) mRecyclerView.getParent(), false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
         mRecyclerView.addItemDecoration(new SimpleDividerDecoration(activity, R.color.common_divider_color, R.dimen.divider_height));
-        mAdapter = new MerchantCommentA(CommonUtils.getSampleList(10));
+        mAdapter = new MerchantCommentA(null);
         mAdapter.addHeaderView(headerView);
         mAdapter.setEnableLoadMore(true);
         mAdapter.setOnLoadMoreListener(this, mRecyclerView);
@@ -75,7 +74,7 @@ public class MerchantEvaluateFM extends BaseFragment<MCommnetPresenter> implemen
 //                startActivity(OrderDetailActivity.class,"data",mAdapter.getItem(i));
             }
         });
-        presenter.getrList(1,1);
+        presenter.getList(merchantM.getSupermarketCode());
     }
 
     @Override
@@ -100,7 +99,7 @@ public class MerchantEvaluateFM extends BaseFragment<MCommnetPresenter> implemen
 
     @Override
     public void onLoadMoreRequested() {
-      mAdapter.loadMoreComplete();
+      mAdapter.loadMoreEnd(true);
     }
 
     @Override
@@ -109,12 +108,22 @@ public class MerchantEvaluateFM extends BaseFragment<MCommnetPresenter> implemen
     }
 
     @Override
-    public void lodeMoreSuccess(List<OrderM> items) {
-         msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+    public void lodeSuccess(List<MerchantEvaluateM> items) {
+        mAdapter.addData(items);
+        if(mAdapter.getItemCount()>1){
+            msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+        }else{
+            msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        }
     }
 
     @Override
-    public void lodeMoreFailed() {
-
+    public void lodeFailed() {
+        if(mAdapter.getItemCount()>0){
+            msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+        }else{
+            msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        }
     }
+
 }

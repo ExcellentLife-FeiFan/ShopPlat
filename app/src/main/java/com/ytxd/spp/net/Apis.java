@@ -20,6 +20,7 @@ public class Apis {
             return BASE_SRC_URL + url;
         }
     }
+
     public static String AddPATH2(String url) {
         Pattern pattern = Pattern.compile("http://(([a-zA-z0-9]|-){1,}\\.){1,}[a-zA-z0-9]{1,}-*");
         Matcher matcher = pattern.matcher(url);
@@ -255,10 +256,38 @@ public class Apis {
 
     /**
      * 上传文件
-     *
      */
     public static String UpFiles = BASE_URL + "/API_Global/UpFiles";
 
 
+    /**
+     * 获取商家评价
+     *
+     * @param SupermarketCode:超市编号
+     */
+    public static String GetSupermarketEvaluate = BASE_URL + "/API_User/GetSupermarketEvaluate";
 
+
+    /**
+     * 获取商家商品评价
+     *
+     * @param GoodsCode
+     */
+    public static String GetGoodsEvaluate = BASE_URL + "/API_User/GetGoodsEvaluate";
+
+    /**
+     * 修改头像
+     *
+     * @param UserCode:用户编号
+     * @param TitlePath:新头像路径
+     */
+    public static String ModifyIcon = BASE_URL + "/API_User/ModifyTitle";
+
+    /**
+     * 修改昵称
+     *
+     * @param UserCode:用户编号
+     * @param NickName:新昵称
+     */
+    public static String ModifyNickName = BASE_URL + "/API_User/ModifyNickName";
 }

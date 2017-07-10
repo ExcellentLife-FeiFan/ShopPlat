@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/default_ui_margin"
-                android:text="2017-06-23"
+                android:text="@string/null_s"
                 android:textColor="@color/hint_gray"
                 android:textSize="@dimen/text_size_micro" />
 
@@ -69,7 +69,9 @@
                 android:isIndicator="true"
                 android:maxHeight="11dp"
                 android:minHeight="11dp"
-                android:rating="0.0"
+                android:rating="0"
+                android:stepSize="1"
+                android:max="5"
                 app:mrb_progressBackgroundTint="@color/gray"
                 app:mrb_progressTint="#FFAA0C"
                 app:mrb_secondaryProgressTint="@color/gray" />
@@ -91,7 +93,9 @@
                 android:isIndicator="true"
                 android:maxHeight="11dp"
                 android:minHeight="11dp"
-                android:rating="0.0"
+                android:rating="0"
+                android:stepSize="1"
+                android:max="5"
                 app:mrb_progressBackgroundTint="@color/gray"
                 app:mrb_progressTint="#FFAA0C"
                 app:mrb_secondaryProgressTint="@color/gray" />
@@ -105,7 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/default_ui_margin"
             android:lineSpacingExtra="@dimen/dp2"
-            android:text="非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃"
+            android:text="无内容"
             android:textColor="@color/black_overlay2"
             android:textSize="@dimen/text_size_micro" />
 

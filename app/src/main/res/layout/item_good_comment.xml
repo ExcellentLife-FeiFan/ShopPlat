@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/default_ui_margin"
-                android:text="2017-06-23"
+                android:text="@string/null_s"
                 android:textColor="@color/hint_gray"
                 android:textSize="@dimen/text_size_micro" />
 
@@ -78,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="@dimen/dp2"
-            android:text="非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃非常好吃"
+            android:text="无内容"
             android:textColor="@color/black_overlay2"
             android:textSize="@dimen/text_size_micro" />
 

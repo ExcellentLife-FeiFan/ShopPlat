@@ -14,6 +14,7 @@ import com.kennyc.view.MultiStateView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
+import com.ytxd.spp.event.OrderChangevent;
 import com.ytxd.spp.model.OrderGoodM;
 import com.ytxd.spp.model.OrderM;
 import com.ytxd.spp.presenter.AddCommentPresenter;
@@ -34,6 +35,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview;
@@ -67,6 +69,7 @@ public class AddCommentActivity extends BaseActivity<AddCommentPresenter> implem
     private ArrayList<String> selectedPhotos = new ArrayList<>();
     private OrderM orderM;
     private String imgUrl;
+    private int position;
 
     @Override
     protected void initPresenter() {
@@ -82,6 +85,7 @@ public class AddCommentActivity extends BaseActivity<AddCommentPresenter> implem
         HideUtil.init(this);
         getBar().initActionBar("添加评论", this);
         orderM = (OrderM) getIntent().getSerializableExtra("data");
+        position=getIntent().getIntExtra("position",-1);
         CommonUtils.setText(tvMerName, orderM.getSuperMarketModel().getName());
         ImageLoadUtil.setImageNP(orderM.getSuperMarketModel().getLogoUrl(), civ, this);
         goodsLV = new AddCommGoodsLV(new ArrayList<OrderGoodM>(), this);
@@ -194,6 +198,7 @@ public class AddCommentActivity extends BaseActivity<AddCommentPresenter> implem
     @Override
     public void commentSuccess() {
         showToast("评价成功");
+        EventBus.getDefault().post(new OrderChangevent(position,true));
         AppManager.getInstance().killActivity(this);
     }
 

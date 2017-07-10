@@ -142,11 +142,18 @@ public class HomeFM3 extends BaseFragment<HomeOrderPresenter> implements SwipeRe
         msvOrder.setViewState(MultiStateView.VIEW_STATE_LOADING);
         presenter.getOrderList();
     }
-    public void onEvent(OrderChangevent event) {
-        if(event.position!=-1&&event.position<orderA.getItemCount()-1){
-            orderA.getItem(event.position).setOrderStateCode(event.state);
-            orderA.notifyItemChanged(event.position);
-        }
 
+    public void onEvent(OrderChangevent event) {
+        if (event.isEvaluate) {
+            if (event.position != -1) {
+                orderA.getItem(event.position).setIsEvaluate(1);
+                orderA.notifyItemChanged(event.position);
+            }
+        } else {
+            if (event.position != -1 && event.position < orderA.getItemCount() - 1) {
+                orderA.getItem(event.position).setOrderStateCode(event.state);
+                orderA.notifyItemChanged(event.position);
+            }
+        }
     }
 }

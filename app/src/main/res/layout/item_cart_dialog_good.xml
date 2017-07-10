@@ -20,8 +20,8 @@
 
             <ImageView
                 android:id="@+id/iv"
-                android:layout_width="@dimen/dp30"
-                android:layout_height="@dimen/dp45"
+                android:layout_width="@dimen/dp28"
+                android:layout_height="@dimen/dp40"
                 android:src="@color/img_bg" />
 
             <TextView
@@ -29,13 +29,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/default_ui_margin"
+                android:layout_marginLeft="@dimen/default_ui_margin_small"
                 android:ellipsize="end"
-                android:maxWidth="150dp"
+                android:maxWidth="110dp"
                 android:singleLine="true"
                 android:text="@string/null_s"
                 android:textColor="@color/black_overlay"
-                android:textSize="@dimen/text_size_medium" />
+                android:textSize="@dimen/text_size_common_s" />
 
 
         </LinearLayout>
@@ -66,13 +66,13 @@
                     android:layout_height="wrap_content"
                     android:text="0.0"
                     android:textColor="@color/price_color"
-                    android:textSize="@dimen/text_size_medium" />
+                    android:textSize="@dimen/text_size_common_s" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/default_ui_margin_medium_small">
+                    android:layout_marginLeft="@dimen/dp2">
 
                     <TextView
                         android:id="@+id/tv_origin_p"
@@ -96,8 +96,7 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/default_ui_margin_large">
-
+                >
                 <include layout="@layout/layout_btn_add_good_number_no_ani"></include>
             </RelativeLayout>
 

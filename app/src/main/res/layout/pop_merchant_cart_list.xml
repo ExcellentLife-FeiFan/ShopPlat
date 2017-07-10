@@ -67,8 +67,7 @@
                 android:divider="@color/common_divider_color"
                 android:dividerHeight="@dimen/common_divider_height"
                 android:listSelector="@color/transparent"
-                android:paddingLeft="@dimen/padding_left"
-                android:paddingRight="@dimen/padding_left"
+                android:paddingLeft="@dimen/padding_left2"
                 android:scrollbars="none" />
 
             <!--   <TextView

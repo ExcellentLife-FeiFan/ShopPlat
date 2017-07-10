@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:msv_emptyView="@layout/common_empty_view"
+        app:msv_emptyView="@layout/empty_comment_none"
         app:msv_loadingView="@layout/common_progress_view"
         app:msv_viewState="loading">
 

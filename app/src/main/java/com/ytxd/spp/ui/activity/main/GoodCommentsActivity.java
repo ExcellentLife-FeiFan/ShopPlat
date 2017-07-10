@@ -11,14 +11,19 @@ import com.kennyc.view.MultiStateView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
+import com.ytxd.spp.model.GoodEvaluateM;
+import com.ytxd.spp.model.GoodM;
+import com.ytxd.spp.presenter.GCommnetPresenter;
 import com.ytxd.spp.ui.adapter.GoodCommentsA;
 import com.ytxd.spp.ui.views.SimpleDividerDecoration;
-import com.ytxd.spp.util.CommonUtils;
+import com.ytxd.spp.view.IGCommentView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class GoodCommentsActivity extends BaseActivity implements View.OnClickListener,BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener{
+public class GoodCommentsActivity extends BaseActivity<GCommnetPresenter> implements View.OnClickListener,BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener,IGCommentView{
 
 
     @BindView(R.id.rv_list)
@@ -28,12 +33,21 @@ public class GoodCommentsActivity extends BaseActivity implements View.OnClickLi
     @BindView(R.id.msv)
     MultiStateView msv;
     GoodCommentsA mAdapter;
+    private GoodM goodM;
+
+
+    @Override
+    protected void initPresenter() {
+        presenter = new GCommnetPresenter(activity, this);
+        presenter.init();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_good_comment);
         ButterKnife.bind(this);
         getBar().initActionBar("商品评价", this);
+        goodM = (GoodM) getIntent().getSerializableExtra("data");
         refreshLayout.setOnRefreshListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
         mRecyclerView.addItemDecoration(new SimpleDividerDecoration(activity, R.color.common_divider_color, R.dimen.divider_height));
@@ -41,14 +55,7 @@ public class GoodCommentsActivity extends BaseActivity implements View.OnClickLi
         mAdapter.setOnLoadMoreListener(this, mRecyclerView);
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         mRecyclerView.setAdapter(mAdapter);
-        refreshLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mAdapter.addData(CommonUtils.getSampleList(25));
-                msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
-            }
-        }, 1000);
-
+        presenter.getList(goodM.getGoodsCode());
     }
 
     @Override
@@ -67,7 +74,7 @@ public class GoodCommentsActivity extends BaseActivity implements View.OnClickLi
             public void run() {
                 refreshLayout.setRefreshing(false);
             }
-        }, 1000);
+        }, 100);
     }
 
     @Override
@@ -77,6 +84,30 @@ public class GoodCommentsActivity extends BaseActivity implements View.OnClickLi
             public void run() {
                 mAdapter.loadMoreEnd(true);
             }
-        }, 1000);
+        }, 100);
+    }
+
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public void lodeSuccess(List<GoodEvaluateM> items) {
+        mAdapter.addData(items);
+        if(mAdapter.getItemCount()>0){
+            msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+        }else{
+            msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        }
+    }
+
+    @Override
+    public void lodeFailed() {
+        if(mAdapter.getItemCount()>0){
+            msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+        }else{
+            msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        }
     }
 }

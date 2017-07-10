@@ -1,6 +1,6 @@
 package com.ytxd.spp.view;
 
-import com.ytxd.spp.model.MerchantEvaluateM;
+import com.ytxd.spp.model.GoodEvaluateM;
 
 import java.util.List;
 
@@ -8,9 +8,9 @@ import java.util.List;
  * 主界面的接口
  * Created by panl on 15/12/22.
  */
-public interface IMCommentView extends IBaseView {
+public interface IGCommentView extends IBaseView {
 
-    void lodeSuccess(List<MerchantEvaluateM> items);
+    void lodeSuccess(List<GoodEvaluateM> items);
 
     void lodeFailed();
 }

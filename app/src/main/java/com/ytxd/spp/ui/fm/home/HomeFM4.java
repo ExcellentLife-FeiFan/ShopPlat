@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.BaseFragment;
+import com.ytxd.spp.event.RefreshUserData;
 import com.ytxd.spp.ui.activity.mine.AccountActivity;
 import com.ytxd.spp.ui.activity.mine.AddressManaActivity;
 import com.ytxd.spp.ui.activity.mine.DiscountCouponActivity;
@@ -45,10 +46,15 @@ public class HomeFM4 extends BaseFragment {
     @Override
     public void initView() {
         if (CommonUtils.isLogined2()) {
-            ImageLoadUtil.setImageNP(App.user.getTitlePath(), civ, activity);
-            CommonUtils.setText(tvNickname, App.user.getNickName());
-            CommonUtils.setText(tvPhone, App.user.getPhone());
+            setUserData();
+
         }
+    }
+
+    private void setUserData() {
+        ImageLoadUtil.setImageNP2(App.user.getTitlePath(), civ, activity);
+        CommonUtils.setText(tvNickname, App.user.getNickName());
+        CommonUtils.setText(tvPhone, App.user.getPhone());
     }
 
     @Override
@@ -92,7 +98,10 @@ public class HomeFM4 extends BaseFragment {
     }
 
 
-  /*  @OnClick({R.id.rl_address_mana, R.id.rl_commnet})
+    public void onEvent(RefreshUserData event) {
+        setUserData();
+    }
+    /*  @OnClick({R.id.rl_address_mana, R.id.rl_commnet})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_address_mana:

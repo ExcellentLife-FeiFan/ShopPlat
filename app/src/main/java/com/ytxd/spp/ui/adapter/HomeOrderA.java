@@ -42,7 +42,7 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, AddCommentActivity.class);
                 intent.putExtra("data",item);
-                intent.putExtra("position", getParentPosition(item));
+                intent.putExtra("position", getData().indexOf(item));
                 mContext.startActivity(intent);
             }
         });
@@ -68,7 +68,9 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
                 helper.tvPay.setVisibility(View.VISIBLE);
                 break;
             case OrderM.HAVE_PAY_WATING_ACE:
-                helper.tvEvaluate.setVisibility(View.VISIBLE);
+                if(!CommonUtils.getBoolean(item.getIsEvaluate())){
+                    helper.tvEvaluate.setVisibility(View.VISIBLE);
+                }
                 CommonUtils.setText(helper.tvState, "等待接单");
                 break;
             case OrderM.FASE_PAY_WATING_ACE:
@@ -82,7 +84,9 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
                 break;
             case OrderM.SUCCESS:
                 CommonUtils.setText(helper.tvState, "交易成功");
-                helper.tvEvaluate.setVisibility(View.VISIBLE);
+                if(!CommonUtils.getBoolean(item.getIsEvaluate())){
+                    helper.tvEvaluate.setVisibility(View.VISIBLE);
+                }
                 helper.tvAgain.setVisibility(View.VISIBLE);
                 break;
             case OrderM.CANCEL:

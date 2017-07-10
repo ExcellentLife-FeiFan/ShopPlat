@@ -6,17 +6,19 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.ninegrid.ImageInfo;
 import com.lzy.ninegrid.preview.NineGridViewClickAdapter;
 import com.ytxd.spp.R;
+import com.ytxd.spp.model.MerchantEvaluateM;
 import com.ytxd.spp.net.Apis;
 import com.ytxd.spp.ui.adapter.viewholder.MerchantCommentVH;
 import com.ytxd.spp.util.AbStrUtil;
 import com.ytxd.spp.util.CommonUtils;
+import com.ytxd.spp.util.ImageLoadUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MerchantCommentA extends BaseQuickAdapter<String, MerchantCommentVH> {
-    public MerchantCommentA(List<String> data) {
+public class MerchantCommentA extends BaseQuickAdapter<MerchantEvaluateM, MerchantCommentVH> {
+    public MerchantCommentA(List<MerchantEvaluateM> data) {
         super(R.layout.item_merchant_comment, data);
     }
 
@@ -26,8 +28,8 @@ public class MerchantCommentA extends BaseQuickAdapter<String, MerchantCommentVH
 
 
     @Override
-    protected void convert(final MerchantCommentVH helper, String item) {
-        String img="/UpFiles/2017/7/4/201706231344540.jpg,/UpFiles/2017/7/4/Screenshot_20170704-061152.png,/UpFiles/2017/7/4/Screenshot_20170704-061152.png";
+    protected void convert(final MerchantCommentVH helper, MerchantEvaluateM item) {
+        String img=item.getPicPath();
         String[] photoStr = null;
         if (!AbStrUtil.isEmpty(img)) {
             photoStr = img.split(",");
@@ -49,6 +51,12 @@ public class MerchantCommentA extends BaseQuickAdapter<String, MerchantCommentVH
         } else {
             helper.gv.setVisibility(View.GONE);
         }
+        CommonUtils.setText(helper.tvName,item.getNickName());
+        CommonUtils.setText(helper.tvTime,CommonUtils.getFormatTimeString(item.getCreateTime()));
+        helper.rbDistr.setProgress(item.getPSStar());
+        helper.rbGood.setProgress(item.getGoodsStar());
+        CommonUtils.setText(helper.tvContent,item.getEvaluateContent());
+        ImageLoadUtil.setImageNP2(item.getTitlePath(),helper.civ,mContext);
     }
 
 }

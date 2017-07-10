@@ -541,7 +541,7 @@
                                 android:layout_height="wrap_content"
                                 android:drawableRight="@drawable/ic_gray_to"
                                 android:paddingRight="@dimen/default_ui_margin_small"
-                                android:text="无可用代金券"
+                                android:text="选择优惠券"
                                 android:textColor="@color/hint_gray"
                                 android:textSize="@dimen/text_size_common" />
 

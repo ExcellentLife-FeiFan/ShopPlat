@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.flyco.systembar.SystemBarHelper;
+import com.kennyc.view.MultiStateView;
 import com.litesuits.orm.db.assit.QueryBuilder;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.App;
@@ -23,18 +24,22 @@ import com.ytxd.spp.base.BaseActivity2;
 import com.ytxd.spp.event.CartListClearRefreshEvent;
 import com.ytxd.spp.event.GoodAddEvent;
 import com.ytxd.spp.event.GoodMinusEvent;
+import com.ytxd.spp.model.GoodEvaluateM;
 import com.ytxd.spp.model.GoodM;
 import com.ytxd.spp.model.LocalShoppingCartM;
 import com.ytxd.spp.model.MerchantM;
+import com.ytxd.spp.presenter.GoodDetailPresenter;
 import com.ytxd.spp.ui.activity.order.EnsureOrderActivity;
 import com.ytxd.spp.ui.adapter.GoodCommentLV;
+import com.ytxd.spp.ui.dialog.MerchantCartListDialog;
 import com.ytxd.spp.ui.views.AnimShopButton;
 import com.ytxd.spp.ui.views.InListView;
-import com.ytxd.spp.ui.dialog.MerchantCartListDialog;
 import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.ImageLoadUtil;
 import com.ytxd.spp.util.ShoppingCartUtil;
+import com.ytxd.spp.view.IGoodDetailView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -44,7 +49,7 @@ import de.greenrobot.event.EventBus;
 
 import static com.ytxd.spp.R.id.rl_add_btn;
 
-public class GoodDetailActivity extends BaseActivity2 {
+public class GoodDetailActivity extends BaseActivity2<GoodDetailPresenter> implements IGoodDetailView {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -101,8 +106,16 @@ public class GoodDetailActivity extends BaseActivity2 {
     GoodM goodM;
     @BindView(R.id.btn_ok)
     Button btnOk;
+    @BindView(R.id.msv_comment)
+    MultiStateView msvComment;
     private MerchantM merchantM;
     private MerchantCartListDialog cartListDialog;
+
+    @Override
+    protected void initPresenter() {
+        presenter = new GoodDetailPresenter(this, this);
+        presenter.init();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,7 +154,7 @@ public class GoodDetailActivity extends BaseActivity2 {
         });
         SystemBarHelper.immersiveStatusBar(this, 0.4f);
         SystemBarHelper.setHeightAndPadding(this, toolbar);
-        mAdapter = new GoodCommentLV(CommonUtils.getSampleList(4), this);
+        mAdapter = new GoodCommentLV(new ArrayList<GoodEvaluateM>(), this);
         lvComment.setAdapter(mAdapter);
         btnAdd.setCount(ShoppingCartUtil.getLocalCartGoodCount(goodM.getGoodsCode(), merchantCode));
         btnAdd.setOnAddDelListener(new AnimShopButton.IOnAddDelListener() {
@@ -165,6 +178,7 @@ public class GoodDetailActivity extends BaseActivity2 {
 
             }
         });
+        presenter.getCommentList(goodM.getGoodsCode());
     }
 
     private void showCart() {
@@ -259,7 +273,7 @@ public class GoodDetailActivity extends BaseActivity2 {
                 break;
             case R.id.ll_comment_more:
             case R.id.tv_num_comment:
-                startActivity(GoodCommentsActivity.class);
+                startActivity(GoodCommentsActivity.class, "data", goodM);
                 break;
             case R.id.shopping_cart_layout:
                 showCart();
@@ -271,6 +285,32 @@ public class GoodDetailActivity extends BaseActivity2 {
     public void onViewClicked() {
         if (!tvTotalNum.getText().toString().equals("0")) {
             startActivity(EnsureOrderActivity.class, "merchantCode", merchantCode);
+        }
+    }
+
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public void lodeCommentSuccess(List<GoodEvaluateM> items) {
+        mAdapter.addItems(items, true);
+        tvNumComment.setText(mAdapter.getCount() + "条评论");
+        if(mAdapter.getCount()>0){
+            msvComment.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+        }else{
+            msvComment.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        }
+    }
+
+    @Override
+    public void lodeCommentFailed() {
+        tvNumComment.setText(mAdapter.getCount() + "条评论");
+        if(mAdapter.getCount()>0){
+            msvComment.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+        }else{
+            msvComment.setViewState(MultiStateView.VIEW_STATE_EMPTY);
         }
     }
 

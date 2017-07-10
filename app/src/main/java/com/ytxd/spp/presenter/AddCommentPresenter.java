@@ -75,6 +75,8 @@ public class AddCommentPresenter extends BasePresenter<IAddCommentView> {
             gs = gs + goods.get(i).getGoodsCode();
             if (!AbStrUtil.isEmpty(goods.get(i).getComment())) {
                 gs = gs + "$$$$" + goods.get(i).getComment();
+            }else{
+                gs = gs + "$$$$";
             }
             if (i == goods.size() - 1) {
                 gs = gs + "$$$$" + goods.get(i).getZan();
@@ -82,10 +84,12 @@ public class AddCommentPresenter extends BasePresenter<IAddCommentView> {
                 gs = gs + "$$$$" + goods.get(i).getZan() + "$fg$";
             }
         }
+        iView.showDialog("提交评论.....");
         getRequest.params("GoodsEvaluateInfo", gs)
                 .execute(new JsonCallback<ApiResult<Object>>() {
                     @Override
                     public void onSuccess(Response<ApiResult<Object>> response) {
+                        iView.dissmisDialog();
                         ApiResult<Object> result = response.body();
                         if (result.isSuccess()) {
                             iView.commentSuccess();
@@ -96,6 +100,7 @@ public class AddCommentPresenter extends BasePresenter<IAddCommentView> {
 
                     @Override
                     public void onError(Response<ApiResult<Object>> response) {
+                        iView.dissmisDialog();
                         ToastUtil.showToastShort(context, "评论失败");
                         super.onError(response);
                     }

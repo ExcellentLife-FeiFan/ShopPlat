@@ -57,7 +57,7 @@
                 <TextView
                     android:id="@+id/tv_nickname"
                     style="@style/TV_VG_RGIHT_DRAWABLE"
-                    android:text="非凡先生"
+                    android:text="@string/null_s"
                     android:textColor="@color/gray" />
 
 
@@ -86,7 +86,7 @@
                     <TextView
                         android:id="@+id/tv_bind_phone"
                         style="@style/TV_VG_RGIHT_DRAWABLE"
-                        android:text="18811389065"
+                        android:text="未绑定"
                         android:textColor="@color/gray" />
 
 

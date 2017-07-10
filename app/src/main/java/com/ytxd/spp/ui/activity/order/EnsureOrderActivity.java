@@ -17,6 +17,7 @@ import com.ytxd.spp.event.CartListClearRefreshEvent;
 import com.ytxd.spp.event.RefreshOrderListEvent;
 import com.ytxd.spp.event.SelectAddressEvent;
 import com.ytxd.spp.model.AddressM;
+import com.ytxd.spp.model.CouponM;
 import com.ytxd.spp.model.LocalShoppingCartM;
 import com.ytxd.spp.model.MerchantM;
 import com.ytxd.spp.model.OrderM;
@@ -104,6 +105,7 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
     String goodsInfo = "";
     float yp/*原价*/, sp/*实际支付*/, dp/*优惠价格*/;
     MerchantM.ManJianBean manJian;
+    CouponM couponM;
 
     @Override
     protected void initPresenter() {
@@ -165,26 +167,42 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
                 ///////////////////////////////////
                 mAdapter.addItems(shoppingCartM.getGoods(), true);
                 if (null != merchant) {
-                    float ps= 0.0f;
+                    float ps = 0.0f;
                     try {
                         ps = Float.valueOf(merchant.getPSPrice());
                     } catch (Exception e) {
                         merchant.setPSPrice("0.0");
                         e.printStackTrace();
                     }
-                    sp=sp+ps;
-                    yp=yp+ps;
+                    sp = sp + ps;
+                    yp = yp + ps;
                     CommonUtils.setText(tvMerchantName, merchant.getName());
                     CommonUtils.setText(tvDistriP, "¥" + merchant.getPSPrice());
                     ImageLoadUtil.setImageNP(merchant.getLogoUrl(), civMerchant, this);
                     tvTotalP.setText("总计 ¥" + yp);
-                    tvRealPay.setText("¥" + CommonUtils.getFloatString2(sp));
-                    tvTotalP3.setText("¥" + CommonUtils.getFloatString2(sp));
-                    tvDiscountP.setText("¥" + CommonUtils.getFloatString2(dp));
+                    addCouponDiscount(null);
                 }
             }
         }
 
+    }
+
+    private void addCouponDiscount(CouponM couponM) {
+        if (null != this.couponM) {
+            float cp = Float.valueOf(this.couponM.getCouponPrice());
+            dp = dp - cp;
+            sp = sp + cp;
+        }
+        if (null != couponM) {
+            float cp2 = Float.valueOf(couponM.getCouponPrice());
+            tvYouhuiquanDiscount.setText("¥" + cp2);
+            dp = dp + cp2;
+            sp = sp - cp2;
+            this.couponM = couponM;
+        }
+        tvRealPay.setText("¥" + CommonUtils.getFloatString2(sp));
+        tvTotalP3.setText("¥" + CommonUtils.getFloatString2(sp));
+        tvDiscountP.setText("¥" + CommonUtils.getFloatString2(dp));
     }
 
     @Override
@@ -212,7 +230,12 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
 //                startActivity(MerchantDetailActivity.class);
                 break;
             case R.id.ll_youhuiquan:
-                startActivity(DiscountCouponActivity.class);
+                Intent intent = new Intent(activity, DiscountCouponActivity.class);
+                intent.putExtra("isSelect", "true");
+                intent.putExtra("price" +
+                        "" +
+                        "", shoppingCartM.getPirceTotal());
+                startActivityForResult(intent, 1);
                 break;
             case R.id.btn_pay:
                 if (null == addressM) {
@@ -222,7 +245,7 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
                     orderM.setGoodsInfo(goodsInfo);
                     orderM.setPayType(payType);
                     orderM.setManJianCode(null == manJian ? "0" : manJian.getManJianCode());
-                    orderM.setUserCouponCode("0");
+                    orderM.setUserCouponCode(null == couponM ? "0" : couponM.getCouponCode());
                     orderM.setRemarks(remark);
                     orderM.setSHAddressCode(addressM.getSHAddressCode());
                     orderM.setSJPrice(CommonUtils.getFloatString2(sp) + "");
@@ -305,6 +328,11 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
         if (resultCode == REMARKS) {
             remark = data.getStringExtra("remark");
             tvRemark.setText(remark);
+        }
+        if (resultCode == 1) {
+            CouponM couponM = (CouponM) data.getSerializableExtra("coupon");
+            addCouponDiscount(couponM);
+            tvYouhuiquan.setText(couponM.getCouponName());
         }
     }
 }
