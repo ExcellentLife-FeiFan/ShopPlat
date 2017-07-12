@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#dddfdf">
+
+    <TextView
+        android:id="@+id/tv_catagory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_ui_margin_small"
+        android:background="@color/bg"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/default_ui_margin_medium_s"
+        android:paddingLeft="@dimen/padding_left2"
+        android:paddingTop="@dimen/default_ui_margin_medium_s"
+        android:text="主餐 汤类"
+        android:textSize="@dimen/text_size_common"></TextView>
+</LinearLayout>

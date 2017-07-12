@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/v"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"></View>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/default_ui_margin_large"
+        android:layout_marginRight="@dimen/default_ui_margin_large"
+        android:clickable="true"
+        android:background="@drawable/bg_white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50"
+            android:gravity="center"
+            android:text="水果盘"
+            android:textColor="@color/black_overlay"
+            android:textSize="@dimen/text_size_actionbar_title" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding_left2"
+            android:paddingRight="@dimen/padding_left2">
+
+            <include layout="@layout/line_common"></include>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="120.0dip"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/padding_left2"
+            android:paddingRight="@dimen/padding_left2"
+            android:paddingTop="@dimen/default_ui_margin"
+            android:paddingBottom="@dimen/default_ui_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/default_ui_margin_large"
+                android:text="规格："
+                android:textColor="@color/black_overlay2"
+                android:textSize="@dimen/text_size_common" />
+
+            <com.ytxd.spp.ui.views.TagCloudLayout
+                android:id="@+id/tag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lineSpacing="@dimen/default_ui_margin_medium"
+                app:tagSpacing="@dimen/default_ui_margin" />
+
+
+        </LinearLayout>
+
+        <include layout="@layout/line_common"></include>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp45"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/padding_left2"
+            android:paddingRight="@dimen/padding_left2">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¥0.0"
+                    android:textColor="@color/price_color"
+                    android:textSize="@dimen/text_size_large" />
+
+                <TextView
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="（冷饮）"
+                    android:textColor="@color/black_overlay2"
+                    android:textSize="@dimen/text_size_common" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true">
+
+                <include layout="@layout/layout_btn_add_good_number"></include>
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

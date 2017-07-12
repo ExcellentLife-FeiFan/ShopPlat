@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_bg_viewgroup_click"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/padding_bottom"
+        android:paddingLeft="@dimen/padding_left2"
+        android:paddingRight="@dimen/padding_left2"
+        android:paddingTop="@dimen/padding_bottom"
+        android:weightSum="1.0">
+
+        <RelativeLayout
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_marginRight="@dimen/padding_left2"
+            android:background="@drawable/bg_merchant_icon_border">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_no_people"
+                android:scaleType="centerCrop"
+                app:riv_corner_radius="@dimen/common_radius" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_ui_margin"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/null_s"
+                    android:textColor="@color/black_overlay2"
+                    android:textSize="@dimen/text_size_little_small"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_ui_margin"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                    android:id="@+id/rb"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:isIndicator="true"
+                    android:maxHeight="14dp"
+                    android:minHeight="14dp"
+                    android:rating="0.0"
+                    app:mrb_progressBackgroundTint="@color/gray"
+                    app:mrb_progressTint="#FFAA0C"
+                    app:mrb_secondaryProgressTint="@color/gray" />
+
+                <TextView
+                    android:id="@+id/tv_rb_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/default_ui_margin_small"
+                    android:text="0.0"
+                    android:textColor="@color/price_color"
+                    android:textSize="@dimen/text_size_micro" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/default_ui_margin_medium_small"
+                    android:text="月售"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_micro" />
+
+                <TextView
+                    android:id="@+id/tv_month_sales"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_micro" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="单"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_micro" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_ui_margin"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_qisong_p"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¥0起送"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/item_merchant_tv2_size" />
+
+                <View
+                    android:layout_width="1.0dp"
+                    android:layout_height="@dimen/dp10"
+                    android:layout_marginLeft="@dimen/default_ui_margin_small"
+                    android:layout_marginRight="@dimen/default_ui_margin_small"
+                    android:background="@color/hint_gray"></View>
+
+                <TextView
+                    android:id="@+id/tv_distri_p"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="配送费¥0"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/item_merchant_tv2_size" />
+
+                <View
+                    android:visibility="gone"
+                    android:layout_width="1.0dp"
+                    android:layout_height="@dimen/dp10"
+                    android:layout_marginLeft="@dimen/default_ui_margin_small"
+                    android:layout_marginRight="@dimen/default_ui_margin_small"
+                    android:background="@color/hint_gray"></View>
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/tv_per_peo_p"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¥0/人"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/item_merchant_tv2_size" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0.0km"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/item_merchant_tv2_size" />
+
+                    <View
+                        android:layout_width="1.0dp"
+                        android:layout_height="@dimen/dp10"
+                        android:layout_marginLeft="@dimen/default_ui_margin_small"
+                        android:layout_marginRight="@dimen/default_ui_margin_small"
+                        android:background="@color/hint_gray"></View>
+
+                    <TextView
+                        android:id="@+id/tv_distri_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0分钟"
+                        android:textColor="@color/price_color"
+                        android:textSize="@dimen/item_merchant_tv2_size" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp2"
+                android:background="@drawable/shape_hintgray_line_dash"
+                android:layerType="software" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:orientation="horizontal">
+
+                <com.ytxd.spp.ui.views.MyExpandableLayout
+                    android:id="@+id/expand_acti"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_ui_margin"
+                    android:layout_weight="1"
+                    app:el_contentLayout="@layout/expandlayout_home_merchat_item_content"
+                    app:el_headerLayout="@layout/expandlayout_home_merchat_item_header" />
+
+                <LinearLayout
+                    android:id="@+id/ll_acti_expand_index"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right">
+
+                    <TextView
+                        android:id="@+id/tv_acti_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/default_ui_margin"
+                        android:layout_marginTop="@dimen/default_ui_margin"
+                        android:text="0个活动"
+                        android:textColor="@color/black_overlay4"
+                        android:textSize="@dimen/item_merchant_tv2_size" />
+
+                    <com.github.zagum.expandicon.ExpandIconView
+                        android:id="@+id/expandv"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        app:eiv_animationDuration="300"
+                        app:eiv_color="@color/black_overlay4"
+                        android:layout_marginLeft="@dimen/default_ui_margin_small"
+                        android:layout_gravity="center_vertical"
+                        app:eiv_colorIntermediate="@color/black_overlay4"
+                        app:eiv_colorLess="@color/black_overlay4"
+                        app:eiv_colorMore="@color/black_overlay4"
+                        app:eiv_padding="0dp"
+                        app:eiv_roundedCorners="true"
+                        app:eiv_switchColor="true" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

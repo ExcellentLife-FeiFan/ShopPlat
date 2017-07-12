@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/v"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"></View>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/default_ui_margin_large"
+        android:layout_marginRight="@dimen/default_ui_margin_large"
+        android:background="@drawable/bg_white"
+        android:clickable="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50"
+            android:gravity="center"
+            android:text="选择配送员"
+            android:textColor="@color/black_overlay"
+            android:textSize="@dimen/text_size_actionbar_title" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding_left2"
+            android:paddingRight="@dimen/padding_left2">
+
+            <include layout="@layout/line_common"></include>
+        </RelativeLayout>
+
+        <com.kennyc.view.MultiStateView
+            android:id="@+id/msv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="120.0dip"
+            android:paddingBottom="@dimen/default_ui_margin"
+            android:paddingLeft="@dimen/padding_left2"
+            android:paddingRight="@dimen/padding_left2"
+            android:paddingTop="@dimen/default_ui_margin"
+            app:msv_emptyView="@layout/common_empty_view"
+            app:msv_loadingView="@layout/common_progress_view"
+            app:msv_viewState="loading">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ListView
+                    android:id="@+id/lv"
+
+                    android:layout_centerInParent="true"
+                    android:layout_width="match_parent"
+                    android:maxHeight="250.0dip"
+                    android:layout_height="wrap_content"
+                    android:divider="@color/transparent"
+                    android:dividerHeight="0dip"
+                    android:scrollbars="none" />
+            </RelativeLayout>
+        </com.kennyc.view.MultiStateView>
+
+        <include layout="@layout/line_common"></include>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp45"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/padding_left2"
+            android:paddingRight="@dimen/padding_left2">
+
+            <TextView
+                android:id="@+id/tv_ok"
+                style="@style/Common_padding_Btn"
+                android:layout_centerInParent="true"
+                android:background="@drawable/selectable_pricecolor_btn_bg_halfcircle"
+                android:text="确定"
+                android:textColor="@color/white" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

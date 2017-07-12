@@ -1,0 +1,157 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+
+    <dimen name="padding_left">12.0dip</dimen>
+    <dimen name="padding_bottom">15.0dip</dimen>
+    <dimen name="padding_bottom_m">80.0dip</dimen>
+    <dimen name="actionbar_height">55.0dip</dimen>
+    <dimen name="padding_top">12.0dip</dimen>
+    <dimen name="padding_left2">10.0dip</dimen>
+
+    <dimen name="grid_expected_size">120dp</dimen>
+
+    <dimen name="text_size_actionbar_title">19.5sp</dimen>
+    <dimen name="text_size_actionbar_right">16.0sp</dimen>
+    <dimen name="text_size_common_btn">18.0sp</dimen>
+    <dimen name="text_size_common">16.0sp</dimen>
+    <dimen name="text_size_common_s">14.0sp</dimen>
+    <dimen name="divider_height">0.5dp</dimen>
+    <dimen name="common_divider_height">0.7dp</dimen>
+    <dimen name="divider_height2">5.0dip</dimen>
+    <dimen name="divider_height3">10.0dip</dimen>
+    <dimen name="common_viewgroup_height">48.0dip</dimen>
+    <dimen name="common_viewgroup_height_big">55.0dip</dimen>
+    <dimen name="bottom_bar_height">55.0dip</dimen>
+    <dimen name="common_radius">4.0dip</dimen>
+    <dimen name="common_border">0.6dip</dimen>
+    <dimen name="common_radius2">6.0dip</dimen>
+    <dimen name="common_radius_half_circle">50.0dip</dimen>
+    <dimen name="item_tv_title_big">18.0sp</dimen>
+    <dimen name="item_tv_title_1">16.0sp</dimen>
+    <dimen name="item_tv_title_2">14.0sp</dimen>
+    <dimen name="item_tv_title_3">12.0sp</dimen>
+    <dimen name="item_tv_title_4">10.0sp</dimen>
+
+
+    <dimen name="item_merchant_tv2_size">11.0sp</dimen>
+
+    <dimen name="sp8">8.0sp</dimen>
+    <dimen name="sp9">9.0sp</dimen>
+    <dimen name="sp10">10.0sp</dimen>
+    <dimen name="sp12">12.0sp</dimen>
+    <dimen name="sp14">14.0sp</dimen>
+    <dimen name="sp16">16.0sp</dimen>
+    <dimen name="sp18">18.0sp</dimen>
+    <dimen name="sp20">20.0sp</dimen>
+    <dimen name="sp22">22.0sp</dimen>
+    <dimen name="sp24">24.0sp</dimen>
+    <dimen name="sp26">26.0sp</dimen>
+    <dimen name="sp28">28.0sp</dimen>
+    <dimen name="sp30">30.0sp</dimen>
+    <dimen name="sp32">32.0sp</dimen>
+    <dimen name="sp34">34.0sp</dimen>
+    <dimen name="sp36">36.0sp</dimen>
+    <dimen name="sp38">38.0sp</dimen>
+    <dimen name="sp40">40.0sp</dimen>
+    <dimen name="sp45">45.0sp</dimen>
+    <dimen name="sp50">50.0sp</dimen>
+    <dimen name="sp55">55.0sp</dimen>
+    <dimen name="sp60">60.0sp</dimen>
+
+    <dimen name="dp1">1.0dp</dimen>
+    <dimen name="dp2">2.0dp</dimen>
+    <dimen name="dp3">3.0dp</dimen>
+    <dimen name="dp4">4.0dp</dimen>
+    <dimen name="dp5">5.0dp</dimen>
+    <dimen name="dp6">6.0dp</dimen>
+    <dimen name="dp8">8.0dp</dimen>
+    <dimen name="dp9">9.0dp</dimen>
+    <dimen name="dp10">10.0dp</dimen>
+    <dimen name="dp11">11.0dp</dimen>
+    <dimen name="dp12">12.0dp</dimen>
+    <dimen name="dp13">13.0dp</dimen>
+    <dimen name="dp14">14.0dp</dimen>
+    <dimen name="dp15">15.0dp</dimen>
+    <dimen name="dp16">16.0dp</dimen>
+    <dimen name="dp17">17.0dp</dimen>
+    <dimen name="dp18">18.0dp</dimen>
+    <dimen name="dp19">19.0dp</dimen>
+    <dimen name="dp20">20.0dp</dimen>
+    <dimen name="dp21">21.0dp</dimen>
+    <dimen name="dp22">22.0dp</dimen>
+    <dimen name="dp23">23.0dp</dimen>
+    <dimen name="dp24">24.0dp</dimen>
+    <dimen name="dp28">28.0dp</dimen>
+    <dimen name="dp25">25.0dp</dimen>
+    <dimen name="dp30">30.0dp</dimen>
+    <dimen name="dp32">32.0dp</dimen>
+    <dimen name="dp35">35.0dp</dimen>
+    <dimen name="dp40">40.0dp</dimen>
+    <dimen name="dp45">45.0dp</dimen>
+    <dimen name="dp50">50.0dp</dimen>
+    <dimen name="dp55">55.0dp</dimen>
+    <dimen name="dp60">60.0dp</dimen>
+    <dimen name="dp65">65.0dp</dimen>
+    <dimen name="dp70">70.0dp</dimen>
+    <dimen name="dp75">75.0dp</dimen>
+    <dimen name="dp80">80.0dp</dimen>
+    <dimen name="dp85">85.0dp</dimen>
+    <dimen name="dp90">90.0dp</dimen>
+    <dimen name="dp100">100.0dp</dimen>
+    <dimen name="dp110">110.0dp</dimen>
+    <dimen name="dp120">120.0dp</dimen>
+    <dimen name="dp130">130.0dp</dimen>
+    <dimen name="dp140">140.0dp</dimen>
+    <dimen name="dp150">150.0dp</dimen>
+    <dimen name="dp160">160.0dp</dimen>
+    <dimen name="dp170">170.0dp</dimen>
+    <dimen name="dp180">180.0dp</dimen>
+    <dimen name="dp190">190.0dp</dimen>
+    <dimen name="dp200">200.0dp</dimen>
+    <dimen name="dp220">220.0dp</dimen>
+    <dimen name="dp240">240.0dp</dimen>
+    <dimen name="dp250">250.0dp</dimen>
+    <dimen name="dp260">260.0dp</dimen>
+    <dimen name="dp270">270.0dp</dimen>
+    <dimen name="dp280">280.0dp</dimen>
+    <dimen name="dp290">290.0dp</dimen>
+    <dimen name="dp300">300.0dp</dimen>
+
+    <dimen name="text_list_item_left">16.0sp</dimen>
+    <dimen name="text_list_item_right">14.0sp</dimen>
+    <dimen name="text_size_huge">26.0sp</dimen>
+    <dimen name="text_size_large">22.0sp</dimen>
+    <dimen name="text_size_little_micro">11.0sp</dimen>
+    <dimen name="text_size_little_small">17.0sp</dimen>
+    <dimen name="text_size_medium">19.5sp</dimen>
+    <dimen name="text_size_micro">12.0sp</dimen>
+    <dimen name="text_size_small">16.0sp</dimen>
+    <dimen name="text_size_tag_small">10.0sp</dimen>
+    <dimen name="empty_text_size">16.0sp</dimen>
+
+
+    <dimen name="drawable_padding">10.0dip</dimen>
+    <dimen name="drawable_list_child_padding">10.0dip</dimen>
+    <dimen name="default_ui_height">48.0dip</dimen>
+    <dimen name="default_ui_margin">8.0dip</dimen>
+    <dimen name="default_ui_margin_great">20.0dip</dimen>
+    <dimen name="default_ui_margin_huge">32.0dip</dimen>
+    <dimen name="default_ui_margin_large">15.0dip</dimen>
+    <dimen name="default_ui_margin_medium">13.0dip</dimen>
+    <dimen name="default_ui_margin_medium_s">7.0dip</dimen>
+    <dimen name="default_ui_margin_medium_small">5.0dip</dimen>
+    <dimen name="default_ui_margin_micro">2.0dip</dimen>
+    <dimen name="default_ui_margin_small">4.0dip</dimen>
+    <dimen name="default_ui_margin_top">10.0dip</dimen>
+
+
+    <dimen name="login_icon_size">65.0dip</dimen>
+    <dimen name="login_icon_size_h">32.0dip</dimen>
+    <dimen name="data_icon_size">40.0dip</dimen>
+    <dimen name="data_icon_size_small">35.0dip</dimen>
+    <dimen name="data_icon_size_middle">55.0dip</dimen>
+    <dimen name="data_icon_size_big">70.0dip</dimen>
+</resources>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="90.0dip"
+        android:layout_marginTop="@dimen/default_ui_margin_small">
+
+        <LinearLayout
+            android:id="@+id/ll_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/coupon_u"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.43">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¥"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_large" />
+
+                    <TextView
+                        android:id="@+id/tv_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/default_ui_margin"
+                        android:fontFamily="serif"
+                        android:text="10"
+                        android:textColor="@color/white"
+                        android:textSize="58.0sp"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.57"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/default_ui_margin_large"
+                android:paddingRight="@dimen/default_ui_margin_small">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="通用优惠券"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_common" />
+
+                    <TextView
+                        android:id="@+id/tv_desrc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/default_ui_margin_medium_small"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="满25元可用"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/text_size_common" />
+
+                    <TextView
+                        android:id="@+id/tv_used_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/default_ui_margin_medium_small"
+                        android:text="使用时间：6.11-6.19"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_size_little_micro" />
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/coupon_closed"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+</LinearLayout>

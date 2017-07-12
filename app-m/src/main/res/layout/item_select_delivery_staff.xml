@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center"
+        android:paddingTop="@dimen/drawable_padding"
+        android:paddingBottom="@dimen/drawable_padding"
+        android:text="胡大道"
+        android:textColor="@color/black_overlay2"
+        android:textSize="@dimen/text_size_common_btn" />
+
+</RelativeLayout>

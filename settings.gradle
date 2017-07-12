@@ -1,1 +1,1 @@
-include ':app', ':citypicker', ':mobsharelibrary', ':pickerview'
+include ':app-u', ':citypicker', ':mobsharelibrary', ':pickerview', ':app-m'

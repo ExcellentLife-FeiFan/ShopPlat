@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">快点</string>
+    <string name="home_b_tab_0">首页</string>
+    <string name="home_b_tab_1">发现</string>
+    <string name="home_b_tab_2">订单 </string>
+    <string name="home_b_tab_3">我的</string>
+
+
+    <string name="net_wrong">网络连接失败</string>
+    <string name="is_loading">正在加载中.....</string>
+    <string name="no_more_date">无更多数据</string>
+    <string name="load_success">数据加载成功</string>
+    <string name="load_failure">数据加载失败/网络错误</string>
+    <string name="action_success">操作成功</string>
+    <string name="action_failure">操作失败/网络错误</string>
+    <string name="null_s">"---"</string>
+    <string name="no_data">暂时没有数据</string>
+    <string name="permission">权限(permission)</string>
+    <string name="no_permissions">应用需要必要的运行权限</string>
+    <string name="null_s2">""</string>
+    <string name="settings">设置</string>
+    <string name="help">帮助</string>
+    <string name="string_help_text">当前应用缺少必要权限。\n\n请点击\"设置\"-\"权限\"-打开所需权限。\n\n最后点击两次后退按钮，即可返回。</string>
+    <string name="quit">退出</string>
+    <string name="et_comment_hint">请输入</string>
+
+
+    <string name="loc_fail">定位失败</string>
+    <string name="loc_doing">正在定位....</string>
+
+    <string name="none_goods">未选购商品</string>
+</resources>

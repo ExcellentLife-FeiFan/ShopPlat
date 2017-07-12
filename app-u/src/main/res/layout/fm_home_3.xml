@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionbar_height"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/tv_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/padding_left"
+            android:gravity="center_vertical"
+            android:text="订单"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_actionbar_right" />
+
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout style="@style/VG_padding"
+
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="我的订单"
+                        android:textColor="@color/black_overlay"
+                        android:textSize="@dimen/text_size_common" />
+
+
+                    <TextView
+                        android:id="@+id/tv_all_order"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:drawablePadding="@dimen/default_ui_margin_small"
+                        android:drawableRight="@drawable/ic_appcolor_right"
+                        android:text="全部订单"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/text_size_common_s" />
+
+
+                </RelativeLayout>
+
+                <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/swipeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.kennyc.view.MultiStateView
+                        android:id="@+id/msv_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:msv_emptyView="@layout/empty_order_none"
+                        app:msv_loadingView="@layout/common_progress_view"
+                        app:msv_viewState="loading">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rv_order"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.kennyc.view.MultiStateView>
+
+                </android.support.v4.widget.SwipeRefreshLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

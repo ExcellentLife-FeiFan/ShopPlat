@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/myScrollingContent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:id="@+id/rl_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionbar_height"
+            android:background="@color/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways|snap">
+
+            <TextView
+                android:id="@+id/txt_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:text="订单管理"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_actionbar_title" />
+
+            <!--    <ImageView
+                    android:id="@+id/img_gift"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="@dimen/busy_notice_margin"
+                    android:paddingRight="@dimen/busy_notice_margin"
+                    android:src="@drawable/icon_gift_no_weighted"
+                    android:visibility="visible" />
+
+                <FrameLayout
+                    android:id="@+id/fl_img_message"
+                    android:layout_width="60.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingRight="15.0dip">
+
+                    <ImageView
+                        android:id="@+id/img_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center|right"
+                        android:paddingRight="4.0dip"
+                        android:paddingTop="2.0dip"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_order_message" />
+
+                    <ImageView
+                        android:id="@+id/img_message_new_remind"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|right|top"
+                        android:background="@color/transparent"
+                        android:scaleType="center"
+                        android:src="@drawable/bg_message_new_remind"
+                        android:visibility="visible" />
+                </FrameLayout>-->
+        </RelativeLayout>
+
+        <com.flyco.tablayout.SlidingTabLayout
+            android:id="@+id/tab"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp40"
+            android:layout_gravity="center_horizontal"
+            app:tl_indicator_margin_left="0dp"
+            app:tl_indicator_margin_right="0dp"
+            app:tl_indicator_style="BLOCK"
+            app:tl_tab_padding="@dimen/dp10"
+            app:tl_tab_space_equal="false"
+            app:tl_textSelectColor="@color/colorPrimaryDark"
+            app:tl_textUnselectColor="@color/gray"
+            app:tl_underline_height="@dimen/divider_height"
+            app:tl_underline_color="@color/line_gray"
+            app:tl_textsize="@dimen/text_size_small" />
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+</android.support.design.widget.CoordinatorLayout>
