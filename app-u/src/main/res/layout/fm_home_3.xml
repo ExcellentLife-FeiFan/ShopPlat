@@ -76,6 +76,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:msv_emptyView="@layout/empty_order_none"
+                        app:msv_errorView="@layout/layout_home_order_error_view"
                         app:msv_loadingView="@layout/common_progress_view"
                         app:msv_viewState="loading">
 

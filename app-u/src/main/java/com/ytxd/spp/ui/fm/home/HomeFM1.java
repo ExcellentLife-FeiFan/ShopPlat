@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.amap.api.maps2d.AMapUtils;
-import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.services.core.LatLonPoint;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kennyc.view.MultiStateView;
@@ -30,6 +28,7 @@ import com.ytxd.spp.ui.adapter.HomeMerchantA;
 import com.ytxd.spp.ui.views.SimpleDividerDecoration;
 import com.ytxd.spp.util.AMapLocationUtil;
 import com.ytxd.spp.util.AbStrUtil;
+import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.view.IHomeView;
 
 import java.util.ArrayList;
@@ -134,7 +133,7 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
     public void onEvent(HomeAddressChangeEvent event) {
         if (null != event.getAddressM()) {
             addressM = event.getAddressM();
-            tvAddress.setText(event.getAddressM().getTitle());
+            tvAddress.setText(event.getAddressM().getAddress());
             msv.setViewState(MultiStateView.VIEW_STATE_LOADING);
             presenter.getSPMList(addressM.getCity());
         }
@@ -153,7 +152,7 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
 //                presenter.getSPMList("北京市");
             } else {
                 presenter.getSPMList(addressM.getCity());
-                tvAddress.setText(address.getTitle());
+                tvAddress.setText(address.getAddress());
                 return;
             }
         } else {
@@ -195,12 +194,15 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
         List<MerchantM> items = new ArrayList<>();
         refreshLayout.setRefreshing(false);
         for (int i = 0; i < datas.size(); i++) {
-            LatLng shop_l = new LatLng(Double.valueOf(datas.get(i).getLat()), Double.valueOf(datas.get(i).getLng()));
+         /*   LatLng shop_l = new LatLng(Double.valueOf(datas.get(i).getLat()), Double.valueOf(datas.get(i).getLng()));
             LatLng location_l = new LatLng(Double.valueOf(addressM.getLatLng().getLatitude()), Double.valueOf(addressM.getLatLng().getLongitude()));
             float distance = AMapUtils.calculateLineDistance(shop_l, location_l);
             float distruF = Float.valueOf(datas.get(i).getConfines());
             datas.get(i).setDistance(distruF);
             if (distruF >= distance) {
+                items.add(datas.get(i));
+            }*/
+            if(CommonUtils.isInConfines(datas.get(i),addressM.getLatLng())){
                 items.add(datas.get(i));
             }
         }

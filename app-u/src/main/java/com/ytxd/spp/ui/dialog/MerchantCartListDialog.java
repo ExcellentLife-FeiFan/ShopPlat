@@ -3,6 +3,7 @@ package com.ytxd.spp.ui.dialog;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -19,9 +20,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.litesuits.orm.db.assit.QueryBuilder;
 import com.ytxd.spp.R;
-import com.ytxd.spp.base.App;
 import com.ytxd.spp.event.CartListClearRefreshEvent;
 import com.ytxd.spp.model.LocalShoppingCartM;
 import com.ytxd.spp.model.MerchantM;
@@ -79,12 +78,15 @@ public class MerchantCartListDialog extends Dialog {
     MerchantM merchantM;
     int type;
 
+    private Context context;
+
 
     public MerchantCartListDialog(Context context, MerchantM merchant, int type) {
         super(context, R.style.cartdialog);
         this.merchantM = merchant;
         merchantCode = merchantM.getSupermarketCode();
         this.type = type;
+        this.context = context;
     }
 
     @Override
@@ -105,9 +107,7 @@ public class MerchantCartListDialog extends Dialog {
     }
 
     public void setData() {
-        QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
-                .whereEquals(LocalShoppingCartM.CARTCODE, merchantCode);
-        List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+        List<LocalShoppingCartM> beans = ShoppingCartUtil.getLocalShoppingCartMs(merchantCode);
         btnOk.setText("选好了");
         btnOk.setEnabled(true);
         if (beans.size() > 0) {
@@ -197,7 +197,7 @@ public class MerchantCartListDialog extends Dialog {
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         if (which.name().equals(DialogAction.POSITIVE.name())) {
                             if (ShoppingCartUtil.goodClearEvent(getContext(), merchantCode)) {
-                                ToastUtil.showToastShort(getContext(), "清除成功！");
+                                ToastUtil.showToastShort(context, "清除成功！");
                                 setData();
                                 EventBus.getDefault().post(new CartListClearRefreshEvent());
                             }
@@ -206,9 +206,11 @@ public class MerchantCartListDialog extends Dialog {
                 });
                 break;
             case R.id.btn_ok:
-                Intent intent = new Intent(getContext(), EnsureOrderActivity.class);
-                intent.putExtra("merchantCode", merchantCode);
-                getContext().startActivity(intent);
+                if(CommonUtils.isLogined((Activity) context,true)){
+                    Intent intent = new Intent(getContext(), EnsureOrderActivity.class);
+                    intent.putExtra("merchantCode", merchantCode);
+                    getContext().startActivity(intent);
+                }
                 break;
             case R.id.v:
             case R.id.shopping_cart_layout:

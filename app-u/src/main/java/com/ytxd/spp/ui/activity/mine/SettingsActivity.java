@@ -2,19 +2,24 @@ package com.ytxd.spp.ui.activity.mine;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
-import com.ytxd.spp.ui.activity.login.LoginActivity;
 import com.ytxd.spp.ui.activity.main.MainActivity;
+import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.SPUtil;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class SettingsActivity extends BaseActivity implements View.OnClickListener {
+
+    @BindView(R.id.ll_loginout)
+    LinearLayout llLoginout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +27,9 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
         getBar().initActionBar("设置", this);
+        if (!CommonUtils.isLogined2()) {
+            llLoginout.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -39,7 +47,9 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_account:
-                startActivity(AccountActivity.class);
+                if (CommonUtils.isLogined(activity)) {
+                    startActivity(AccountActivity.class);
+                }
                 break;
             case R.id.rl_normal:
                 break;
@@ -48,9 +58,9 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
             case R.id.tv_logout:
                 App.user = null;
                 SPUtil.getInstance().putString("pwd", "");
-                startActivity(LoginActivity.class);
                 AppManager.getInstance().killActivity(activity);
                 AppManager.getInstance().killActivity(MainActivity.class);
+                startActivity(MainActivity.class);
                 break;
         }
     }

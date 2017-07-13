@@ -8,9 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.litesuits.orm.db.assit.QueryBuilder;
+import com.amap.api.services.core.LatLonPoint;
 import com.ytxd.spp.R;
-import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
 import com.ytxd.spp.event.CartListClearRefreshEvent;
@@ -124,9 +123,7 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
         mAdapter = new OrderSubGoodsLV(new ArrayList<ShoppingCartM.Goods>(), this);
         lvSubGoods.setAdapter(mAdapter);
         if (!AbStrUtil.isEmpty(merchantCode)) {
-            QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
-                    .whereEquals(LocalShoppingCartM.CARTCODE, merchantCode);
-            List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+            List<LocalShoppingCartM> beans = ShoppingCartUtil.getLocalShoppingCartMs(merchantCode);
             if (beans.size() > 0) {
                 shoppingCartM = beans.get(0).getShoppingCartM();
                 merchant = shoppingCartM.getMerchantM();
@@ -296,19 +293,29 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
     }
 
     private void setAddressData(AddressM address) {
+        btnPay.setText("立即支付");
         if (null == address) {
             llAddress.setVisibility(View.GONE);
             llNoAddress.setVisibility(View.VISIBLE);
+            btnPay.setEnabled(false);
         } else {
             addressM = address;
             llAddress.setVisibility(View.VISIBLE);
             llNoAddress.setVisibility(View.GONE);
-            CommonUtils.setText(tvAddress, address.getAddressDescribe());
+            CommonUtils.setText(tvAddress, address.getAddressTitle()+address.getAddressContent());
             CommonUtils.setText(tvAddressName, address.getContacts());
             CommonUtils.setText(tvAddressPhone, address.getPhone());
+            if (!CommonUtils.isInConfines(merchant,new LatLonPoint(Double.valueOf(addressM.getLat()), Double.valueOf(addressM.getLng())))) {
+                btnPay.setEnabled(false);
+                btnPay.setText("超配送范围");
+            }else{
+                btnPay.setEnabled(true);
+            }
 
         }
+
     }
+
 
     public void onEvent(SelectAddressEvent event) {
         setAddressData(event.addressM);
@@ -333,7 +340,7 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
             CouponM couponM = (CouponM) data.getSerializableExtra("coupon");
             addCouponDiscount(couponM);
             tvYouhuiquan.setText(couponM.getCouponName());
-            CommonUtils.setTextColor(tvYouhuiquan,R.color.colorPrimary);
+            CommonUtils.setTextColor(tvYouhuiquan, R.color.colorPrimary);
         }
     }
 }

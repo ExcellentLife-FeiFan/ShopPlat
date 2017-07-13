@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.BaseFragment;
+import com.ytxd.spp.event.RefreshLoginEvent;
 import com.ytxd.spp.event.RefreshUserData;
 import com.ytxd.spp.ui.activity.mine.AccountActivity;
 import com.ytxd.spp.ui.activity.mine.AddressManaActivity;
@@ -47,7 +48,9 @@ public class HomeFM4 extends BaseFragment {
     public void initView() {
         if (CommonUtils.isLogined2()) {
             setUserData();
-
+        } else {
+            tvNickname.setText("立即登录");
+            tvPhone.setText("登录后享受更多特权优惠");
         }
     }
 
@@ -83,16 +86,22 @@ public class HomeFM4 extends BaseFragment {
                 startActivity(SettingsActivity.class);
                 break;
             case R.id.civ:
-                startActivity(AccountActivity.class);
+                if (CommonUtils.isLogined(activity)) {
+                    startActivity(AccountActivity.class);
+                }
                 break;
             case R.id.rl_address_mana:
-                startActivity(AddressManaActivity.class);
+                if (CommonUtils.isLogined(activity)) {
+                    startActivity(AddressManaActivity.class);
+                }
                 break;
             case R.id.rl_commnet:
 
                 break;
             case R.id.rl_coupon:
-                startActivity(DiscountCouponActivity.class);
+                if (CommonUtils.isLogined(activity)) {
+                    startActivity(DiscountCouponActivity.class);
+                }
                 break;
         }
     }
@@ -101,16 +110,10 @@ public class HomeFM4 extends BaseFragment {
     public void onEvent(RefreshUserData event) {
         setUserData();
     }
-    /*  @OnClick({R.id.rl_address_mana, R.id.rl_commnet})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.rl_address_mana:
-                startActivity(AddressManaActivity.class);
-                break;
-            case R.id.rl_commnet:
-                startActivity(LoginActivity.class);
-                AppManager.getInstance().killActivity(activity);
-                break;
+
+    public void onEvent(RefreshLoginEvent event) {
+        if (CommonUtils.isLogined2()) {
+            setUserData();
         }
-    }*/
+    }
 }

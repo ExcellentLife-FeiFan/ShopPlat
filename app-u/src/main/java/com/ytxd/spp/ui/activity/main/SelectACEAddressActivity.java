@@ -94,7 +94,9 @@ public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresente
         ButterKnife.bind(this);
         getBar().initActionBar("选择收货地址", "", "", R.drawable.ic_back_white, -1, this);
         initView();
-        presenter.getADList();
+        if(CommonUtils.isLogined2()){
+            presenter.getADList();
+        }
     }
 
     private void initView() {

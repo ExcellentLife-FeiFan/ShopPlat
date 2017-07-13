@@ -13,7 +13,7 @@ public class G {
     /**
      * 应用程序名
      */
-    public static final String APPNAME = "ShopPlat";
+    public static final String APPNAME = "KuaiDian";
 
     /**
      * 文件根目录

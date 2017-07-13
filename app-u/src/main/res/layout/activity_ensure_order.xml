@@ -657,6 +657,7 @@
                     android:id="@+id/btn_pay"
                     style="@style/Common_PriceBtn_NoCorner"
                     android:layout_width="110dp"
+                    android:enabled="false"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:text="立即支付" />

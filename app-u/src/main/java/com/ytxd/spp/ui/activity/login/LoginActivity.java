@@ -1,10 +1,12 @@
 package com.ytxd.spp.ui.activity.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
 import com.ytxd.spp.R;
+import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
 import com.ytxd.spp.model.UserM;
 import com.ytxd.spp.presenter.LoginPresenter;
@@ -26,6 +28,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     EditText etPhone;
     @BindView(R.id.et_pwd)
     EditText etPwd;
+    private String payback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +39,14 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         ShareSDK.initSDK(this);
         presenter.initHandler();
         String phone = SPUtil.getInstance().getString("phone");
-        if(!AbStrUtil.isEmpty(phone)){
+        if (!AbStrUtil.isEmpty(phone)) {
             etPhone.setText(phone);
         }
         String pwd = SPUtil.getInstance().getString("pwd");
-        if(!AbStrUtil.isEmpty(pwd)){
+        if (!AbStrUtil.isEmpty(pwd)) {
             etPwd.setText(pwd);
         }
+        payback = getIntent().getStringExtra("payback");
     }
 
     @Override
@@ -58,7 +62,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                 startActivity(RegisterActivity.class);
                 break;
             case R.id.tv_findpwd:
-                startActivity(ChangePwdActivity.class,"type","1");
+                startActivity(ChangePwdActivity.class, "type", "1");
                 break;
             case R.id.btn_login:
                 String phone = etPhone.getText().toString();
@@ -102,7 +106,15 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @Override
     public void startToMain() {
-        startActivity(MainActivity.class);
+        if (!AbStrUtil.isEmpty(payback)) {
+            Intent intent = new Intent();
+            intent.putExtra("payback", true);
+            setResult(1001, intent);
+        } else {
+            startActivity(MainActivity.class);
+        }
+        payback="";
+        AppManager.getInstance().killActivity(this);
     }
 
     @Override

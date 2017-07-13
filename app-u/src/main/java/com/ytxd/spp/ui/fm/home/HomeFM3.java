@@ -15,13 +15,16 @@ import com.kennyc.view.MultiStateView;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.BaseFragment;
 import com.ytxd.spp.event.OrderChangevent;
+import com.ytxd.spp.event.RefreshLoginEvent;
 import com.ytxd.spp.event.RefreshOrderListEvent;
 import com.ytxd.spp.model.OrderM;
 import com.ytxd.spp.presenter.HomeOrderPresenter;
+import com.ytxd.spp.ui.activity.login.LoginActivity;
 import com.ytxd.spp.ui.activity.order.MyOrderActivity;
 import com.ytxd.spp.ui.activity.order.OrderDetailActivity;
 import com.ytxd.spp.ui.adapter.HomeOrderA;
 import com.ytxd.spp.ui.views.SimpleDividerDecoration;
+import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.view.IHomeOrderView;
 
 import java.util.List;
@@ -83,7 +86,17 @@ public class HomeFM3 extends BaseFragment<HomeOrderPresenter> implements SwipeRe
                 startActivity(intent);
             }
         });
-        presenter.getOrderList();
+        msvOrder.getView(MultiStateView.VIEW_STATE_ERROR).findViewById(R.id.tv_login).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(LoginActivity.class);
+            }
+        });
+        if (CommonUtils.isLogined2()) {
+            presenter.getOrderList();
+        } else {
+            msvOrder.setViewState(MultiStateView.VIEW_STATE_ERROR);
+        }
     }
 
     @Override
@@ -107,12 +120,18 @@ public class HomeFM3 extends BaseFragment<HomeOrderPresenter> implements SwipeRe
 
     @OnClick(R.id.tv_all_order)
     public void onViewClicked() {
-        startActivity(MyOrderActivity.class);
+        if (CommonUtils.isLogined(activity)) {
+            startActivity(MyOrderActivity.class);
+        }
     }
 
     @Override
     public void onRefresh() {
-        presenter.getOrderList();
+        if(CommonUtils.isLogined(activity)){
+            presenter.getOrderList();
+        }else{
+            refreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
@@ -141,6 +160,12 @@ public class HomeFM3 extends BaseFragment<HomeOrderPresenter> implements SwipeRe
     public void onEvent(RefreshOrderListEvent event) {
         msvOrder.setViewState(MultiStateView.VIEW_STATE_LOADING);
         presenter.getOrderList();
+    }
+    public void onEvent(RefreshLoginEvent event) {
+        if(CommonUtils.isLogined2()){
+            msvOrder.setViewState(MultiStateView.VIEW_STATE_LOADING);
+            presenter.getOrderList();
+        }
     }
 
     public void onEvent(OrderChangevent event) {

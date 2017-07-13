@@ -194,7 +194,11 @@ public class MerchantGoodFM extends BaseFragment<MerchantGoodPresenter> implemen
     @Override
     public void lodeFailed() {
         factivity.dissmissBottomCart();
-        msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        try {
+            msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setSectionAdapterPosition(List<CatagaryM> categories) {

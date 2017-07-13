@@ -33,7 +33,7 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.contentContainer)
     FrameLayout contentContainer;
     HomeFM1 fm1;
-//    HomeFM2 fm2;
+    //    HomeFM2 fm2;
     HomeFM3 fm3;
     HomeFM4 fm4;
     Fragment currentFragment;
@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        SystemBarHelper.tintStatusBar(this, CommonUtils.getColor(this,R.color.colorPrimary),0.3f);
+        SystemBarHelper.tintStatusBar(this, CommonUtils.getColor(this, R.color.colorPrimary), 0.3f);
         if (null == savedInstanceState) {
             fm1 = new HomeFM1();
 //            fm2 = new HomeFM2();
@@ -54,9 +54,9 @@ public class MainActivity extends BaseActivity {
             switchFragment(fm1);
         }
 
-        if(CommonUtils.isLogined2()){
-            App.initDataBase(this);
-        }
+
+        App.initDataBase(this);
+
 
         // Create items
         AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.home_b_tab_0, R.drawable.ic_home, R.color.colorPrimary);
@@ -105,8 +105,19 @@ public class MainActivity extends BaseActivity {
                 } /*else if (position == 1) {
                     switchFragment(fm2);
                 }*/ else if (position == 1) {
+                  /*  if(CommonUtils.isLogined(activity)){
+                        switchFragment(fm3);
+                    }else{
+                        return false;
+                    }*/
                     switchFragment(fm3);
+
                 } else if (position == 2) {
+                   /* if(CommonUtils.isLogined(activity)){
+                        switchFragment(fm4);
+                    }else{
+                        return false;
+                    }*/
                     switchFragment(fm4);
                 }
                 transaction.commitAllowingStateLoss();

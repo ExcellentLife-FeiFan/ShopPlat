@@ -64,6 +64,7 @@
 
 
             <LinearLayout
+                android:id="@+id/ll_loginout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_ui_margin_large"

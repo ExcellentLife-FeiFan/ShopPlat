@@ -32,9 +32,7 @@ public class ShoppingCartUtil {
 
     public static int getLocalCartGoodCount(String goodCode, String merchantCode) {
         int c = 0;
-        QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
-                .whereEquals(LocalShoppingCartM.CARTCODE, merchantCode);
-        List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+        List<LocalShoppingCartM> beans = getLocalShoppingCartMs(merchantCode);
         if (beans.size() > 0) {
             LocalShoppingCartM shoppingCartM = beans.get(0);
             for (int i = 0; i < shoppingCartM.getShoppingCartM().goods.size(); i++) {
@@ -50,9 +48,7 @@ public class ShoppingCartUtil {
     }
 
     public static void refreshLocalCartGood(GoodM good, String merchantCode) {
-        QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
-                .whereEquals(LocalShoppingCartM.CARTCODE, merchantCode);
-        List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+        List<LocalShoppingCartM> beans = getLocalShoppingCartMs(merchantCode);
         if (beans.size() > 0) {
             LocalShoppingCartM shoppingCartM = beans.get(0);
             for (int i = 0; i < shoppingCartM.getShoppingCartM().goods.size(); i++) {
@@ -70,9 +66,7 @@ public class ShoppingCartUtil {
     public static boolean goodMinusEvent(Context context, String merchantCode, GoodM goodM) {
         boolean canrefresh = false;
         if (CommonUtils.isDBInit(context)) {
-            QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
-                    .whereEquals(LocalShoppingCartM.CARTCODE, merchantCode);
-            List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+            List<LocalShoppingCartM> beans = getLocalShoppingCartMs(merchantCode);
             if (beans.size() > 0) {
                 LocalShoppingCartM shoppingCartM = beans.get(0);
                 shoppingCartM.getShoppingCartM().removeGood(goodM);
@@ -89,9 +83,7 @@ public class ShoppingCartUtil {
     public static boolean goodAddEvent(Context context, MerchantM merchant, GoodM goodM) {
         boolean canrefresh = false;
         if (CommonUtils.isDBInit(context)) {
-            QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
-                    .whereEquals(LocalShoppingCartM.CARTCODE, merchant.getSupermarketCode());
-            List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+            List<LocalShoppingCartM> beans = getLocalShoppingCartMs(merchant.getSupermarketCode());
             if (beans.size() > 0) {
                 LocalShoppingCartM shoppingCartM = beans.get(0);
                 shoppingCartM.getShoppingCartM().addGood(goodM);
@@ -111,12 +103,10 @@ public class ShoppingCartUtil {
 
     }
 
-    public static boolean addGoods(Context context, MerchantM merchant, GoodM goodM,int count) {
+    public static boolean addGoods(Context context, MerchantM merchant, GoodM goodM, int count) {
         boolean canrefresh = false;
         if (CommonUtils.isDBInit(context)) {
-            QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
-                    .whereEquals(LocalShoppingCartM.CARTCODE, merchant.getSupermarketCode());
-            List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+            List<LocalShoppingCartM> beans = getLocalShoppingCartMs(merchant.getSupermarketCode());
             if (beans.size() > 0) {
                 LocalShoppingCartM shoppingCartM = beans.get(0);
                 for (int i = 0; i < count; i++) {
@@ -143,9 +133,7 @@ public class ShoppingCartUtil {
     public static boolean goodClearEvent(Context context, String merchantCode) {
         boolean canrefresh = false;
         if (CommonUtils.isDBInit(context)) {
-            QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
-                    .whereEquals(LocalShoppingCartM.CARTCODE, merchantCode);
-            List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+            List<LocalShoppingCartM> beans = getLocalShoppingCartMs(merchantCode);
             if (beans.size() > 0) {
                 LocalShoppingCartM shoppingCartM = beans.get(0);
                 shoppingCartM.getShoppingCartM().clearGoods();
@@ -232,9 +220,7 @@ public class ShoppingCartUtil {
     public static boolean deleteCart(Context context, String merchantCode) {
         boolean isR = false;
         if (CommonUtils.isDBInit(context)) {
-            QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
-                    .whereEquals(LocalShoppingCartM.CARTCODE, merchantCode);
-            List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+            List<LocalShoppingCartM> beans = getLocalShoppingCartMs(merchantCode);
             if (beans.size() > 0) {
                 LocalShoppingCartM shoppingCartM = beans.get(0);
                 App.liteOrm.delete(shoppingCartM);
@@ -246,24 +232,34 @@ public class ShoppingCartUtil {
     }
 
     public static String canBuy(MerchantM merchantM) {
-        boolean isRest=false;
+        boolean isRest = false;
         String b = CommonUtils.getFormatTimeString(merchantM.getBusinessBeginTime());
-        String[] bs=b.split(":");
-        float bt=Float.valueOf(bs[0])*60f+Float.valueOf(bs[1]);
+        String[] bs = b.split(":");
+        float bt = Float.valueOf(bs[0]) * 60f + Float.valueOf(bs[1]);
         String e = CommonUtils.getFormatTimeString(merchantM.getBusinessEndTime());
-        String[] es=e.split(":");
-        float et=Float.valueOf(es[0])*60f+Float.valueOf(es[1]);
+        String[] es = e.split(":");
+        float et = Float.valueOf(es[0]) * 60f + Float.valueOf(es[1]);
         String n = AbDateUtil.getCurrentDate(AbDateUtil.dateFormatHM);
-        String[] ns=n.split(":");
-        float nt=Float.valueOf(ns[0])*60f+Float.valueOf(ns[1]);
-        if(nt>=bt&&nt<=et){
-            isRest=false;
-        }else{
-            isRest=true;
+        String[] ns = n.split(":");
+        float nt = Float.valueOf(ns[0]) * 60f + Float.valueOf(ns[1]);
+        if (nt >= bt && nt <= et) {
+            isRest = false;
+        } else {
+            isRest = true;
         }
-        if(isRest){
-             return "正在休息";
+        if (isRest) {
+            return "正在休息";
         }
+
+
+
         return "OK";
+    }
+
+    public static List<LocalShoppingCartM> getLocalShoppingCartMs(String merchantCode) {
+        QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
+                .whereEquals(LocalShoppingCartM.CARTCODE, merchantCode);
+        List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+        return beans;
     }
 }

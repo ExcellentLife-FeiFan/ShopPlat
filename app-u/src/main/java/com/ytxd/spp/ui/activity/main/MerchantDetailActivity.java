@@ -1,5 +1,6 @@
 package com.ytxd.spp.ui.activity.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -31,7 +32,6 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.flyco.systembar.SystemBarHelper;
 import com.flyco.tablayout.SlidingTabLayout;
-import com.litesuits.orm.db.assit.QueryBuilder;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.qiushui.blurredview.BlurredView;
 import com.ytxd.spp.R;
@@ -43,16 +43,17 @@ import com.ytxd.spp.event.GoodAddEvent;
 import com.ytxd.spp.event.GoodMinusEvent;
 import com.ytxd.spp.event.MerchantSelectGoodStandEvent;
 import com.ytxd.spp.event.RefreshGoodRVEvent;
+import com.ytxd.spp.event.RefreshLoginEvent;
 import com.ytxd.spp.model.LocalShoppingCartM;
 import com.ytxd.spp.model.MerchantM;
 import com.ytxd.spp.net.Apis;
 import com.ytxd.spp.presenter.MerchantPresenter;
 import com.ytxd.spp.ui.activity.order.EnsureOrderActivity;
 import com.ytxd.spp.ui.activity.order.ShoppingCartActivity;
+import com.ytxd.spp.ui.dialog.MerchantCartListDialog;
 import com.ytxd.spp.ui.fm.merchant.MerchantEvaluateFM;
 import com.ytxd.spp.ui.fm.merchant.MerchantGoodFM;
 import com.ytxd.spp.ui.views.MyExpandableLayout;
-import com.ytxd.spp.ui.dialog.MerchantCartListDialog;
 import com.ytxd.spp.util.AbStrUtil;
 import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.ImageLoadUtil;
@@ -275,9 +276,7 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
     }
 
     public void refreshCartLayoutData() {
-        QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
-                .whereEquals(LocalShoppingCartM.CARTCODE, merchantM.getSupermarketCode());
-        List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+        List<LocalShoppingCartM> beans =  ShoppingCartUtil.getLocalShoppingCartMs(merchantCode);
         btnOk.setText("选好了");
         btnOk.setEnabled(true);
         if (beans.size() > 0) {
@@ -319,9 +318,7 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
     }
 
     public void refreshCartLayoutData2() {
-        QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
-                .whereEquals(LocalShoppingCartM.CARTCODE, merchantM.getSupermarketCode());
-        List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+        List<LocalShoppingCartM> beans = ShoppingCartUtil.getLocalShoppingCartMs(merchantCode);
         if (beans.size() > 0) {
             LocalShoppingCartM shoppingCartM = beans.get(0);
             int count = shoppingCartM.getShoppingCartM().getGoodsCounts();
@@ -356,7 +353,9 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
         switch (view.getId()) {
             case R.id.btn_ok:
                 if (!tvTotalNum.getText().toString().equals("0")) {
-                    startActivity(EnsureOrderActivity.class, "merchantCode", merchantCode);
+                    if(CommonUtils.isLogined(this,true)){
+                        startActivity(EnsureOrderActivity.class, "merchantCode", merchantCode);
+                    }
                 }
                 break;
             case R.id.shopping_cart_layout:
@@ -524,5 +523,21 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
             }
         });
         rlCart.startAnimation(animation);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==1001){
+            if(data.getBooleanExtra("payback",false)){
+                List<LocalShoppingCartM> beans =  ShoppingCartUtil.getLocalShoppingCartMs(merchantCode);
+                ShoppingCartUtil.deleteCart(this,merchantCode);
+                App.initDataBase(this);
+                ShoppingCartUtil.deleteCart(this,merchantCode);
+                App.liteOrm.save(beans);
+                startActivity(EnsureOrderActivity.class, "merchantCode", merchantCode);
+                EventBus.getDefault().post(new RefreshLoginEvent());
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.ytxd.spp.ui.activity.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.widget.NestedScrollView;
@@ -17,13 +18,13 @@ import android.widget.TextView;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.flyco.systembar.SystemBarHelper;
 import com.kennyc.view.MultiStateView;
-import com.litesuits.orm.db.assit.QueryBuilder;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.BaseActivity2;
 import com.ytxd.spp.event.CartListClearRefreshEvent;
 import com.ytxd.spp.event.GoodAddEvent;
 import com.ytxd.spp.event.GoodMinusEvent;
+import com.ytxd.spp.event.RefreshLoginEvent;
 import com.ytxd.spp.model.GoodEvaluateM;
 import com.ytxd.spp.model.GoodM;
 import com.ytxd.spp.model.LocalShoppingCartM;
@@ -198,9 +199,7 @@ public class GoodDetailActivity extends BaseActivity2<GoodDetailPresenter> imple
     }
 
     private void refreshCartLayoutData() {
-        QueryBuilder queryBuilder = new QueryBuilder(LocalShoppingCartM.class)
-                .whereEquals(LocalShoppingCartM.CARTCODE, merchantCode);
-        List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
+        List<LocalShoppingCartM> beans =  ShoppingCartUtil.getLocalShoppingCartMs(merchantCode);
         btnOk.setText("选好了");
         btnOk.setEnabled(true);
         if (beans.size() > 0) {
@@ -293,7 +292,9 @@ public class GoodDetailActivity extends BaseActivity2<GoodDetailPresenter> imple
     @OnClick(R.id.btn_ok)
     public void onViewClicked() {
         if (!tvTotalNum.getText().toString().equals("0")) {
-            startActivity(EnsureOrderActivity.class, "merchantCode", merchantCode);
+            if(CommonUtils.isLogined(this,true)){
+                startActivity(EnsureOrderActivity.class, "merchantCode", merchantCode);
+            }
         }
     }
 
@@ -320,6 +321,22 @@ public class GoodDetailActivity extends BaseActivity2<GoodDetailPresenter> imple
             msvComment.setViewState(MultiStateView.VIEW_STATE_CONTENT);
         }else{
             msvComment.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==1001){
+            if(data.getBooleanExtra("payback",false)){
+                List<LocalShoppingCartM> beans = ShoppingCartUtil.getLocalShoppingCartMs(merchantCode);
+                ShoppingCartUtil.deleteCart(this,merchantCode);
+                App.initDataBase(this);
+                ShoppingCartUtil.deleteCart(this,merchantCode);
+                App.liteOrm.save(beans);
+                startActivity(EnsureOrderActivity.class, "merchantCode", merchantCode);
+                EventBus.getDefault().post(new RefreshLoginEvent());
+            }
         }
     }
 

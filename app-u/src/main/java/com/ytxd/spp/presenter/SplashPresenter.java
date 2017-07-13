@@ -33,7 +33,7 @@ public class SplashPresenter extends BasePresenter<ISplashView> {
         boolean isFirst = SPUtil.getInstance().getBoolean("isFirst", true);
         if (isFirst) {
             SPUtil.getInstance().putBoolean("isFirst", false);
-            iView.startToLogin();
+            iView.startToMain();
         } else {
             String phone = SPUtil.getInstance().getString("phone");
             String pwd = SPUtil.getInstance().getString("pwd");

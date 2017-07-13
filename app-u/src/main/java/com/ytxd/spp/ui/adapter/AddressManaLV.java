@@ -68,7 +68,7 @@ public class AddressManaLV extends CommonListAdapter<AddressM> {
                 context.startActivity(intent);
             }
         });
-        CommonUtils.setText(viewHolder.tvAddress, item.getAddressDescribe());
+        CommonUtils.setText(viewHolder.tvAddress, item.getAddressTitle()+item.getAddressContent());
         CommonUtils.setText(viewHolder.tvPoepleName, item.getContacts());
         CommonUtils.setText(viewHolder.tvPoepleSex, item.getSex() == 1 ? "（先生）" : "（女士）");
         CommonUtils.setText(viewHolder.tvPoeplePhone, item.getPhone());

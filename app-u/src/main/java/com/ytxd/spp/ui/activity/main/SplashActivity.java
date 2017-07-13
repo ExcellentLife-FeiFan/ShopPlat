@@ -11,7 +11,6 @@ import com.ytxd.spp.R;
 import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
 import com.ytxd.spp.presenter.SplashPresenter;
-import com.ytxd.spp.ui.activity.login.LoginActivity;
 import com.ytxd.spp.util.PermissionsActivity;
 import com.ytxd.spp.util.PermissionsChecker;
 import com.ytxd.spp.view.ISplashView;
@@ -99,7 +98,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements ISp
 
     @Override
     public void startToLogin() {
-        startActivity(LoginActivity.class);
+        startActivity(MainActivity.class);
         AppManager.getInstance().killActivity(this);
     }
 

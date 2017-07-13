@@ -2,6 +2,7 @@ package com.ytxd.spp.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,10 +14,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amap.api.maps2d.AMapUtils;
+import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.services.core.LatLonPoint;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.G;
 import com.ytxd.spp.model.CouponM;
+import com.ytxd.spp.model.MerchantM;
+import com.ytxd.spp.ui.activity.login.LoginActivity;
 import com.ytxd.spp.ui.views.loadview.CustomDialog;
 
 import java.text.DecimalFormat;
@@ -40,12 +46,12 @@ public class CommonUtils {
     public static final String HAVE_PAY = "0002";
     private static CustomDialog dialog;
 
-    public static boolean isLogined(final Activity context) {
+/*    public static boolean isLogined(final Activity context) {
         if (null != null) {
             return true;
         } else {
 //            context.startActivity(new Intent(context, LoginActivity.class));
-     /*       DialogUtils.showDialog(context, "您还没有登录哦！", "", new MaterialDialog.SingleButtonCallback() {
+     *//*       DialogUtils.showDialog(context, "您还没有登录哦！", "", new MaterialDialog.SingleButtonCallback() {
                 @Override
                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                     if (which.name().equals(DialogAction.POSITIVE.name())) {
@@ -54,7 +60,30 @@ public class CommonUtils {
                     }
 
                 }
-            });*/
+            });*//*
+            return false;
+        }
+    }*/
+
+    public static boolean isLogined(Context context) {
+        if (null != user) {
+            return true;
+        } else {
+            Intent intent = new Intent(context, LoginActivity.class);
+            context.startActivity(intent);
+            return false;
+        }
+    }
+
+    public static boolean isLogined(Activity context, boolean isPayback) {
+        if (null != user) {
+            return true;
+        } else {
+            Intent intent = new Intent(context, LoginActivity.class);
+            if (isPayback) {
+                intent.putExtra("payback", "payback");
+            }
+            context.startActivityForResult(intent, 1001);
             return false;
         }
     }
@@ -347,4 +376,20 @@ public class CommonUtils {
         }
     }
 
+    public static boolean isInConfines(MerchantM merchantM, LatLonPoint latLng) {
+        try {
+            LatLng shop_l = new LatLng(Double.valueOf(merchantM.getLat()), Double.valueOf(merchantM.getLng()));
+            LatLng location_l = new LatLng(Double.valueOf(latLng.getLatitude()), Double.valueOf(latLng.getLongitude()));
+            float distance = AMapUtils.calculateLineDistance(shop_l, location_l);
+            float distruF = Float.valueOf(merchantM.getConfines());
+            merchantM.setDistance(distruF);
+            if (distruF >= distance) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+
+    }
 }

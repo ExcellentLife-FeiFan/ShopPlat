@@ -108,7 +108,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
             }
             CommonUtils.setText(tvOrderCode, orderM.getOrderCode());
             CommonUtils.setText(tvOrderTime, orderM.getCreateTime().replace("T", " "));
-            CommonUtils.setText(tvAddress, orderM.getAddressDescribe());
+            CommonUtils.setText(tvAddress, orderM.getAddressTitle()+orderM.getAddressContent());
             if (orderM.getOrderStateCode().equals(OrderM.WATING_PAY)) {
                 CommonUtils.setText(tvOrderState, "等待支付");
                 llPay.setVisibility(View.VISIBLE);
