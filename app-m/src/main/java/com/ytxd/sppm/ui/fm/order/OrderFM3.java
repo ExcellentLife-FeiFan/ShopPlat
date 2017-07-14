@@ -13,11 +13,14 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kennyc.view.MultiStateView;
 import com.ytxd.sppm.R;
 import com.ytxd.sppm.base.BaseFragment;
+import com.ytxd.sppm.event.AceOrderSuccessEvent;
 import com.ytxd.sppm.event.SelectStaffEvent;
+import com.ytxd.sppm.event.SetSenddingSuccessEvent;
 import com.ytxd.sppm.model.OrderM;
 import com.ytxd.sppm.presenter.OrderFMPresenter;
 import com.ytxd.sppm.ui.adapter.HomeOrderA;
 import com.ytxd.sppm.ui.views.SimpleDividerDecoration;
+import com.ytxd.sppm.util.CommonUtils;
 import com.ytxd.sppm.view.IOrderFMView;
 
 import java.util.List;
@@ -25,6 +28,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import de.greenrobot.event.EventBus;
 
 
 /**
@@ -70,7 +74,7 @@ public class OrderFM3 extends BaseFragment<OrderFMPresenter> implements BaseQuic
 //                startActivity(MerchantDetailActivity.class, "data", mAdapter.getItem(i));
             }
         });
-//        presenter.getOrderList(CommonUtils.REFRESH, page);
+        presenter.getOrderList(CommonUtils.REFRESH, page,OrderM.HAVE_ACE_WATING_SEND);
     }
 
     @Override
@@ -109,6 +113,12 @@ public class OrderFM3 extends BaseFragment<OrderFMPresenter> implements BaseQuic
     public void setSenddingSuccess(int position) {
         mAdapter.getItem(position).setOrderStateCode(OrderM.SENDING);
         mAdapter.notifyItemChanged(position);
+        EventBus.getDefault().post(new SetSenddingSuccessEvent(mAdapter.getItem(position)));
+    }
+    @Override
+    public void cancelSuccess(int position) {
+/*        mAdapter.getItem(position).setOrderStateCode(OrderM.CANCEL);
+        mAdapter.notifyItemChanged(position);*/
     }
 
     @Override
@@ -128,7 +138,7 @@ public class OrderFM3 extends BaseFragment<OrderFMPresenter> implements BaseQuic
     public void onEvent(SelectStaffEvent event) {
         OrderM order=mAdapter.getItem(event.position);
         order.setDeliveryStaffCode(event.deliveryStaffM.getDeliveryStaffCode());
-        order.setDeliveryStaff(event.deliveryStaffM);
+        order.setDeliveryStaffModel(event.deliveryStaffM);
         mAdapter.notifyItemChanged(event.position);
     }
 
@@ -143,15 +153,12 @@ public class OrderFM3 extends BaseFragment<OrderFMPresenter> implements BaseQuic
 
     @Override
     public void onRefresh() {
-        swipeLayout.setRefreshing(false);
-//        presenter.getOrderList(CommonUtils.REFRESH, 1);
-        showContent();
+        presenter.getOrderList(CommonUtils.REFRESH, 1,OrderM.HAVE_ACE_WATING_SEND);
     }
 
     @Override
     public void onLoadMoreRequested() {
-//        presenter.getOrderList(CommonUtils.LODEMORE, ++page);
-        showContent();
+        presenter.getOrderList(CommonUtils.LODEMORE, ++page,OrderM.HAVE_ACE_WATING_SEND);
     }
 
     @Override
@@ -164,6 +171,19 @@ public class OrderFM3 extends BaseFragment<OrderFMPresenter> implements BaseQuic
             msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
         } else {
             msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        }
+    }
+
+    public void onEvent(AceOrderSuccessEvent event) {
+        if (mAdapter.getData().add(event.orderM)) {
+            mAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+    public void onEvent(SetSenddingSuccessEvent event) {
+        if (mAdapter.getData().remove(event.orderM)) {
+            mAdapter.notifyDataSetChanged();
         }
     }
 }

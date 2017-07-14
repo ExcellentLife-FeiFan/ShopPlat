@@ -50,6 +50,7 @@ public class Apis {
      * @param PageIndex:页码
      * <p>
      * @param PageSize:一页多少条数据
+     * @param OrderStateCode
      */
     public static String GetCSOrderList = BASE_URL + "/API_CS/GetCSOrderList";
 
@@ -74,6 +75,17 @@ public class Apis {
      * @param DeliveryStaffCode:配送员编号
      */
     public static String UpdateOrderYPS = BASE_URL + "/API_CS/UpdateOrderYPS";
+
+
+    /**
+     * 取消订单
+     *
+     * @param OrderCode
+     * @param IsHFUserCoupon:是否恢复已使用优惠券(1/0)（有可能用户下单后直接取消订单，这样就要恢复等等。）
+     * @param UserCouponCode:用户优惠券编号(上一个参数为1的情况，就更新这个优惠券可以恢复使用)
+     * @param CancelInfo:删除原因(100个以内字符)
+     */
+    public static String CancelOrder = BASE_URL + "/API_User/DeleteOrder";
 
 
 }

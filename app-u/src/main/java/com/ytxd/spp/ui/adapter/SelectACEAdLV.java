@@ -37,7 +37,7 @@ public class SelectACEAdLV extends CommonListAdapter<AddressM> {
         }
         CommonUtils.setText(viewHolder.tvName,item.getContacts());
         CommonUtils.setText(viewHolder.tvPhone,item.getPhone());
-        CommonUtils.setText(viewHolder.tvAddress,item.getAddressDescribe());
+        CommonUtils.setText(viewHolder.tvAddress,item.getAddressTitle()+item.getAddressContent());
         return convertView;
     }
 

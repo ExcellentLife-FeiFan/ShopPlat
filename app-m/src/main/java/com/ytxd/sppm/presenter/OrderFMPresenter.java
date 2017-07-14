@@ -30,10 +30,11 @@ public class OrderFMPresenter extends BasePresenter<IOrderFMView> {
     public void release() {
     }
 
-    public void getOrderList(final int mode, int pageIndex) {
+    public void getOrderList(final int mode, int pageIndex,String orderStateCode) {
         OkGo.<ApiResult<List<OrderM>>>get(Apis.GetCSOrderList)//
                 .params("SupermarketCode", App.user.getSupermarketCode())
                 .params("PageIndex", pageIndex)
+                .params("OrderStateCode", orderStateCode)
                 .params("PageSize", "10")
                 .execute(new JsonCallback<ApiResult<List<OrderM>>>() {
                     @Override
@@ -84,6 +85,38 @@ public class OrderFMPresenter extends BasePresenter<IOrderFMView> {
     }
 
 
+    public void cancel(String orderCode,String userCouponCode,String reson, final int position) {
+        CommonUtils.showDialog(context);
+        boolean isH=!userCouponCode.equals("0");
+        OkGo.<ApiResult<Object>>get(Apis.CancelOrder)//
+                .params("OrderCode", orderCode)
+                .params("IsHFUserCoupon", isH?"1":"0")
+                .params("UserCouponCode", userCouponCode)
+                .params("CancelInfo", reson)
+                .execute(new JsonCallback<ApiResult<Object>>() {
+                    @Override
+                    public void onSuccess(Response<ApiResult<Object>> response) {
+                        CommonUtils.hideDialog();
+                        ApiResult<Object> result = response.body();
+                        if (result.isSuccess()) {
+                            iView.cancelSuccess(position);
+                        } else {
+                            ToastUtil.showToastShort(context, "订单取消失败:"+result.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<ApiResult<Object>> response) {
+                        CommonUtils.hideDialog();
+                        super.onError(response);
+                        ToastUtil.showToastShort(context, CommonUtils.getString(R.string.action_failure));
+                    }
+                });
+
+
+    }
+
+
     public void aceOrder(String orderCode, final int position) {
         CommonUtils.showDialog(context);
         OkGo.<ApiResult<Object>>get(Apis.UpdateOrderTaking)//
@@ -111,7 +144,7 @@ public class OrderFMPresenter extends BasePresenter<IOrderFMView> {
 
     }
 
-    public void setSendding(String orderCode, String deliveryStaffCode,final int position) {
+    public void setSendding(String orderCode, String deliveryStaffCode, final int position) {
         CommonUtils.showDialog(context);
         OkGo.<ApiResult<Object>>get(Apis.UpdateOrderYPS)//
                 .params("OrderCode", orderCode)

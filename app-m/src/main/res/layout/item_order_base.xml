@@ -292,7 +292,7 @@
                 app:eiv_colorLess="@color/colorPrimary"
                 app:eiv_colorMore="@color/colorPrimary"
                 app:eiv_padding="0dp"
-                app:eiv_roundedCorners="false"
+                app:eiv_roundedCorners="true"
                 app:eiv_switchColor="true" />
 
 

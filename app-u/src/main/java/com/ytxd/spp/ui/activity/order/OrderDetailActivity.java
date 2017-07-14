@@ -3,6 +3,7 @@ package com.ytxd.spp.ui.activity.order;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -28,7 +29,6 @@ import com.ytxd.spp.util.DialogUtils;
 import com.ytxd.spp.util.ImageLoadUtil;
 import com.ytxd.spp.view.IOrderDetailView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -94,7 +94,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         getBar().initActionBar("订单详情", this);
         orderM = (OrderM) getIntent().getSerializableExtra("data");
         position = getIntent().getIntExtra("position", -1);
-        mAdapter = new OrderSubGoodsLV2(new ArrayList<OrderGoodM>(), this);
+        mAdapter = new OrderSubGoodsLV2(orderM.getChildrenGoods(), this);
         lvSubGoods.setAdapter(mAdapter);
         CommonUtils.setEmptyViewForSLV(this, rlLv, lvSubGoods);
         if (null != orderM) {
@@ -127,7 +127,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
                 btnOneMore.setVisibility(View.VISIBLE);
             }
         }
-        presenter.getGoodsInfo(orderM.getOrderCode());
+//        presenter.getGoodsInfo(orderM.getOrderCode());
     }
 
     @Override
@@ -157,14 +157,28 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
                 break;
             case R.id.btn_cancel:
                 if (null != orderM) {
-                    DialogUtils.showDialog(activity, "提示", "确定取消该订单吗？", new MaterialDialog.SingleButtonCallback() {
+                    DialogUtils.showInputDialog(this, "提示", "你确定取消订单吗，并输入理由。", InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE, R.string.hint_cancel_order_reason, 1,100,new MaterialDialog.InputCallback() {
+                        @Override
+                        public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                            if (AbStrUtil.isEmpty(input.toString())) {
+                                dialog.setContent("理由不能为空");
+                                dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
+                            } else {
+                                dialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
+                                presenter.cancel(orderM.getOrderCode(), orderM.getUserCouponCode(),input.toString());
+                            }
+                        }
+
+                    });
+
+                 /*   DialogUtils.showDialog(activity, "提示", "确定取消该订单吗？", new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             if (which.name().equals(DialogAction.POSITIVE.name())) {
-                                presenter.cancel(orderM.getOrderCode(), AbStrUtil.isEmpty(orderM.getUserCouponCode()) ? "0" : orderM.getUserCouponCode());
+                                presenter.cancel(orderM.getOrderCode(), orderM.getUserCouponCode(),input.toString());
                             }
                         }
-                    });
+                    });*/
                 }
                 break;
             case R.id.btn_one_more:
@@ -185,10 +199,10 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
 
     @Override
     public void lodeGoodsSuccess(List<OrderGoodM> items) {
-        if (null != items) {
+       /* if (null != items) {
             mAdapter.addItems(items, true);
         }
-        msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+        msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);*/
     }
 
     @Override

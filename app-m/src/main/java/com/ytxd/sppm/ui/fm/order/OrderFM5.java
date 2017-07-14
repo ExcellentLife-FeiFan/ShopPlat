@@ -17,6 +17,7 @@ import com.ytxd.sppm.model.OrderM;
 import com.ytxd.sppm.presenter.OrderFMPresenter;
 import com.ytxd.sppm.ui.adapter.HomeOrderA;
 import com.ytxd.sppm.ui.views.SimpleDividerDecoration;
+import com.ytxd.sppm.util.CommonUtils;
 import com.ytxd.sppm.view.IOrderFMView;
 
 import java.util.List;
@@ -69,7 +70,7 @@ public class OrderFM5 extends BaseFragment<OrderFMPresenter> implements BaseQuic
 //                startActivity(MerchantDetailActivity.class, "data", mAdapter.getItem(i));
             }
         });
-//        presenter.getOrderList(CommonUtils.REFRESH, page);
+        presenter.getOrderList(CommonUtils.REFRESH, page,OrderM.SUCCESS);
     }
 
     @Override
@@ -109,6 +110,10 @@ public class OrderFM5 extends BaseFragment<OrderFMPresenter> implements BaseQuic
     public void setSenddingSuccess(int position) {
 
     }
+    @Override
+    public void cancelSuccess(int position) {
+
+    }
 
     @Override
     public void refreshFailed() {
@@ -134,15 +139,12 @@ public class OrderFM5 extends BaseFragment<OrderFMPresenter> implements BaseQuic
 
     @Override
     public void onRefresh() {
-        swipeLayout.setRefreshing(false);
-//        presenter.getOrderList(CommonUtils.REFRESH, 1);
-        showContent();
+        presenter.getOrderList(CommonUtils.REFRESH, 1,OrderM.SUCCESS);
     }
 
     @Override
     public void onLoadMoreRequested() {
-//        presenter.getOrderList(CommonUtils.LODEMORE, ++page);
-        showContent();
+        presenter.getOrderList(CommonUtils.LODEMORE, ++page,OrderM.SUCCESS);
     }
 
 

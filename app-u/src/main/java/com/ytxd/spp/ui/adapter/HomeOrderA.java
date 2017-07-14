@@ -32,8 +32,8 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, MerchantDetailActivity.class);
-                intent.putExtra("data",item.getSuperMarketModel());
-                intent.putExtra("orderCode",item.getOrderCode());
+                intent.putExtra("data", item.getSuperMarketModel());
+                intent.putExtra("orderCode", item.getOrderCode());
                 mContext.startActivity(intent);
             }
         });
@@ -41,7 +41,7 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, AddCommentActivity.class);
-                intent.putExtra("data",item);
+                intent.putExtra("data", item);
                 intent.putExtra("position", getData().indexOf(item));
                 mContext.startActivity(intent);
             }
@@ -59,6 +59,14 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
         CommonUtils.setText(helper.tvMerName, item.getSuperMarketModel().getName());
         CommonUtils.setText(helper.tvTime, item.getCreateTime().replace("T", " "));
         CommonUtils.setText(helper.tvTotalPrice, "￥" + item.getSJPrice());
+        if (item.getChildrenGoods().size() > 0) {
+            if (item.getChildrenGoods().size() > 1) {
+                CommonUtils.setText(helper.tvGoodsDesr, item.getChildrenGoods().get(0).getGoodsTitle() + "等" + item.getChildrenGoods().size() + "件商品");
+            } else {
+                CommonUtils.setText(helper.tvGoodsDesr, item.getChildrenGoods().get(0).getGoodsTitle());
+            }
+
+        }
         helper.tvPay.setVisibility(View.GONE);
         helper.tvAgain.setVisibility(View.GONE);
         helper.tvEvaluate.setVisibility(View.GONE);
@@ -81,7 +89,7 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
                 break;
             case OrderM.SUCCESS:
                 CommonUtils.setText(helper.tvState, "交易成功");
-                if(!CommonUtils.getBoolean(item.getIsEvaluate())){
+                if (!CommonUtils.getBoolean(item.getIsEvaluate())) {
                     helper.tvEvaluate.setVisibility(View.VISIBLE);
                 }
                 helper.tvAgain.setVisibility(View.VISIBLE);
@@ -93,7 +101,6 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
         }
 
     }
-
 
 
 }

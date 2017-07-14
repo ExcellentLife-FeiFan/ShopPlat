@@ -33,6 +33,7 @@ public class OrderActivityPresenter extends BasePresenter<IOrderActivityView> {
         OkGo.<ApiResult<List<OrderM>>>get(Apis.GetUserOrderList)//
                 .params("UserCode", App.user.getUserCode())
                 .params("PageIndex", pageIndex)
+                .params("OrderStateCode", "0")
                 .params("PageSize", "10")
                 .execute(new JsonCallback<ApiResult<List<OrderM>>>() {
                     @Override

@@ -13,7 +13,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kennyc.view.MultiStateView;
 import com.ytxd.sppm.R;
 import com.ytxd.sppm.base.BaseFragment;
+import com.ytxd.sppm.event.AceOrderSuccessEvent;
+import com.ytxd.sppm.event.CancelSuccessEvent;
 import com.ytxd.sppm.event.SelectStaffEvent;
+import com.ytxd.sppm.event.SetSenddingSuccessEvent;
 import com.ytxd.sppm.model.OrderM;
 import com.ytxd.sppm.presenter.OrderFMPresenter;
 import com.ytxd.sppm.ui.adapter.HomeOrderA;
@@ -21,11 +24,13 @@ import com.ytxd.sppm.ui.views.SimpleDividerDecoration;
 import com.ytxd.sppm.util.CommonUtils;
 import com.ytxd.sppm.view.IOrderFMView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import de.greenrobot.event.EventBus;
 
 
 /**
@@ -71,7 +76,7 @@ public class OrderFM1 extends BaseFragment<OrderFMPresenter> implements BaseQuic
 //                startActivity(MerchantDetailActivity.class, "data", mAdapter.getItem(i));
             }
         });
-        presenter.getOrderList(CommonUtils.REFRESH, page);
+        presenter.getOrderList(CommonUtils.REFRESH, page,"0");
     }
 
     @Override
@@ -97,7 +102,7 @@ public class OrderFM1 extends BaseFragment<OrderFMPresenter> implements BaseQuic
     @Override
     public void refreshSuccess(List<OrderM> items) {
         swipeLayout.setRefreshing(false);
-        mAdapter.setNewData(items);
+        mAdapter.setNewData(filters(items));
         page = 1;
         showContent();
     }
@@ -106,12 +111,21 @@ public class OrderFM1 extends BaseFragment<OrderFMPresenter> implements BaseQuic
     public void aceOrderSuccess(int position) {
         mAdapter.getItem(position).setOrderStateCode(OrderM.HAVE_ACE_WATING_SEND);
         mAdapter.notifyItemChanged(position);
+        EventBus.getDefault().post(new AceOrderSuccessEvent(mAdapter.getItem(position)));
     }
 
     @Override
     public void setSenddingSuccess(int position) {
         mAdapter.getItem(position).setOrderStateCode(OrderM.SENDING);
         mAdapter.notifyItemChanged(position);
+        EventBus.getDefault().post(new SetSenddingSuccessEvent(mAdapter.getItem(position)));
+    }
+
+    @Override
+    public void cancelSuccess(int position) {
+        mAdapter.getItem(position).setOrderStateCode(OrderM.CANCEL);
+        mAdapter.notifyItemChanged(position);
+        EventBus.getDefault().post(new CancelSuccessEvent(mAdapter.getItem(position)));
     }
 
     @Override
@@ -123,9 +137,19 @@ public class OrderFM1 extends BaseFragment<OrderFMPresenter> implements BaseQuic
 
     @Override
     public void lodeMoreSuccess(List<OrderM> items) {
-        mAdapter.addData(items);
+        mAdapter.addData(filters(items));
         mAdapter.loadMoreComplete();
         showContent();
+    }
+
+    private List<OrderM> filters(List<OrderM> items) {
+        List<OrderM> datas = new ArrayList<>();
+        for (int i = 0; i < items.size(); i++) {
+            if (!items.get(i).getOrderStateCode().equals(OrderM.WATING_PAY)) {
+                datas.add(items.get(i));
+            }
+        }
+        return datas;
     }
 
 
@@ -140,18 +164,18 @@ public class OrderFM1 extends BaseFragment<OrderFMPresenter> implements BaseQuic
     public void onEvent(SelectStaffEvent event) {
         OrderM order=mAdapter.getItem(event.position);
         order.setDeliveryStaffCode(event.deliveryStaffM.getDeliveryStaffCode());
-        order.setDeliveryStaff(event.deliveryStaffM);
+        order.setDeliveryStaffModel(event.deliveryStaffM);
         mAdapter.notifyItemChanged(event.position);
     }
 
     @Override
     public void onRefresh() {
-        presenter.getOrderList(CommonUtils.REFRESH, 1);
+        presenter.getOrderList(CommonUtils.REFRESH, 1,"0");
     }
 
     @Override
     public void onLoadMoreRequested() {
-        presenter.getOrderList(CommonUtils.LODEMORE, ++page);
+        presenter.getOrderList(CommonUtils.LODEMORE, ++page,"0");
     }
 
 
@@ -166,5 +190,19 @@ public class OrderFM1 extends BaseFragment<OrderFMPresenter> implements BaseQuic
         } else {
             msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
         }
+    }
+
+
+    public void onEvent(AceOrderSuccessEvent event) {
+        int index=mAdapter.getData().indexOf(event.orderM);
+        mAdapter.notifyItemChanged(index,event.orderM);
+    }
+    public void onEvent(CancelSuccessEvent event) {
+        int index=mAdapter.getData().indexOf(event.orderM);
+        mAdapter.notifyItemChanged(index,event.orderM);
+    }
+    public void onEvent(SetSenddingSuccessEvent event) {
+        int index=mAdapter.getData().indexOf(event.orderM);
+        mAdapter.notifyItemChanged(index,event.orderM);
     }
 }

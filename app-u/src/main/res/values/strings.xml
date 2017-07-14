@@ -29,4 +29,5 @@
     <string name="loc_doing">正在定位....</string>
 
     <string name="none_goods">未选购商品</string>
+    <string name="hint_cancel_order_reason">请输入理由(100个以内字符)</string>
 </resources>

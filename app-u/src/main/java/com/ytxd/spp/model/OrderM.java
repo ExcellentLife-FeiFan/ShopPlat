@@ -39,10 +39,14 @@ public class OrderM implements Serializable {
     private String CouponPrice;
     private String SJPrice;
     private String PSPrice;
+    private String CancelInfo;
     private int IsEvaluate;
     private String CreateTime;
+    private DeliveryStaffM DeliveryStaffModel;
 
     private List<ShoppingCartM.Goods> goods;
+
+    private List<OrderGoodM> ChildrenGoods;
 
     public String getOrderCode() {
         return OrderCode;
@@ -285,5 +289,29 @@ public class OrderM implements Serializable {
 
     public void setGoods(List<ShoppingCartM.Goods> goods) {
         this.goods = goods;
+    }
+
+    public String getCancelInfo() {
+        return CancelInfo;
+    }
+
+    public void setCancelInfo(String cancelInfo) {
+        CancelInfo = cancelInfo;
+    }
+
+    public DeliveryStaffM getDeliveryStaffModel() {
+        return DeliveryStaffModel;
+    }
+
+    public void setDeliveryStaffModel(DeliveryStaffM deliveryStaffModel) {
+        DeliveryStaffModel = deliveryStaffModel;
+    }
+
+    public List<OrderGoodM> getChildrenGoods() {
+        return ChildrenGoods;
+    }
+
+    public void setChildrenGoods(List<OrderGoodM> childrenGoods) {
+        ChildrenGoods = childrenGoods;
     }
 }

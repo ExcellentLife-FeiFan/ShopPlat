@@ -54,13 +54,18 @@ public class OrderDetailPresenter extends BasePresenter<IOrderDetailView> {
     }
 
 
-    public void cancel(String orderCode,String userCouponCode) {
+    public void cancel(String orderCode,String userCouponCode,String reson) {
+        CommonUtils.showDialog(context);
+        boolean isH=!userCouponCode.equals("0");
         OkGo.<ApiResult<Object>>get(Apis.CancelOrder)//
                 .params("OrderCode", orderCode)
+                .params("IsHFUserCoupon", isH?"1":"0")
                 .params("UserCouponCode", userCouponCode)
+                .params("CancelInfo", reson)
                 .execute(new JsonCallback<ApiResult<Object>>() {
                     @Override
                     public void onSuccess(Response<ApiResult<Object>> response) {
+                        CommonUtils.hideDialog();
                         ApiResult<Object> result = response.body();
                         if (result.isSuccess()) {
                             iView.cancelSuccess();
@@ -71,6 +76,7 @@ public class OrderDetailPresenter extends BasePresenter<IOrderDetailView> {
 
                     @Override
                     public void onError(Response<ApiResult<Object>> response) {
+                        CommonUtils.hideDialog();
                         super.onError(response);
                         ToastUtil.showToastShort(context, CommonUtils.getString(R.string.action_failure));
                     }
@@ -81,11 +87,13 @@ public class OrderDetailPresenter extends BasePresenter<IOrderDetailView> {
 
 
     public void ensure(String orderCode) {
+        CommonUtils.showDialog(context);
         OkGo.<ApiResult<Object>>get(Apis.DetermineSH)//
                 .params("OrderCode", orderCode)
                 .execute(new JsonCallback<ApiResult<Object>>() {
                     @Override
                     public void onSuccess(Response<ApiResult<Object>> response) {
+                        CommonUtils.hideDialog();
                         ApiResult<Object> result = response.body();
                         if (result.isSuccess()) {
                             iView.ensureSuccess();
@@ -96,6 +104,7 @@ public class OrderDetailPresenter extends BasePresenter<IOrderDetailView> {
 
                     @Override
                     public void onError(Response<ApiResult<Object>> response) {
+                        CommonUtils.hideDialog();
                         super.onError(response);
                         ToastUtil.showToastShort(context, CommonUtils.getString(R.string.action_failure));
                     }

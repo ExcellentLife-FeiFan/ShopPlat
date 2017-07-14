@@ -45,7 +45,7 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
     public void onStart(Request<T, ? extends Request> request) {
         super.onStart(request);
         if (null != App.user) {
-            request.params("UserCode", App.user.getSupermarketCode());//
+//            request.params("UserCode", App.user.getSupermarketCode());//
         }
     }
 

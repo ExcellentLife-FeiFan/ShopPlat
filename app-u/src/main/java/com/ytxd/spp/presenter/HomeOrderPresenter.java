@@ -32,6 +32,7 @@ public class HomeOrderPresenter extends BasePresenter<IHomeOrderView> {
         OkGo.<ApiResult<List<OrderM>>>get(Apis.GetUserOrderList)//
                 .params("UserCode", App.user.getUserCode())
                 .params("PageIndex", "1")
+                .params("OrderStateCode", "0")
                 .params("PageSize", "10")
                 .execute(new JsonCallback<ApiResult<List<OrderM>>>() {
                     @Override

@@ -1,6 +1,7 @@
 package com.ytxd.sppm.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by XY on 2017/7/12.
@@ -70,12 +71,15 @@ public class OrderM implements Serializable {
     private String UserCouponCode;
     private String CouponPrice;
     private String SJPrice;
+    private String CancelInfo;
     private int IsDel;
     private String CreateTime;
     private int IsEvaluate;
     private String PSPrice;
 
-    private DeliveryStaffM deliveryStaff;
+    private DeliveryStaffM DeliveryStaffModel;
+
+    private List<OrderGoodM> ChildrenGoods;
 
     public String getOrderCode() {
         return OrderCode;
@@ -285,6 +289,14 @@ public class OrderM implements Serializable {
         this.SJPrice = SJPrice;
     }
 
+    public String getCancelInfo() {
+        return CancelInfo;
+    }
+
+    public void setCancelInfo(String cancelInfo) {
+        CancelInfo = cancelInfo;
+    }
+
     public int getIsDel() {
         return IsDel;
     }
@@ -317,11 +329,25 @@ public class OrderM implements Serializable {
         this.PSPrice = PSPrice;
     }
 
-    public DeliveryStaffM getDeliveryStaff() {
-        return deliveryStaff;
+    public DeliveryStaffM getDeliveryStaffModel() {
+        return DeliveryStaffModel;
     }
 
-    public void setDeliveryStaff(DeliveryStaffM deliveryStaff) {
-        this.deliveryStaff = deliveryStaff;
+    public void setDeliveryStaffModel(DeliveryStaffM deliveryStaffModel) {
+        DeliveryStaffModel = deliveryStaffModel;
+    }
+
+    public List<OrderGoodM> getChildrenGoods() {
+        return ChildrenGoods;
+    }
+
+    public void setChildrenGoods(List<OrderGoodM> childrenGoods) {
+        ChildrenGoods = childrenGoods;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        OrderM n= (OrderM) obj;
+        return this.getOrderCode().equals(n.getOrderCode());
     }
 }

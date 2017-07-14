@@ -110,6 +110,7 @@ public class GoodM implements Serializable {
         this.SaleNumber = SaleNumber;
     }
 
+
     public int getIsSpec() {
         return IsSpec;
     }

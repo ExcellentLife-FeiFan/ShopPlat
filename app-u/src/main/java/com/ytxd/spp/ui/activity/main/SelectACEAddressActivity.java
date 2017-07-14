@@ -196,14 +196,18 @@ public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresente
         geocoderSearch.setOnGeocodeSearchListener(new GeocodeSearch.OnGeocodeSearchListener() {
             @Override
             public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
-                regeocodeResult.getRegeocodeAddress().getBusinessAreas();
-                HomeAddressM addressM = new HomeAddressM();
-                addressM.setCity(regeocodeResult.getRegeocodeAddress().getCity());
-                addressM.setTitle(item.getAddressTitle());
-                addressM.setAddress(item.getAddressDescribe());
-                addressM.setLatLng(point);
-                EventBus.getDefault().post(new HomeAddressChangeEvent(addressM));
-                AppManager.getInstance().killActivity(activity);
+                try {
+                    regeocodeResult.getRegeocodeAddress().getBusinessAreas();
+                    HomeAddressM addressM = new HomeAddressM();
+                    addressM.setCity(regeocodeResult.getRegeocodeAddress().getCity());
+                    addressM.setTitle(item.getAddressTitle());
+                    addressM.setAddress(item.getAddressDescribe());
+                    addressM.setLatLng(point);
+                    EventBus.getDefault().post(new HomeAddressChangeEvent(addressM));
+                    AppManager.getInstance().killActivity(activity);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

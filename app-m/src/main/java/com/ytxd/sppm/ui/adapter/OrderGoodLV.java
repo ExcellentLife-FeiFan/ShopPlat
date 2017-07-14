@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ytxd.sppm.R;
+import com.ytxd.sppm.model.OrderGoodM;
 
 import java.util.List;
 
@@ -17,9 +18,9 @@ import butterknife.ButterKnife;
  * Created by apple on 2017/4/18.
  */
 
-public class OrderGoodLV extends CommonListAdapter<String> {
+public class OrderGoodLV extends CommonListAdapter<OrderGoodM> {
 
-    public OrderGoodLV(List<String> items, Context activity) {
+    public OrderGoodLV(List<OrderGoodM> items, Context activity) {
         super(items, activity);
     }
 
@@ -35,7 +36,9 @@ public class OrderGoodLV extends CommonListAdapter<String> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-//        viewHolder.tvName.setText(item.getGoodsTitle());
+        viewHolder.tvName.setText(item.getGoodsTitle());
+        viewHolder.tvNum.setText("x"+item.getBuyNumber());
+        viewHolder.tvPrice.setText(item.getXPrice());
         return convertView;
     }
 

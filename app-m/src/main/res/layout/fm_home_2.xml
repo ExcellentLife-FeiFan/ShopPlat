@@ -1,60 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/myScrollingContent"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
+    <com.qiushui.blurredview.BlurredView
+        android:id="@+id/blurredview"
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:layout_height="match_parent" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/transparent"
+        android:layout_height="@dimen/actionbar_height">
 
         <RelativeLayout
-            android:id="@+id/rl_title"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/actionbar_height"
-            android:background="@color/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways|snap">
+            android:id="@+id/rl_v_right"
+            android:layout_width="@dimen/dp40"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/selector_bg_view_click"
+            >
 
-            <TextView
-                android:id="@+id/txt_title"
+            <ImageView
+                android:id="@+id/iv_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_centerVertical="true"
-                android:text="我的"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_actionbar_title" />
-
-            <RelativeLayout
-                android:id="@+id/rl_v_right"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/selector_bg_viewgroup_click3"
-                android:paddingLeft="@dimen/padding_left"
-                android:paddingRight="@dimen/padding_left">
-
-                <ImageView
-                    android:id="@+id/iv_right"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_mine_settings" />
-
-            </RelativeLayout>
+                android:src="@drawable/ic_mine_settings"
+                android:layout_centerInParent="true" />
 
         </RelativeLayout>
 
-    </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    </RelativeLayout>
 
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
-    </android.support.v4.widget.NestedScrollView>
-</android.support.design.widget.CoordinatorLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ"
+            app:border_width="@dimen/dp2"
+            app:border_color="@color/white"
+            android:layout_width="@dimen/dp100"
+            app:border_overlay="true"
+            android:layout_height="@dimen/dp100"
+            android:src="@drawable/ic_no_people" />
+
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_ui_margin"
+            android:text="@string/null_s"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp20" />
+
+
+        <TextView
+            android:id="@+id/tv_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_ui_margin_medium"
+            android:gravity="center_vertical"
+            android:text="正在营业"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_common_btn" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

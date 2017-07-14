@@ -131,7 +131,7 @@ public class AddOrEditAddressActivity extends BaseActivity<ADEditOrAddPresenter>
                         addressM.setPhoneCheck(true);
                         if (null != poiItem) {
                             addressM.setAddressTitle(poiItem.getTitle());
-                            addressM.setAddressDescribe(poiItem.getCityName() + poiItem.getAdName() + poiItem.getSnippet());
+                            addressM.setAddressDescribe(poiItem.getCityName() + "-" + poiItem.getAdName() + "-" + poiItem.getSnippet());
                             addressM.setLat(poiItem.getLatLonPoint().getLatitude() + "");
                             addressM.setLng(poiItem.getLatLonPoint().getLongitude() + "");
                         }
@@ -163,7 +163,7 @@ public class AddOrEditAddressActivity extends BaseActivity<ADEditOrAddPresenter>
                         addressM.setPhone(phone);
                         addressM.setPhoneCheck(true);
                         addressM.setAddressTitle(poiItem.getTitle());
-                        addressM.setAddressDescribe(poiItem.getCityName() + poiItem.getAdName() + poiItem.getSnippet());
+                        addressM.setAddressDescribe(poiItem.getCityName() + "-" + poiItem.getAdName() + "-" + poiItem.getSnippet());
                         addressM.setAddressContent(adDetail);
                         addressM.setLat(poiItem.getLatLonPoint().getLatitude() + "");
                         addressM.setLng(poiItem.getLatLonPoint().getLongitude() + "");
