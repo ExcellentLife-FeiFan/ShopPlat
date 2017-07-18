@@ -117,8 +117,16 @@ public class OrderFM3 extends BaseFragment<OrderFMPresenter> implements BaseQuic
     }
     @Override
     public void cancelSuccess(int position) {
-/*        mAdapter.getItem(position).setOrderStateCode(OrderM.CANCEL);
-        mAdapter.notifyItemChanged(position);*/
+    }
+
+    @Override
+    public void ensureSuccess(int position) {
+
+    }
+
+    @Override
+    public void refundSuccess(int position) {
+
     }
 
     @Override
@@ -175,9 +183,8 @@ public class OrderFM3 extends BaseFragment<OrderFMPresenter> implements BaseQuic
     }
 
     public void onEvent(AceOrderSuccessEvent event) {
-        if (mAdapter.getData().add(event.orderM)) {
-            mAdapter.notifyDataSetChanged();
-        }
+        mAdapter.getData().add(0, event.orderM);
+        mAdapter.notifyDataSetChanged();
 
     }
 
@@ -185,5 +192,6 @@ public class OrderFM3 extends BaseFragment<OrderFMPresenter> implements BaseQuic
         if (mAdapter.getData().remove(event.orderM)) {
             mAdapter.notifyDataSetChanged();
         }
+        showContent();
     }
 }

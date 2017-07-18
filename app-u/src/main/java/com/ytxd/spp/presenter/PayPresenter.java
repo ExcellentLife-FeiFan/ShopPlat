@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
+import com.ytxd.spp.model.OrderM;
 import com.ytxd.spp.net.ApiResult;
 import com.ytxd.spp.net.Apis;
 import com.ytxd.spp.net.JsonCallback;
@@ -25,10 +26,12 @@ public class PayPresenter extends BasePresenter<IPayView> {
     }
 
 
-    public void payUpload(final String orderC) {
+    public void payUpload(OrderM orderM) {
         iView.showDialogs();
         OkGo.<ApiResult<Object>>get(Apis.UpdateOrderPay)//
-                .params("OrderCode", orderC)
+                .params("OrderCode", orderM.getOrderCode())
+                .params("AndroidOrIos", orderM.getSuperMarketModel().getAndroidOrIos())
+                .params("TSAlias", orderM.getSuperMarketModel().getTSAlias())
                 .execute(new JsonCallback<ApiResult<Object>>() {
                     @Override
                     public void onSuccess(Response<ApiResult<Object>> response) {

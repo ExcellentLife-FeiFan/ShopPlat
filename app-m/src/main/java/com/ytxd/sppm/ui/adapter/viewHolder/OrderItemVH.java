@@ -33,8 +33,11 @@ public class OrderItemVH extends BaseViewHolder {
     public TextView tvSelectStaff;
     public TextView tvAceOrder;
     public TextView tvSendNow;
-    public LinearLayout llOrderBasic,llStaff;
-
+    public TextView tvCancelReason;
+    public LinearLayout llOrderBasic,llStaff,llCancel;
+    public TextView tvEnsure;
+    public TextView tvRefund;
+    public TextView tvPrint;
 
     public OrderItemVH(View rootView) {
         super(rootView);
@@ -58,6 +61,11 @@ public class OrderItemVH extends BaseViewHolder {
         this.tvState= (TextView) rootView.findViewById(R.id.tv_state);
         this.tvSendNow= (TextView) rootView.findViewById(R.id.tv_send_now);
         this.llStaff = (LinearLayout) rootView.findViewById(R.id.ll_staff);
+        this.tvEnsure= (TextView) rootView.findViewById(R.id.tv_ensure);
+        this.tvRefund= (TextView) rootView.findViewById(R.id.tv_refund);
+        this.tvCancelReason= (TextView) rootView.findViewById(R.id.txt_cancel_reason);
+        this.llCancel= (LinearLayout) rootView.findViewById(R.id.ll_cancel);
+        this.tvPrint= (TextView) rootView.findViewById(R.id.tv_print);
     }
 
 }

@@ -208,7 +208,7 @@ public class MerchantCartListDialog extends Dialog {
             case R.id.btn_ok:
                 if(CommonUtils.isLogined((Activity) context,true)){
                     Intent intent = new Intent(getContext(), EnsureOrderActivity.class);
-                    intent.putExtra("merchantCode", merchantCode);
+                    intent.putExtra("merchant", merchantM);
                     getContext().startActivity(intent);
                 }
                 break;

@@ -65,6 +65,8 @@ public class Apis {
      * 更新订单已接单(等待配送)
      *
      * @param OrderCode:订单编号
+     * @param AndroidOrIos:超市是安卓还是苹果
+     * @param TSAlias:超市alias(用于给超市推送信息)
      */
     public static String UpdateOrderTaking = BASE_URL + "/API_CS/UpdateOrderTaking";
 
@@ -73,6 +75,8 @@ public class Apis {
      *
      * @param OrderCode:订单编号
      * @param DeliveryStaffCode:配送员编号
+     * @param AndroidOrIos:超市是安卓还是苹果
+     * @param TSAlias:超市alias(用于给超市推送信息)
      */
     public static String UpdateOrderYPS = BASE_URL + "/API_CS/UpdateOrderYPS";
 
@@ -86,6 +90,36 @@ public class Apis {
      * @param CancelInfo:删除原因(100个以内字符)
      */
     public static String CancelOrder = BASE_URL + "/API_User/DeleteOrder";
+
+
+
+    /**
+     * 更新推送别名
+     *
+     * @param SupermarketCode:用户编号
+     * @param AndroidOrIos:安卓=1，苹果=2
+     * @param TSAlias:alias
+     */
+    public static String UpdateCSAlias = BASE_URL + "/API_CS/UpdateCSAlias";
+
+
+
+    /**
+     * 更新订单已退款
+     *
+     * @param OrderCode:订单编号
+     */
+    public static String UpdateOrderYTK = BASE_URL + "/API_CS/UpdateOrderYTK";
+
+
+    /**
+     * 确认收货
+     *
+     * @param OrderCode:订单编号
+     * @param AndroidOrIos:安卓=1，苹果=2
+     * @param TSAlias:alias
+     */
+    public static String CSDetermineSH = BASE_URL + "/API_CS/CSDetermineSH";
 
 
 }

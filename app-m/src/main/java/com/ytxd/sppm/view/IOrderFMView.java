@@ -24,4 +24,8 @@ public interface IOrderFMView extends IBaseView {
     void setSenddingSuccess(int position);
 
     void cancelSuccess(int position);
+
+    void ensureSuccess(int position);
+
+    void refundSuccess(int position);
 }

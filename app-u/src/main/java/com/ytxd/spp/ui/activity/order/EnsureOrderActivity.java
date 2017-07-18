@@ -119,14 +119,15 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
         ButterKnife.bind(this);
         presenter.getADList();
         getBar().initActionBar("确认订单", this);
-        merchantCode = getIntent().getStringExtra("merchantCode");
+        merchant = (MerchantM) getIntent().getSerializableExtra("merchant");
+        merchantCode = merchant.getSupermarketCode();
         mAdapter = new OrderSubGoodsLV(new ArrayList<ShoppingCartM.Goods>(), this);
         lvSubGoods.setAdapter(mAdapter);
         if (!AbStrUtil.isEmpty(merchantCode)) {
             List<LocalShoppingCartM> beans = ShoppingCartUtil.getLocalShoppingCartMs(merchantCode);
             if (beans.size() > 0) {
                 shoppingCartM = beans.get(0).getShoppingCartM();
-                merchant = shoppingCartM.getMerchantM();
+//                merchant = shoppingCartM.getMerchantM();
                 for (int i = 0; i < shoppingCartM.getGoods().size(); i++) {
                     if (i == shoppingCartM.getGoods().size() - 1) {
                         goodsInfo = goodsInfo + shoppingCartM.getGoods().get(i).getGoodM().getGoodsCode() + "[" + shoppingCartM.getGoods().get(i).getCount();
@@ -248,10 +249,7 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
                     orderM.setSJPrice(CommonUtils.getFloatString2(sp) + "");
                     orderM.setYPrice(CommonUtils.getFloatString2(yp) + "");
                     orderM.setSupermarketCode(merchantCode);
-                    MerchantM merchantM = new MerchantM();
-                    merchantM.setSupermarketCode(shoppingCartM.getMerchantM().getSupermarketCode());
-                    merchantM.setName(shoppingCartM.getMerchantM().getName());
-                    orderM.setSuperMarketModel(merchantM);
+                    orderM.setSuperMarketModel(merchant);
                     orderM.setSDTime(AbDateUtil.getStringByFormat(new Date(), AbDateUtil.dateFormatYMDHMS));
                     orderM.setPSPrice(merchant.getPSPrice());
                     presenter.ensureOrder(orderM);

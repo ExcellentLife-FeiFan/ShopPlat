@@ -243,7 +243,7 @@
                                 android:ellipsize="end"
                                 android:lineSpacingExtra="@dimen/default_ui_margin_small"
                                 android:maxLines="2"
-                                android:text="骑手配送"
+                                android:text="骑手配送(无)"
                                 android:textColor="@color/black_overlay"
                                 android:textSize="@dimen/text_size_common" />
 

@@ -598,7 +598,6 @@
                     </LinearLayout>
                 </LinearLayout>
 
-
                 <android.support.v4.widget.Space
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/common_viewgroup_height_big"

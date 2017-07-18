@@ -13,6 +13,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kennyc.view.MultiStateView;
 import com.ytxd.sppm.R;
 import com.ytxd.sppm.base.BaseFragment;
+import com.ytxd.sppm.event.EnsureSuccessEvent;
 import com.ytxd.sppm.model.OrderM;
 import com.ytxd.sppm.presenter.OrderFMPresenter;
 import com.ytxd.sppm.ui.adapter.HomeOrderA;
@@ -116,6 +117,16 @@ public class OrderFM5 extends BaseFragment<OrderFMPresenter> implements BaseQuic
     }
 
     @Override
+    public void ensureSuccess(int position) {
+
+    }
+
+    @Override
+    public void refundSuccess(int position) {
+
+    }
+
+    @Override
     public void refreshFailed() {
         swipeLayout.setRefreshing(false);
         showContent();
@@ -159,5 +170,10 @@ public class OrderFM5 extends BaseFragment<OrderFMPresenter> implements BaseQuic
         } else {
             msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
         }
+    }
+
+    public void onEvent(EnsureSuccessEvent event) {
+        mAdapter.getData().add(0, event.orderM);
+        mAdapter.notifyDataSetChanged();
     }
 }

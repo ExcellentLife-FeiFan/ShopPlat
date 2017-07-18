@@ -26,11 +26,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="middle"
-                android:maxWidth="150dp"
+                android:maxWidth="130dp"
                 android:singleLine="true"
                 android:text="@string/null_s"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_little_small"
+                android:textSize="@dimen/text_size_small"
                 android:textStyle="bold" />
 
 
@@ -123,6 +123,8 @@
                 android:id="@+id/txt_order_customer_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
                 android:text="@string/null_s"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/text_size_common_s" />
@@ -224,6 +226,33 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_ui_margin"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="取消理由(原因)："
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_common_s" />
+
+            <TextView
+                android:id="@+id/txt_cancel_reason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="未填写"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_common_s" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -311,8 +340,35 @@
         android:paddingTop="@dimen/default_ui_margin">
 
         <TextView
+            android:id="@+id/tv_print"
+            style="@style/Common_padding_Btn"
+            android:background="@drawable/selectable_login_btn_bg_halfcircle"
+            android:text="打印订单"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_refund"
+            style="@style/Common_padding_Btn"
+            android:layout_marginLeft="@dimen/default_ui_margin_small"
+            android:background="@drawable/selectable_pricecolor_btn_bg_halfcircle"
+            android:text="退款"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_ensure"
+            style="@style/Common_padding_Btn"
+            android:layout_marginLeft="@dimen/default_ui_margin_small"
+            android:background="@drawable/selectable_login_btn_bg_halfcircle"
+            android:text="确认收货"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+
+        <TextView
             android:id="@+id/tv_send_now"
             style="@style/Common_padding_Btn"
+            android:layout_marginLeft="@dimen/default_ui_margin_small"
             android:background="@drawable/selectable_login_btn_bg_halfcircle"
             android:text="立即配送"
             android:textColor="@color/white"
@@ -323,7 +379,7 @@
             style="@style/Common_padding_Btn"
             android:layout_marginLeft="@dimen/default_ui_margin_small"
             android:background="@drawable/selectable_pricecolor_btn_bg_halfcircle"
-            android:text="拒绝订单"
+            android:text="取消订单"
             android:textColor="@color/white"
             android:visibility="gone" />
 

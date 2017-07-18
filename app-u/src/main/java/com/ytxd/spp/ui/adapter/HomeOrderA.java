@@ -98,6 +98,10 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
                 CommonUtils.setText(helper.tvState, "已取消");
                 helper.tvAgain.setVisibility(View.VISIBLE);
                 break;
+            case OrderM.HAVE_REFUND:
+                CommonUtils.setText(helper.tvState, "已退款");
+                helper.tvAgain.setVisibility(View.VISIBLE);
+                break;
         }
 
     }

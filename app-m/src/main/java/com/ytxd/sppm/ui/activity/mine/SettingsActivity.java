@@ -11,6 +11,7 @@ import com.ytxd.sppm.base.AppManager;
 import com.ytxd.sppm.base.BaseActivity;
 import com.ytxd.sppm.ui.activity.login.LoginActivity;
 import com.ytxd.sppm.ui.activity.main.MainActivity;
+import com.ytxd.sppm.util.JpushUtil;
 import com.ytxd.sppm.util.SPUtil;
 
 import butterknife.BindView;
@@ -56,11 +57,14 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
             case R.id.rl_abount:
                 break;
             case R.id.tv_logout:
-                App.user = null;
+
+                JpushUtil.getInstance().setAliasNull(App.user.getSupermarketCode());
                 SPUtil.getInstance().putString("pwd", "");
                 startActivity(LoginActivity.class);
                 AppManager.getInstance().killActivity(activity);
                 AppManager.getInstance().killActivity(MainActivity.class);
+                App.user = null;
+
                 break;
         }
     }

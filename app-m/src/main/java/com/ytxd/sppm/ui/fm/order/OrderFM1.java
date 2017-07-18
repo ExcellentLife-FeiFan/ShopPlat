@@ -15,6 +15,9 @@ import com.ytxd.sppm.R;
 import com.ytxd.sppm.base.BaseFragment;
 import com.ytxd.sppm.event.AceOrderSuccessEvent;
 import com.ytxd.sppm.event.CancelSuccessEvent;
+import com.ytxd.sppm.event.EnsureSuccessEvent;
+import com.ytxd.sppm.event.HomeOrderRefreshEvent;
+import com.ytxd.sppm.event.RefundSuccessEvent;
 import com.ytxd.sppm.event.SelectStaffEvent;
 import com.ytxd.sppm.event.SetSenddingSuccessEvent;
 import com.ytxd.sppm.model.OrderM;
@@ -76,7 +79,7 @@ public class OrderFM1 extends BaseFragment<OrderFMPresenter> implements BaseQuic
 //                startActivity(MerchantDetailActivity.class, "data", mAdapter.getItem(i));
             }
         });
-        presenter.getOrderList(CommonUtils.REFRESH, page,"0");
+        presenter.getOrderList(CommonUtils.REFRESH, page, "0");
     }
 
     @Override
@@ -129,6 +132,20 @@ public class OrderFM1 extends BaseFragment<OrderFMPresenter> implements BaseQuic
     }
 
     @Override
+    public void ensureSuccess(int position) {
+        mAdapter.getItem(position).setOrderStateCode(OrderM.SUCCESS);
+        mAdapter.notifyItemChanged(position);
+        EventBus.getDefault().post(new EnsureSuccessEvent(mAdapter.getItem(position)));
+    }
+
+    @Override
+    public void refundSuccess(int position) {
+        mAdapter.getItem(position).setOrderStateCode(OrderM.HAVE_REFUND);
+        mAdapter.notifyItemChanged(position);
+        EventBus.getDefault().post(new RefundSuccessEvent(mAdapter.getItem(position)));
+    }
+
+    @Override
     public void refreshFailed() {
         swipeLayout.setRefreshing(false);
         showContent();
@@ -162,7 +179,7 @@ public class OrderFM1 extends BaseFragment<OrderFMPresenter> implements BaseQuic
 
 
     public void onEvent(SelectStaffEvent event) {
-        OrderM order=mAdapter.getItem(event.position);
+        OrderM order = mAdapter.getItem(event.position);
         order.setDeliveryStaffCode(event.deliveryStaffM.getDeliveryStaffCode());
         order.setDeliveryStaffModel(event.deliveryStaffM);
         mAdapter.notifyItemChanged(event.position);
@@ -170,12 +187,12 @@ public class OrderFM1 extends BaseFragment<OrderFMPresenter> implements BaseQuic
 
     @Override
     public void onRefresh() {
-        presenter.getOrderList(CommonUtils.REFRESH, 1,"0");
+        presenter.getOrderList(CommonUtils.REFRESH, 1, "0");
     }
 
     @Override
     public void onLoadMoreRequested() {
-        presenter.getOrderList(CommonUtils.LODEMORE, ++page,"0");
+        presenter.getOrderList(CommonUtils.LODEMORE, ++page, "0");
     }
 
 
@@ -194,15 +211,32 @@ public class OrderFM1 extends BaseFragment<OrderFMPresenter> implements BaseQuic
 
 
     public void onEvent(AceOrderSuccessEvent event) {
-        int index=mAdapter.getData().indexOf(event.orderM);
-        mAdapter.notifyItemChanged(index,event.orderM);
+        notifyItem(event.orderM);
     }
+
     public void onEvent(CancelSuccessEvent event) {
-        int index=mAdapter.getData().indexOf(event.orderM);
-        mAdapter.notifyItemChanged(index,event.orderM);
+        notifyItem(event.orderM);
     }
+
     public void onEvent(SetSenddingSuccessEvent event) {
-        int index=mAdapter.getData().indexOf(event.orderM);
-        mAdapter.notifyItemChanged(index,event.orderM);
+        notifyItem(event.orderM);
     }
+    public void onEvent(RefundSuccessEvent event) {
+        notifyItem(event.orderM);
+    }
+
+    public void onEvent(EnsureSuccessEvent event) {
+        notifyItem(event.orderM);
+    }
+
+    private void notifyItem(OrderM orderM) {
+        int index = mAdapter.getData().indexOf(orderM);
+        mAdapter.setData(index, orderM);
+        mAdapter.notifyItemChanged(index);
+    }
+    public void onEvent(HomeOrderRefreshEvent event) {
+        msv.setViewState(MultiStateView.VIEW_STATE_LOADING);
+        presenter.getOrderList(CommonUtils.REFRESH, 1, "0");
+    }
+
 }

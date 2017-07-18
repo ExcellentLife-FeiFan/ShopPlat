@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -16,15 +17,23 @@ import com.flyco.systembar.SystemBarHelper;
 import com.ytxd.sppm.R;
 import com.ytxd.sppm.base.App;
 import com.ytxd.sppm.base.BaseActivity;
+import com.ytxd.sppm.base.G;
+import com.ytxd.sppm.event.HomeOrderRefreshEvent;
+import com.ytxd.sppm.event.MainNotificationEvent;
+import com.ytxd.sppm.event.SetOrderFMEvent;
 import com.ytxd.sppm.ui.fm.HomeFM1;
 import com.ytxd.sppm.ui.fm.HomeFM2;
 import com.ytxd.sppm.util.CommonUtils;
+import com.ytxd.sppm.util.JpushUtil;
+import com.ytxd.sppm.util.SPUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
+import de.greenrobot.event.EventBus;
 
 public class MainActivity extends BaseActivity {
 
@@ -49,6 +58,20 @@ public class MainActivity extends BaseActivity {
             fm1 = new HomeFM1();
             fm2 = new HomeFM2();
             switchFragment(fm1);
+        }
+        String rid = JPushInterface.getRegistrationID(getApplicationContext());
+        if (!rid.isEmpty()) {
+        } else {
+            Toast.makeText(this, "Get registration fail, JPush init failed!", Toast.LENGTH_SHORT).show();
+        }
+
+        if (SPUtil.getInstance().getBoolean( G.IS_PUSH, true)) {
+            JPushInterface.resumePush(getApplicationContext());
+        } else {
+            JPushInterface.stopPush(getApplicationContext());
+        }
+        if(CommonUtils.isLogined2()){
+            JpushUtil.getInstance().setAlias(App.user.getSupermarketCode());
         }
 
         if (CommonUtils.isLogined2()) {
@@ -150,5 +173,23 @@ public class MainActivity extends BaseActivity {
         home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         home.addCategory(Intent.CATEGORY_HOME);
         startActivity(home);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = getIntent();
+        Bundle data = intent.getExtras();
+        if (null != data) {
+        }
+    }
+
+    public void onEvent(MainNotificationEvent event) {
+        if (null != event.data) {
+            event.data.getString("dd");
+            EventBus.getDefault().post(new HomeOrderRefreshEvent());
+            EventBus.getDefault().post(new SetOrderFMEvent(0));
+        }
+
     }
 }

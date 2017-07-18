@@ -1,6 +1,7 @@
 package com.ytxd.spp.ui.activity.main;
 
 import android.Manifest;
+import android.app.Notification;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +15,9 @@ import com.ytxd.spp.presenter.SplashPresenter;
 import com.ytxd.spp.util.PermissionsActivity;
 import com.ytxd.spp.util.PermissionsChecker;
 import com.ytxd.spp.view.ISplashView;
+
+import cn.jpush.android.api.BasicPushNotificationBuilder;
+import cn.jpush.android.api.JPushInterface;
 
 public class SplashActivity extends BaseActivity<SplashPresenter> implements ISplashView {
 
@@ -57,6 +61,16 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements ISp
                 presenter.isFirst();
             }
         }.sendEmptyMessageDelayed(1, 2000);
+
+        BasicPushNotificationBuilder builder = new BasicPushNotificationBuilder(this);
+        builder.statusBarDrawable = R.drawable.logo;
+        builder.notificationFlags = Notification.FLAG_AUTO_CANCEL
+                | Notification.FLAG_SHOW_LIGHTS;  //设置为自动消失和呼吸灯闪烁
+        builder.notificationDefaults = Notification.DEFAULT_SOUND
+                | Notification.DEFAULT_VIBRATE
+                | Notification.DEFAULT_LIGHTS;  // 设置为铃声、震动、呼吸灯闪烁都要
+        JPushInterface.setPushNotificationBuilder(1, builder);
+//        JPushInterface.setDefaultPushNotificationBuilder(builder);
     }
 
     @Override

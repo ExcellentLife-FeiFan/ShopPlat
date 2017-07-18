@@ -13,6 +13,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kennyc.view.MultiStateView;
 import com.ytxd.sppm.R;
 import com.ytxd.sppm.base.BaseFragment;
+import com.ytxd.sppm.event.EnsureSuccessEvent;
 import com.ytxd.sppm.event.SetSenddingSuccessEvent;
 import com.ytxd.sppm.model.OrderM;
 import com.ytxd.sppm.presenter.OrderFMPresenter;
@@ -26,6 +27,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import de.greenrobot.event.EventBus;
 
 
 /**
@@ -111,8 +113,21 @@ public class OrderFM4 extends BaseFragment<OrderFMPresenter> implements BaseQuic
     public void setSenddingSuccess(int position) {
 
     }
+
     @Override
     public void cancelSuccess(int position) {
+
+    }
+
+    @Override
+    public void ensureSuccess(int position) {
+        mAdapter.getItem(position).setOrderStateCode(OrderM.SUCCESS);
+        mAdapter.notifyItemChanged(position);
+        EventBus.getDefault().post(new EnsureSuccessEvent(mAdapter.getItem(position)));
+    }
+
+    @Override
+    public void refundSuccess(int position) {
 
     }
 
@@ -161,8 +176,15 @@ public class OrderFM4 extends BaseFragment<OrderFMPresenter> implements BaseQuic
     }
 
     public void onEvent(SetSenddingSuccessEvent event) {
-        if (mAdapter.getData().add(event.orderM)) {
+        mAdapter.getData().add(0, event.orderM);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    public void onEvent(EnsureSuccessEvent event) {
+        if (mAdapter.getData().remove(event.orderM)) {
             mAdapter.notifyDataSetChanged();
         }
+        showContent();
+
     }
 }

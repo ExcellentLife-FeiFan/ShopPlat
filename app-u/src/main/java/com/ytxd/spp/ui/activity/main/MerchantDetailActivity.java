@@ -354,7 +354,7 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
             case R.id.btn_ok:
                 if (!tvTotalNum.getText().toString().equals("0")) {
                     if(CommonUtils.isLogined(this,true)){
-                        startActivity(EnsureOrderActivity.class, "merchantCode", merchantCode);
+                        startActivity(EnsureOrderActivity.class, "merchant", merchantM);
                     }
                 }
                 break;
@@ -535,7 +535,7 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
                 App.initDataBase(this);
                 ShoppingCartUtil.deleteCart(this,merchantCode);
                 App.liteOrm.save(beans);
-                startActivity(EnsureOrderActivity.class, "merchantCode", merchantCode);
+                startActivity(EnsureOrderActivity.class, "merchant", merchantM);
                 EventBus.getDefault().post(new RefreshLoginEvent());
             }
         }

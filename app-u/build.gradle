@@ -62,7 +62,7 @@ dependencies {
     compile 'com.aurelhubert:ahbottomnavigation:2.0.6'
     compile 'com.zxy.android:recovery:0.1.4'
     compile 'me.zhanghai.android.materialratingbar:library:1.0.2'
-//    compile 'com.github.mcxtzhang:AnimShopButton:V1.2.0'
+    //    compile 'com.github.mcxtzhang:AnimShopButton:V1.2.0'
     compile 'org.zakariya.stickyheaders:stickyheaders:0.7.6'
     compile 'com.bigkoo:convenientbanner:2.0.5'
     compile 'com.zhihu.android:matisse:0.4.3'
@@ -71,4 +71,6 @@ dependencies {
     compile 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
     compile 'com.lzy.widget:ninegridview:0.2.1'
     compile 'com.qiushui:blurredview:0.8.1'
+    compile files('libs/jcore-android-1.1.5.jar')
+    compile files('libs/jpush-android-3.0.7.jar')
 }

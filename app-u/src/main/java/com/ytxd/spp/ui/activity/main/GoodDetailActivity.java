@@ -293,7 +293,7 @@ public class GoodDetailActivity extends BaseActivity2<GoodDetailPresenter> imple
     public void onViewClicked() {
         if (!tvTotalNum.getText().toString().equals("0")) {
             if(CommonUtils.isLogined(this,true)){
-                startActivity(EnsureOrderActivity.class, "merchantCode", merchantCode);
+                startActivity(EnsureOrderActivity.class, "merchant", merchantM);
             }
         }
     }
@@ -334,7 +334,7 @@ public class GoodDetailActivity extends BaseActivity2<GoodDetailPresenter> imple
                 App.initDataBase(this);
                 ShoppingCartUtil.deleteCart(this,merchantCode);
                 App.liteOrm.save(beans);
-                startActivity(EnsureOrderActivity.class, "merchantCode", merchantCode);
+                startActivity(EnsureOrderActivity.class, "merchant", merchantM);
                 EventBus.getDefault().post(new RefreshLoginEvent());
             }
         }

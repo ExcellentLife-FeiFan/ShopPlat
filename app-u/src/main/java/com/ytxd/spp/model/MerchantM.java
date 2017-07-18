@@ -79,6 +79,7 @@ public class MerchantM implements Serializable {
     private boolean IsWS;
     private String TSAlias;
     private String TSTag;
+    private String AndroidOrIos;
     private String OrderNumber;
     private Object IsDel;
     private Object CreateTime;
@@ -334,6 +335,22 @@ public class MerchantM implements Serializable {
         this.TSTag = TSTag;
     }
 
+    public boolean isWS() {
+        return IsWS;
+    }
+
+    public void setWS(boolean WS) {
+        IsWS = WS;
+    }
+
+    public String getAndroidOrIos() {
+        return AndroidOrIos;
+    }
+
+    public void setAndroidOrIos(String androidOrIos) {
+        AndroidOrIos = androidOrIos;
+    }
+
     public String getOrderNumber() {
         return OrderNumber;
     }
@@ -382,7 +399,7 @@ public class MerchantM implements Serializable {
         this.ManJian = ManJian;
     }
 
-    public static class ManJianBean implements Serializable{
+    public static class ManJianBean implements Serializable {
 
         public ManJianBean() {
         }
@@ -401,7 +418,6 @@ public class MerchantM implements Serializable {
          * IsDel : 0
          * CreateTime : 2017-06-14T14:36:22
          */
-
 
 
         private String ManJianCode;

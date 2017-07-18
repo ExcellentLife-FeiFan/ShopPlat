@@ -108,23 +108,31 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
             }
             CommonUtils.setText(tvOrderCode, orderM.getOrderCode());
             CommonUtils.setText(tvOrderTime, orderM.getCreateTime().replace("T", " "));
-            CommonUtils.setText(tvAddress, orderM.getAddressTitle()+orderM.getAddressContent());
+            CommonUtils.setText(tvAddress, orderM.getAddressTitle() + orderM.getAddressContent());
             if (orderM.getOrderStateCode().equals(OrderM.WATING_PAY)) {
                 CommonUtils.setText(tvOrderState, "等待支付");
                 llPay.setVisibility(View.VISIBLE);
             } else if (orderM.getOrderStateCode().equals(OrderM.HAVE_PAY_WATING_ACE)) {
                 CommonUtils.setText(tvOrderState, "等待接单");
-            } else if (orderM.getOrderStateCode().equals(OrderM.CANCEL)) {
-                CommonUtils.setText(tvOrderState, "已取消");
-                btnOneMore.setVisibility(View.VISIBLE);
+            } else if (orderM.getOrderStateCode().equals(OrderM.FASE_PAY_WATING_ACE)) {
+                CommonUtils.setText(tvOrderState, "等待接单");
             } else if (orderM.getOrderStateCode().equals(OrderM.HAVE_ACE_WATING_SEND)) {
                 CommonUtils.setText(tvOrderState, "等待配送");
             } else if (orderM.getOrderStateCode().equals(OrderM.SENDING)) {
                 CommonUtils.setText(tvOrderState, "正在配送");
                 btnEnsure.setVisibility(View.VISIBLE);
-            } else {
+            } else if (orderM.getOrderStateCode().equals(OrderM.SUCCESS)) {
                 CommonUtils.setText(tvOrderState, "交易成功");
                 btnOneMore.setVisibility(View.VISIBLE);
+            } else if (orderM.getOrderStateCode().equals(OrderM.CANCEL)) {
+                CommonUtils.setText(tvOrderState, "已取消");
+                btnOneMore.setVisibility(View.VISIBLE);
+            } else if (orderM.getOrderStateCode().equals(OrderM.HAVE_REFUND)) {
+                CommonUtils.setText(tvOrderState, "已退款");
+                btnOneMore.setVisibility(View.VISIBLE);
+            }
+            if (!AbStrUtil.isEmpty(orderM.getDeliveryStaffModel().getDeliveryStaffName())) {
+                CommonUtils.setText(tvDistriType, "骑手" + "(" + orderM.getDeliveryStaffModel().getDeliveryStaffName() + "  " + orderM.getDeliveryStaffModel().getPhone() + ")");
             }
         }
 //        presenter.getGoodsInfo(orderM.getOrderCode());
@@ -157,7 +165,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
                 break;
             case R.id.btn_cancel:
                 if (null != orderM) {
-                    DialogUtils.showInputDialog(this, "提示", "你确定取消订单吗，并输入理由。", InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE, R.string.hint_cancel_order_reason, 1,100,new MaterialDialog.InputCallback() {
+                    DialogUtils.showInputDialog(this, "提示", "你确定取消订单吗，并输入理由。", InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE, R.string.hint_cancel_order_reason, 1, 100, new MaterialDialog.InputCallback() {
                         @Override
                         public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                             if (AbStrUtil.isEmpty(input.toString())) {
@@ -165,7 +173,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
                                 dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
                             } else {
                                 dialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
-                                presenter.cancel(orderM.getOrderCode(), orderM.getUserCouponCode(),input.toString());
+                                presenter.cancel(orderM.getOrderCode(), orderM.getUserCouponCode(), input.toString());
                             }
                         }
 

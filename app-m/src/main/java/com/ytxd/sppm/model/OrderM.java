@@ -42,7 +42,7 @@ public class OrderM implements Serializable {
      * PSPrice : 5.00
      */
 
-    public static final String WATING_PAY = "0001", HAVE_PAY_WATING_ACE = "0002", FASE_PAY_WATING_ACE = "0003", HAVE_ACE_WATING_SEND = "0004", SENDING = "0005", SUCCESS = "0006", CANCEL = "0007";
+    public static final String WATING_PAY = "0001", HAVE_PAY_WATING_ACE = "0002", FASE_PAY_WATING_ACE = "0003", HAVE_ACE_WATING_SEND = "0004", SENDING = "0005", SUCCESS = "0006", CANCEL = "0007", HAVE_REFUND = "0008";
 
 
     private String OrderCode;
@@ -72,10 +72,12 @@ public class OrderM implements Serializable {
     private String CouponPrice;
     private String SJPrice;
     private String CancelInfo;
+    private int TodayNo;
     private int IsDel;
     private String CreateTime;
     private int IsEvaluate;
     private String PSPrice;
+    private ComUser UserModel;
 
     private DeliveryStaffM DeliveryStaffModel;
 
@@ -297,6 +299,14 @@ public class OrderM implements Serializable {
         CancelInfo = cancelInfo;
     }
 
+    public int getTodayNo() {
+        return TodayNo;
+    }
+
+    public void setTodayNo(int todayNo) {
+        TodayNo = todayNo;
+    }
+
     public int getIsDel() {
         return IsDel;
     }
@@ -349,5 +359,13 @@ public class OrderM implements Serializable {
     public boolean equals(Object obj) {
         OrderM n= (OrderM) obj;
         return this.getOrderCode().equals(n.getOrderCode());
+    }
+
+    public ComUser getUserModel() {
+        return UserModel;
+    }
+
+    public void setUserModel(ComUser userModel) {
+        UserModel = userModel;
     }
 }

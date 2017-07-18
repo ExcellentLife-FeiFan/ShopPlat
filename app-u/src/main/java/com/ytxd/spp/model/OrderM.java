@@ -10,7 +10,7 @@ import java.util.List;
 public class OrderM implements Serializable {
 
 
-    public static final String WATING_PAY = "0001", HAVE_PAY_WATING_ACE = "0002", FASE_PAY_WATING_ACE = "0003", HAVE_ACE_WATING_SEND = "0004", SENDING = "0005", SUCCESS = "0006", CANCEL = "0007";
+    public static final String WATING_PAY = "0001", HAVE_PAY_WATING_ACE = "0002", FASE_PAY_WATING_ACE = "0003", HAVE_ACE_WATING_SEND = "0004", SENDING = "0005", SUCCESS = "0006", CANCEL = "0007", HAVE_REFUND = "0008";
 
     private String OrderCode;
     private String OrderStateCode;

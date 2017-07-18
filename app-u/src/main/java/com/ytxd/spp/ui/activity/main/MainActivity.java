@@ -8,7 +8,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONObject;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
@@ -16,16 +18,22 @@ import com.flyco.systembar.SystemBarHelper;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.BaseActivity;
+import com.ytxd.spp.base.G;
+import com.ytxd.spp.event.MainNotificationEvent;
+import com.ytxd.spp.ui.activity.order.MyOrderActivity;
 import com.ytxd.spp.ui.fm.home.HomeFM1;
 import com.ytxd.spp.ui.fm.home.HomeFM3;
 import com.ytxd.spp.ui.fm.home.HomeFM4;
 import com.ytxd.spp.util.CommonUtils;
+import com.ytxd.spp.util.JpushUtil;
+import com.ytxd.spp.util.SPUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
 
 public class MainActivity extends BaseActivity {
     @BindView(R.id.bottom_navigation)
@@ -53,11 +61,22 @@ public class MainActivity extends BaseActivity {
             fm4 = new HomeFM4();
             switchFragment(fm1);
         }
+        String rid = JPushInterface.getRegistrationID(getApplicationContext());
+        if (!rid.isEmpty()) {
+        } else {
+            Toast.makeText(this, "Get registration fail, JPush init failed!", Toast.LENGTH_SHORT).show();
+        }
 
+        if (SPUtil.getInstance().getBoolean(G.IS_PUSH, true)) {
+            JPushInterface.resumePush(getApplicationContext());
+        } else {
+            JPushInterface.stopPush(getApplicationContext());
+        }
 
+        if (CommonUtils.isLogined2()) {
+            JpushUtil.getInstance().setAlias(App.user.getUserCode());
+        }
         App.initDataBase(this);
-
-
         // Create items
         AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.home_b_tab_0, R.drawable.ic_home, R.color.colorPrimary);
 //        AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.home_b_tab_1, R.drawable.ic_find, R.color.colorPrimary);
@@ -173,5 +192,31 @@ public class MainActivity extends BaseActivity {
         home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         home.addCategory(Intent.CATEGORY_HOME);
         startActivity(home);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = getIntent();
+        Bundle data = intent.getExtras();
+        if (null != data) {
+        }
+    }
+
+    public void onEvent(MainNotificationEvent event) {
+        if (null != event.data) {
+            JSONObject extra=JSONObject.parseObject(event.data.getString(JPushInterface.EXTRA_EXTRA));
+            String state=extra.getString("State");
+            switch (state){
+                case "200":
+                case "300":
+                case "400":
+                    startActivity(MyOrderActivity.class);
+                    break;
+                case "500":
+                    break;
+            }
+        }
+
     }
 }

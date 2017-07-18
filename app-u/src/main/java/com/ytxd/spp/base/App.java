@@ -30,6 +30,7 @@ import java.util.logging.Level;
 
 import butterknife.BuildConfig;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.OkHttpClient;
 
 /**
@@ -48,10 +49,25 @@ public class App extends Application {
         ButterKnife.setDebug(BuildConfig.DEBUG);//设置ButterKnife调试模式
         context = this;
         NineGridView.setImageLoader(new GlideImageLoader());
+        initJPush();
+       	// 初始化 JPush
+        JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);
         initPrefs();
         initDirs();//初始化APP文件夹
         initOkGo();//初始化OkGo网络请求工具
         initRecovery();
+    }
+
+    private void initJPush() {
+     /*   BasicPushNotificationBuilder builder = new BasicPushNotificationBuilder(getApplicationContext());
+        builder.statusBarDrawable = R.mipmap.ic_launcher;
+        builder.notificationFlags = Notification.FLAG_AUTO_CANCEL
+                | Notification.FLAG_SHOW_LIGHTS;  //设置为自动消失和呼吸灯闪烁
+        builder.notificationDefaults = Notification.DEFAULT_SOUND
+                | Notification.DEFAULT_VIBRATE
+                | Notification.DEFAULT_LIGHTS;  // 设置为铃声、震动、呼吸灯闪烁都要
+        JPushInterface.setPushNotificationBuilder(1, builder);*/
     }
 
     private void initRecovery() {

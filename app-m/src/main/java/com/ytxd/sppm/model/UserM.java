@@ -78,6 +78,7 @@ public class UserM implements Serializable {
     private int IsWS;
     private String TSAlias;
     private String TSTag;
+    private String AndroidOrIos;
     private int OrderNumber;
     private Object IsDel;
     private String CreateTime;
@@ -329,6 +330,14 @@ public class UserM implements Serializable {
 
     public void setTSTag(String TSTag) {
         this.TSTag = TSTag;
+    }
+
+    public String getAndroidOrIos() {
+        return AndroidOrIos;
+    }
+
+    public void setAndroidOrIos(String androidOrIos) {
+        AndroidOrIos = androidOrIos;
     }
 
     public int getOrderNumber() {

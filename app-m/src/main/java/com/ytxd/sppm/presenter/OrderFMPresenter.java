@@ -16,10 +16,7 @@ import com.ytxd.sppm.view.IOrderFMView;
 
 import java.util.List;
 
-/**
- * 主界面presenter
- * Created by panl on 15/12/24.
- */
+
 public class OrderFMPresenter extends BasePresenter<IOrderFMView> {
 
     public OrderFMPresenter(Context context, IOrderFMView iView) {
@@ -117,10 +114,12 @@ public class OrderFMPresenter extends BasePresenter<IOrderFMView> {
     }
 
 
-    public void aceOrder(String orderCode, final int position) {
+    public void aceOrder(OrderM order, final int position) {
         CommonUtils.showDialog(context);
         OkGo.<ApiResult<Object>>get(Apis.UpdateOrderTaking)//
-                .params("OrderCode", orderCode)
+                .params("OrderCode", order.getOrderCode())
+                .params("AndroidOrIos", order.getUserModel().getAndroidOrIos())
+                .params("TSAlias", order.getUserModel().getTSAlias())
                 .execute(new JsonCallback<ApiResult<Object>>() {
                     @Override
                     public void onSuccess(Response<ApiResult<Object>> response) {
@@ -144,11 +143,13 @@ public class OrderFMPresenter extends BasePresenter<IOrderFMView> {
 
     }
 
-    public void setSendding(String orderCode, String deliveryStaffCode, final int position) {
+    public void setSendding(OrderM order, String deliveryStaffCode, final int position) {
         CommonUtils.showDialog(context);
         OkGo.<ApiResult<Object>>get(Apis.UpdateOrderYPS)//
-                .params("OrderCode", orderCode)
+                .params("OrderCode", order.getOrderCode())
                 .params("DeliveryStaffCode", deliveryStaffCode)
+                .params("AndroidOrIos", order.getUserModel().getAndroidOrIos())
+                .params("TSAlias", order.getUserModel().getTSAlias())
                 .execute(new JsonCallback<ApiResult<Object>>() {
                     @Override
                     public void onSuccess(Response<ApiResult<Object>> response) {
@@ -156,6 +157,64 @@ public class OrderFMPresenter extends BasePresenter<IOrderFMView> {
                         ApiResult<Object> result = response.body();
                         if (result.isSuccess()) {
                             iView.setSenddingSuccess(position);
+                        } else {
+                            ToastUtil.showToastShort(context, result.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<ApiResult<Object>> response) {
+                        CommonUtils.hideDialog();
+                        super.onError(response);
+                        ToastUtil.showToastShort(context, CommonUtils.getString(R.string.action_failure));
+                    }
+                });
+
+
+    }
+
+
+    public void ensureOrder(OrderM order, final int position) {
+        CommonUtils.showDialog(context);
+        OkGo.<ApiResult<Object>>get(Apis.CSDetermineSH)//
+                .params("OrderCode", order.getOrderCode())
+                .params("AndroidOrIos", order.getUserModel().getAndroidOrIos())
+                .params("TSAlias", order.getUserModel().getTSAlias())
+                .execute(new JsonCallback<ApiResult<Object>>() {
+                    @Override
+                    public void onSuccess(Response<ApiResult<Object>> response) {
+                        CommonUtils.hideDialog();
+                        ApiResult<Object> result = response.body();
+                        if (result.isSuccess()) {
+                            iView.ensureSuccess(position);
+                        } else {
+                            ToastUtil.showToastShort(context, result.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<ApiResult<Object>> response) {
+                        CommonUtils.hideDialog();
+                        super.onError(response);
+                        ToastUtil.showToastShort(context, CommonUtils.getString(R.string.action_failure));
+                    }
+                });
+
+
+    }
+    public void refundOrder(OrderM order, final int position) {
+        CommonUtils.showDialog(context);
+        OkGo.<ApiResult<Object>>get(Apis.UpdateOrderYTK)//
+                .params("OrderCode", order.getOrderCode())
+//                .params("AndroidOrIos", order.getUserModel().getAndroidOrIos())
+//                .params("TSAlias", order.getUserModel().getTSAlias())
+                .execute(new JsonCallback<ApiResult<Object>>() {
+                    @Override
+                    public void onSuccess(Response<ApiResult<Object>> response) {
+                        CommonUtils.hideDialog();
+                        ApiResult<Object> result = response.body();
+                        if (result.isSuccess()) {
+                            iView.refundSuccess(position);
                         } else {
                             ToastUtil.showToastShort(context, result.getMsg());
                         }

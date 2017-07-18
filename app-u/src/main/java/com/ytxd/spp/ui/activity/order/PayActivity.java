@@ -76,7 +76,7 @@ public class PayActivity extends BaseActivity<PayPresenter> implements View.OnCl
     @OnClick(R.id.btn_pay)
     public void onViewClicked() {
         if (null != orderM) {
-            presenter.payUpload(orderM.getOrderCode());
+            presenter.payUpload(orderM);
         }
     }
 

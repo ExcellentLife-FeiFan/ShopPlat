@@ -63,7 +63,7 @@ public class OrderFM2 extends BaseFragment<OrderFMPresenter> implements BaseQuic
         swipeLayout.setOnRefreshListener(this);
         rv.setLayoutManager(new LinearLayoutManager(activity));
         rv.addItemDecoration(new SimpleDividerDecoration(activity, R.color.transparent, R.dimen.divider_height3));
-        mAdapter = new HomeOrderA(null,presenter);
+        mAdapter = new HomeOrderA(null, presenter);
         mAdapter.setOnLoadMoreListener(this, rv);
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         rv.setAdapter(mAdapter);
@@ -73,7 +73,7 @@ public class OrderFM2 extends BaseFragment<OrderFMPresenter> implements BaseQuic
 //                startActivity(MerchantDetailActivity.class, "data", mAdapter.getItem(i));
             }
         });
-        presenter.getOrderList(CommonUtils.REFRESH, page,OrderM.HAVE_PAY_WATING_ACE);
+        presenter.getOrderList(CommonUtils.REFRESH, page, OrderM.HAVE_PAY_WATING_ACE);
     }
 
     @Override
@@ -124,12 +124,26 @@ public class OrderFM2 extends BaseFragment<OrderFMPresenter> implements BaseQuic
         mAdapter.notifyItemChanged(position);
         EventBus.getDefault().post(new AceOrderSuccessEvent(mAdapter.getItem(position)));
     }
+
     @Override
     public void setSenddingSuccess(int position) {
 
     }
+
     @Override
     public void cancelSuccess(int position) {
+        mAdapter.getItem(position).setOrderStateCode(OrderM.CANCEL);
+        mAdapter.notifyItemChanged(position);
+        EventBus.getDefault().post(new CancelSuccessEvent(mAdapter.getItem(position)));
+    }
+
+    @Override
+    public void ensureSuccess(int position) {
+
+    }
+
+    @Override
+    public void refundSuccess(int position) {
 
     }
 
@@ -143,12 +157,12 @@ public class OrderFM2 extends BaseFragment<OrderFMPresenter> implements BaseQuic
 
     @Override
     public void onRefresh() {
-        presenter.getOrderList(CommonUtils.REFRESH, 1,OrderM.HAVE_PAY_WATING_ACE);
+        presenter.getOrderList(CommonUtils.REFRESH, 1, OrderM.HAVE_PAY_WATING_ACE);
     }
 
     @Override
     public void onLoadMoreRequested() {
-        presenter.getOrderList(CommonUtils.LODEMORE, ++page,OrderM.HAVE_PAY_WATING_ACE);
+        presenter.getOrderList(CommonUtils.LODEMORE, ++page, OrderM.HAVE_PAY_WATING_ACE);
     }
 
     @Override
@@ -168,13 +182,15 @@ public class OrderFM2 extends BaseFragment<OrderFMPresenter> implements BaseQuic
         if (mAdapter.getData().remove(event.orderM)) {
             mAdapter.notifyDataSetChanged();
         }
+        showContent();
 
     }
+
     public void onEvent(CancelSuccessEvent event) {
         if (mAdapter.getData().remove(event.orderM)) {
             mAdapter.notifyDataSetChanged();
         }
-
+        showContent();
     }
 
 }

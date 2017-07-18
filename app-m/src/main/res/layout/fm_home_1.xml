@@ -71,17 +71,20 @@
             android:id="@+id/tab"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp40"
-            android:layout_gravity="center_horizontal"
+            android:paddingLeft="@dimen/padding_left"
+            android:layout_gravity="center_vertical|left"
             app:tl_indicator_margin_left="0dp"
             app:tl_indicator_margin_right="0dp"
-            app:tl_indicator_style="BLOCK"
-            app:tl_tab_padding="@dimen/dp10"
+            app:tl_indicator_style="NORMAL"
+            app:tl_tab_padding="@dimen/dp6"
             app:tl_tab_space_equal="false"
-            app:tl_textSelectColor="@color/colorPrimaryDark"
+            app:tl_indicator_color="@color/colorPrimary"
+            app:tl_indicator_height="@dimen/dp2"
+            app:tl_textSelectColor="@color/colorPrimary"
             app:tl_textUnselectColor="@color/gray"
             app:tl_underline_height="@dimen/divider_height"
             app:tl_underline_color="@color/line_gray"
-            app:tl_textsize="@dimen/text_size_small" />
+            app:tl_textsize="@dimen/text_size_common_s" />
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager

@@ -14,8 +14,8 @@ import com.lzy.okgo.https.HttpsUtils;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
-import com.ytxd.sppm.ui.activity.main.MainActivity;
 import com.ytxd.sppm.model.UserM;
+import com.ytxd.sppm.ui.activity.main.MainActivity;
 import com.ytxd.sppm.util.AbStrUtil;
 import com.ytxd.sppm.util.CommonUtils;
 import com.ytxd.sppm.util.SPUtil;
@@ -28,6 +28,7 @@ import java.util.logging.Level;
 
 import butterknife.BuildConfig;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.OkHttpClient;
 
 /**
@@ -45,6 +46,8 @@ public class App extends Application {
         super.onCreate();
         ButterKnife.setDebug(BuildConfig.DEBUG);//设置ButterKnife调试模式
         context = this;
+        JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);     		// 初始化 JPush
         initPrefs();
         initDirs();//初始化APP文件夹
         initOkGo();//初始化OkGo网络请求工具

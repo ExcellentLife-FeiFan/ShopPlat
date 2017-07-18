@@ -183,6 +183,8 @@ public class Apis {
      * 更新订单已付款
      *
      * @param OrderCode
+     * @param AndroidOrIos:超市是安卓还是苹果
+     * @param TSAlias:超市alias(用于给超市推送信息)
      */
     public static String UpdateOrderPay = BASE_URL + "/API_User/UpdateOrderPay";
 
@@ -292,4 +294,15 @@ public class Apis {
      * @param NickName:新昵称
      */
     public static String ModifyNickName = BASE_URL + "/API_User/ModifyNickName";
+
+    /**
+     * 修改昵称
+     *
+     * @param UserCode:用户编号
+     * @param AndroidOrIos:安卓=1，苹果=2
+     * @param TSAlias:alias
+     */
+    public static String UpdateUserAlias = BASE_URL + "/API_User/UpdateUserAlias";
+
+
 }

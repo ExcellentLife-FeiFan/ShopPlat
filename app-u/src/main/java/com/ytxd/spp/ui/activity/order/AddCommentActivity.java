@@ -88,7 +88,7 @@ public class AddCommentActivity extends BaseActivity<AddCommentPresenter> implem
         position=getIntent().getIntExtra("position",-1);
         CommonUtils.setText(tvMerName, orderM.getSuperMarketModel().getName());
         ImageLoadUtil.setImageNP(orderM.getSuperMarketModel().getLogoUrl(), civ, this);
-        goodsLV = new AddCommGoodsLV(new ArrayList<OrderGoodM>(), this);
+        goodsLV = new AddCommGoodsLV(orderM.getChildrenGoods(), this);
         lvGoods.setAdapter(goodsLV);
         CommonUtils.setEmptyViewForSLV(this, rlLv, lvGoods);
         photoAdapter = new PicsSelectA(this, selectedPhotos);
@@ -113,7 +113,7 @@ public class AddCommentActivity extends BaseActivity<AddCommentPresenter> implem
                         }
                     }
                 }));
-        presenter.getGoodsInfo(orderM.getOrderCode());
+//        presenter.getGoodsInfo(orderM.getOrderCode());
     }
 
 

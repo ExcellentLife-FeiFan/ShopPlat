@@ -10,6 +10,7 @@ import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
 import com.ytxd.spp.ui.activity.main.MainActivity;
 import com.ytxd.spp.util.CommonUtils;
+import com.ytxd.spp.util.JpushUtil;
 import com.ytxd.spp.util.SPUtil;
 
 import butterknife.BindView;
@@ -56,10 +57,11 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
             case R.id.rl_abount:
                 break;
             case R.id.tv_logout:
-                App.user = null;
+                JpushUtil.getInstance().setAliasNull(App.user.getUserCode());
                 SPUtil.getInstance().putString("pwd", "");
                 AppManager.getInstance().killActivity(activity);
                 AppManager.getInstance().killActivity(MainActivity.class);
+                App.user = null;
                 startActivity(MainActivity.class);
                 break;
         }

@@ -23,4 +23,6 @@ public class G {
 
     public static final int CONNECT_TIME_OUT = 5 * 1000;
 
+    public static final String IS_PUSH = "isPush";
+
 }
