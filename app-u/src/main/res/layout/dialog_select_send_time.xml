@@ -26,14 +26,16 @@
             android:text="选择送达时间"
             android:textColor="@color/black_overlay"
             android:textSize="@dimen/text_size_common" />
-
         <include layout="@layout/line_common"></include>
 
 
         <ListView
+            android:id="@+id/lv"
             android:scrollbars="none"
+            android:divider="@color/common_divider_color"
+            android:dividerHeight="@dimen/divider_height"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="320dp" />
 
 
     </LinearLayout>

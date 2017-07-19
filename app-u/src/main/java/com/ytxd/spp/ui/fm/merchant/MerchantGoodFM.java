@@ -12,9 +12,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.kennyc.view.MultiStateView;
 import com.ytxd.spp.R;
+import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.BaseFragment;
 import com.ytxd.spp.event.RefreshGoodRVEvent;
 import com.ytxd.spp.model.CatagaryM;
+import com.ytxd.spp.model.GoodM;
 import com.ytxd.spp.model.MerchantM;
 import com.ytxd.spp.model.OrderGoodM;
 import com.ytxd.spp.presenter.MerchantGoodPresenter;
@@ -165,9 +167,18 @@ public class MerchantGoodFM extends BaseFragment<MerchantGoodPresenter> implemen
         }
         for (int i = 0; i < items.size(); i++) {
             for (int i1 = 0; i1 < items.get(i).getChildren().size(); i1++) {
-                ShoppingCartUtil.refreshLocalCartGood(items.get(i).getChildren().get(i1), merchantCode);
+                GoodM goodM = items.get(i).getChildren().get(i1);
+                //把商品一个一个存入本地数据库，用来店内商品搜索
+                if (null != goodM.getGoods() && goodM.getGoods().size() > 0) {
+                    for (int i2 = 0; i2 < goodM.getGoods().size(); i2++) {
+                        App.liteOrm.save(goodM.getGoods().get(i2));
+                    }
+                } else {
+                    App.liteOrm.save(goodM);
+                }
+                ShoppingCartUtil.refreshLocalCartGood(goodM, merchantCode);
                 if (!AbStrUtil.isEmpty(orderCode) && orderGoods.size() > 0) {
-                    presenter.addOrderGood(items.get(i).getChildren().get(i1), merchantM, orderGoods);
+                    presenter.addOrderGood(goodM, merchantM, orderGoods);
                 }
 
             }

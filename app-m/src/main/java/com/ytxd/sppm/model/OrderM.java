@@ -42,7 +42,7 @@ public class OrderM implements Serializable {
      * PSPrice : 5.00
      */
 
-    public static final String WATING_PAY = "0001", HAVE_PAY_WATING_ACE = "0002", FASE_PAY_WATING_ACE = "0003", HAVE_ACE_WATING_SEND = "0004", SENDING = "0005", SUCCESS = "0006", CANCEL = "0007", HAVE_REFUND = "0008";
+    public static final String WATING_PAY = "0001", HAVE_PAY_WATING_ACE = "0002", FASE_PAY_WATING_ACE = "0003", HAVE_ACE_WATING_SEND = "0004", SENDING = "0005", SUCCESS = "0006", CANCEL_U = "7001", CANCEL_M = "7002",HAVE_REFUND = "7003";
 
 
     private String OrderCode;

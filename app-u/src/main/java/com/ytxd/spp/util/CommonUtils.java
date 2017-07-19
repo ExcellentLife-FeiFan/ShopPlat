@@ -382,7 +382,7 @@ public class CommonUtils {
             LatLng location_l = new LatLng(Double.valueOf(latLng.getLatitude()), Double.valueOf(latLng.getLongitude()));
             float distance = AMapUtils.calculateLineDistance(shop_l, location_l);
             float distruF = Float.valueOf(merchantM.getConfines());
-            merchantM.setDistance(distruF);
+            merchantM.setDistance(distance);
             if (distruF >= distance) {
                 return true;
             }
@@ -391,5 +391,17 @@ public class CommonUtils {
         }
         return false;
 
+    }
+
+    public static String getSDTimeDesrcDay(String time) {
+        time = getFormatTimeString(time);
+        String h = AbDateUtil.getStringByFormat(time, AbDateUtil.dateFormatHM);
+        String bd = AbDateUtil.getStringByFormat(time, AbDateUtil.dateFormatYMD);
+        String nd = AbDateUtil.getStringByFormat(new Date(), AbDateUtil.dateFormatYMD);
+        if (bd.equals(nd)) {
+            return "今天  " + h;
+        } else {
+            return bd + "  " + h;
+        }
     }
 }

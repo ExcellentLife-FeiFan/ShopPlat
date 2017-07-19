@@ -20,13 +20,17 @@ import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.BaseActivity;
 import com.ytxd.spp.base.G;
 import com.ytxd.spp.event.MainNotificationEvent;
+import com.ytxd.spp.model.CouponM;
+import com.ytxd.spp.presenter.MainPresenter;
 import com.ytxd.spp.ui.activity.order.MyOrderActivity;
+import com.ytxd.spp.ui.dialog.HomeCouponDialog;
 import com.ytxd.spp.ui.fm.home.HomeFM1;
 import com.ytxd.spp.ui.fm.home.HomeFM3;
 import com.ytxd.spp.ui.fm.home.HomeFM4;
 import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.JpushUtil;
 import com.ytxd.spp.util.SPUtil;
+import com.ytxd.spp.view.IMainView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.jpush.android.api.JPushInterface;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity<MainPresenter> implements IMainView {
     @BindView(R.id.bottom_navigation)
     AHBottomNavigation bottomBar;
     @BindView(R.id.contentContainer)
@@ -47,6 +51,11 @@ public class MainActivity extends BaseActivity {
     Fragment currentFragment;
     private List<Fragment> fragments = new ArrayList<>();
 
+    @Override
+    protected void initPresenter() {
+        presenter = new MainPresenter(activity, this);
+        presenter.init();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +83,7 @@ public class MainActivity extends BaseActivity {
         }
 
         if (CommonUtils.isLogined2()) {
+            presenter.getCouponList();
             JpushUtil.getInstance().setAlias(App.user.getUserCode());
         }
         App.initDataBase(this);
@@ -205,9 +215,9 @@ public class MainActivity extends BaseActivity {
 
     public void onEvent(MainNotificationEvent event) {
         if (null != event.data) {
-            JSONObject extra=JSONObject.parseObject(event.data.getString(JPushInterface.EXTRA_EXTRA));
-            String state=extra.getString("State");
-            switch (state){
+            JSONObject extra = JSONObject.parseObject(event.data.getString(JPushInterface.EXTRA_EXTRA));
+            String state = extra.getString("State");
+            switch (state) {
                 case "200":
                 case "300":
                 case "400":
@@ -217,6 +227,35 @@ public class MainActivity extends BaseActivity {
                     break;
             }
         }
+
+    }
+
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public void lodeCouponSuccess(List<CouponM> items) {
+        if (items.size() > 0) {
+            ArrayList<CouponM> unread = new ArrayList<>();
+            for (int i = 0; i < items.size(); i++) {
+                if (!CommonUtils.getBoolean(items.get(i).getIsRead())) {
+                    unread.add(items.get(i));
+                }
+            }
+            if (unread.size() > 0) {
+                HomeCouponDialog homeCouponDialog = new HomeCouponDialog();
+                Bundle data = new Bundle();
+                data.putSerializable("data", unread);
+                homeCouponDialog.setArguments(data);
+                homeCouponDialog.show(getFragmentManager(), "HomeCouponDialog");
+            }
+        }
+    }
+
+    @Override
+    public void lodeCouponFailed() {
 
     }
 }

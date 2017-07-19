@@ -85,7 +85,7 @@ public class OrderFMPresenter extends BasePresenter<IOrderFMView> {
     public void cancel(String orderCode,String userCouponCode,String reson, final int position) {
         CommonUtils.showDialog(context);
         boolean isH=!userCouponCode.equals("0");
-        OkGo.<ApiResult<Object>>get(Apis.CancelOrder)//
+        OkGo.<ApiResult<Object>>get(Apis.SupermarketCancelOrder)//
                 .params("OrderCode", orderCode)
                 .params("IsHFUserCoupon", isH?"1":"0")
                 .params("UserCouponCode", userCouponCode)

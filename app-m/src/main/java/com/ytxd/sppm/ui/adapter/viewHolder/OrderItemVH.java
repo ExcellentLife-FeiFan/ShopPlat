@@ -38,6 +38,7 @@ public class OrderItemVH extends BaseViewHolder {
     public TextView tvEnsure;
     public TextView tvRefund;
     public TextView tvPrint;
+    public TextView tvArriveTime;
 
     public OrderItemVH(View rootView) {
         super(rootView);
@@ -66,6 +67,7 @@ public class OrderItemVH extends BaseViewHolder {
         this.tvCancelReason= (TextView) rootView.findViewById(R.id.txt_cancel_reason);
         this.llCancel= (LinearLayout) rootView.findViewById(R.id.ll_cancel);
         this.tvPrint= (TextView) rootView.findViewById(R.id.tv_print);
+        this.tvArriveTime= (TextView) rootView.findViewById(R.id.tv_arrive_time);
     }
 
 }

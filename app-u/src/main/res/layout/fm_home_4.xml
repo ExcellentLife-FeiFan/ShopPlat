@@ -158,7 +158,19 @@
 
                 <include layout="@layout/line_gray"></include>
 
+                <RelativeLayout
+                    android:id="@+id/rl_invitecode"
+                    style="@style/VG_padding">
 
+                    <TextView
+                        style="@style/TV_VG_LEFT_DRAWABLE"
+                        android:drawableLeft="@drawable/ic_mine_dianping"
+                        android:text="我的邀请码" />
+
+
+                </RelativeLayout>
+
+                <include layout="@layout/line_gray"></include>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"></View>

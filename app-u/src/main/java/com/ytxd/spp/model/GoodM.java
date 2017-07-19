@@ -1,5 +1,9 @@
 package com.ytxd.spp.model;
 
+import com.litesuits.orm.db.annotation.PrimaryKey;
+import com.litesuits.orm.db.annotation.Table;
+import com.litesuits.orm.db.enums.AssignType;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -7,7 +11,10 @@ import java.util.List;
  * Created by XY on 2017/6/15.
  */
 
+@Table("merchant_good")
 public class GoodM implements Serializable {
+
+
 
     /**
      * GoodsTypeCode : 82f8c4e0011c4079a7d9b483e98127f6
@@ -24,19 +31,23 @@ public class GoodM implements Serializable {
      * Goods : []
      */
 
-    int adapterP=-1;
-    private String GoodsTypeCode;
-    private String GoodsTypeName;
-    private String GoodsCode;
-    private String GoodsTitle;
-    private String Content;
-    private String LogoPaths;
-    private String YPrice;
-    private String XPrice;
-    private int SaleNumber;
-    private int IsSpec;
-    private String ParentCode;
-    private List<GoodM> Goods;
+    public int adapterP=-1;
+    public String GoodsTypeCode;
+    public String GoodsTypeName;
+
+    @PrimaryKey(AssignType.BY_MYSELF)
+    public String GoodsCode;
+
+    public String GoodsTitle;
+    public String Content;
+    public String LogoPaths;
+    public String YPrice;
+    public String XPrice;
+    public int SaleNumber;
+    public int IsSpec;
+    public String ParentCode;
+    public List<GoodM> Goods;
+
 
     public String getGoodsTypeCode() {
         return GoodsTypeCode;

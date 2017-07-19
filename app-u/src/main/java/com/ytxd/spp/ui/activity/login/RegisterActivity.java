@@ -77,9 +77,9 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
                 String invitecode = etInviteCode.getText().toString();
                 if (AbStrUtil.isEmpty(phone)) {
                     ToastUtil.showToastShort(this, "请输入手机号");
-                } else if (AbStrUtil.isEmpty(smsCode)) {
+                } /*else if (AbStrUtil.isEmpty(smsCode)) {
                     showToast("验证码未接收到?");
-                } else if (AbStrUtil.isEmpty(pwd)) {
+                } */else if (AbStrUtil.isEmpty(pwd)) {
                     ToastUtil.showToastShort(this, "请输入密码");
                 }
                /* else if (!code.equals(this.smsCode)) {

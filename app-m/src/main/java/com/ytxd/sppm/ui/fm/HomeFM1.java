@@ -20,6 +20,7 @@ import com.ytxd.sppm.ui.fm.order.OrderFM3;
 import com.ytxd.sppm.ui.fm.order.OrderFM4;
 import com.ytxd.sppm.ui.fm.order.OrderFM5;
 import com.ytxd.sppm.ui.fm.order.OrderFM6;
+import com.ytxd.sppm.ui.fm.order.OrderFM6S;
 import com.ytxd.sppm.ui.fm.order.OrderFM7;
 
 import butterknife.BindView;
@@ -38,7 +39,7 @@ public class HomeFM1 extends BaseFragment {
     ViewPager vp;
     private Unbinder unbinder;
 
-    private String[] titles = new String[]{"全部", "待接单", "待配送", "正在配送", "已完成", "已取消", "已退款"};
+    private String[] titles = new String[]{"全部", "待接单", "待配送", "正在配送", "已完成", "已取消-商家", "已取消-用户", "已退款"};
 
 
 /*    @Override
@@ -57,7 +58,7 @@ public class HomeFM1 extends BaseFragment {
     public void initView() {
         MyPagerAdapter adapter = new MyPagerAdapter(getChildFragmentManager());
         vp.setAdapter(adapter);
-        vp.setOffscreenPageLimit(7);
+        vp.setOffscreenPageLimit(8);
         tab.setViewPager(vp, titles);
     }
 
@@ -113,8 +114,11 @@ public class HomeFM1 extends BaseFragment {
                 OrderFM6 fragment6 = new OrderFM6();
                 return fragment6;
             } else if (position == 6) {
-                OrderFM7 fragment7 = new OrderFM7();
+                OrderFM6S fragment7 = new OrderFM6S();
                 return fragment7;
+            } else if (position == 7) {
+                OrderFM7 fragment8 = new OrderFM7();
+                return fragment8;
             }
             return null;
         }
@@ -126,6 +130,6 @@ public class HomeFM1 extends BaseFragment {
     }
 
     public void onEvent(SetOrderFMEvent event) {
-        tab.setCurrentTab(event.position,true);
+        tab.setCurrentTab(event.position, true);
     }
 }

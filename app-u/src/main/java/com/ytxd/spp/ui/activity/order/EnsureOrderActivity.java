@@ -15,7 +15,9 @@ import com.ytxd.spp.base.BaseActivity;
 import com.ytxd.spp.event.CartListClearRefreshEvent;
 import com.ytxd.spp.event.RefreshOrderListEvent;
 import com.ytxd.spp.event.SelectAddressEvent;
+import com.ytxd.spp.event.SelectArriveTimeEvent;
 import com.ytxd.spp.model.AddressM;
+import com.ytxd.spp.model.ArriveTimeM;
 import com.ytxd.spp.model.CouponM;
 import com.ytxd.spp.model.LocalShoppingCartM;
 import com.ytxd.spp.model.MerchantM;
@@ -25,6 +27,7 @@ import com.ytxd.spp.presenter.EnsureOrderPresenter;
 import com.ytxd.spp.ui.activity.mine.AddressManaActivity;
 import com.ytxd.spp.ui.activity.mine.DiscountCouponActivity;
 import com.ytxd.spp.ui.adapter.OrderSubGoodsLV;
+import com.ytxd.spp.ui.dialog.SelectSendTimeDialog;
 import com.ytxd.spp.ui.views.InListView;
 import com.ytxd.spp.ui.views.MutilRadioGroup;
 import com.ytxd.spp.util.AbDateUtil;
@@ -105,6 +108,11 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
     float yp/*原价*/, sp/*实际支付*/, dp/*优惠价格*/;
     MerchantM.ManJianBean manJian;
     CouponM couponM;
+    ArriveTimeM arriveTimeM;
+    @BindView(R.id.tv_arrive_day)
+    TextView tvArriveDay;
+    @BindView(R.id.tv_arrive_hour)
+    TextView tvArriveHour;
 
     @Override
     protected void initPresenter() {
@@ -120,6 +128,9 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
         presenter.getADList();
         getBar().initActionBar("确认订单", this);
         merchant = (MerchantM) getIntent().getSerializableExtra("merchant");
+        arriveTimeM=new ArriveTimeM(merchant.getPSWhenLong(),new Date().getTime());
+        tvArriveDay.setText(arriveTimeM.getTimeDesrcDay());
+        tvArriveHour.setText(arriveTimeM.getTimeDesrcHour()+"左右");
         merchantCode = merchant.getSupermarketCode();
         mAdapter = new OrderSubGoodsLV(new ArrayList<ShoppingCartM.Goods>(), this);
         lvSubGoods.setAdapter(mAdapter);
@@ -214,7 +225,7 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
     }
 
 
-    @OnClick({R.id.ll_address, R.id.ll_no_address, R.id.ll_remark, R.id.ll_shop, R.id.ll_youhuiquan, R.id.btn_pay})
+    @OnClick({R.id.ll_address, R.id.ll_no_address, R.id.ll_remark, R.id.ll_shop, R.id.ll_youhuiquan, R.id.btn_pay, R.id.ll_distri_select})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_address:
@@ -250,12 +261,20 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
                     orderM.setYPrice(CommonUtils.getFloatString2(yp) + "");
                     orderM.setSupermarketCode(merchantCode);
                     orderM.setSuperMarketModel(merchant);
-                    orderM.setSDTime(AbDateUtil.getStringByFormat(new Date(), AbDateUtil.dateFormatYMDHMS));
+                    orderM.setSDTime(AbDateUtil.getStringByFormat(arriveTimeM.getTimeAfter(), AbDateUtil.dateFormatYMDHMS));
                     orderM.setPSPrice(merchant.getPSPrice());
                     presenter.ensureOrder(orderM);
                 }
 
 
+                break;
+
+            case R.id.ll_distri_select:
+                SelectSendTimeDialog selectSendTimeDialog = new SelectSendTimeDialog();
+                Bundle data = new Bundle();
+                data.putInt("pst",merchant.getPSWhenLong());
+                selectSendTimeDialog.setArguments(data);
+                selectSendTimeDialog.show(getFragmentManager(), "SelectSendTimeDialog");
                 break;
         }
     }
@@ -300,13 +319,13 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
             addressM = address;
             llAddress.setVisibility(View.VISIBLE);
             llNoAddress.setVisibility(View.GONE);
-            CommonUtils.setText(tvAddress, address.getAddressTitle()+address.getAddressContent());
+            CommonUtils.setText(tvAddress, address.getAddressTitle() + address.getAddressContent());
             CommonUtils.setText(tvAddressName, address.getContacts());
             CommonUtils.setText(tvAddressPhone, address.getPhone());
-            if (!CommonUtils.isInConfines(merchant,new LatLonPoint(Double.valueOf(addressM.getLat()), Double.valueOf(addressM.getLng())))) {
+            if (!CommonUtils.isInConfines(merchant, new LatLonPoint(Double.valueOf(addressM.getLat()), Double.valueOf(addressM.getLng())))) {
                 btnPay.setEnabled(false);
                 btnPay.setText("超配送范围");
-            }else{
+            } else {
                 btnPay.setEnabled(true);
             }
 
@@ -317,6 +336,12 @@ public class EnsureOrderActivity extends BaseActivity<EnsureOrderPresenter> impl
 
     public void onEvent(SelectAddressEvent event) {
         setAddressData(event.addressM);
+    }
+
+    public void onEvent(SelectArriveTimeEvent event) {
+        arriveTimeM = event.timeM;
+        tvArriveDay.setText(arriveTimeM.getTimeDesrcDay());
+        tvArriveHour.setText(arriveTimeM.getTimeDesrcHour()+"左右");
     }
 
     @Override

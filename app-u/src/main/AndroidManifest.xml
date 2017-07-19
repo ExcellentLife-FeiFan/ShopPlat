@@ -139,7 +139,8 @@
         <activity
             android:name=".ui.activity.login.ChangePwdActivity"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity android:name=".ui.activity.main.MerchantDetailActivity" />
+        <activity android:name=".ui.activity.main.MerchantDetailActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name=".ui.activity.main.HomeSearchActivity" />
         <activity android:name=".ui.activity.mine.AddressManaActivity" />
         <activity android:name=".ui.activity.main.GoodDetailActivity" />
@@ -165,7 +166,7 @@
         <activity android:name=".ui.activity.mine.account.BindNewPhone2Activity" />
         <activity android:name=".ui.activity.order.PayActivity" />
         <activity android:name=".ui.activity.mine.account.EditNicknameActivity"></activity>
-
+        <activity android:name=".ui.activity.main.GoodSearchActivity"></activity>
 
 
         //////////////////极光推送///////////////////////////////////////////////////

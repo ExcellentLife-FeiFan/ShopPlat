@@ -132,7 +132,7 @@ public class OrderFM2 extends BaseFragment<OrderFMPresenter> implements BaseQuic
 
     @Override
     public void cancelSuccess(int position) {
-        mAdapter.getItem(position).setOrderStateCode(OrderM.CANCEL);
+        mAdapter.getItem(position).setOrderStateCode(OrderM.CANCEL_M);
         mAdapter.notifyItemChanged(position);
         EventBus.getDefault().post(new CancelSuccessEvent(mAdapter.getItem(position)));
     }

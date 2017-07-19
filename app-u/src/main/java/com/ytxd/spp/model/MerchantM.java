@@ -65,7 +65,7 @@ public class MerchantM implements Serializable {
     private String QSPrice;
     private String PSPrice;
     private String Confines;
-    private Object PSWhenLong;
+    private int PSWhenLong;
     private String KeyWord;
     private String LogoUrl;
     private String Notice;
@@ -223,11 +223,11 @@ public class MerchantM implements Serializable {
         this.Confines = Confines;
     }
 
-    public Object getPSWhenLong() {
+    public int getPSWhenLong() {
         return PSWhenLong;
     }
 
-    public void setPSWhenLong(Object PSWhenLong) {
+    public void setPSWhenLong(int PSWhenLong) {
         this.PSWhenLong = PSWhenLong;
     }
 

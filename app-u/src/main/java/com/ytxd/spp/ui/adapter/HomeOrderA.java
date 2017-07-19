@@ -94,7 +94,11 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
                 }
                 helper.tvAgain.setVisibility(View.VISIBLE);
                 break;
-            case OrderM.CANCEL:
+            case OrderM.CANCEL_U:
+                CommonUtils.setText(helper.tvState, "已取消");
+                helper.tvAgain.setVisibility(View.VISIBLE);
+                break;
+            case OrderM.CANCEL_M:
                 CommonUtils.setText(helper.tvState, "已取消");
                 helper.tvAgain.setVisibility(View.VISIBLE);
                 break;

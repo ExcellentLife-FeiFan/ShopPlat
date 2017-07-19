@@ -13,8 +13,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kennyc.view.MultiStateView;
 import com.ytxd.sppm.R;
 import com.ytxd.sppm.base.BaseFragment;
-import com.ytxd.sppm.event.CancelSuccessEvent;
-import com.ytxd.sppm.event.RefundSuccessEvent;
 import com.ytxd.sppm.model.OrderM;
 import com.ytxd.sppm.presenter.OrderFMPresenter;
 import com.ytxd.sppm.ui.adapter.HomeOrderA;
@@ -27,14 +25,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import de.greenrobot.event.EventBus;
 
 
 /**
  * Created by apple on 2017/3/29.
  */
 
-public class OrderFM6 extends BaseFragment<OrderFMPresenter> implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener, IOrderFMView {
+public class OrderFM6S extends BaseFragment<OrderFMPresenter> implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener, IOrderFMView {
     @BindView(R.id.rv)
     RecyclerView rv;
     @BindView(R.id.msv)
@@ -73,7 +70,7 @@ public class OrderFM6 extends BaseFragment<OrderFMPresenter> implements BaseQuic
 //                startActivity(MerchantDetailActivity.class, "data", mAdapter.getItem(i));
             }
         });
-        presenter.getOrderList(CommonUtils.REFRESH, page, OrderM.CANCEL_M);
+        presenter.getOrderList(CommonUtils.REFRESH, page, OrderM.CANCEL_U);
     }
 
     @Override
@@ -126,9 +123,7 @@ public class OrderFM6 extends BaseFragment<OrderFMPresenter> implements BaseQuic
 
     @Override
     public void refundSuccess(int position) {
-        mAdapter.getItem(position).setOrderStateCode(OrderM.HAVE_REFUND);
-        mAdapter.notifyItemChanged(position);
-        EventBus.getDefault().post(new RefundSuccessEvent(mAdapter.getItem(position)));
+
     }
 
     @Override
@@ -154,12 +149,12 @@ public class OrderFM6 extends BaseFragment<OrderFMPresenter> implements BaseQuic
 
     @Override
     public void onRefresh() {
-        presenter.getOrderList(CommonUtils.REFRESH, 1, OrderM.CANCEL_M);
+        presenter.getOrderList(CommonUtils.REFRESH, 1, OrderM.CANCEL_U);
     }
 
     @Override
     public void onLoadMoreRequested() {
-        presenter.getOrderList(CommonUtils.LODEMORE, ++page, OrderM.CANCEL_M);
+        presenter.getOrderList(CommonUtils.LODEMORE, ++page, OrderM.CANCEL_U);
     }
 
     @Override
@@ -175,15 +170,4 @@ public class OrderFM6 extends BaseFragment<OrderFMPresenter> implements BaseQuic
         }
     }
 
-    public void onEvent(CancelSuccessEvent event) {
-        mAdapter.getData().add(0, event.orderM);
-        mAdapter.notifyDataSetChanged();
-    }
-
-    public void onEvent(RefundSuccessEvent event) {
-        if (mAdapter.getData().remove(event.orderM)) {
-            mAdapter.notifyDataSetChanged();
-        }
-        showContent();
-    }
 }

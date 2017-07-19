@@ -43,6 +43,7 @@
                 android:textSize="@dimen/text_size_micro" />
 
             <TextView
+                android:id="@+id/tv_arrive_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/default_ui_margin_micro"

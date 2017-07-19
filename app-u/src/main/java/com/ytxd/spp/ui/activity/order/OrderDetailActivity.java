@@ -78,6 +78,8 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     @BindView(R.id.btn_ensure)
     Button btnEnsure;
     int position = -1;
+    @BindView(R.id.tv_distr_time)
+    TextView tvDistrTime;
 
 
     @Override
@@ -106,6 +108,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
             if (dp > 0) {
                 tvDiscountP.setText("优惠 ¥" + CommonUtils.getFloatString2(dp));
             }
+            CommonUtils.setText(tvDistrTime, CommonUtils.getSDTimeDesrcDay(orderM.getSDTime()));
             CommonUtils.setText(tvOrderCode, orderM.getOrderCode());
             CommonUtils.setText(tvOrderTime, orderM.getCreateTime().replace("T", " "));
             CommonUtils.setText(tvAddress, orderM.getAddressTitle() + orderM.getAddressContent());
@@ -124,7 +127,10 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
             } else if (orderM.getOrderStateCode().equals(OrderM.SUCCESS)) {
                 CommonUtils.setText(tvOrderState, "交易成功");
                 btnOneMore.setVisibility(View.VISIBLE);
-            } else if (orderM.getOrderStateCode().equals(OrderM.CANCEL)) {
+            } else if (orderM.getOrderStateCode().equals(OrderM.CANCEL_U)) {
+                CommonUtils.setText(tvOrderState, "已取消");
+                btnOneMore.setVisibility(View.VISIBLE);
+            } else if (orderM.getOrderStateCode().equals(OrderM.CANCEL_M)) {
                 CommonUtils.setText(tvOrderState, "已取消");
                 btnOneMore.setVisibility(View.VISIBLE);
             } else if (orderM.getOrderStateCode().equals(OrderM.HAVE_REFUND)) {
@@ -217,10 +223,10 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     public void cancelSuccess() {
         showToast("订单取消成功");
         tvOrderState.setText("已取消");
-        orderM.setOrderCode(OrderM.CANCEL);
+        orderM.setOrderCode(OrderM.CANCEL_U);
         llPay.setVisibility(View.GONE);
         btnOneMore.setVisibility(View.VISIBLE);
-        EventBus.getDefault().post(new OrderChangevent(position, OrderM.CANCEL));
+        EventBus.getDefault().post(new OrderChangevent(position, OrderM.CANCEL_U));
     }
 
     @Override

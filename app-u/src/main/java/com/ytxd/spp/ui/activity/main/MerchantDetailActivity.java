@@ -44,21 +44,25 @@ import com.ytxd.spp.event.GoodMinusEvent;
 import com.ytxd.spp.event.MerchantSelectGoodStandEvent;
 import com.ytxd.spp.event.RefreshGoodRVEvent;
 import com.ytxd.spp.event.RefreshLoginEvent;
+import com.ytxd.spp.model.GoodM;
 import com.ytxd.spp.model.LocalShoppingCartM;
 import com.ytxd.spp.model.MerchantM;
 import com.ytxd.spp.net.Apis;
 import com.ytxd.spp.presenter.MerchantPresenter;
 import com.ytxd.spp.ui.activity.order.EnsureOrderActivity;
 import com.ytxd.spp.ui.activity.order.ShoppingCartActivity;
+import com.ytxd.spp.ui.dialog.BookSearchPop;
 import com.ytxd.spp.ui.dialog.MerchantCartListDialog;
 import com.ytxd.spp.ui.fm.merchant.MerchantEvaluateFM;
 import com.ytxd.spp.ui.fm.merchant.MerchantGoodFM;
 import com.ytxd.spp.ui.views.MyExpandableLayout;
 import com.ytxd.spp.util.AbStrUtil;
 import com.ytxd.spp.util.CommonUtils;
+import com.ytxd.spp.util.HideUtil;
 import com.ytxd.spp.util.ImageLoadUtil;
 import com.ytxd.spp.util.ShoppingCartUtil;
 import com.ytxd.spp.view.IMerchantView;
+import com.zaaach.toprightmenu.TopRightMenu;
 
 import java.util.List;
 
@@ -122,6 +126,8 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
     BlurredView blurredview;
     @BindView(R.id.app_bar)
     AppBarLayout appBar;
+    private TopRightMenu mTopRightMenu;
+    BookSearchPop bookSearchPop;
 
 
     @Override
@@ -134,6 +140,7 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_merchant_detail);
+        HideUtil.init(this);
         ButterKnife.bind(this);
         SystemBarHelper.immersiveStatusBar(this, 0f);
         merchantM = (MerchantM) getIntent().getSerializableExtra("data");
@@ -144,6 +151,30 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
     }
 
     private void initViews() {
+        mTopRightMenu = new TopRightMenu(this);
+        mTopRightMenu
+                .setHeight(200)     //默认高度480
+                .setWidth(380)      //默认宽度wrap_content
+                .showIcon(false)     //显示菜单图标，默认为true
+                .dimBackground(false)        //背景变暗，默认为true
+                .needAnimationStyle(true)   //显示动画，默认为true
+                .setAnimationStyle(R.style.TRM_ANIM_STYLE)
+                .addMenuItem(new com.zaaach.toprightmenu.MenuItem(R.drawable.ic_home_search, "店内搜索"))
+                .setOnMenuItemClickListener(new TopRightMenu.OnMenuItemClickListener() {
+                    @Override
+                    public void onMenuItemClick(int position) {
+                        if (position == 0) {
+                            if (null == bookSearchPop) {
+                                bookSearchPop = new BookSearchPop(activity, merchantM);
+                            }
+                            if (bookSearchPop.isShowing()) {
+                                bookSearchPop.dismiss();
+                            }else{
+                                bookSearchPop.showAtLocation(mainLayout,Gravity.TOP,0,0);
+                            }
+                        }
+                    }
+                });
 
         MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());
         vp.setAdapter(adapter);
@@ -205,7 +236,7 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
         }
         tvQisongP.setText("¥" + merchantM.getQSPrice() + "起送");
         tvDistriP.setText("配送费¥" + merchantM.getPSPrice());
-        CommonUtils.setText(tvNotice,merchantM.getNotice());
+        CommonUtils.setText(tvNotice, merchantM.getNotice());
         toolbar.setTitle(merchantM.getName());
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -276,7 +307,7 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
     }
 
     public void refreshCartLayoutData() {
-        List<LocalShoppingCartM> beans =  ShoppingCartUtil.getLocalShoppingCartMs(merchantCode);
+        List<LocalShoppingCartM> beans = ShoppingCartUtil.getLocalShoppingCartMs(merchantCode);
         btnOk.setText("选好了");
         btnOk.setEnabled(true);
         if (beans.size() > 0) {
@@ -292,7 +323,7 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
                 if (p >= qs) {
                     btnOk.setEnabled(true);
                 } else {
-                    btnOk.setText("满"+merchantM.getQSPrice()+"送");
+                    btnOk.setText("满" + merchantM.getQSPrice() + "送");
                     btnOk.setEnabled(false);
                 }
             } else {
@@ -309,8 +340,8 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
             btnOk.setEnabled(false);
         }
 
-        String canBuyS=ShoppingCartUtil.canBuy(merchantM);
-        if(!canBuyS.equals("OK")){
+        String canBuyS = ShoppingCartUtil.canBuy(merchantM);
+        if (!canBuyS.equals("OK")) {
             btnOk.setEnabled(false);
             btnOk.setText(canBuyS);
         }
@@ -353,7 +384,7 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
         switch (view.getId()) {
             case R.id.btn_ok:
                 if (!tvTotalNum.getText().toString().equals("0")) {
-                    if(CommonUtils.isLogined(this,true)){
+                    if (CommonUtils.isLogined(this, true)) {
                         startActivity(EnsureOrderActivity.class, "merchant", merchantM);
                     }
                 }
@@ -461,8 +492,8 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
             case R.id.cart:
                 startActivity(ShoppingCartActivity.class);
                 break;
-
             case R.id.more:
+                mTopRightMenu.showAsDropDown(toolbar, toolbar.getWidth() - 400, -30);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -478,7 +509,7 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
     }
 
     public void showBottomCart() {
-        if(rlCart.getVisibility()==View.VISIBLE){
+        if (rlCart.getVisibility() == View.VISIBLE) {
             return;
         }
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.push_bottom_in);
@@ -502,7 +533,7 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
     }
 
     public void dissmissBottomCart() {
-        if(rlCart.getVisibility()==View.GONE){
+        if (rlCart.getVisibility() == View.GONE) {
             return;
         }
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.push_bottom_out);
@@ -528,16 +559,22 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==1001){
-            if(data.getBooleanExtra("payback",false)){
-                List<LocalShoppingCartM> beans =  ShoppingCartUtil.getLocalShoppingCartMs(merchantCode);
-                ShoppingCartUtil.deleteCart(this,merchantCode);
+        if (resultCode == 1001) {
+            if (data.getBooleanExtra("payback", false)) {
+                List<LocalShoppingCartM> beans = ShoppingCartUtil.getLocalShoppingCartMs(merchantCode);
+                ShoppingCartUtil.deleteCart(this, merchantCode);
                 App.initDataBase(this);
-                ShoppingCartUtil.deleteCart(this,merchantCode);
+                ShoppingCartUtil.deleteCart(this, merchantCode);
                 App.liteOrm.save(beans);
                 startActivity(EnsureOrderActivity.class, "merchant", merchantM);
                 EventBus.getDefault().post(new RefreshLoginEvent());
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        int l = App.liteOrm.delete(GoodM.class);
     }
 }

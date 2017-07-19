@@ -203,7 +203,7 @@ public class Apis {
      * @param UserCouponCode:用户优惠券编号(上一个参数为1的情况，就更新这个优惠券可以恢复使用)
      * @param CancelInfo:删除原因(100个以内字符)
      */
-    public static String CancelOrder = BASE_URL + "/API_User/DeleteOrder";
+    public static String UserCancelOrder = BASE_URL + "/API_User/UserCancelOrder";
 
 
     /**
@@ -296,13 +296,16 @@ public class Apis {
     public static String ModifyNickName = BASE_URL + "/API_User/ModifyNickName";
 
     /**
-     * 修改昵称
+     * 设置推送别名
      *
      * @param UserCode:用户编号
      * @param AndroidOrIos:安卓=1，苹果=2
      * @param TSAlias:alias
      */
     public static String UpdateUserAlias = BASE_URL + "/API_User/UpdateUserAlias";
+
+
+
 
 
 }

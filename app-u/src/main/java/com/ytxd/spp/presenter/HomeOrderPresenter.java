@@ -61,47 +61,4 @@ public class HomeOrderPresenter extends BasePresenter<IHomeOrderView> {
 
     }
 
-    /*private void loadData(List<OrderM2> items) {
-        Map<String, List<OrderM2>> maps = new LinkedHashMap<>();
-        for (int i = 0; i < items.size(); i++) {
-            if (maps.containsKey(items.get(i).getOrderCode())) {
-                maps.get(items.get(i).getOrderCode()).add(items.get(i));
-            } else {
-                List<OrderM2> ors = new ArrayList<>();
-                ors.add(items.get(i));
-                maps.put(items.get(i).getOrderCode(), ors);
-            }
-        }
-        List<OrderM> datas = new ArrayList<>();
-        String[] keyss = new String[]{};
-        String[] keys = maps.keySet().toArray(keyss);
-        for (int i = 0; i < keys.length; i++) {
-            List<OrderM2> ors = maps.get(keys[i]);
-            OrderM order = ors.get(0);
-            List<ShoppingCartM.Goods> goods = new ArrayList<>();
-            for (int i1 = 0; i1 < ors.size(); i1++) {
-                ShoppingCartM.Goods good = new ShoppingCartM.Goods();
-                good.setCount(ors.get(i1).getBuyNumber());
-                GoodM goodM = new GoodM();
-                goodM.setGoodsTitle(ors.get(i1).getGoodsTitle());
-                goodM.setGoodsCode(ors.get(i1).getGoodsCode());
-                goodM.setContent(ors.get(i1).getContent());
-                goodM.setGoodsTypeCode(ors.get(i1).getGoodsTypeCode());
-                goodM.setLogoPaths(ors.get(i1).getLogoPaths());
-                goodM.setYPrice(ors.get(i1).getYPrice());
-                goodM.setXPrice(ors.get(i1).getXPrice());
-                good.setGoodM(goodM);
-                goods.add(good);
-            }
-//            order.setGoods(goods);
-            datas.add(order);
-        }
-        if (datas.size() > 5) {
-            datas = datas.subList(0, 5);
-        }
-        iView.lodeSuccess(datas);
-
-    }*/
-
-
 }

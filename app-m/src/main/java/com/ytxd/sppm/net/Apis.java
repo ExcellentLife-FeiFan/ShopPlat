@@ -89,7 +89,7 @@ public class Apis {
      * @param UserCouponCode:用户优惠券编号(上一个参数为1的情况，就更新这个优惠券可以恢复使用)
      * @param CancelInfo:删除原因(100个以内字符)
      */
-    public static String CancelOrder = BASE_URL + "/API_User/DeleteOrder";
+    public static String SupermarketCancelOrder = BASE_URL + "/API_CS/SupermarketCancelOrder";
 
 
 

@@ -32,6 +32,7 @@ public class HomeMerchantA extends BaseQuickAdapter<MerchantM, HomeMerchantItemV
         ImageLoadUtil.setImageNP(item.getLogoUrl(), helper.icon, mContext,0.8f);
         List<MerchantM.ManJianBean> actis = item.getManJian();
         helper.tvActiNum.setText(actis.size() + "个活动");
+        helper.tvDistriTime.setText(item.getPSWhenLong() + "分钟");
         helper.tvDistance.setText(CommonUtils.getFloatString2(item.getDistance()/1000f)+"km");
         ViewGroup header = (ViewGroup) helper.expandActi.getHeaderRelativeLayout().findViewById(R.id.ll_ex_header);
         ViewGroup content = (ViewGroup) helper.expandActi.getContentRelativeLayout().findViewById(R.id.ll_ex_content);

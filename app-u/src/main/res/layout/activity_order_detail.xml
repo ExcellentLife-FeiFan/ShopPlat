@@ -264,6 +264,7 @@
                                 android:textSize="@dimen/text_size_common" />
 
                             <TextView
+                                android:id="@+id/tv_distr_time"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"

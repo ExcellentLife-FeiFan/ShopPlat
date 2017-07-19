@@ -57,7 +57,7 @@ public class OrderDetailPresenter extends BasePresenter<IOrderDetailView> {
     public void cancel(String orderCode,String userCouponCode,String reson) {
         CommonUtils.showDialog(context);
         boolean isH=!userCouponCode.equals("0");
-        OkGo.<ApiResult<Object>>get(Apis.CancelOrder)//
+        OkGo.<ApiResult<Object>>get(Apis.UserCancelOrder)//
                 .params("OrderCode", orderCode)
                 .params("IsHFUserCoupon", isH?"1":"0")
                 .params("UserCouponCode", userCouponCode)

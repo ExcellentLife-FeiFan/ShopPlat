@@ -170,14 +170,16 @@
                             android:src="@drawable/ic_edit" />
 
                         <TextView
+                            android:id="@+id/tv_arrive_day"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingRight="@dimen/default_ui_margin_small"
-                            android:text="立即配送"
+                            android:text="尽快送达"
                             android:textColor="@color/black_overlay2"
                             android:textSize="@dimen/text_size_common" />
 
                         <TextView
+                            android:id="@+id/tv_arrive_hour"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableRight="@drawable/ic_gray_to"

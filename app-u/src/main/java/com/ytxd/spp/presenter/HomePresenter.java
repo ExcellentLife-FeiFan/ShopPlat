@@ -30,7 +30,7 @@ public class HomePresenter extends BasePresenter<IHomeView> {
 
     public void getSPMList(String cityName) {
         OkGo.<ApiResult<List<MerchantM>>>get(Apis.GetSupermarkeyList)//
-                .params("CityName", cityName)
+//                .params("CityName", cityName)
                 .execute(new JsonCallback<ApiResult<List<MerchantM>>>() {
                     @Override
                     public void onSuccess(Response<ApiResult<List<MerchantM>>> response) {

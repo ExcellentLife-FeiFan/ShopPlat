@@ -337,5 +337,8 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/text_size_actionbar_title</item>
     </style>
-
+    <style name="PopupAnimation" parent="android:Animation" mce_bogus="1">
+        <item name="android:windowEnterAnimation">@anim/pop_top_in</item>
+        <item name="android:windowExitAnimation">@anim/pop_top_out</item>
+    </style>
 </resources>

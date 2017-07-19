@@ -55,6 +55,7 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
         } else {
             helper.llStaff.setVisibility(View.VISIBLE);
         }
+        CommonUtils.setText(helper.tvArriveTime, AbDateUtil.getStringByFormat(CommonUtils.getFormatTimeString(item.getSDTime()),AbDateUtil.dateFormatHM));
 
         if (null != item.getDeliveryStaffModel()) {
             CommonUtils.setText(helper.txtSenderName, item.getDeliveryStaffModel().getDeliveryStaffName());
@@ -90,9 +91,13 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
             case OrderM.SUCCESS:
                 CommonUtils.setText(helper.tvState, "交易成功");
                 break;
-            case OrderM.CANCEL:
+            case OrderM.CANCEL_M:
                 helper.llCancel.setVisibility(View.VISIBLE);
                 helper.tvRefund.setVisibility(View.VISIBLE);
+                CommonUtils.setText(helper.tvState, "已取消");
+                break;
+            case OrderM.CANCEL_U:
+                helper.llCancel.setVisibility(View.VISIBLE);
                 CommonUtils.setText(helper.tvState, "已取消");
                 break;
             case OrderM.HAVE_REFUND:
@@ -101,7 +106,7 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
                 break;
         }
 
-        if (item.getOrderStateCode().equals(OrderM.HAVE_REFUND) || item.getOrderStateCode().equals(OrderM.CANCEL)) {
+        if (item.getOrderStateCode().equals(OrderM.HAVE_REFUND) || item.getOrderStateCode().equals(OrderM.CANCEL_M)||item.getOrderStateCode().equals(OrderM.CANCEL_U)) {
             CommonUtils.setText(helper.tvCancelReason, item.getCancelInfo());
         }
 
