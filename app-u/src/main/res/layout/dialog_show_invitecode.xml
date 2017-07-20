@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/v"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"></View>
+
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/bg_white"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp50"
+                android:layout_marginRight="@dimen/default_ui_margin"
+                android:gravity="center"
+                android:text="您的邀请码："
+                android:textColor="@color/black_overlay2"
+                android:textSize="@dimen/text_size_common_s" />
+
+            <TextView
+                android:id="@+id/tv_invitecode"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp50"
+                android:gravity="center"
+                android:text="MSV609965"
+                android:textColor="@color/price_color"
+                android:textSize="@dimen/text_size_large" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_ui_margin_large"
+            android:layout_marginLeft="@dimen/default_ui_margin_large"
+            android:layout_marginRight="@dimen/default_ui_margin_large"
+            android:gravity="center"
+            android:lineSpacingExtra="@dimen/dp4"
+            android:text="通过邀请其他人注册\n并在注册时加入您的注册码\n然后您就会获得相应折扣的优惠券\n是不是很给力?\n赶紧邀请小伙伴们注册吧！"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_common_s" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp70">
+
+            <Button
+                android:id="@+id/btn_copy"
+                style="@style/Common_Btn"
+                android:layout_width="@dimen/dp120"
+                android:layout_height="@dimen/dp35"
+                android:layout_centerInParent="true"
+                android:text="复制注册码" />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

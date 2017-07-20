@@ -10,6 +10,7 @@ import com.ytxd.sppm.base.App;
 import com.ytxd.sppm.base.AppManager;
 import com.ytxd.sppm.base.BaseActivity;
 import com.ytxd.sppm.ui.activity.login.LoginActivity;
+import com.ytxd.sppm.ui.activity.main.BlueToothPrintActivity;
 import com.ytxd.sppm.ui.activity.main.MainActivity;
 import com.ytxd.sppm.util.JpushUtil;
 import com.ytxd.sppm.util.SPUtil;
@@ -47,7 +48,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
     }
 
-    @OnClick({R.id.rl_account, R.id.rl_normal, R.id.rl_abount, R.id.tv_logout})
+    @OnClick({R.id.rl_account, R.id.rl_normal, R.id.rl_abount,R.id.rl_print, R.id.tv_logout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_account:
@@ -55,6 +56,9 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
             case R.id.rl_normal:
                 break;
             case R.id.rl_abount:
+                break;
+            case R.id.rl_print:
+                startActivity(BlueToothPrintActivity.class);
                 break;
             case R.id.tv_logout:
 

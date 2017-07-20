@@ -15,7 +15,6 @@
 
 
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -41,6 +40,19 @@
                 <TextView
                     style="@style/TV_VG_LEFT_WC"
                     android:text="通用" />
+
+
+            </RelativeLayout>
+
+
+            <include layout="@layout/line_gray"></include>
+            <RelativeLayout
+                android:id="@+id/rl_print"
+                style="@style/VG_padding">
+
+                <TextView
+                    style="@style/TV_VG_LEFT_WC"
+                    android:text="打印设置" />
 
 
             </RelativeLayout>

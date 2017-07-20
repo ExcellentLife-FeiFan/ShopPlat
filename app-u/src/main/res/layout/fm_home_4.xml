@@ -163,9 +163,10 @@
                     style="@style/VG_padding">
 
                     <TextView
+                        android:id="@+id/tv_invite_code"
                         style="@style/TV_VG_LEFT_DRAWABLE"
                         android:drawableLeft="@drawable/ic_mine_dianping"
-                        android:text="我的邀请码" />
+                        android:text="我的邀请码：----" />
 
 
                 </RelativeLayout>

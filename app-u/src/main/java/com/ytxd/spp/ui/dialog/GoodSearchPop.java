@@ -30,14 +30,14 @@ import java.util.List;
 /**
  * Created by Excellent on 2016/4/22.
  */
-public class BookSearchPop extends PopupWindow {
+public class GoodSearchPop extends PopupWindow {
 
     private Activity context;
     public ListView lv;
     private EditText et;
     MerchantM merchant;
 
-    public BookSearchPop(Activity context, MerchantM merchant) {
+    public GoodSearchPop(Activity context, MerchantM merchant) {
         this.context = context;
         this.merchant = merchant;
         initView();

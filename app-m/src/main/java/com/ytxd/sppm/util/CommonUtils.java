@@ -1,6 +1,8 @@
 package com.ytxd.sppm.util;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
@@ -16,13 +18,14 @@ import android.widget.TextView;
 import com.ytxd.sppm.R;
 import com.ytxd.sppm.base.App;
 import com.ytxd.sppm.base.G;
+import com.ytxd.sppm.model.OrderGoodM;
+import com.ytxd.sppm.model.OrderM;
 import com.ytxd.sppm.ui.views.loadview.CustomDialog;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 
 
 /**
@@ -304,6 +307,54 @@ public class CommonUtils {
         return b == 1 ? true : false;
     }
 
+
+    public static void printOrder(BluetoothDevice device, Context context, OrderM orderM) {
+        try {
+            ToastUtil.showToastShort(context, "开始打印订单");
+            BluetoothSocket bluetoothSocket = device.createRfcommSocketToServiceRecord(PrintUtils.uuid);
+            bluetoothSocket.connect();
+            PrintUtils.setOutputStream(bluetoothSocket.getOutputStream());
+            PrintUtils.selectCommand(PrintUtils.RESET);
+            PrintUtils.selectCommand(PrintUtils.LINE_SPACING_DEFAULT);
+            PrintUtils.selectCommand(PrintUtils.ALIGN_CENTER);
+            PrintUtils.selectCommand(PrintUtils.DOUBLE_HEIGHT_WIDTH);
+            PrintUtils.printText(App.user.getName() + "\n\n");
+            PrintUtils.selectCommand(PrintUtils.NORMAL);
+            PrintUtils.selectCommand(PrintUtils.ALIGN_LEFT);
+            PrintUtils.printText(PrintUtils.printTwoData("编号:", orderM.getOrderCode() + "\n"));
+            PrintUtils.printText("\n\n");
+            PrintUtils.printText(PrintUtils.printTwoData("下单时间:", AbDateUtil.getStringByFormat(CommonUtils.getFormatTimeString(orderM.getCreateTime()), AbDateUtil.dateFormatYMDHM) + "\n"));
+            PrintUtils.printText(PrintUtils.printTwoData("期望送达时间:", AbDateUtil.getStringByFormat(CommonUtils.getFormatTimeString(orderM.getSDTime()), AbDateUtil.dateFormatYMDHM) + "\n"));
+            PrintUtils.printText("--------------------------------\n");
+            PrintUtils.selectCommand(PrintUtils.BOLD);
+            PrintUtils.printText(PrintUtils.printThreeData("名称", "数量", "金额\n"));
+            PrintUtils.printText("--------------------------------\n");
+            PrintUtils.selectCommand(PrintUtils.BOLD_CANCEL);
+            for (int i = 0; i < orderM.getChildrenGoods().size(); i++) {
+                OrderGoodM goodM = orderM.getChildrenGoods().get(i);
+                PrintUtils.printText(PrintUtils.printThreeData(goodM.getGoodsTitle(), goodM.getBuyNumber() + "", goodM.getXPrice() + "\n"));
+            }
+            PrintUtils.printText(PrintUtils.printTwoData("配送费", orderM.getPSPrice() + "\n"));
+            PrintUtils.printText("--------------------------------\n");
+            PrintUtils.printText(PrintUtils.printTwoData("合计", orderM.getYPrice() + "\n"));
+            PrintUtils.printText(PrintUtils.printTwoData("优惠", CommonUtils.getFloatString2(Float.valueOf(orderM.getYPrice()) - Float.valueOf(orderM.getSJPrice())) + "\n"));
+            PrintUtils.printText("--------------------------------\n");
+            PrintUtils.printText(PrintUtils.printTwoData("实收", orderM.getSJPrice() + "\n"));
+            PrintUtils.printText("--------------------------------\n");
+            PrintUtils.selectCommand(PrintUtils.ALIGN_LEFT);
+            PrintUtils.printText("姓名：" + orderM.getContacts() + "   " + "电话:" + orderM.getPhone() + "\n");
+            PrintUtils.printText("地址：" + orderM.getAddressTitle() + "-" + orderM.getAddressContent() + "\n");
+            PrintUtils.printText("--------------------------------\n");
+            PrintUtils.printText("备注：" + orderM.getRemarks());
+            PrintUtils.printText("\n\n\n\n");
+            bluetoothSocket.close();
+            ToastUtil.showToastShort(context, "打印的订单成功");
+        } catch (Exception e) {
+            ToastUtil.showToastShort(context, "该设备不是打印机或连接失败");
+            e.printStackTrace();
+        }
+
+    }
 
 
 }

@@ -72,6 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp40"
             android:paddingLeft="@dimen/padding_left"
+            android:paddingRight="@dimen/padding_left"
             android:layout_gravity="center_vertical|left"
             app:tl_indicator_margin_left="0dp"
             app:tl_indicator_margin_right="0dp"

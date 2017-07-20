@@ -76,7 +76,7 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
 
     @Override
     public void initView() {
-        AMapLocationUtil.getInstance().startLocation();
+        AMapLocationUtil.getInstance().startLocation("HomeFM1");
         refreshLayout.setOnRefreshListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
         mRecyclerView.addItemDecoration(new SimpleDividerDecoration(activity, R.color.line_gray, R.dimen.common_divider_height));
@@ -140,27 +140,29 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
     }
 
     public void onEvent(AMapLocationUpdateEvent event) {
-        if (null != event.getaMapLocation()) {
-            HomeAddressM address = new HomeAddressM();
-            address.setTitle(event.getaMapLocation().getPoiName());
-            address.setCity(event.getaMapLocation().getCity());
-            address.setAddress(event.getaMapLocation().getAddress());
-            address.setLatLng(new LatLonPoint(event.getaMapLocation().getLatitude(), event.getaMapLocation().getLongitude()));
-            addressM = address;
-            if (AbStrUtil.isEmpty(address.getTitle())) {
-                tvAddress.setText(getString(R.string.loc_fail));
+        if (AMapLocationUtil.getInstance().tag.equals("HomeFM1")) {
+            if (null != event.getaMapLocation()) {
+                HomeAddressM address = new HomeAddressM();
+                address.setTitle(event.getaMapLocation().getPoiName());
+                address.setCity(event.getaMapLocation().getCity());
+                address.setAddress(event.getaMapLocation().getAddress());
+                address.setLatLng(new LatLonPoint(event.getaMapLocation().getLatitude(), event.getaMapLocation().getLongitude()));
+                addressM = address;
+                if (AbStrUtil.isEmpty(address.getTitle())) {
+                    tvAddress.setText(getString(R.string.loc_fail));
 //                presenter.getSPMList("北京市");
+                } else {
+                    presenter.getSPMList(addressM.getCity());
+                    tvAddress.setText(address.getAddress());
+                    return;
+                }
             } else {
-                presenter.getSPMList(addressM.getCity());
-                tvAddress.setText(address.getAddress());
-                return;
-            }
-        } else {
-            addressM = null;
-            tvAddress.setText(getString(R.string.loc_fail));
+                addressM = null;
+                tvAddress.setText(getString(R.string.loc_fail));
 //            presenter.getSPMList("北京市");
+            }
+            loginFailed();
         }
-        loginFailed();
     }
 
     @Override
@@ -202,7 +204,7 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
             if (distruF >= distance) {
                 items.add(datas.get(i));
             }*/
-            if(CommonUtils.isInConfines(datas.get(i),addressM.getLatLng())){
+            if (CommonUtils.isInConfines(datas.get(i), addressM.getLatLng())) {
                 items.add(datas.get(i));
             }
         }

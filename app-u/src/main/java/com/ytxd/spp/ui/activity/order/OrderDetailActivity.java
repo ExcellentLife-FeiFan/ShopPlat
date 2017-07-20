@@ -80,6 +80,8 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     int position = -1;
     @BindView(R.id.tv_distr_time)
     TextView tvDistrTime;
+    @BindView(R.id.tv_distr_p)
+    TextView tvDistrP;
 
 
     @Override
@@ -112,6 +114,8 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
             CommonUtils.setText(tvOrderCode, orderM.getOrderCode());
             CommonUtils.setText(tvOrderTime, orderM.getCreateTime().replace("T", " "));
             CommonUtils.setText(tvAddress, orderM.getAddressTitle() + orderM.getAddressContent());
+            CommonUtils.setText(tvDistrP, "¥"+orderM.getPSPrice());
+
             if (orderM.getOrderStateCode().equals(OrderM.WATING_PAY)) {
                 CommonUtils.setText(tvOrderState, "等待支付");
                 llPay.setVisibility(View.VISIBLE);

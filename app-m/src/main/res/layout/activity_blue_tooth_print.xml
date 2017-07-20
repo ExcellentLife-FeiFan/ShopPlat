@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <com.ytxd.sppm.ui.views.ActionBarView
+        android:id="@+id/actionBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionbar_height" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.kennyc.view.MultiStateView
+            android:id="@+id/msv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:msv_emptyView="@layout/bluetooth_empty_view"
+            app:msv_loadingView="@layout/common_progress_view"
+            app:msv_viewState="loading">
+
+            <ListView
+                android:id="@+id/lv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@color/common_divider_color"
+                android:dividerHeight="@dimen/divider_height"
+                android:scrollbars="none" />
+        </com.kennyc.view.MultiStateView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

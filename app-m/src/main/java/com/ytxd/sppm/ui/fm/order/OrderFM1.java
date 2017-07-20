@@ -1,6 +1,7 @@
 package com.ytxd.sppm.ui.fm.order;
 
 
+import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +26,8 @@ import com.ytxd.sppm.presenter.OrderFMPresenter;
 import com.ytxd.sppm.ui.adapter.HomeOrderA;
 import com.ytxd.sppm.ui.views.SimpleDividerDecoration;
 import com.ytxd.sppm.util.CommonUtils;
+import com.ytxd.sppm.util.PrintUtils;
+import com.ytxd.sppm.util.ToastUtil;
 import com.ytxd.sppm.view.IOrderFMView;
 
 import java.util.ArrayList;
@@ -122,6 +125,12 @@ public class OrderFM1 extends BaseFragment<OrderFMPresenter> implements BaseQuic
         mAdapter.getItem(position).setOrderStateCode(OrderM.SENDING);
         mAdapter.notifyItemChanged(position);
         EventBus.getDefault().post(new SetSenddingSuccessEvent(mAdapter.getItem(position)));
+
+        if (null != PrintUtils.bluetoothDevice && PrintUtils.bluetoothDevice.getBondState() == BluetoothDevice.BOND_BONDED) {
+            CommonUtils.printOrder(PrintUtils.bluetoothDevice, activity, mAdapter.getItem(position));
+        }else{
+            ToastUtil.showToastShort(activity, "未设置打印设备");
+        }
     }
 
     @Override

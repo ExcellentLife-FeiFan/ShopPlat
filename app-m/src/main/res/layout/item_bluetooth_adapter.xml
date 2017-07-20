@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tv_cuurent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/padding_left"
+        android:text="【当前】"
+        android:visibility="gone"
+        android:textColor="@color/price_color"
+        android:textSize="@dimen/text_size_common_s" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="@dimen/default_ui_margin_medium"
+        android:layout_marginLeft="@dimen/padding_left2"
+        android:layout_marginTop="@dimen/default_ui_margin_medium"
+        android:text="设备名"
+        android:textColor="@color/black_overlay2"
+        android:textSize="@dimen/text_size_common_s" />
+
+
+    <TextView
+        android:id="@+id/tv_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/default_ui_margin_large"
+        android:text="190.093.03"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_size_common_s" />
+
+</LinearLayout>

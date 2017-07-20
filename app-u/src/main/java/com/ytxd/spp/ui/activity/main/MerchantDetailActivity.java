@@ -51,7 +51,7 @@ import com.ytxd.spp.net.Apis;
 import com.ytxd.spp.presenter.MerchantPresenter;
 import com.ytxd.spp.ui.activity.order.EnsureOrderActivity;
 import com.ytxd.spp.ui.activity.order.ShoppingCartActivity;
-import com.ytxd.spp.ui.dialog.BookSearchPop;
+import com.ytxd.spp.ui.dialog.GoodSearchPop;
 import com.ytxd.spp.ui.dialog.MerchantCartListDialog;
 import com.ytxd.spp.ui.fm.merchant.MerchantEvaluateFM;
 import com.ytxd.spp.ui.fm.merchant.MerchantGoodFM;
@@ -60,6 +60,7 @@ import com.ytxd.spp.util.AbStrUtil;
 import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.HideUtil;
 import com.ytxd.spp.util.ImageLoadUtil;
+import com.ytxd.spp.util.PixelUtil;
 import com.ytxd.spp.util.ShoppingCartUtil;
 import com.ytxd.spp.view.IMerchantView;
 import com.zaaach.toprightmenu.TopRightMenu;
@@ -127,7 +128,7 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
     @BindView(R.id.app_bar)
     AppBarLayout appBar;
     private TopRightMenu mTopRightMenu;
-    BookSearchPop bookSearchPop;
+    GoodSearchPop goodSearchPop;
 
 
     @Override
@@ -153,8 +154,8 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
     private void initViews() {
         mTopRightMenu = new TopRightMenu(this);
         mTopRightMenu
-                .setHeight(200)     //默认高度480
-                .setWidth(380)      //默认宽度wrap_content
+                .setHeight(PixelUtil.dp2px(60f,this))     //默认高度480
+                .setWidth(PixelUtil.dp2px(110f,this))      //默认宽度wrap_content
                 .showIcon(false)     //显示菜单图标，默认为true
                 .dimBackground(false)        //背景变暗，默认为true
                 .needAnimationStyle(true)   //显示动画，默认为true
@@ -164,13 +165,13 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
                     @Override
                     public void onMenuItemClick(int position) {
                         if (position == 0) {
-                            if (null == bookSearchPop) {
-                                bookSearchPop = new BookSearchPop(activity, merchantM);
+                            if (null == goodSearchPop) {
+                                goodSearchPop = new GoodSearchPop(activity, merchantM);
                             }
-                            if (bookSearchPop.isShowing()) {
-                                bookSearchPop.dismiss();
+                            if (goodSearchPop.isShowing()) {
+                                goodSearchPop.dismiss();
                             }else{
-                                bookSearchPop.showAtLocation(mainLayout,Gravity.TOP,0,0);
+                                goodSearchPop.showAtLocation(mainLayout,Gravity.TOP,0,0);
                             }
                         }
                     }
@@ -493,7 +494,7 @@ public class MerchantDetailActivity extends BaseActivity2<MerchantPresenter> imp
                 startActivity(ShoppingCartActivity.class);
                 break;
             case R.id.more:
-                mTopRightMenu.showAsDropDown(toolbar, toolbar.getWidth() - 400, -30);
+                mTopRightMenu.showAsDropDown(toolbar, toolbar.getWidth() - 200, -30);
                 break;
         }
         return super.onOptionsItemSelected(item);

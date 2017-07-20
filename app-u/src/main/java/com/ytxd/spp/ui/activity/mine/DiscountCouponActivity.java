@@ -108,6 +108,7 @@ public class DiscountCouponActivity extends BaseActivity<DiscountCouponPresenter
         mAdapter.setNewData(items);
         if (mAdapter.getItemCount() > 0) {
             msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+            presenter.setCouponRead();
         } else {
             msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
         }

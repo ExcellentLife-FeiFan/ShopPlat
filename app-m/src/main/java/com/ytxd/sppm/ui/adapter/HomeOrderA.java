@@ -1,5 +1,7 @@
 package com.ytxd.sppm.ui.adapter;
 
+import android.bluetooth.BluetoothDevice;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import com.ytxd.sppm.R;
 import com.ytxd.sppm.model.OrderGoodM;
 import com.ytxd.sppm.model.OrderM;
 import com.ytxd.sppm.presenter.OrderFMPresenter;
+import com.ytxd.sppm.ui.activity.main.BlueToothPrintActivity;
 import com.ytxd.sppm.ui.adapter.viewHolder.OrderItemVH;
 import com.ytxd.sppm.ui.dialog.SelectDeliveryStaffDialog;
 import com.ytxd.sppm.ui.views.InListView;
@@ -20,6 +23,7 @@ import com.ytxd.sppm.util.AbDateUtil;
 import com.ytxd.sppm.util.AbStrUtil;
 import com.ytxd.sppm.util.CommonUtils;
 import com.ytxd.sppm.util.DialogUtils;
+import com.ytxd.sppm.util.PrintUtils;
 import com.ytxd.sppm.util.ToastUtil;
 
 import java.util.List;
@@ -55,7 +59,7 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
         } else {
             helper.llStaff.setVisibility(View.VISIBLE);
         }
-        CommonUtils.setText(helper.tvArriveTime, AbDateUtil.getStringByFormat(CommonUtils.getFormatTimeString(item.getSDTime()),AbDateUtil.dateFormatHM));
+        CommonUtils.setText(helper.tvArriveTime, AbDateUtil.getStringByFormat(CommonUtils.getFormatTimeString(item.getSDTime()), AbDateUtil.dateFormatHM));
 
         if (null != item.getDeliveryStaffModel()) {
             CommonUtils.setText(helper.txtSenderName, item.getDeliveryStaffModel().getDeliveryStaffName());
@@ -106,7 +110,7 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
                 break;
         }
 
-        if (item.getOrderStateCode().equals(OrderM.HAVE_REFUND) || item.getOrderStateCode().equals(OrderM.CANCEL_M)||item.getOrderStateCode().equals(OrderM.CANCEL_U)) {
+        if (item.getOrderStateCode().equals(OrderM.HAVE_REFUND) || item.getOrderStateCode().equals(OrderM.CANCEL_M) || item.getOrderStateCode().equals(OrderM.CANCEL_U)) {
             CommonUtils.setText(helper.tvCancelReason, item.getCancelInfo());
         }
 
@@ -136,9 +140,9 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
             listView.setAdapter(adapter);
             helper.rlExpandv.setVisibility(View.GONE);
         }
-        String todayNo="n";
-        if(item.getTodayNo()!=0){
-            todayNo=item.getTodayNo()+"";
+        String todayNo = "n";
+        if (item.getTodayNo() != 0) {
+            todayNo = item.getTodayNo() + "";
         }
         CommonUtils.setText(helper.tvOrderCode, AbDateUtil.getStringByFormat(CommonUtils.getFormatTimeString(item.getCreateTime()), AbDateUtil.dateFormatYMD) + " " + "第" + todayNo + "单");
         CommonUtils.setText(helper.txtOrderCustomerName, item.getContacts());
@@ -210,7 +214,14 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
         helper.tvPrint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtil.showToastShort(mContext, "打印成功");
+                if (null != PrintUtils.bluetoothDevice && PrintUtils.bluetoothDevice.getBondState() == BluetoothDevice.BOND_BONDED) {
+                    CommonUtils.printOrder(PrintUtils.bluetoothDevice, mContext, item);
+                }else{
+                    ToastUtil.showToastShort(mContext, "未设置打印设备");
+                    Intent intent = new Intent(mContext, BlueToothPrintActivity.class);
+                    intent.putExtra("data", item);
+                    mContext.startActivity(intent);
+                }
             }
         });
     }

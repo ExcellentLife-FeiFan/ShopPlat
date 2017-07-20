@@ -24,7 +24,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/default_ui_margin_huge"
+            android:layout_marginBottom="@dimen/default_ui_margin"
             android:gravity="right"
             android:orientation="horizontal">
 
@@ -34,18 +34,35 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/cha" />
 
-
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/lv"
-            android:layout_width="300dp"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@color/transparent"
-            android:divider="@color/transparent"
-            android:dividerHeight="5dp"
-            android:scrollbars="none" />
+            android:layout_marginBottom="@dimen/default_ui_margin_large"
+            android:text="您有新的优惠券"
+
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_common" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="350dp">
+
+
+            <ListView
+                android:id="@+id/lv"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@color/transparent"
+                android:divider="@color/transparent"
+                android:dividerHeight="5dp"
+                android:listSelector="@color/transparent"
+                android:scrollbars="none" />
+
+        </RelativeLayout>
 
 
     </LinearLayout>

@@ -48,7 +48,7 @@ public class HomeCouponLV extends CommonListAdapter<CouponM> {
         CommonUtils.setText(helper.tvUsedTime,
                 "使用时间："
                         + AbDateUtil.getStringByFormat(b, AbDateUtil.dateFormatYMD2)
-                        + "-"
+                        + " ~ "
                         + AbDateUtil.getStringByFormat(e, AbDateUtil.dateFormatYMD2));
         long now = new Date().getTime();
         long b1 = AbDateUtil.getDateByFormat(b, AbDateUtil.dateFormatYMDHMS).getTime();

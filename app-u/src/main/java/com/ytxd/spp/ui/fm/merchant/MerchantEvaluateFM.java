@@ -121,7 +121,7 @@ public class MerchantEvaluateFM extends BaseFragment<MCommnetPresenter> implemen
 
     private void setDataState() {
         try {
-            if (mAdapter.getItemCount() > 0) {
+            if (mAdapter.getItemCount() > 1) {
                 msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
             } else {
                 msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);

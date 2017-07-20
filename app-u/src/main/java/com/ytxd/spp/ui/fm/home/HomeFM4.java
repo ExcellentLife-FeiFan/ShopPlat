@@ -16,6 +16,7 @@ import com.ytxd.spp.ui.activity.mine.AccountActivity;
 import com.ytxd.spp.ui.activity.mine.AddressManaActivity;
 import com.ytxd.spp.ui.activity.mine.DiscountCouponActivity;
 import com.ytxd.spp.ui.activity.mine.SettingsActivity;
+import com.ytxd.spp.ui.dialog.InvitecodeShowDialog;
 import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.ImageLoadUtil;
 
@@ -38,6 +39,8 @@ public class HomeFM4 extends BaseFragment {
     TextView tvNickname;
     @BindView(R.id.tv_phone)
     TextView tvPhone;
+    @BindView(R.id.tv_invite_code)
+    TextView tvInviteCode;
 
     @Override
     public int getLayoutRes() {
@@ -47,6 +50,7 @@ public class HomeFM4 extends BaseFragment {
     @Override
     public void initView() {
         if (CommonUtils.isLogined2()) {
+            CommonUtils.setText(tvInviteCode, "我的邀请码：    "+App.user.getInvitationCode());
             setUserData();
         } else {
             tvNickname.setText("立即登录");
@@ -58,6 +62,7 @@ public class HomeFM4 extends BaseFragment {
         ImageLoadUtil.setImageNP2(App.user.getTitlePath(), civ, activity);
         CommonUtils.setText(tvNickname, App.user.getNickName());
         CommonUtils.setText(tvPhone, App.user.getPhone());
+
     }
 
     @Override
@@ -79,7 +84,7 @@ public class HomeFM4 extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.rl_v_right, R.id.civ, R.id.rl_coupon, R.id.rl_address_mana, R.id.rl_commnet})
+    @OnClick({R.id.rl_v_right, R.id.civ, R.id.rl_coupon, R.id.rl_address_mana, R.id.rl_commnet, R.id.rl_invitecode})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_v_right:
@@ -101,6 +106,12 @@ public class HomeFM4 extends BaseFragment {
             case R.id.rl_coupon:
                 if (CommonUtils.isLogined(activity)) {
                     startActivity(DiscountCouponActivity.class);
+                }
+                break;
+            case R.id.rl_invitecode:
+                if (CommonUtils.isLogined(activity)) {
+                    InvitecodeShowDialog invitecodeShowDialog = new InvitecodeShowDialog();
+                    invitecodeShowDialog.show(activity.getFragmentManager(),"InvitecodeShowDialog");
                 }
                 break;
         }

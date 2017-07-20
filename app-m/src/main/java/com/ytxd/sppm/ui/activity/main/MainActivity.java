@@ -21,11 +21,13 @@ import com.ytxd.sppm.base.G;
 import com.ytxd.sppm.event.HomeOrderRefreshEvent;
 import com.ytxd.sppm.event.MainNotificationEvent;
 import com.ytxd.sppm.event.SetOrderFMEvent;
+import com.ytxd.sppm.presenter.MainPresenter;
 import com.ytxd.sppm.ui.fm.HomeFM1;
 import com.ytxd.sppm.ui.fm.HomeFM2;
 import com.ytxd.sppm.util.CommonUtils;
 import com.ytxd.sppm.util.JpushUtil;
 import com.ytxd.sppm.util.SPUtil;
+import com.ytxd.sppm.view.IMainView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +37,7 @@ import butterknife.ButterKnife;
 import cn.jpush.android.api.JPushInterface;
 import de.greenrobot.event.EventBus;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity<MainPresenter> implements IMainView{
 
     @BindView(R.id.contentContainer)
     FrameLayout contentContainer;
@@ -47,13 +49,18 @@ public class MainActivity extends BaseActivity {
     Fragment currentFragment;
     private List<Fragment> fragments = new ArrayList<>();
 
-
+    @Override
+    protected void initPresenter() {
+        presenter = new MainPresenter(this, this);
+        presenter.init();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         SystemBarHelper.tintStatusBar(this, CommonUtils.getColor(this, R.color.colorPrimary), 0.3f);
+        presenter.setBlueToothAdapter(this);
         if (null == savedInstanceState) {
             fm1 = new HomeFM1();
             fm2 = new HomeFM2();
@@ -186,10 +193,15 @@ public class MainActivity extends BaseActivity {
 
     public void onEvent(MainNotificationEvent event) {
         if (null != event.data) {
-            event.data.getString("dd");
             EventBus.getDefault().post(new HomeOrderRefreshEvent());
             EventBus.getDefault().post(new SetOrderFMEvent(0));
+            bottomBar.setCurrentItem(0);
         }
+
+    }
+
+    @Override
+    public void init() {
 
     }
 }

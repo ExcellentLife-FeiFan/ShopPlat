@@ -57,12 +57,12 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
             case R.id.rl_abount:
                 break;
             case R.id.tv_logout:
+                AppManager.getInstance().killActivity(MainActivity.class);
                 JpushUtil.getInstance().setAliasNull(App.user.getUserCode());
                 SPUtil.getInstance().putString("pwd", "");
-                AppManager.getInstance().killActivity(activity);
-                AppManager.getInstance().killActivity(MainActivity.class);
                 App.user = null;
                 startActivity(MainActivity.class);
+                AppManager.getInstance().killActivity(activity);
                 break;
         }
     }

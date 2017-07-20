@@ -20,6 +20,7 @@ import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.BaseActivity;
 import com.ytxd.spp.base.G;
 import com.ytxd.spp.event.MainNotificationEvent;
+import com.ytxd.spp.event.RefreshOrderListEvent;
 import com.ytxd.spp.model.CouponM;
 import com.ytxd.spp.presenter.MainPresenter;
 import com.ytxd.spp.ui.activity.order.MyOrderActivity;
@@ -38,6 +39,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.jpush.android.api.JPushInterface;
+import de.greenrobot.event.EventBus;
 
 public class MainActivity extends BaseActivity<MainPresenter> implements IMainView {
     @BindView(R.id.bottom_navigation)
@@ -222,6 +224,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 case "300":
                 case "400":
                     startActivity(MyOrderActivity.class);
+                    EventBus.getDefault().post(new RefreshOrderListEvent());
                     break;
                 case "500":
                     break;
@@ -250,6 +253,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 data.putSerializable("data", unread);
                 homeCouponDialog.setArguments(data);
                 homeCouponDialog.show(getFragmentManager(), "HomeCouponDialog");
+//                presenter.setCouponRead();
             }
         }
     }

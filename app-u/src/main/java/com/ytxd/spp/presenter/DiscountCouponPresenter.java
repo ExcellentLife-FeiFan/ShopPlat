@@ -58,6 +58,32 @@ public class DiscountCouponPresenter extends BasePresenter<IDiscountCouponView> 
                 });
 
     }
+    public void setCouponRead() {
+        OkGo.<ApiResult<Object>>get(Apis.SetUserCouponAllRead)//
+                .params("UserCode", App.user.getUserCode())
+                .execute(new JsonCallback<ApiResult<Object>>() {
+                    @Override
+                    public void onSuccess(Response<ApiResult<Object>> response) {
+                        try {
+                            ApiResult<Object> result = response.body();
+                            if (result.isSuccess()) {
+                            } else {
+                                ToastUtil.showToastShort(context, result.getMsg());
+                            }
+                        } catch (Exception e) {
+                            ToastUtil.showToastShort(context, "设置优惠券已读失败");
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<ApiResult<Object>> response) {
+                        ToastUtil.showToastShort(context, "设置优惠券已读失败");
+                        super.onError(response);
+                    }
+                });
+
+    }
 
 
 }

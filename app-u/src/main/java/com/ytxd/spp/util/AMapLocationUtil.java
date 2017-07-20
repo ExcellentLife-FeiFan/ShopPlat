@@ -24,6 +24,7 @@ import de.greenrobot.event.EventBus;
 public class AMapLocationUtil implements AMapLocationListener {
     private static AMapLocationUtil instance;
     private AMapLocationClient mLocationClient;
+    public String tag="";
 
     private AMapLocationUtil() {
         if (null == mLocationClient) {
@@ -48,6 +49,21 @@ public class AMapLocationUtil implements AMapLocationListener {
      * 更新现在的位置
      **/
     public void startLocation() {
+        if (AbWifiUtil.isConnectivity(App.context)) {
+            tag="";
+            mLocationClient.startLocation();
+            LogUtils.i("开始定位");
+        } else {
+            ToastUtil.showToastShort(App.context, "网络未连接！");
+            EventBus.getDefault().post(new AMapLocationUpdateEvent(null));
+        }
+
+    }
+    /**
+     * 更新现在的位置
+     **/
+    public void startLocation(String tag) {
+        this.tag=tag;
         if (AbWifiUtil.isConnectivity(App.context)) {
             mLocationClient.startLocation();
             LogUtils.i("开始定位");

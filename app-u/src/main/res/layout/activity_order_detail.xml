@@ -105,23 +105,75 @@
 
                         <include layout="@layout/line_gray"></include>
 
-                        <RelativeLayout
-                            android:id="@+id/rl_lv"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                        <LinearLayout
 
-                            <com.ytxd.spp.ui.views.InListView
-                                android:id="@+id/lv_sub_goods"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:id="@+id/rl_lv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <com.ytxd.spp.ui.views.InListView
+                                    android:id="@+id/lv_sub_goods"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:divider="@color/transparent"
+                                    android:dividerHeight="0dp"
+                                    android:minHeight="100dp"
+                                    android:paddingLeft="@dimen/default_ui_margin_small"
+                                    android:paddingRight="@dimen/default_ui_margin_small"
+                                    android:paddingTop="@dimen/default_ui_margin_medium" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:divider="@color/transparent"
-                                android:dividerHeight="0dp"
-                                android:minHeight="100dp"
+                                android:gravity="center_vertical"
                                 android:paddingBottom="@dimen/default_ui_margin_medium"
-                                android:paddingLeft="@dimen/default_ui_margin_small"
-                                android:paddingRight="@dimen/default_ui_margin_small"
-                                android:paddingTop="@dimen/default_ui_margin_medium" />
-                        </RelativeLayout>
+                                android:paddingLeft="@dimen/default_ui_margin_medium"
+                                android:paddingRight="@dimen/default_ui_margin_medium">
+
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="@dimen/default_ui_margin_large"
+                                        android:text="配送费"
+                                        android:textColor="@color/black_overlay"
+                                        android:textSize="@dimen/text_size_common_s" />
+
+
+                                </LinearLayout>
+
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/tv_distr_p"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="¥6.00"
+                                        android:textColor="@color/black_overlay"
+                                        android:textSize="@dimen/text_size_common_s" />
+
+                                </LinearLayout>
+
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
 
                         <include layout="@layout/line_gray"></include>
 

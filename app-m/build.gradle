@@ -65,4 +65,5 @@ dependencies {
     compile 'com.qiushui:blurredview:0.8.1'
     compile files('libs/jcore-android-1.1.5.jar')
     compile files('libs/jpush-android-3.0.7.jar')
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }
