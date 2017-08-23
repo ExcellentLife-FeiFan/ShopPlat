@@ -92,7 +92,6 @@ public class Apis {
     public static String SupermarketCancelOrder = BASE_URL + "/API_CS/SupermarketCancelOrder";
 
 
-
     /**
      * 更新推送别名
      *
@@ -101,7 +100,6 @@ public class Apis {
      * @param TSAlias:alias
      */
     public static String UpdateCSAlias = BASE_URL + "/API_CS/UpdateCSAlias";
-
 
 
     /**
@@ -120,6 +118,17 @@ public class Apis {
      * @param TSAlias:alias
      */
     public static String CSDetermineSH = BASE_URL + "/API_CS/CSDetermineSH";
+
+
+    /**
+     * 更新推送别名
+     *
+     * @param SupermarketCode:用户编号
+     * @param State:状态(1=开店,0=关店)
+     */
+    public static String OpenClose = BASE_URL + "/API_CS/OpenClose";
+
+
 
 
 }

@@ -10,7 +10,6 @@ import com.ytxd.spp.net.ApiResult;
 import com.ytxd.spp.net.Apis;
 import com.ytxd.spp.net.JsonCallback;
 import com.ytxd.spp.util.AbStrUtil;
-import com.ytxd.spp.util.LogUtils;
 import com.ytxd.spp.util.SPUtil;
 import com.ytxd.spp.util.ToastUtil;
 import com.ytxd.spp.view.ISplashView;
@@ -37,8 +36,13 @@ public class SplashPresenter extends BasePresenter<ISplashView> {
         } else {
             String phone = SPUtil.getInstance().getString("phone");
             String pwd = SPUtil.getInstance().getString("pwd");
+
+            String otherType = SPUtil.getInstance().getString("otherType");
+            String code = SPUtil.getInstance().getString("code");
             if (!AbStrUtil.isEmpty(phone) && !AbStrUtil.isEmpty(pwd)) {
                 loginPhone(phone, pwd);
+            } else if (!AbStrUtil.isEmpty(otherType) && !AbStrUtil.isEmpty(code)) {
+                loginOther(otherType, code);
             } else {
                 iView.startToLogin();
             }
@@ -64,7 +68,6 @@ public class SplashPresenter extends BasePresenter<ISplashView> {
                             ToastUtil.showToastShort(context, result.getMsg());
                             iView.startToLogin();
                         }
-                        LogUtils.e("");
                     }
 
                     @Override
@@ -72,7 +75,47 @@ public class SplashPresenter extends BasePresenter<ISplashView> {
                         iView.dismissDialogs();
                         iView.startToLogin();
                         super.onError(response);
-                        LogUtils.e("");
+                    }
+                });
+
+    }
+
+    public void loginOther(final String otherType, final String code) {
+        iView.showDialogs();
+        OkGo.<ApiResult<UserM>>get(Apis.ThirdPartyLogin)//
+                .params("Type", otherType)
+                .params("Code", code)
+                .execute(new JsonCallback<ApiResult<UserM>>() {
+                    @Override
+                    public void onSuccess(Response<ApiResult<UserM>> response) {
+                        iView.dismissDialogs();
+                        try {
+                            ApiResult<UserM> result = response.body();
+                            if (result.isSuccess()) {
+                                App.user = result.getObj();
+                                SPUtil.getInstance().putString("otherType", otherType);
+                                if (otherType.equals("QQ")) {
+                                    SPUtil.getInstance().putString("code", App.user.getQQ());
+                                } else if (otherType.equals("Wechat")) {
+                                    SPUtil.getInstance().putString("code", App.user.getWeChatCode());
+                                }
+                                iView.startToMain();
+                            } else {
+                                ToastUtil.showToastShort(context, result.getMsg());
+                                iView.startToLogin();
+                            }
+                        } catch (Exception e) {
+                            ToastUtil.showToastShort(context, "登陆异常");
+                            iView.startToLogin();
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<ApiResult<UserM>> response) {
+                        iView.dismissDialogs();
+                        iView.startToLogin();
+                        super.onError(response);
                     }
                 });
 

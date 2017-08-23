@@ -14,9 +14,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kennyc.view.MultiStateView;
 import com.ytxd.sppm.R;
 import com.ytxd.sppm.base.BaseFragment;
-import com.ytxd.sppm.event.AceOrderSuccessEvent;
 import com.ytxd.sppm.event.SelectStaffEvent;
-import com.ytxd.sppm.event.SetSenddingSuccessEvent;
 import com.ytxd.sppm.model.OrderM;
 import com.ytxd.sppm.presenter.OrderFMPresenter;
 import com.ytxd.sppm.ui.adapter.HomeOrderA;
@@ -31,7 +29,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import de.greenrobot.event.EventBus;
 
 
 /**
@@ -69,7 +66,7 @@ public class OrderFM3 extends BaseFragment<OrderFMPresenter> implements BaseQuic
         rv.addItemDecoration(new SimpleDividerDecoration(activity, R.color.transparent, R.dimen.divider_height3));
         mAdapter = new HomeOrderA(null,presenter);
         mAdapter.setOnLoadMoreListener(this, rv);
-        mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
+//        mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         rv.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -112,11 +109,20 @@ public class OrderFM3 extends BaseFragment<OrderFMPresenter> implements BaseQuic
     public void aceOrderSuccess(int position) {
 
     }
+
+    @Override
+    public void aceOrderFailed(int position, OrderM orderM) {
+
+    }
+
     @Override
     public void setSenddingSuccess(int position) {
-        mAdapter.getItem(position).setOrderStateCode(OrderM.SENDING);
+        mAdapter.remove(position);
+        mAdapter.notifyItemRemoved(position);
+        showContent();
+/*        mAdapter.getItem(position).setOrderStateCode(OrderM.SENDING);
         mAdapter.notifyItemChanged(position);
-        EventBus.getDefault().post(new SetSenddingSuccessEvent(mAdapter.getItem(position)));
+        EventBus.getDefault().post(new SetSenddingSuccessEvent(mAdapter.getItem(position)));*/
         if (null != PrintUtils.bluetoothDevice && PrintUtils.bluetoothDevice.getBondState() == BluetoothDevice.BOND_BONDED) {
             CommonUtils.printOrder(PrintUtils.bluetoothDevice, activity, mAdapter.getItem(position));
         }else{
@@ -125,6 +131,12 @@ public class OrderFM3 extends BaseFragment<OrderFMPresenter> implements BaseQuic
     }
     @Override
     public void cancelSuccess(int position) {
+        mAdapter.remove(position);
+        mAdapter.notifyItemRemoved(position);
+        showContent();
+    /*    mAdapter.getItem(position).setOrderStateCode(OrderM.CANCEL_M);
+        mAdapter.notifyItemChanged(position);
+        EventBus.getDefault().post(new CancelSuccessEvent(mAdapter.getItem(position)));*/
     }
 
     @Override
@@ -156,6 +168,7 @@ public class OrderFM3 extends BaseFragment<OrderFMPresenter> implements BaseQuic
         order.setDeliveryStaffCode(event.deliveryStaffM.getDeliveryStaffCode());
         order.setDeliveryStaffModel(event.deliveryStaffM);
         mAdapter.notifyItemChanged(event.position);
+        presenter.setSendding(order,event.position);
     }
 
 
@@ -190,10 +203,10 @@ public class OrderFM3 extends BaseFragment<OrderFMPresenter> implements BaseQuic
         }
     }
 
-    public void onEvent(AceOrderSuccessEvent event) {
+/*    public void onEvent(AceOrderSuccessEvent event) {
         mAdapter.getData().add(0, event.orderM);
         mAdapter.notifyDataSetChanged();
-
+        showContent();
     }
 
     public void onEvent(SetSenddingSuccessEvent event) {
@@ -201,5 +214,18 @@ public class OrderFM3 extends BaseFragment<OrderFMPresenter> implements BaseQuic
             mAdapter.notifyDataSetChanged();
         }
         showContent();
+    }
+    public void onEvent(CancelSuccessEvent event) {
+        if (mAdapter.getData().remove(event.orderM)) {
+            mAdapter.notifyDataSetChanged();
+        }
+        showContent();
+    }*/
+    @Override
+    protected void onVisible() {
+        if(null!=presenter){
+            onRefresh();
+        }
+
     }
 }

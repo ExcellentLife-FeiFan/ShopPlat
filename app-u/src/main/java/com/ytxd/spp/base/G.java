@@ -25,4 +25,6 @@ public class G {
 
     public static final String IS_PUSH = "isPush";
 
+    public static  final String WeChatAppId="wx69aca0bd92b5dca3";
+
 }

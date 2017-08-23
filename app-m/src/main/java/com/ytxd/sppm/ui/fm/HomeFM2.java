@@ -7,20 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.qiushui.blurredview.BlurredView;
 import com.ytxd.sppm.R;
 import com.ytxd.sppm.base.App;
+import com.ytxd.sppm.base.AppManager;
 import com.ytxd.sppm.base.BaseFragment;
-import com.ytxd.sppm.net.Apis;
-import com.ytxd.sppm.ui.activity.mine.SettingsActivity;
-import com.ytxd.sppm.util.AbStrUtil;
+import com.ytxd.sppm.presenter.MineFMPresenter;
+import com.ytxd.sppm.ui.activity.login.LoginActivity;
+import com.ytxd.sppm.ui.activity.main.BlueToothPrintActivity;
 import com.ytxd.sppm.util.CommonUtils;
 import com.ytxd.sppm.util.ImageLoadUtil;
+import com.ytxd.sppm.util.JpushUtil;
+import com.ytxd.sppm.util.SPUtil;
+import com.ytxd.sppm.view.IMineFMView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,7 +31,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by apple on 2017/3/29.
  */
 
-public class HomeFM2 extends BaseFragment {
+public class HomeFM2 extends BaseFragment<MineFMPresenter> implements IMineFMView {
     @BindView(R.id.civ)
     CircleImageView civ;
     @BindView(R.id.tv_name)
@@ -41,15 +39,13 @@ public class HomeFM2 extends BaseFragment {
     @BindView(R.id.tv_state)
     TextView tvState;
     private Unbinder unbinder;
-    @BindView(R.id.blurredview)
-    BlurredView blurredview;
 
 
-/*    @Override
+    @Override
     protected void initPresenter() {
-        presenter = new HomePresenter(activity, this);
+        presenter = new MineFMPresenter(activity, this);
         presenter.init();
-    }*/
+    }
 
 
     @Override
@@ -59,36 +55,15 @@ public class HomeFM2 extends BaseFragment {
 
     @Override
     public void initView() {
-        ImageLoadUtil.setImageNP(App.user.getLogoUrl(),civ,activity);
-        if (!AbStrUtil.isEmpty(App.user.getHJUrl()))
-        {
-            Glide.with(this)
-                    .load(Apis.AddPATH(App.user.getHJUrl()))
-                    .error(R.color.img_bg)
-                    .placeholder(R.color.img_bg)
-                    .into(new SimpleTarget<GlideDrawable>() {
-                        @Override
-                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                            blurredview.setBlurredLevel(95);
-                            blurredview.setBlurredImg(resource);
-                        }
-                    });
-        } else if (!AbStrUtil.isEmpty(App.user.getLogoUrl())) {
-            Glide.with(this)
-                    .load(Apis.AddPATH(App.user.getLogoUrl()))
-                    .error(R.color.img_bg)
-                    .placeholder(R.color.img_bg)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)//缓存全尺寸
-                    .into(new SimpleTarget<GlideDrawable>() {
-                        @Override
-                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                            blurredview.setBlurredLevel(95);
-                            blurredview.setBlurredImg(resource);
-                        }
-                    });
+        ImageLoadUtil.setImageNP(App.user.getLogoUrl(), civ, activity);
+        CommonUtils.setText(tvName, App.user.getName());
+        if (CommonUtils.getBoolean(App.user.getShopsOpen())) {
+            CommonUtils.setText(tvState, "正在营业(切换)");
+            tvState.setCompoundDrawables(CommonUtils.getTextDrawable(R.drawable.ic_open),null,null,null);
+        } else {
+            CommonUtils.setText(tvState, "暂停营业(切换)");
+            tvState.setCompoundDrawables(CommonUtils.getTextDrawable(R.drawable.ic_close),null,null,null);
         }
-        CommonUtils.setText(tvName,App.user.getName());
-        CommonUtils.setText(tvState,"正在营业");
     }
 
     @Override
@@ -110,13 +85,60 @@ public class HomeFM2 extends BaseFragment {
         unbinder.unbind();
     }
 
-
-    @OnClick({R.id.rl_v_right})
+    @OnClick({R.id.ll_poi_qr, R.id.ll_state, R.id.rl_print, R.id.rl_abount, R.id.tv_logout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.rl_v_right:
-                startActivity(SettingsActivity.class);
+            case R.id.ll_poi_qr:
+                break;
+            case R.id.ll_state:
+                if (CommonUtils.getBoolean(App.user.getShopsOpen())) {
+                    presenter.openClose(false);
+                } else {
+                    presenter.openClose(true);
+                }
+                break;
+            case R.id.rl_print:
+                startActivity(BlueToothPrintActivity.class);
+                break;
+            case R.id.rl_abount:
+                break;
+            case R.id.tv_logout:
+                JpushUtil.getInstance().setAliasNull(App.user.getSupermarketCode());
+                SPUtil.getInstance().putString("pwd", "");
+                startActivity(LoginActivity.class);
+                AppManager.getInstance().killActivity(activity);
+                App.user = null;
                 break;
         }
+    }
+
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public void changeStateSuccess(boolean isOpen) {
+        showToast("切换成功");
+        if (isOpen) {
+            App.user.setShopsOpen(1);
+            CommonUtils.setText(tvState, "正在营业(切换)");
+            tvState.setCompoundDrawables(CommonUtils.getTextDrawable(R.drawable.ic_open),null,null,null);
+        } else {
+            App.user.setShopsOpen(0);
+            CommonUtils.setText(tvState, "暂停营业(切换)");
+            tvState.setCompoundDrawables(CommonUtils.getTextDrawable(R.drawable.ic_close),null,null,null);
+        }
+
+    }
+
+    @Override
+    public void showDialogs() {
+        CommonUtils.showDialog(activity);
+    }
+
+    @Override
+    public void dismissDialogs() {
+        CommonUtils.hideDialog();
     }
 }

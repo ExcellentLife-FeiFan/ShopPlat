@@ -13,7 +13,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kennyc.view.MultiStateView;
 import com.ytxd.sppm.R;
 import com.ytxd.sppm.base.BaseFragment;
-import com.ytxd.sppm.event.EnsureSuccessEvent;
 import com.ytxd.sppm.model.OrderM;
 import com.ytxd.sppm.presenter.OrderFMPresenter;
 import com.ytxd.sppm.ui.adapter.HomeOrderA;
@@ -63,7 +62,7 @@ public class OrderFM5 extends BaseFragment<OrderFMPresenter> implements BaseQuic
         rv.addItemDecoration(new SimpleDividerDecoration(activity, R.color.transparent, R.dimen.divider_height3));
         mAdapter = new HomeOrderA(null,presenter);
         mAdapter.setOnLoadMoreListener(this, rv);
-        mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
+//        mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         rv.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -104,6 +103,11 @@ public class OrderFM5 extends BaseFragment<OrderFMPresenter> implements BaseQuic
 
     @Override
     public void aceOrderSuccess(int position) {
+
+    }
+
+    @Override
+    public void aceOrderFailed(int position, OrderM orderM) {
 
     }
 
@@ -172,8 +176,16 @@ public class OrderFM5 extends BaseFragment<OrderFMPresenter> implements BaseQuic
         }
     }
 
-    public void onEvent(EnsureSuccessEvent event) {
+ /*   public void onEvent(EnsureSuccessEvent event) {
         mAdapter.getData().add(0, event.orderM);
         mAdapter.notifyDataSetChanged();
+        showContent();
+    }*/
+    @Override
+    protected void onVisible() {
+        if(null!=presenter){
+            onRefresh();
+        }
+
     }
 }

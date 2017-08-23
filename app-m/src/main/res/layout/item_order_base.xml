@@ -278,7 +278,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="商品  :"
+                android:text="商品 :"
                 android:textColor="@color/black_overlay"
                 android:textSize="@dimen/text_size_common_s" />
 
@@ -286,8 +286,26 @@
                 android:id="@+id/tv_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_ui_margin_small"
+                android:text="共计¥0.0"
+                android:textColor="@color/black_overlay2"
+                android:textSize="@dimen/text_size_common_s" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="优惠 :"
                 android:layout_marginLeft="@dimen/default_ui_margin"
-                android:text="共计0.0元"
+                android:textColor="@color/black_overlay"
+                android:textSize="@dimen/text_size_common_s" />
+
+            <TextView
+                android:id="@+id/tv_price_d"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_ui_margin_small"
+                android:text="¥0.0"
                 android:textColor="@color/black_overlay2"
                 android:textSize="@dimen/text_size_common_s" />
 
@@ -367,15 +385,6 @@
             android:visibility="gone" />
 
         <TextView
-            android:id="@+id/tv_send_now"
-            style="@style/Common_padding_Btn"
-            android:layout_marginLeft="@dimen/default_ui_margin_small"
-            android:background="@drawable/selectable_login_btn_bg_halfcircle"
-            android:text="立即配送"
-            android:textColor="@color/white"
-            android:visibility="gone" />
-
-        <TextView
             android:id="@+id/tv_reject"
             style="@style/Common_padding_Btn"
             android:layout_marginLeft="@dimen/default_ui_margin_small"
@@ -385,13 +394,23 @@
             android:visibility="gone" />
 
         <TextView
+            android:id="@+id/tv_send_now"
+            style="@style/Common_padding_Btn"
+            android:layout_marginLeft="@dimen/default_ui_margin_small"
+            android:background="@drawable/selectable_login_btn_bg_halfcircle"
+            android:text="立即配送"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+
+
+       <!-- <TextView
             android:id="@+id/tv_select_staff"
             style="@style/Common_padding_Btn"
             android:layout_marginLeft="@dimen/default_ui_margin_small"
             android:background="@drawable/selectable_login_btn_bg_halfcircle"
             android:text="选择配送员"
             android:textColor="@color/white"
-            android:visibility="gone" />
+            android:visibility="gone" />-->
 
         <TextView
             android:id="@+id/tv_ace_order"

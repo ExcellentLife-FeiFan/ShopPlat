@@ -51,7 +51,8 @@ public class UserM implements Serializable {
     private String InviterCode;
     private int IsDel;
     private String CreateTime;
-    private Object IsRegister;
+    private boolean IsRegister;
+    private String RegisterType;
 
     public String getUserCode() {
         return UserCode;
@@ -213,11 +214,19 @@ public class UserM implements Serializable {
         this.CreateTime = CreateTime;
     }
 
-    public Object getIsRegister() {
+    public boolean getIsRegister() {
         return IsRegister;
     }
 
-    public void setIsRegister(Object IsRegister) {
+    public void setIsRegister(boolean IsRegister) {
         this.IsRegister = IsRegister;
+    }
+
+    public String getRegisterType() {
+        return RegisterType;
+    }
+
+    public void setRegisterType(String registerType) {
+        RegisterType = registerType;
     }
 }

@@ -1,7 +1,6 @@
 package com.ytxd.spp.base;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
@@ -17,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.ytxd.spp.R;
 import com.ytxd.spp.event.EmptyEvent;
 import com.ytxd.spp.presenter.BasePresenter;
+import com.ytxd.spp.ui.activity.main.MainActivity;
 import com.ytxd.spp.ui.views.ActionBarView;
 import com.ytxd.spp.ui.views.loadview.CustomDialog;
 import com.ytxd.spp.util.AbStrUtil;
@@ -35,7 +35,7 @@ import de.greenrobot.event.EventBus;
  */
 
 public abstract class BaseActivity2<T extends BasePresenter> extends AppCompatActivity {
-    protected Activity activity;
+    protected AppCompatActivity activity;
     private CustomDialog dialog;//进度条
     protected ActionBarView actionBar;
     protected final List<View> viewsToAnimate = new ArrayList<>();
@@ -206,9 +206,13 @@ public abstract class BaseActivity2<T extends BasePresenter> extends AppCompatAc
     }
 
     public void dismissDialog() {
-        if (dialog != null) {
-            dialog.dismiss();
-            dialog = null;
+        try {
+            if (dialog != null) {
+                dialog.dismiss();
+                dialog = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -281,5 +285,11 @@ public abstract class BaseActivity2<T extends BasePresenter> extends AppCompatAc
 
     public void onEvent(EmptyEvent event) {
 
+    }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        startActivity(MainActivity.class);
+        AppManager.getInstance().killActivity(activity);
     }
 }

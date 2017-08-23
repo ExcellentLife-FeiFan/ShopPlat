@@ -35,7 +35,7 @@ public class DiscountCouponActivity extends BaseActivity<DiscountCouponPresenter
     @BindView(R.id.swipeLayout)
     SwipeRefreshLayout swipeLayout;
     CouponA mAdapter;
-    private String isSelect,price;
+    private String isSelect, price;
 
     @Override
     protected void initPresenter() {
@@ -48,9 +48,9 @@ public class DiscountCouponActivity extends BaseActivity<DiscountCouponPresenter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discount_coupon);
         ButterKnife.bind(this);
-        getBar().initActionBar("优惠券", this);
-        isSelect=getIntent().getStringExtra("isSelect");
-        price=getIntent().getStringExtra("price");
+        getBar().initActionBar("优惠券", "", "不适用优惠券", R.drawable.ic_back_white, -1, this);
+        isSelect = getIntent().getStringExtra("isSelect");
+        price = getIntent().getStringExtra("price");
         mAdapter = new CouponA(null);
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         swipeLayout.setOnRefreshListener(this);
@@ -60,10 +60,10 @@ public class DiscountCouponActivity extends BaseActivity<DiscountCouponPresenter
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                if(!AbStrUtil.isEmpty(isSelect)){
+                if (!AbStrUtil.isEmpty(isSelect)) {
                     CouponM item = mAdapter.getItem(i);
-                    float p=Float.valueOf(price);
-                    float m=Float.valueOf(item.getMMoneyUse());
+                    float p = Float.valueOf(price);
+                    float m = Float.valueOf(item.getMMoneyUse());
                     if (CommonUtils.getBoolean(item.getIsUse())) {
                         showToast("优惠券已使用");
                         return;
@@ -72,13 +72,13 @@ public class DiscountCouponActivity extends BaseActivity<DiscountCouponPresenter
                         showToast("优惠券已过期");
                         return;
                     }
-                    if(p<=m){
+                    if (p <= m) {
                         showToast("未满足使用条件");
                         return;
                     }
                     Intent intent = new Intent();
-                    intent.putExtra("coupon",item);
-                    setResult(1,intent);
+                    intent.putExtra("coupon", item);
+                    setResult(1, intent);
                     AppManager.getInstance().killActivity(activity);
                 }
 //                startActivity(MerchantDetailActivity.class, "data", mAdapter.getItem(i));
@@ -92,6 +92,11 @@ public class DiscountCouponActivity extends BaseActivity<DiscountCouponPresenter
         switch (v.getId()) {
             case R.id.rl_back:
                 AppManager.getInstance().killActivity(this);
+                break;
+            case R.id.tv_right:
+                Intent intent = new Intent();
+                setResult(1, intent);
+                AppManager.getInstance().killActivity(activity);
                 break;
         }
 

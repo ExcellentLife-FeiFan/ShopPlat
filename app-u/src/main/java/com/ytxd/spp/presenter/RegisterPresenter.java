@@ -5,11 +5,13 @@ import android.content.Context;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.PostRequest;
+import com.ytxd.spp.base.App;
 import com.ytxd.spp.model.UserM;
 import com.ytxd.spp.net.ApiResult;
 import com.ytxd.spp.net.Apis;
 import com.ytxd.spp.net.JsonCallback;
 import com.ytxd.spp.util.AbStrUtil;
+import com.ytxd.spp.util.SPUtil;
 import com.ytxd.spp.util.ToastUtil;
 import com.ytxd.spp.view.IRegisterView;
 
@@ -55,7 +57,7 @@ public class RegisterPresenter extends BasePresenter<IRegisterView> {
     }
 
 
-    public void registerPhone(String phone, String pwd, String invitecode) {
+    public void registerPhone(final String phone, final String pwd, String invitecode) {
         PostRequest postRequest = OkGo.<ApiResult<UserM>>post(Apis.PhoneRegister)//
                 .params("Phone", phone)
                 .params("LoginPwd", pwd);
@@ -70,7 +72,7 @@ public class RegisterPresenter extends BasePresenter<IRegisterView> {
                 ApiResult result = response.body();
                 if (response.body().isSuccess()) {
                     ToastUtil.showToastShort(context, "注册成功");
-                    iView.finishRegister();
+                    iView.finishRegister(phone,pwd);
                 } else {
                     ToastUtil.showToastShort(context, result.getMsg());
                 }
@@ -84,6 +86,35 @@ public class RegisterPresenter extends BasePresenter<IRegisterView> {
             }
         });
 
+
+    }
+
+    public void loginPhone(final String phone, final String pwd) {
+        iView.showDialogs();
+        OkGo.<ApiResult<UserM>>get(Apis.PhoneLogin)//
+                .params("Phone", phone)
+                .params("LoginPwd", pwd)
+                .execute(new JsonCallback<ApiResult<UserM>>() {
+                    @Override
+                    public void onSuccess(Response<ApiResult<UserM>> response) {
+                        iView.dissmisDialogs();
+                        ApiResult<UserM> result = response.body();
+                        if (result.isSuccess()) {
+                            App.user = result.getObj();
+                            SPUtil.getInstance().putString("phone", phone);
+                            SPUtil.getInstance().putString("pwd", pwd);
+                            iView.startToMain();
+                        } else {
+                            ToastUtil.showToastShort(context, result.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<ApiResult<UserM>> response) {
+                        iView.dissmisDialogs();
+                        super.onError(response);
+                    }
+                });
 
     }
 }

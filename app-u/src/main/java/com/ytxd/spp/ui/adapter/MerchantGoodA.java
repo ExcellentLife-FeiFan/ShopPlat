@@ -17,7 +17,6 @@ import com.ytxd.spp.event.MerchantSelectGoodStandEvent;
 import com.ytxd.spp.model.CatagaryM;
 import com.ytxd.spp.model.GoodM;
 import com.ytxd.spp.model.MerchantM;
-import com.ytxd.spp.model.OrderGoodM;
 import com.ytxd.spp.ui.activity.main.GoodDetailActivity;
 import com.ytxd.spp.ui.fm.merchant.MerchantGoodFM;
 import com.ytxd.spp.ui.views.AnimShopButton;
@@ -138,7 +137,7 @@ public class MerchantGoodA extends SectioningAdapter {
         holder.tvSalesNum.setText("已售" + good.getSaleNumber() + "份");
         CommonUtils.setText(holder.tvOriginP, good.getYPrice());
         CommonUtils.setText(holder.tvNowP, good.getXPrice());
-        ImageLoadUtil.setImageNP(good.getLogoPaths(), holder.iv, mContext, 0.6f);
+        ImageLoadUtil.setImageNP(CommonUtils.getGoodLogoFirst(good.getLogoPaths()), holder.iv, mContext, 0.6f);
         if (null != good.getGoods() && good.getGoods().size() > 0) {
             holder.rl_add_btn.setVisibility(View.INVISIBLE);
             holder.tv_select_stand.setVisibility(View.VISIBLE);
@@ -200,7 +199,7 @@ public class MerchantGoodA extends SectioningAdapter {
         }
     }
 
-    private boolean isContained(GoodM good, int count) {
+ /*   private boolean isContained(GoodM good, int count) {
         List<OrderGoodM> goods = (merchantGoodFM.orderGoods);
         for (int i = 0; i < goods.size(); i++) {
             if (good.getGoodsCode().equals(goods.get(i).getGoodsCode())) {
@@ -209,6 +208,6 @@ public class MerchantGoodA extends SectioningAdapter {
             }
         }
         return false;
-    }
+    }*/
 
 }

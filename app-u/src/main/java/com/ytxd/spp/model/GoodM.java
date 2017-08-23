@@ -15,7 +15,6 @@ import java.util.List;
 public class GoodM implements Serializable {
 
 
-
     /**
      * GoodsTypeCode : 82f8c4e0011c4079a7d9b483e98127f6
      * GoodsTypeName : 美团
@@ -31,7 +30,10 @@ public class GoodM implements Serializable {
      * Goods : []
      */
 
-    public int adapterP=-1;
+    public int changeType;//(1为删;，2为价格有变换);
+    public int adapterP = -1;
+
+
     public String GoodsTypeCode;
     public String GoodsTypeName;
 
@@ -152,5 +154,13 @@ public class GoodM implements Serializable {
 
     public void setAdapterP(int adapterP) {
         this.adapterP = adapterP;
+    }
+
+    public int getChangeType() {
+        return changeType;
+    }
+
+    public void setChangeType(int changeType) {
+        this.changeType = changeType;
     }
 }

@@ -78,7 +78,30 @@
                     android:layout_height="@dimen/common_viewgroup_height"
                     android:background="@drawable/selector_bg_viewgroup_click4"
                     android:gravity="center"
-                    android:text="退出登录"
+                    android:text="注销账户"
+                    android:textColor="@color/tv_top_card"
+                    android:textSize="@dimen/text_size_common_btn" />
+                <include layout="@layout/line_gray"></include>
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/ll_exit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_ui_margin_large"
+                android:orientation="vertical">
+
+                <include layout="@layout/line_gray"></include>
+
+                <TextView
+                    android:id="@+id/tv_exit"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/common_viewgroup_height"
+                    android:background="@drawable/selector_bg_viewgroup_click4"
+                    android:gravity="center"
+                    android:text="退出程序"
                     android:textColor="@color/tv_top_card"
                     android:textSize="@dimen/text_size_common_btn" />
                 <include layout="@layout/line_gray"></include>

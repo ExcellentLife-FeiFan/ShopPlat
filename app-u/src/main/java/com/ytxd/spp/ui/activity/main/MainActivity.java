@@ -17,20 +17,24 @@ import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.flyco.systembar.SystemBarHelper;
 import com.ytxd.spp.R;
 import com.ytxd.spp.base.App;
+import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
 import com.ytxd.spp.base.G;
 import com.ytxd.spp.event.MainNotificationEvent;
 import com.ytxd.spp.event.RefreshOrderListEvent;
 import com.ytxd.spp.model.CouponM;
+import com.ytxd.spp.model.UserM;
 import com.ytxd.spp.presenter.MainPresenter;
-import com.ytxd.spp.ui.activity.order.MyOrderActivity;
+import com.ytxd.spp.ui.activity.order.OrderDetailActivity;
 import com.ytxd.spp.ui.dialog.HomeCouponDialog;
 import com.ytxd.spp.ui.fm.home.HomeFM1;
 import com.ytxd.spp.ui.fm.home.HomeFM3;
 import com.ytxd.spp.ui.fm.home.HomeFM4;
 import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.JpushUtil;
+import com.ytxd.spp.util.LogUtils;
 import com.ytxd.spp.util.SPUtil;
+import com.ytxd.spp.util.ToastUtil;
 import com.ytxd.spp.view.IMainView;
 
 import java.util.ArrayList;
@@ -60,18 +64,47 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         SystemBarHelper.tintStatusBar(this, CommonUtils.getColor(this, R.color.colorPrimary), 0.3f);
-        if (null == savedInstanceState) {
-            fm1 = new HomeFM1();
-//            fm2 = new HomeFM2();
-            fm3 = new HomeFM3();
-            fm4 = new HomeFM4();
-            switchFragment(fm1);
+        //挡Activity意外退出时再返回时，Activity会重新启动，但savedInstanceState不为空
+        // getSupportFragmentManager()里的Fragment也没有隐藏去掉,所以为了不使界面冲突需隐藏移除之前残留的Fragment
+        if (null != savedInstanceState) {
+            FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
+            Fragment f = getSupportFragmentManager().findFragmentByTag(HomeFM1.class.getName());
+            if (null != f) {
+                trans.hide(f);
+                trans.remove(f);
+            }
+            Fragment f2 = getSupportFragmentManager().findFragmentByTag(HomeFM3.class.getName());
+            if (null != f2) {
+                trans.hide(f2);
+                trans.remove(f2);
+            }
+            Fragment f3 = getSupportFragmentManager().findFragmentByTag(HomeFM4.class.getName());
+            if (null != f3) {
+                trans.hide(f3);
+                trans.remove(f3);
+            }
+            trans.commitAllowingStateLoss();
+
+            UserM userM= (UserM) savedInstanceState.getSerializable("user");
+            if(null!=userM){
+                App.user = userM;
+            }
+            App.initDataBase(this);
+        }else{
+
         }
+
+        fm1 = new HomeFM1();
+//            fm2 = new HomeFM2();
+        fm3 = new HomeFM3();
+        fm4 = new HomeFM4();
+        switchFragment(fm1);
+
         String rid = JPushInterface.getRegistrationID(getApplicationContext());
         if (!rid.isEmpty()) {
         } else {
@@ -132,6 +165,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 // 开启Fragment事务
                 FragmentTransaction transaction = fm.beginTransaction();
                 if (position == 0) {
+                    if (null == fm1) {
+                        fm1 = new HomeFM1();
+                    }
                     switchFragment(fm1);
                 } /*else if (position == 1) {
                     switchFragment(fm2);
@@ -141,6 +177,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                     }else{
                         return false;
                     }*/
+                    if (null == fm3) {
+                        fm3 = new HomeFM3();
+                    }
                     switchFragment(fm3);
 
                 } else if (position == 2) {
@@ -149,6 +188,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                     }else{
                         return false;
                     }*/
+                    if (null == fm4) {
+                        fm4 = new HomeFM4();
+                    }
                     switchFragment(fm4);
                 }
                 transaction.commitAllowingStateLoss();
@@ -161,6 +203,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 // Manage the new y positi5gon
             }
         });
+        bottomBar.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                presenter.checkForUpdateApp(activity);
+            }
+        }, 2000);
+
 
     }
 
@@ -171,7 +220,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         boolean isFound = false;
         Fragment usedFragment = null;
         FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
-
         if (fragments.size() > 0) {
             for (Fragment f : fragments) {
                 trans.hide(f);
@@ -193,17 +241,21 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
             trans.add(R.id.contentContainer, fragment, fragment.getClass().getName());
             fragments.add(fragment);
         }
-        trans.commitAllowingStateLoss();
+        trans.commitNow();
         currentFragment = fragment;
     }
 
 
+    private long nowTime;
+
     @Override
     public void onBackPressed() {
-        Intent home = new Intent(Intent.ACTION_MAIN);
-        home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        home.addCategory(Intent.CATEGORY_HOME);
-        startActivity(home);
+        ToastUtil.showToastShort(activity, "再按一次退出程序");
+        if (System.currentTimeMillis() - nowTime < 2000) {
+            AppManager.getInstance().AppExit(this);
+        } else {
+            nowTime = System.currentTimeMillis();
+        }
     }
 
     @Override
@@ -221,12 +273,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
             String state = extra.getString("State");
             switch (state) {
                 case "200":
-                case "300":
-                case "400":
-                    startActivity(MyOrderActivity.class);
+                case "201":
+                case "202":
+                    startActivity(OrderDetailActivity.class, "orderCode", extra.getString("OrderCode"));
                     EventBus.getDefault().post(new RefreshOrderListEvent());
                     break;
-                case "500":
+                case "900":
+                    startActivity(WebActivity.class, "url", extra.getString("Url"));
                     break;
             }
         }
@@ -253,7 +306,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 data.putSerializable("data", unread);
                 homeCouponDialog.setArguments(data);
                 homeCouponDialog.show(getFragmentManager(), "HomeCouponDialog");
-//                presenter.setCouponRead();
+                presenter.setCouponRead();
             }
         }
     }
@@ -261,5 +314,30 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     @Override
     public void lodeCouponFailed() {
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (null != App.user) {
+            outState.putSerializable("user", App.user);
+        }
+        super.onSaveInstanceState(outState);
+        LogUtils.e("onSaveInstanceState");
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LogUtils.e("onPause");
     }
 }

@@ -38,7 +38,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginLeft="@dimen/padding_left"
                             android:gravity="center_vertical"
-                            android:text="我的"
+                            android:text="@string/mine"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_actionbar_right" />
 
@@ -150,7 +150,7 @@
 
                     <TextView
                         style="@style/TV_VG_LEFT_DRAWABLE"
-                        android:drawableLeft="@drawable/ic_mine_dianping"
+                        android:drawableLeft="@drawable/ic_mine_coupon"
                         android:text="我的优惠券" />
 
 
@@ -165,7 +165,7 @@
                     <TextView
                         android:id="@+id/tv_invite_code"
                         style="@style/TV_VG_LEFT_DRAWABLE"
-                        android:drawableLeft="@drawable/ic_mine_dianping"
+                        android:drawableLeft="@drawable/ic_mine_invite"
                         android:text="我的邀请码：----" />
 
 

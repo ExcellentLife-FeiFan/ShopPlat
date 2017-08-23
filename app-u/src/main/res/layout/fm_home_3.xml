@@ -47,7 +47,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="我的订单"
+                        android:text="最近订单"
                         android:textColor="@color/black_overlay"
                         android:textSize="@dimen/text_size_common" />
 

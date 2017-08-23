@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:fillViewport="true"
+    android:background="@color/white"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
@@ -134,8 +135,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -160,6 +160,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/default_ui_margin_medium_small"
                         android:text="(好评率96%)"
+                        android:visibility="gone"
                         android:textColor="@color/black_overlay"
                         android:textSize="@dimen/text_size_common_s" />
 
@@ -181,7 +182,7 @@
             <com.kennyc.view.MultiStateView
                 android:id="@+id/msv_comment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:msv_emptyView="@layout/empty_comment_none"
                 app:msv_loadingView="@layout/common_progress_view"
@@ -202,13 +203,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="visible">
-
-                <include layout="@layout/line_gray"></include>
-
                 <RelativeLayout
                     style="@style/VG_padding"
                     android:visibility="gone">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -218,12 +215,10 @@
                         android:text="全部评论"
                         android:textColor="@color/gray"
                         android:textSize="@dimen/text_size_common_s" />
-
                 </RelativeLayout>
 
 
             </LinearLayout>
-
 
         </LinearLayout>
 

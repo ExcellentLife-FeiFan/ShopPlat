@@ -14,7 +14,9 @@ import com.ytxd.spp.event.RefreshUserData;
 import com.ytxd.spp.presenter.AccountPresenter;
 import com.ytxd.spp.ui.activity.login.ChangePwdActivity;
 import com.ytxd.spp.ui.activity.mine.account.BindNewPhone1Activity;
+import com.ytxd.spp.ui.activity.mine.account.BindNewPhone2Activity;
 import com.ytxd.spp.ui.activity.mine.account.EditNicknameActivity;
+import com.ytxd.spp.util.AbStrUtil;
 import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.util.ImageLoadUtil;
 import com.ytxd.spp.view.IAccountView;
@@ -61,10 +63,30 @@ public class AccountActivity extends BaseActivity<AccountPresenter> implements V
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
         ButterKnife.bind(this);
+        presenter.initHandler();
         CommonUtils.setText(tvNickname, App.user.getNickName());
         ImageLoadUtil.setImageNP2(App.user.getTitlePath(), civ, this);
         CommonUtils.setText(tvBindPhone, App.user.getPhone());
         getBar().initActionBar("账户与安全", this);
+        setData();
+
+    }
+
+    private void setData() {
+        if (!AbStrUtil.isEmpty(App.user.getQQ())) {
+            tvBindQq.setText("已绑定");
+            CommonUtils.setTextColor(tvBindQq, R.color.colorPrimary);
+        } else {
+            tvBindQq.setText("未绑定");
+            CommonUtils.setTextColor(tvBindQq, R.color.gray);
+        }
+        if (!AbStrUtil.isEmpty(App.user.getWeChatCode())) {
+            tvBindWeixin.setText("已绑定");
+            CommonUtils.setTextColor(tvBindWeixin, R.color.colorPrimary);
+        } else {
+            tvBindWeixin.setText("未绑定");
+            CommonUtils.setTextColor(tvBindWeixin, R.color.gray);
+        }
     }
 
     @Override
@@ -92,14 +114,28 @@ public class AccountActivity extends BaseActivity<AccountPresenter> implements V
                 startActivityForResult(EditNicknameActivity.class, 1, "data", tvNickname.getText().toString());
                 break;
             case R.id.rl_phone:
-                startActivity(BindNewPhone1Activity.class);
+                if(AbStrUtil.isEmpty(App.user.getPhone())){
+                    startActivity(BindNewPhone2Activity.class);
+                }else{
+                    startActivity(BindNewPhone1Activity.class);
+                }
                 break;
             case R.id.rl_qq:
+                if (!AbStrUtil.isEmpty(App.user.getQQ())) {
+                    showToast("已绑定");
+                } else {
+                    presenter.bindQQ();
+                }
                 break;
             case R.id.rl_weixin:
+                if (!AbStrUtil.isEmpty(App.user.getWeChatCode())) {
+                    showToast("已绑定");
+                } else {
+                    presenter.bindWechat();
+                }
                 break;
             case R.id.rl_loginpwd:
-                startActivity(ChangePwdActivity.class,"type","2");
+                startActivity(ChangePwdActivity.class, "type", "2");
                 break;
             case R.id.rl_paypwd:
                 break;
@@ -164,5 +200,16 @@ public class AccountActivity extends BaseActivity<AccountPresenter> implements V
         CommonUtils.setText(tvNickname, nickname);
         App.user.setNickName(nickname);
         EventBus.getDefault().post(new RefreshUserData());
+    }
+
+    @Override
+    public void bindThirdPartSuccess(String type, String code) {
+        if (type.equals("QQ")) {
+            App.user.setQQ(code);
+        } else if (type.equals("WeChat")) {
+            App.user.setWeChatCode(code);
+        }
+        showToast("绑定成功");
+        setData();
     }
 }

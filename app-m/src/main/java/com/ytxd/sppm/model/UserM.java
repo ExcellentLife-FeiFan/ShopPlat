@@ -74,7 +74,7 @@ public class UserM implements Serializable {
     private String BusinessBeginTime;
     private String BusinessEndTime;
     private String YYZZUrl;
-    private Object ShopsOpen;
+    private int ShopsOpen;
     private int IsWS;
     private String TSAlias;
     private String TSTag;
@@ -300,11 +300,11 @@ public class UserM implements Serializable {
         this.YYZZUrl = YYZZUrl;
     }
 
-    public Object getShopsOpen() {
+    public int getShopsOpen() {
         return ShopsOpen;
     }
 
-    public void setShopsOpen(Object ShopsOpen) {
+    public void setShopsOpen(int ShopsOpen) {
         this.ShopsOpen = ShopsOpen;
     }
 

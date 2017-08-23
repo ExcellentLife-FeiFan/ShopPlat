@@ -62,7 +62,7 @@ public class GoodSearchLV extends CommonListAdapter<GoodM> {
         holder.tvMonthSales.setText("已售" + item.getSaleNumber() + "份");
         CommonUtils.setText(holder.tvOriginP, item.getYPrice());
         CommonUtils.setText(holder.tvNowP, item.getXPrice());
-        ImageLoadUtil.setImageNP(item.getLogoPaths(), holder.iv, context, 0.6f);
+        ImageLoadUtil.setImageNP(CommonUtils.getGoodLogoFirst(item.getLogoPaths()), holder.iv, context, 0.6f);
         if (null != item.getGoods() && item.getGoods().size() > 0) {
             holder.rlAddBtn.setVisibility(View.INVISIBLE);
             holder.tvSelectStand.setVisibility(View.VISIBLE);

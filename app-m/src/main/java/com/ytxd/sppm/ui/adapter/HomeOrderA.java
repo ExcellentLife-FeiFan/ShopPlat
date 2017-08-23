@@ -47,7 +47,7 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
 
         helper.tvReject.setVisibility(View.GONE);
         helper.tvAceOrder.setVisibility(View.GONE);
-        helper.tvSelectStaff.setVisibility(View.GONE);
+//        helper.tvSelectStaff.setVisibility(View.GONE);
         helper.tvSendNow.setVisibility(View.GONE);
         helper.tvEnsure.setVisibility(View.GONE);
         helper.tvRefund.setVisibility(View.GONE);
@@ -82,8 +82,9 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
                 break;
             case OrderM.HAVE_ACE_WATING_SEND:
                 if (AbStrUtil.isEmpty(item.getDeliveryStaffCode())) {
-                    helper.tvSelectStaff.setVisibility(View.VISIBLE);
+//                    helper.tvSelectStaff.setVisibility(View.VISIBLE);
                 }
+                helper.tvReject.setVisibility(View.VISIBLE);
                 helper.tvSendNow.setVisibility(View.VISIBLE);
                 CommonUtils.setText(helper.tvState, "等待配送");
                 break;
@@ -150,7 +151,8 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
         CommonUtils.setText(helper.txtOrderCustomerAddress, item.getAddressTitle() + "-" + item.getAddressContent());
         CommonUtils.setText(helper.txtOrderRemarks, item.getRemarks());
         CommonUtils.setText(helper.txtOrderTime, CommonUtils.getFormatTimeString(item.getCreateTime()));
-        CommonUtils.setText(helper.tvPrice, "共计" + item.getSJPrice() + "元");
+        CommonUtils.setText(helper.tvPrice, "共计"+ "¥"+ item.getYPrice());
+        CommonUtils.setText(helper.tvPriceD,  "¥"+ CommonUtils.getFloatString2(Float.valueOf(item.getYPrice())-Float.valueOf(item.getSJPrice())));
         helper.tvReject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,7 +178,7 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
                 presenter.aceOrder(item, getData().indexOf(item));
             }
         });
-        helper.tvSelectStaff.setOnClickListener(new View.OnClickListener() {
+     /*   helper.tvSelectStaff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SelectDeliveryStaffDialog deliveryStaffDialog = new SelectDeliveryStaffDialog();
@@ -185,17 +187,22 @@ public class HomeOrderA extends BaseQuickAdapter<OrderM, OrderItemVH> {
                 deliveryStaffDialog.setArguments(data);
                 deliveryStaffDialog.show(((AppCompatActivity) mContext).getFragmentManager(), "SelectDeliveryStaffDialog");
             }
-        });
+        });*/
         helper.tvSendNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != item.getDeliveryStaffModel()) {
+                SelectDeliveryStaffDialog deliveryStaffDialog = new SelectDeliveryStaffDialog();
+                Bundle data = new Bundle();
+                data.putInt("position", getData().indexOf(item));
+                deliveryStaffDialog.setArguments(data);
+                deliveryStaffDialog.show(((AppCompatActivity) mContext).getFragmentManager(), "SelectDeliveryStaffDialog");
+              /*  if (null != item.getDeliveryStaffModel()) {
                     if (!AbStrUtil.isEmpty(item.getDeliveryStaffModel().getDeliveryStaffName())) {
                         presenter.setSendding(item, item.getDeliveryStaffModel().getDeliveryStaffCode(), getData().indexOf(item));
                         return;
                     }
                 }
-                ToastUtil.showToastShort(mContext, "请选择配送员");
+                ToastUtil.showToastShort(mContext, "请选择配送员");*/
             }
         });
         helper.tvRefund.setOnClickListener(new View.OnClickListener() {

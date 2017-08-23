@@ -9,10 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="@dimen/default_ui_margin_large"
         android:paddingBottom="@dimen/default_ui_margin_large"
         android:paddingLeft="@dimen/padding_left2"
-        android:paddingRight="@dimen/padding_left2">
+        android:paddingRight="@dimen/padding_left2"
+        android:paddingTop="@dimen/default_ui_margin_large">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -153,6 +153,15 @@
 
 
             <TextView
+                android:id="@+id/tv_delete"
+                style="@style/Common_Border_Btn"
+                android:layout_marginLeft="@dimen/default_ui_margin_medium"
+                android:background="@drawable/selectable_pricecolor_border_btn"
+                android:text="删除订单"
+                android:textColor="@color/price_color"
+                android:textSize="@dimen/text_size_common"
+                android:visibility="gone" />
+            <TextView
                 android:id="@+id/tv_pay"
                 style="@style/Common_Border_Btn"
                 android:layout_marginLeft="@dimen/default_ui_margin_medium"
@@ -160,7 +169,27 @@
                 android:text="去支付"
                 android:textColor="@color/price_color"
                 android:textSize="@dimen/text_size_common"
-                android:visibility="visible" />
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_ensure"
+                style="@style/Common_Border_Btn"
+                android:layout_marginLeft="@dimen/default_ui_margin_medium"
+                android:background="@drawable/selectable_pricecolor_border_btn"
+                android:text="确认收货"
+                android:textColor="@color/price_color"
+                android:textSize="@dimen/text_size_common"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_cancel"
+                style="@style/Common_Border_Btn"
+                android:layout_marginLeft="@dimen/default_ui_margin_medium"
+                android:background="@drawable/selectable_pricecolor_border_btn"
+                android:text="取消订单"
+                android:textColor="@color/price_color"
+                android:textSize="@dimen/text_size_common"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_again"

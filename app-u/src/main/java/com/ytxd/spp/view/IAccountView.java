@@ -13,4 +13,6 @@ public interface IAccountView extends IBaseView {
     void changeIconSuccess();
 
     void changeNicknameSuccess();
+
+    void bindThirdPartSuccess(String type,String code);
 }

@@ -7,13 +7,13 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="90.0dip"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/default_ui_margin_small">
 
         <LinearLayout
             android:id="@+id/ll_bg"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@drawable/coupon_u"
             android:orientation="horizontal"
             android:weightSum="1">
@@ -96,6 +96,17 @@
                         android:text="使用时间：6.11-6.19"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/text_size_little_micro" />
+
+                    <TextView
+                        android:id="@+id/tv_remark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/default_ui_margin_medium_small"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="提示：系统送给您18元新用户优惠券,消费满27元可使用"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_size_little_micro" />
                 </LinearLayout>
 
 
@@ -109,7 +120,7 @@
             android:id="@+id/iv_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_alignBottom="@id/ll_bg"
             android:layout_alignParentRight="true"
             android:src="@drawable/coupon_closed"
             android:visibility="invisible" />

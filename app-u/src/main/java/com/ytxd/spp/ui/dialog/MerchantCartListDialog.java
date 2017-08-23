@@ -122,18 +122,23 @@ public class MerchantCartListDialog extends Dialog {
                 if (p >= qs) {
                     btnOk.setEnabled(true);
                 } else {
-                    btnOk.setText("满"+merchantM.getQSPrice()+"送");
+                    btnOk.setText("满" + merchantM.getQSPrice() + "送");
                     btnOk.setEnabled(false);
+                }
+                String canBuyS = ShoppingCartUtil.canBuy(merchantM);
+                if (!canBuyS.equals("OK")) {
+                    btnOk.setEnabled(false);
+                    btnOk.setText(canBuyS);
                 }
                 return;
             }
         }
+        goodListA.clearItems();
         btnOk.setEnabled(false);
         shoppingCartTotalNum.setText("0");
         shoppingCartTotalTv.setText(CommonUtils.getString(R.string.none_goods));
-
-        String canBuyS=ShoppingCartUtil.canBuy(merchantM);
-        if(!canBuyS.equals("OK")){
+        String canBuyS = ShoppingCartUtil.canBuy(merchantM);
+        if (!canBuyS.equals("OK")) {
             btnOk.setEnabled(false);
             btnOk.setText(canBuyS);
         }
@@ -192,21 +197,25 @@ public class MerchantCartListDialog extends Dialog {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_clear:
-                DialogUtils.showDialog(getContext(), "提示", "确定清空购物车吗？", new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        if (which.name().equals(DialogAction.POSITIVE.name())) {
-                            if (ShoppingCartUtil.goodClearEvent(getContext(), merchantCode)) {
-                                ToastUtil.showToastShort(context, "清除成功！");
-                                setData();
-                                EventBus.getDefault().post(new CartListClearRefreshEvent());
+                if (goodListA.getCount() > 0) {
+                    DialogUtils.showDialog(getContext(), "提示", "确定清空购物车吗？", new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            if (which.name().equals(DialogAction.POSITIVE.name())) {
+                                if (ShoppingCartUtil.goodClearEvent(getContext(), merchantCode)) {
+                                    ToastUtil.showToastShort(context, "清除成功");
+                                    setData();
+                                    EventBus.getDefault().post(new CartListClearRefreshEvent());
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                } else {
+                    ToastUtil.showToastShort(context, "购物车没有商品");
+                }
                 break;
             case R.id.btn_ok:
-                if(CommonUtils.isLogined((Activity) context,true)){
+                if (CommonUtils.isLogined((Activity) context, true)) {
                     Intent intent = new Intent(getContext(), EnsureOrderActivity.class);
                     intent.putExtra("merchant", merchantM);
                     getContext().startActivity(intent);

@@ -95,38 +95,46 @@
                         android:id="@+id/tv_re_loc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_action_loc"
+                        android:drawablePadding="@dimen/default_ui_margin_medium_small"
                         android:paddingLeft="@dimen/drawable_padding"
                         android:paddingRight="@dimen/drawable_padding"
                         android:text="重新定位"
-                        android:drawablePadding="@dimen/default_ui_margin_medium_small"
-                        android:drawableLeft="@drawable/ic_action_loc"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/text_size_little_small" />
 
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/drawable_padding"
-                    android:paddingLeft="@dimen/padding_left"
-                    android:paddingRight="@dimen/drawable_padding"
-                    android:paddingTop="@dimen/drawable_padding"
-                    android:text="收货地址"
-                    android:textSize="@dimen/text_size_small" />
-
-                <RelativeLayout
-                    android:id="@+id/rl_lv_ad_data"
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/ll_ad_data"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <com.ytxd.spp.ui.views.InListView
-                        android:id="@+id/lv_ad_data"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:divider="@color/line_gray"
-                        android:dividerHeight="@dimen/common_divider_height" />
-                </RelativeLayout>
+                        android:paddingBottom="@dimen/drawable_padding"
+                        android:paddingLeft="@dimen/padding_left"
+                        android:paddingRight="@dimen/drawable_padding"
+                        android:paddingTop="@dimen/drawable_padding"
+                        android:text="收货地址"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_lv_ad_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.ytxd.spp.ui.views.InListView
+                            android:id="@+id/lv_ad_data"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:divider="@color/line_gray"
+                            android:dividerHeight="@dimen/common_divider_height" />
+                    </RelativeLayout>
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"

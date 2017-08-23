@@ -54,7 +54,7 @@ public class MyOrderActivity extends BaseActivity<OrderActivityPresenter> implem
         refreshLayout.setOnRefreshListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
         mRecyclerView.addItemDecoration(new SimpleDividerDecoration(activity, R.color.common_divider_color, R.dimen.divider_height));
-        mAdapter = new HomeOrderA(null);
+        mAdapter = new HomeOrderA(null, presenter);
         mAdapter.setEnableLoadMore(true);
         mAdapter.setOnLoadMoreListener(this, mRecyclerView);
         mAdapter.isFirstOnly(true);
@@ -64,7 +64,7 @@ public class MyOrderActivity extends BaseActivity<OrderActivityPresenter> implem
             @Override
             public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
                 Intent intent = new Intent(activity, OrderDetailActivity.class);
-                intent.putExtra("data", mAdapter.getItem(i));
+                intent.putExtra("orderCode", mAdapter.getItem(i).getOrderCode());
                 intent.putExtra("position", i);
                 startActivity(intent);
             }
@@ -153,5 +153,34 @@ public class MyOrderActivity extends BaseActivity<OrderActivityPresenter> implem
             }
         }
 
+    }
+
+    @Override
+    public void cancelSuccess(int position) {
+        mAdapter.getItem(position).setOrderStateCode(OrderM.CANCEL_U);
+        mAdapter.notifyItemChanged(position);
+    }
+
+    @Override
+    public void ensureSuccess(int position) {
+        mAdapter.getItem(position).setOrderStateCode(OrderM.SUCCESS);
+        mAdapter.notifyItemChanged(position);
+
+    }
+
+    @Override
+    public void deleteSuccess(int position) {
+        mAdapter.getData().remove(position);
+        mAdapter.notifyItemRemoved(position);
+    }
+
+    @Override
+    public void showDialogs() {
+        showDialog();
+    }
+
+    @Override
+    public void dissmisDialogs() {
+           dismissDialog();
     }
 }

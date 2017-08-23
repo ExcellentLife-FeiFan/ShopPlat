@@ -2,6 +2,7 @@ package com.ytxd.spp.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.litesuits.orm.LiteOrm;
@@ -43,6 +44,7 @@ public class App extends Application {
     public static LiteOrm liteOrm;
     public static UserM user;
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -50,13 +52,19 @@ public class App extends Application {
         context = this;
         NineGridView.setImageLoader(new GlideImageLoader());
         initJPush();
-       	// 初始化 JPush
-        JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
+        // 初始化 JPush
+        JPushInterface.setDebugMode(true);    // 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);
         initPrefs();
         initDirs();//初始化APP文件夹
         initOkGo();//初始化OkGo网络请求工具
         initRecovery();
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     private void initJPush() {
@@ -128,9 +136,9 @@ public class App extends Application {
         //builder.addInterceptor(new ChuckInterceptor(this));                       //第三方的开源库，使用通知显示当前请求的log
 
         //超时时间设置，默认60秒
-        builder.readTimeout(OkGo.DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS);      //全局的读取超时时间
-        builder.writeTimeout(OkGo.DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS);     //全局的写入超时时间
-        builder.connectTimeout(OkGo.DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS);   //全局的连接超时时间
+        builder.readTimeout(G.CONNECT_TIME_OUT, TimeUnit.MILLISECONDS);      //全局的读取超时时间
+        builder.writeTimeout(G.CONNECT_TIME_OUT, TimeUnit.MILLISECONDS);     //全局的写入超时时间
+        builder.connectTimeout(G.CONNECT_TIME_OUT, TimeUnit.MILLISECONDS);   //全局的连接超时时间
 
         //自动管理cookie（或者叫session的保持），以下几种任选其一就行
         //builder.cookieJar(new CookieJarImpl(new SPCookieStore(this)));            //使用sp保持cookie，如果cookie不过期，则一直有效
@@ -156,7 +164,7 @@ public class App extends Application {
                 .setOkHttpClient(builder.build())               //设置OkHttpClient
                 .setCacheMode(CacheMode.NO_CACHE)               //全局统一缓存模式，默认不使用缓存，可以不传
                 .setCacheTime(CacheEntity.CACHE_NEVER_EXPIRE)   //全局统一缓存时间，默认永不过期，可以不传
-                .setRetryCount(3)                               //全局统一超时重连次数，默认为三次，那么最差的情况会请求4次(一次原始请求，三次重连请求)，不需要可以设置为0
+                .setRetryCount(3)                             //全局统一超时重连次数，默认为三次，那么最差的情况会请求4次(一次原始请求，三次重连请求)，不需要可以设置为0
 //                .addCommonHeaders(headers)                      //全局公共头
 //                .addCommonParams(params)
         ;

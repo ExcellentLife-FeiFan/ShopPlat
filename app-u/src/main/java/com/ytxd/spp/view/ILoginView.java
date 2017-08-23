@@ -9,7 +9,7 @@ import com.ytxd.spp.model.UserM;
 public interface ILoginView extends IBaseView {
 
     void loginSuccess();
-    void loginOtherSuccess(UserM userM);
+    void loginOtherSuccess(UserM userM,String type);
     void startToMain();
     void showDialogs();
     void dismissDialogs();

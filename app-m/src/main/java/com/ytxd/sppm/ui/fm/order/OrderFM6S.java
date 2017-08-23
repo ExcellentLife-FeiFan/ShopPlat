@@ -62,7 +62,7 @@ public class OrderFM6S extends BaseFragment<OrderFMPresenter> implements BaseQui
         rv.addItemDecoration(new SimpleDividerDecoration(activity, R.color.transparent, R.dimen.divider_height3));
         mAdapter = new HomeOrderA(null, presenter);
         mAdapter.setOnLoadMoreListener(this, rv);
-        mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
+//        mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         rv.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -103,6 +103,11 @@ public class OrderFM6S extends BaseFragment<OrderFMPresenter> implements BaseQui
 
     @Override
     public void aceOrderSuccess(int position) {
+
+    }
+
+    @Override
+    public void aceOrderFailed(int position, OrderM orderM) {
 
     }
 
@@ -169,5 +174,11 @@ public class OrderFM6S extends BaseFragment<OrderFMPresenter> implements BaseQui
             msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
         }
     }
+    @Override
+    protected void onVisible() {
+        if(null!=presenter){
+            onRefresh();
+        }
 
+    }
 }

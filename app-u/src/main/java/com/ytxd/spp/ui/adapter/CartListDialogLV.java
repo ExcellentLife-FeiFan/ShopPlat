@@ -43,7 +43,7 @@ public class CartListDialogLV extends CommonListAdapter<ShoppingCartM.Goods> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        ImageLoadUtil.setImageNP(item.getGoodM().getLogoPaths(), viewHolder.iv, context);
+        ImageLoadUtil.setImageNP(CommonUtils.getGoodLogoFirst(item.getGoodM().getLogoPaths()), viewHolder.iv, context);
         CommonUtils.setText(viewHolder.tvName, item.getGoodM().getGoodsTitle());
         CommonUtils.setText(viewHolder.tvOriginP, "¥ " + item.getGoodM().getYPrice());
         CommonUtils.setText(viewHolder.tvNowP, item.getGoodM().getXPrice());

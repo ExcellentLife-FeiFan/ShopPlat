@@ -16,6 +16,7 @@ import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.flyco.systembar.SystemBarHelper;
 import com.ytxd.sppm.R;
 import com.ytxd.sppm.base.App;
+import com.ytxd.sppm.base.AppManager;
 import com.ytxd.sppm.base.BaseActivity;
 import com.ytxd.sppm.base.G;
 import com.ytxd.sppm.event.HomeOrderRefreshEvent;
@@ -27,6 +28,7 @@ import com.ytxd.sppm.ui.fm.HomeFM2;
 import com.ytxd.sppm.util.CommonUtils;
 import com.ytxd.sppm.util.JpushUtil;
 import com.ytxd.sppm.util.SPUtil;
+import com.ytxd.sppm.util.ToastUtil;
 import com.ytxd.sppm.view.IMainView;
 
 import java.util.ArrayList;
@@ -93,7 +95,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         bottomBar.addItem(item1);
         bottomBar.addItem(item2);
 
-        bottomBar.setBehaviorTranslationEnabled(false);
+        bottomBar.setBehaviorTranslationEnabled(true);
 // Manage titles
         bottomBar.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
 
@@ -174,12 +176,16 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     }
 
 
+    private long nowTime;
+
     @Override
     public void onBackPressed() {
-        Intent home = new Intent(Intent.ACTION_MAIN);
-        home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        home.addCategory(Intent.CATEGORY_HOME);
-        startActivity(home);
+        ToastUtil.showToastShort(activity, "再按一次退出程序");
+        if (System.currentTimeMillis() - nowTime < 2000) {
+            AppManager.getInstance().AppExit(this);
+        } else {
+            nowTime = System.currentTimeMillis();
+        }
     }
 
     @Override

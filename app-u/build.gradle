@@ -8,10 +8,11 @@ android {
         applicationId "com.ytxd.spp"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 1
+        versionCode 5
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         renderscriptTargetApi 25
+        multiDexEnabled true
         renderscriptSupportModeEnabled true
     }
     sourceSets {
@@ -39,9 +40,12 @@ dependencies {
     compile 'com.android.support:appcompat-v7:' + supportVersion
     compile 'com.android.support:design:' + supportVersion
     compile 'com.android.support:recyclerview-v7:' + supportVersion
-    compile 'com.github.todou:appbarspring:1.0.3'
     //noinspection GradleCompatible
-    compile 'com.android.support:support-dynamic-animation:25.3.1'
+    //    compile 'com.github.mcxtzhang:AnimShopButton:V1.2.0'
+    compile files('libs/jcore-android-1.1.5.jar')
+    compile files('libs/jpush-android-3.0.7.jar')
+    compile 'com.android.support:support-dynamic-animation:' + supportVersion
+    compile 'com.github.todou:appbarspring:1.0.3'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.afollestad.material-dialogs:core:0.9.0.1'
@@ -62,16 +66,15 @@ dependencies {
     compile 'com.aurelhubert:ahbottomnavigation:2.0.6'
     compile 'com.zxy.android:recovery:0.1.4'
     compile 'me.zhanghai.android.materialratingbar:library:1.0.2'
-    //    compile 'com.github.mcxtzhang:AnimShopButton:V1.2.0'
     compile 'org.zakariya.stickyheaders:stickyheaders:0.7.6'
     compile 'com.bigkoo:convenientbanner:2.0.5'
     compile 'com.zhihu.android:matisse:0.4.3'
-    testCompile 'junit:junit:4.12'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
     compile 'com.lzy.widget:ninegridview:0.2.1'
     compile 'com.qiushui:blurredview:0.8.1'
-    compile files('libs/jcore-android-1.1.5.jar')
-    compile files('libs/jpush-android-3.0.7.jar')
     compile 'com.zaaach:toprightmenu:1.0'
+    compile 'com.daimajia.numberprogressbar:library:1.4@aar'
+    testCompile 'junit:junit:4.12'
+    compile 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
 }

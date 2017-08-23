@@ -13,8 +13,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kennyc.view.MultiStateView;
 import com.ytxd.sppm.R;
 import com.ytxd.sppm.base.BaseFragment;
-import com.ytxd.sppm.event.CancelSuccessEvent;
-import com.ytxd.sppm.event.RefundSuccessEvent;
 import com.ytxd.sppm.model.OrderM;
 import com.ytxd.sppm.presenter.OrderFMPresenter;
 import com.ytxd.sppm.ui.adapter.HomeOrderA;
@@ -27,7 +25,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import de.greenrobot.event.EventBus;
 
 
 /**
@@ -65,7 +62,7 @@ public class OrderFM6 extends BaseFragment<OrderFMPresenter> implements BaseQuic
         rv.addItemDecoration(new SimpleDividerDecoration(activity, R.color.transparent, R.dimen.divider_height3));
         mAdapter = new HomeOrderA(null, presenter);
         mAdapter.setOnLoadMoreListener(this, rv);
-        mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
+//        mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         rv.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -110,6 +107,11 @@ public class OrderFM6 extends BaseFragment<OrderFMPresenter> implements BaseQuic
     }
 
     @Override
+    public void aceOrderFailed(int position, OrderM orderM) {
+
+    }
+
+    @Override
     public void setSenddingSuccess(int position) {
 
     }
@@ -126,9 +128,12 @@ public class OrderFM6 extends BaseFragment<OrderFMPresenter> implements BaseQuic
 
     @Override
     public void refundSuccess(int position) {
-        mAdapter.getItem(position).setOrderStateCode(OrderM.HAVE_REFUND);
+        mAdapter.remove(position);
+        mAdapter.notifyItemRemoved(position);
+        showContent();
+/*        mAdapter.getItem(position).setOrderStateCode(OrderM.HAVE_REFUND);
         mAdapter.notifyItemChanged(position);
-        EventBus.getDefault().post(new RefundSuccessEvent(mAdapter.getItem(position)));
+        EventBus.getDefault().post(new RefundSuccessEvent(mAdapter.getItem(position)));*/
     }
 
     @Override
@@ -175,9 +180,10 @@ public class OrderFM6 extends BaseFragment<OrderFMPresenter> implements BaseQuic
         }
     }
 
-    public void onEvent(CancelSuccessEvent event) {
+  /*  public void onEvent(CancelSuccessEvent event) {
         mAdapter.getData().add(0, event.orderM);
         mAdapter.notifyDataSetChanged();
+        showContent();
     }
 
     public void onEvent(RefundSuccessEvent event) {
@@ -185,5 +191,12 @@ public class OrderFM6 extends BaseFragment<OrderFMPresenter> implements BaseQuic
             mAdapter.notifyDataSetChanged();
         }
         showContent();
+    }*/
+    @Override
+    protected void onVisible() {
+        if(null!=presenter){
+            onRefresh();
+        }
+
     }
 }

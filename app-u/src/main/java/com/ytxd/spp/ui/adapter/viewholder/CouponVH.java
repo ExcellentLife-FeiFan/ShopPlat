@@ -17,7 +17,7 @@ public class CouponVH extends BaseViewHolder {
     public TextView tvPrice;
     public TextView tvTitle;
     public TextView tvDesrc;
-    public TextView tvUsedTime;
+    public TextView tvUsedTime,tv_remark;
     public ImageView ivClosed;
     public LinearLayout llBg;
 
@@ -31,6 +31,7 @@ public class CouponVH extends BaseViewHolder {
         this.tvUsedTime = (TextView) rootView.findViewById(R.id.tv_used_time);
         this.ivClosed= (ImageView) rootView.findViewById(R.id.iv_close);
         this.llBg= (LinearLayout) rootView.findViewById(R.id.ll_bg);
+        this.tv_remark = (TextView) rootView.findViewById(R.id.tv_remark);
     }
 
 }

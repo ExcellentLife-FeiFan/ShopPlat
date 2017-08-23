@@ -82,8 +82,8 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements Handler
         final String openId = platform.getDb().getUserId(); // 获取用户在此平台的ID
         iView.showDialogs();
         GetRequest getRequest = OkGo.<ApiResult<UserM>>get(Apis.ThirdPartyLogin)
-                .params("Code", accessToken);
-        String platformName = platform.getName();
+                .params("Code", openId);
+        final String platformName = platform.getName();
         if (platformName.equals("QQ")) {
             getRequest.params("Type", "QQ");
         } else if (platformName.equals("Wechat")) {
@@ -93,11 +93,15 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements Handler
             @Override
             public void onSuccess(Response<ApiResult<UserM>> response) {
                 iView.dismissDialogs();
-                ApiResult<UserM> result = response.body();
-                if (result.isSuccess()) {
-                    iView.loginOtherSuccess(result.getObj());
-                } else {
-                    ToastUtil.showToastShort(context, result.getMsg());
+                try {
+                    ApiResult<UserM> result = response.body();
+                    if (result.isSuccess()) {
+                        iView.loginOtherSuccess(result.getObj(),platformName);
+                    } else {
+                        ToastUtil.showToastShort(context, result.getMsg());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 

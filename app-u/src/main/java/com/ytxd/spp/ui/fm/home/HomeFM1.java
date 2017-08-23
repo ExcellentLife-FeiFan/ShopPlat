@@ -76,7 +76,6 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
 
     @Override
     public void initView() {
-        AMapLocationUtil.getInstance().startLocation("HomeFM1");
         refreshLayout.setOnRefreshListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
         mRecyclerView.addItemDecoration(new SimpleDividerDecoration(activity, R.color.line_gray, R.dimen.common_divider_height));
@@ -87,7 +86,7 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                startActivity(MerchantDetailActivity.class, "data", mAdapter.getItem(i));
+                startActivity(MerchantDetailActivity.class, "merchantCode", mAdapter.getItem(i).getSupermarketCode());
             }
         });
         msv.getView(MultiStateView.VIEW_STATE_EMPTY)
@@ -97,6 +96,18 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
                 startActivity(SelectACEAddressActivity.class);
             }
         });
+        actionLocation();
+    }
+
+    private void actionLocation() {
+        msv.setViewState(MultiStateView.VIEW_STATE_LOADING);
+        tvAddress.setText(getString(R.string.loc_doing));
+        if (isNetConnected()) {
+            AMapLocationUtil.getInstance().startLocation("HomeFM1");
+        } else {
+            tvAddress.setText("请检查网络");
+            loginFailed();
+        }
     }
 
     @Override
@@ -159,7 +170,6 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
             } else {
                 addressM = null;
                 tvAddress.setText(getString(R.string.loc_fail));
-//            presenter.getSPMList("北京市");
             }
             loginFailed();
         }
@@ -167,13 +177,19 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
 
     @Override
     public void onRefresh() {
-        if (null != addressM) {
-            presenter.getSPMList(addressM.getCity());
+        if (isNetConnected()) {
+            if (null != addressM) {
+                presenter.getSPMList(addressM.getCity());
+                return;
+            } else {
+                if (CommonUtils.isHaveLocationPermi(activity)) {
+                    actionLocation();
+                }
+            }
         } else {
-            showToast("位置错误");
-            loginFailed();
+            showToast(getString(R.string.net_wrong));
         }
-
+        loginFailed();
     }
 
     @Override
@@ -196,31 +212,32 @@ public class HomeFM1 extends BaseFragment<HomePresenter> implements BaseQuickAda
         List<MerchantM> items = new ArrayList<>();
         refreshLayout.setRefreshing(false);
         for (int i = 0; i < datas.size(); i++) {
-         /*   LatLng shop_l = new LatLng(Double.valueOf(datas.get(i).getLat()), Double.valueOf(datas.get(i).getLng()));
-            LatLng location_l = new LatLng(Double.valueOf(addressM.getLatLng().getLatitude()), Double.valueOf(addressM.getLatLng().getLongitude()));
-            float distance = AMapUtils.calculateLineDistance(shop_l, location_l);
-            float distruF = Float.valueOf(datas.get(i).getConfines());
-            datas.get(i).setDistance(distruF);
-            if (distruF >= distance) {
-                items.add(datas.get(i));
-            }*/
             if (CommonUtils.isInConfines(datas.get(i), addressM.getLatLng())) {
                 items.add(datas.get(i));
             }
         }
         mAdapter.setNewData(items);
+        showEmpty();
+    }
+
+    private void showEmpty() {
         if (mAdapter.getItemCount() > 0) {
             msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
         } else {
             msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
         }
-
     }
 
     @Override
     public void loginFailed() {
         refreshLayout.setRefreshing(false);
-        mAdapter.setNewData(new ArrayList<MerchantM>());
-        msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        showEmpty();
+    }
+
+    @Override
+    protected void onVisible() {
+        if (null == addressM) {
+            actionLocation();
+        }
     }
 }

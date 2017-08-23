@@ -14,13 +14,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kennyc.view.MultiStateView;
 import com.ytxd.sppm.R;
 import com.ytxd.sppm.base.BaseFragment;
-import com.ytxd.sppm.event.AceOrderSuccessEvent;
-import com.ytxd.sppm.event.CancelSuccessEvent;
-import com.ytxd.sppm.event.EnsureSuccessEvent;
 import com.ytxd.sppm.event.HomeOrderRefreshEvent;
-import com.ytxd.sppm.event.RefundSuccessEvent;
 import com.ytxd.sppm.event.SelectStaffEvent;
-import com.ytxd.sppm.event.SetSenddingSuccessEvent;
 import com.ytxd.sppm.model.OrderM;
 import com.ytxd.sppm.presenter.OrderFMPresenter;
 import com.ytxd.sppm.ui.adapter.HomeOrderA;
@@ -36,7 +31,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import de.greenrobot.event.EventBus;
 
 
 /**
@@ -74,7 +68,9 @@ public class OrderFM1 extends BaseFragment<OrderFMPresenter> implements BaseQuic
         rv.addItemDecoration(new SimpleDividerDecoration(activity, R.color.transparent, R.dimen.divider_height3));
         mAdapter = new HomeOrderA(null, presenter);
         mAdapter.setOnLoadMoreListener(this, rv);
-        mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
+ /*       mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
+        mAdapter.isFirstOnly(true);
+        mAdapter.setNotDoAnimationCount(1);*/
         rv.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -117,18 +113,24 @@ public class OrderFM1 extends BaseFragment<OrderFMPresenter> implements BaseQuic
     public void aceOrderSuccess(int position) {
         mAdapter.getItem(position).setOrderStateCode(OrderM.HAVE_ACE_WATING_SEND);
         mAdapter.notifyItemChanged(position);
-        EventBus.getDefault().post(new AceOrderSuccessEvent(mAdapter.getItem(position)));
+//        EventBus.getDefault().post(new AceOrderSuccessEvent(mAdapter.getItem(position)));
+    }
+
+    @Override
+    public void aceOrderFailed(int position, OrderM orderM) {
+        mAdapter.setData(position, orderM);
+        mAdapter.notifyItemChanged(position);
     }
 
     @Override
     public void setSenddingSuccess(int position) {
         mAdapter.getItem(position).setOrderStateCode(OrderM.SENDING);
         mAdapter.notifyItemChanged(position);
-        EventBus.getDefault().post(new SetSenddingSuccessEvent(mAdapter.getItem(position)));
+//        EventBus.getDefault().post(new SetSenddingSuccessEvent(mAdapter.getItem(position)));
 
         if (null != PrintUtils.bluetoothDevice && PrintUtils.bluetoothDevice.getBondState() == BluetoothDevice.BOND_BONDED) {
             CommonUtils.printOrder(PrintUtils.bluetoothDevice, activity, mAdapter.getItem(position));
-        }else{
+        } else {
             ToastUtil.showToastShort(activity, "未设置打印设备");
         }
     }
@@ -137,21 +139,21 @@ public class OrderFM1 extends BaseFragment<OrderFMPresenter> implements BaseQuic
     public void cancelSuccess(int position) {
         mAdapter.getItem(position).setOrderStateCode(OrderM.CANCEL_M);
         mAdapter.notifyItemChanged(position);
-        EventBus.getDefault().post(new CancelSuccessEvent(mAdapter.getItem(position)));
+//        EventBus.getDefault().post(new CancelSuccessEvent(mAdapter.getItem(position)));
     }
 
     @Override
     public void ensureSuccess(int position) {
         mAdapter.getItem(position).setOrderStateCode(OrderM.SUCCESS);
         mAdapter.notifyItemChanged(position);
-        EventBus.getDefault().post(new EnsureSuccessEvent(mAdapter.getItem(position)));
+//        EventBus.getDefault().post(new EnsureSuccessEvent(mAdapter.getItem(position)));
     }
 
     @Override
     public void refundSuccess(int position) {
         mAdapter.getItem(position).setOrderStateCode(OrderM.HAVE_REFUND);
         mAdapter.notifyItemChanged(position);
-        EventBus.getDefault().post(new RefundSuccessEvent(mAdapter.getItem(position)));
+//        EventBus.getDefault().post(new RefundSuccessEvent(mAdapter.getItem(position)));
     }
 
     @Override
@@ -192,6 +194,7 @@ public class OrderFM1 extends BaseFragment<OrderFMPresenter> implements BaseQuic
         order.setDeliveryStaffCode(event.deliveryStaffM.getDeliveryStaffCode());
         order.setDeliveryStaffModel(event.deliveryStaffM);
         mAdapter.notifyItemChanged(event.position);
+        presenter.setSendding(order,event.position);
     }
 
     @Override
@@ -219,7 +222,7 @@ public class OrderFM1 extends BaseFragment<OrderFMPresenter> implements BaseQuic
     }
 
 
-    public void onEvent(AceOrderSuccessEvent event) {
+/*    public void onEvent(AceOrderSuccessEvent event) {
         notifyItem(event.orderM);
     }
 
@@ -230,6 +233,7 @@ public class OrderFM1 extends BaseFragment<OrderFMPresenter> implements BaseQuic
     public void onEvent(SetSenddingSuccessEvent event) {
         notifyItem(event.orderM);
     }
+
     public void onEvent(RefundSuccessEvent event) {
         notifyItem(event.orderM);
     }
@@ -242,10 +246,19 @@ public class OrderFM1 extends BaseFragment<OrderFMPresenter> implements BaseQuic
         int index = mAdapter.getData().indexOf(orderM);
         mAdapter.setData(index, orderM);
         mAdapter.notifyItemChanged(index);
-    }
+        showContent();
+    }*/
+
     public void onEvent(HomeOrderRefreshEvent event) {
         msv.setViewState(MultiStateView.VIEW_STATE_LOADING);
         presenter.getOrderList(CommonUtils.REFRESH, 1, "0");
+    }
+
+    @Override
+    protected void onVisible() {
+        if(null!=presenter){
+            onRefresh();
+        }
     }
 
 }

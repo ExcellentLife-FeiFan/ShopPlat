@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.ytxd.spp.R;
+import com.ytxd.spp.base.App;
 import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
 import com.ytxd.spp.model.UserM;
@@ -20,7 +21,6 @@ import com.ytxd.spp.view.ILoginView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.sharesdk.framework.ShareSDK;
 
 public class LoginActivity extends BaseActivity<LoginPresenter> implements ILoginView {
 
@@ -36,7 +36,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         HideUtil.init(this);
-        ShareSDK.initSDK(this);
+
         presenter.initHandler();
         String phone = SPUtil.getInstance().getString("phone");
         if (!AbStrUtil.isEmpty(phone)) {
@@ -95,11 +95,20 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     }
 
     @Override
-    public void loginOtherSuccess(UserM userM) {
- /*       if(userM.getIsRegister()){
-
-        }*/
-
+    public void loginOtherSuccess(UserM userM,String type) {
+        App.user = userM;
+        if(type.equals("QQ")){
+            SPUtil.getInstance().putString("otherType", "QQ");
+            SPUtil.getInstance().putString("code", userM.getQQ());
+        }else if(type.equals("Wechat")){
+            SPUtil.getInstance().putString("otherType", "WeChat");
+            SPUtil.getInstance().putString("code", userM.getWeChatCode());
+        }
+        if(userM.getIsRegister()){
+           startActivity(InputInviteCodeActivity.class);
+        }else{
+            startToMain();
+        }
 
     }
 

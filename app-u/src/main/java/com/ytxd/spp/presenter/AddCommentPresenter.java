@@ -33,29 +33,7 @@ public class AddCommentPresenter extends BasePresenter<IAddCommentView> {
     public void release() {
     }
 
-    public void getGoodsInfo(String OrderCode) {
-        OkGo.<ApiResult<List<OrderGoodM>>>get(Apis.GetOrderGoodsInfo)//
-                .params("OrderCode", OrderCode)
-                .execute(new JsonCallback<ApiResult<List<OrderGoodM>>>() {
-                    @Override
-                    public void onSuccess(Response<ApiResult<List<OrderGoodM>>> response) {
-                        ApiResult<List<OrderGoodM>> result = response.body();
-                        if (result.isSuccess()) {
-                            iView.lodeGoodsSuccess(result.getObj());
-                        } else {
-                            iView.lodeGoodsSuccess(null);
-                            ToastUtil.showToastShort(context, result.getMsg());
-                        }
-                    }
 
-                    @Override
-                    public void onError(Response<ApiResult<List<OrderGoodM>>> response) {
-                        iView.lodeGoodsSuccess(null);
-                        super.onError(response);
-                    }
-                });
-
-    }
 
 
     public void addComment(String content, List<OrderGoodM> goods, int distrS, int goodS, String imgUrl, String orderCode, String SupermarketCode) {

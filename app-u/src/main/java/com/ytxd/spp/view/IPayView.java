@@ -7,7 +7,8 @@ package com.ytxd.spp.view;
 public interface IPayView extends IBaseView {
 
     void paySuccess();
-    void pay();
     void showDialogs();
     void dismissDialogs();
+    void showToast(String txt);
+    void payFailure();
 }

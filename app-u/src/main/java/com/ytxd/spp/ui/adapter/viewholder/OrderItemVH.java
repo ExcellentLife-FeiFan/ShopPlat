@@ -22,7 +22,7 @@ public class OrderItemVH extends BaseViewHolder {
     public TextView tvBuiedNum;
     public TextView tvAgain;
     public TextView tvEvaluate;
-    public TextView tvPay;
+    public TextView tvPay,tvCancel,tvEnsure,tvDelete;
 
 
     public OrderItemVH(View rootView) {
@@ -38,7 +38,9 @@ public class OrderItemVH extends BaseViewHolder {
         this.tvAgain = (TextView) rootView.findViewById(R.id.tv_again);
         this.tvEvaluate = (TextView) rootView.findViewById(R.id.tv_evaluate);
         tvPay = (TextView) rootView.findViewById(R.id.tv_pay);
-
+        tvCancel = (TextView) rootView.findViewById(R.id.tv_cancel);
+        tvEnsure= (TextView) rootView.findViewById(R.id.tv_ensure);
+        tvDelete= (TextView) rootView.findViewById(R.id.tv_delete);
     }
 
 }

@@ -62,7 +62,7 @@ public class CouponA extends BaseQuickAdapter<CouponM, CouponVH> {
                 item.setPast(true);
             }
         }
-
+        CommonUtils.setText(helper.tv_remark, item.getGetContent());
     }
 
 }

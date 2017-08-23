@@ -7,7 +7,7 @@
     <dimen name="padding_left">12.0dip</dimen>
     <dimen name="padding_bottom">15.0dip</dimen>
     <dimen name="padding_bottom_m">80.0dip</dimen>
-    <dimen name="actionbar_height">55.0dip</dimen>
+    <dimen name="actionbar_height">48.0dip</dimen>
     <dimen name="padding_top">12.0dip</dimen>
     <dimen name="padding_left2">10.0dip</dimen>
 

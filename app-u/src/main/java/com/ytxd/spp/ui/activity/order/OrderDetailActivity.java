@@ -1,13 +1,17 @@
 package com.ytxd.spp.ui.activity.order;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.InputType;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -17,7 +21,6 @@ import com.ytxd.spp.R;
 import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
 import com.ytxd.spp.event.OrderChangevent;
-import com.ytxd.spp.model.OrderGoodM;
 import com.ytxd.spp.model.OrderM;
 import com.ytxd.spp.presenter.OrderDetailPresenter;
 import com.ytxd.spp.ui.activity.main.MerchantDetailActivity;
@@ -29,15 +32,13 @@ import com.ytxd.spp.util.DialogUtils;
 import com.ytxd.spp.util.ImageLoadUtil;
 import com.ytxd.spp.view.IOrderDetailView;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> implements View.OnClickListener, IOrderDetailView {
+public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> implements View.OnClickListener, IOrderDetailView, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.ll_shop)
     LinearLayout llShop;
@@ -82,6 +83,13 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     TextView tvDistrTime;
     @BindView(R.id.tv_distr_p)
     TextView tvDistrP;
+    @BindView(R.id.btn_cancel_c)
+    Button btnCancelC;
+    @BindView(R.id.srl)
+    SwipeRefreshLayout srl;
+    @BindView(R.id.srollview)
+    ScrollView srollview;
+    private String orderCode;
 
 
     @Override
@@ -96,56 +104,79 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         setContentView(R.layout.activity_order_detail);
         ButterKnife.bind(this);
         getBar().initActionBar("订单详情", this);
-        orderM = (OrderM) getIntent().getSerializableExtra("data");
+//        orderM = (OrderM) getIntent().getSerializableExtra("data");
         position = getIntent().getIntExtra("position", -1);
+        srl.setOnRefreshListener(this);
+
+        srollview.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                if (srl != null) {
+                    srl.setEnabled(srollview.getScrollY() == 0);
+                }
+            }
+        });
+
+        orderCode = getIntent().getStringExtra("orderCode");
+        CommonUtils.setEmptyViewForSLV(this, rlLv, lvSubGoods);
+        presenter.getOrderInfo(orderCode);
+      /*  if (null != orderM) {
+            setData(orderM);
+        } else {
+            presenter.getOrderInfo(orderCode);
+        }*/
+    }
+
+    private void setData(OrderM orderM) {
+        this.orderM = orderM;
         mAdapter = new OrderSubGoodsLV2(orderM.getChildrenGoods(), this);
         lvSubGoods.setAdapter(mAdapter);
-        CommonUtils.setEmptyViewForSLV(this, rlLv, lvSubGoods);
-        if (null != orderM) {
-            CommonUtils.setText(tvMerName, orderM.getSuperMarketModel().getName());
-            ImageLoadUtil.setImageNP(orderM.getSuperMarketModel().getLogoUrl(), civ, this);
-            tvTotalP.setText("总计 ¥" + orderM.getYPrice());
-            tvRealPay.setText("¥" + orderM.getSJPrice());
-            float dp = Float.valueOf(orderM.getYPrice()) - Float.valueOf(orderM.getSJPrice());
-            if (dp > 0) {
-                tvDiscountP.setText("优惠 ¥" + CommonUtils.getFloatString2(dp));
-            }
-            CommonUtils.setText(tvDistrTime, CommonUtils.getSDTimeDesrcDay(orderM.getSDTime()));
-            CommonUtils.setText(tvOrderCode, orderM.getOrderCode());
-            CommonUtils.setText(tvOrderTime, orderM.getCreateTime().replace("T", " "));
-            CommonUtils.setText(tvAddress, orderM.getAddressTitle() + orderM.getAddressContent());
-            CommonUtils.setText(tvDistrP, "¥"+orderM.getPSPrice());
-
-            if (orderM.getOrderStateCode().equals(OrderM.WATING_PAY)) {
-                CommonUtils.setText(tvOrderState, "等待支付");
-                llPay.setVisibility(View.VISIBLE);
-            } else if (orderM.getOrderStateCode().equals(OrderM.HAVE_PAY_WATING_ACE)) {
-                CommonUtils.setText(tvOrderState, "等待接单");
-            } else if (orderM.getOrderStateCode().equals(OrderM.FASE_PAY_WATING_ACE)) {
-                CommonUtils.setText(tvOrderState, "等待接单");
-            } else if (orderM.getOrderStateCode().equals(OrderM.HAVE_ACE_WATING_SEND)) {
-                CommonUtils.setText(tvOrderState, "等待配送");
-            } else if (orderM.getOrderStateCode().equals(OrderM.SENDING)) {
-                CommonUtils.setText(tvOrderState, "正在配送");
-                btnEnsure.setVisibility(View.VISIBLE);
-            } else if (orderM.getOrderStateCode().equals(OrderM.SUCCESS)) {
-                CommonUtils.setText(tvOrderState, "交易成功");
-                btnOneMore.setVisibility(View.VISIBLE);
-            } else if (orderM.getOrderStateCode().equals(OrderM.CANCEL_U)) {
-                CommonUtils.setText(tvOrderState, "已取消");
-                btnOneMore.setVisibility(View.VISIBLE);
-            } else if (orderM.getOrderStateCode().equals(OrderM.CANCEL_M)) {
-                CommonUtils.setText(tvOrderState, "已取消");
-                btnOneMore.setVisibility(View.VISIBLE);
-            } else if (orderM.getOrderStateCode().equals(OrderM.HAVE_REFUND)) {
-                CommonUtils.setText(tvOrderState, "已退款");
-                btnOneMore.setVisibility(View.VISIBLE);
-            }
-            if (!AbStrUtil.isEmpty(orderM.getDeliveryStaffModel().getDeliveryStaffName())) {
-                CommonUtils.setText(tvDistriType, "骑手" + "(" + orderM.getDeliveryStaffModel().getDeliveryStaffName() + "  " + orderM.getDeliveryStaffModel().getPhone() + ")");
-            }
+        CommonUtils.setText(tvMerName, orderM.getSuperMarketModel().getName());
+        ImageLoadUtil.setImageNP(orderM.getSuperMarketModel().getLogoUrl(), civ, this);
+        tvTotalP.setText("总计 ¥" + orderM.getYPrice());
+        tvRealPay.setText("¥" + orderM.getSJPrice());
+        float dp = Float.valueOf(orderM.getYPrice()) - Float.valueOf(orderM.getSJPrice());
+        if (dp > 0) {
+            tvDiscountP.setText("优惠 ¥" + CommonUtils.getFloatString2(dp));
         }
-//        presenter.getGoodsInfo(orderM.getOrderCode());
+        CommonUtils.setText(tvDistrTime, CommonUtils.getSDTimeDesrcDay(orderM.getSDTime()));
+        CommonUtils.setText(tvOrderCode, orderM.getOrderCode());
+        CommonUtils.setText(tvOrderTime, orderM.getCreateTime().replace("T", " "));
+        CommonUtils.setText(tvAddress, orderM.getAddressTitle() + orderM.getAddressContent());
+        CommonUtils.setText(tvDistrP, "¥" + orderM.getPSPrice());
+
+        if (orderM.getOrderStateCode().equals(OrderM.WATING_PAY)) {
+            CommonUtils.setText(tvOrderState, "等待支付");
+            llPay.setVisibility(View.VISIBLE);
+        } else if (orderM.getOrderStateCode().equals(OrderM.HAVE_PAY_WATING_ACE)) {
+            CommonUtils.setText(tvOrderState, "等待接单");
+            btnCancelC.setVisibility(View.VISIBLE);
+        } else if (orderM.getOrderStateCode().equals(OrderM.FASE_PAY_WATING_ACE)) {
+            CommonUtils.setText(tvOrderState, "等待接单");
+            btnCancelC.setVisibility(View.VISIBLE);
+        } else if (orderM.getOrderStateCode().equals(OrderM.HAVE_ACE_WATING_SEND)) {
+            CommonUtils.setText(tvOrderState, "等待配送");
+            btnCancelC.setVisibility(View.VISIBLE);
+        } else if (orderM.getOrderStateCode().equals(OrderM.SENDING)) {
+            CommonUtils.setText(tvOrderState, "正在配送");
+            btnEnsure.setVisibility(View.VISIBLE);
+        } else if (orderM.getOrderStateCode().equals(OrderM.SUCCESS)) {
+            CommonUtils.setText(tvOrderState, "交易成功");
+            btnOneMore.setVisibility(View.VISIBLE);
+        } else if (orderM.getOrderStateCode().equals(OrderM.CANCEL_U)) {
+            CommonUtils.setText(tvOrderState, "已取消");
+            btnOneMore.setVisibility(View.VISIBLE);
+        } else if (orderM.getOrderStateCode().equals(OrderM.CANCEL_M)) {
+            CommonUtils.setText(tvOrderState, "已取消");
+            btnOneMore.setVisibility(View.VISIBLE);
+        } else if (orderM.getOrderStateCode().equals(OrderM.HAVE_REFUND)) {
+            CommonUtils.setText(tvOrderState, "已退款");
+            btnOneMore.setVisibility(View.VISIBLE);
+        }
+        if (!AbStrUtil.isEmpty(orderM.getDeliveryStaffModel().getDeliveryStaffName())) {
+            CommonUtils.setText(tvDistriType, "骑手" + "(" + orderM.getDeliveryStaffModel().getDeliveryStaffName() + "  " + orderM.getDeliveryStaffModel().getPhone() + ")");
+        }
+        msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);
     }
 
     @Override
@@ -158,15 +189,14 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
 
     }
 
-    @OnClick({R.id.btn_pay, R.id.btn_cancel, R.id.btn_one_more, R.id.ll_shop, R.id.btn_ensure})
+    @OnClick({R.id.btn_pay, R.id.btn_cancel, R.id.btn_cancel_c, R.id.btn_one_more, R.id.ll_shop, R.id.btn_ensure})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_shop:
-                startActivity(MerchantDetailActivity.class, "data", orderM.getSuperMarketModel());
+                startActivity(MerchantDetailActivity.class, "merchantCode", orderM.getSuperMarketModel().getSupermarketCode());
                 break;
             case R.id.btn_pay:
                 if (null != orderM) {
-
                     Intent intent = new Intent(activity, PayActivity.class);
                     intent.putExtra("data", orderM);
                     intent.putExtra("position", position);
@@ -183,7 +213,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
                                 dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
                             } else {
                                 dialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
-                                presenter.cancel(orderM.getOrderCode(), orderM.getUserCouponCode(), input.toString());
+                                presenter.cancel(position, orderM.getOrderCode(), orderM.getUserCouponCode(), input.toString());
                             }
                         }
 
@@ -201,12 +231,27 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
                 break;
             case R.id.btn_one_more:
                 Intent intent = new Intent(this, MerchantDetailActivity.class);
-                intent.putExtra("data", orderM.getSuperMarketModel());
+                intent.putExtra("merchantCode", orderM.getSuperMarketModel().getSupermarketCode());
                 intent.putExtra("orderCode", orderM.getOrderCode());
                 startActivity(intent);
                 break;
             case R.id.btn_ensure:
+                presenter.ensure(position, orderM.getOrderCode());
                 break;
+            case R.id.btn_cancel_c:
+                DialogUtils.showDialog(activity, "提示", "此刻取消订单请联系商家\n" + orderM.getSuperMarketModel().getContacts() + "：" + orderM.getSuperMarketModel().getPhone(), new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        if (which.name().equals(DialogAction.POSITIVE.name())) {
+                            Intent intent = new Intent(Intent.ACTION_DIAL);
+                            Uri data = Uri.parse("tel:" + orderM.getSuperMarketModel().getPhone());
+                            intent.setData(data);
+                            startActivity(intent);
+                        }
+                    }
+                });
+                break;
+
         }
     }
 
@@ -216,25 +261,53 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     }
 
     @Override
-    public void lodeGoodsSuccess(List<OrderGoodM> items) {
-       /* if (null != items) {
-            mAdapter.addItems(items, true);
+    public void lodeOrderSuccess(OrderM orderM) {
+        if (null != orderM) {
+            this.orderM = orderM;
+            setData(orderM);
+        } else {
+            msv.setViewState(MultiStateView.VIEW_STATE_EMPTY);
         }
-        msv.setViewState(MultiStateView.VIEW_STATE_CONTENT);*/
+        srl.setRefreshing(false);
+
     }
 
     @Override
-    public void cancelSuccess() {
+    public void cancelSuccess(int p) {
         showToast("订单取消成功");
         tvOrderState.setText("已取消");
         orderM.setOrderCode(OrderM.CANCEL_U);
         llPay.setVisibility(View.GONE);
         btnOneMore.setVisibility(View.VISIBLE);
-        EventBus.getDefault().post(new OrderChangevent(position, OrderM.CANCEL_U));
+        if (position != -1) {
+            EventBus.getDefault().post(new OrderChangevent(position, OrderM.CANCEL_U));
+        }
     }
 
     @Override
-    public void ensureSuccess() {
+    public void ensureSuccess(int p) {
+        if (position != -1) {
+            EventBus.getDefault().post(new OrderChangevent(position, OrderM.SUCCESS));
+        }
+    }
 
+    @Override
+    public void deleteSuccess(int position) {
+
+    }
+
+    @Override
+    public void showDialogs() {
+        showDialog();
+    }
+
+    @Override
+    public void dissmisDialogs() {
+        dismissDialog();
+    }
+
+    @Override
+    public void onRefresh() {
+        presenter.getOrderInfo(getIntent().getStringExtra("orderCode"));
     }
 }

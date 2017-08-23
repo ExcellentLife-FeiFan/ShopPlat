@@ -1,7 +1,6 @@
 package com.ytxd.spp.base;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
@@ -18,6 +17,7 @@ import com.flyco.systembar.SystemBarHelper;
 import com.ytxd.spp.R;
 import com.ytxd.spp.event.EmptyEvent;
 import com.ytxd.spp.presenter.BasePresenter;
+import com.ytxd.spp.ui.activity.main.MainActivity;
 import com.ytxd.spp.ui.views.ActionBarView;
 import com.ytxd.spp.ui.views.loadview.CustomDialog;
 import com.ytxd.spp.util.AbStrUtil;
@@ -37,7 +37,7 @@ import de.greenrobot.event.EventBus;
  */
 
 public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity {
-    protected Activity activity;
+    protected AppCompatActivity activity;
     private CustomDialog dialog;//进度条
     protected ActionBarView actionBar;
     protected final List<View> viewsToAnimate = new ArrayList<>();
@@ -55,7 +55,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
             EventBus.getDefault().register(this);
         }
         Glide.get(this).clearMemory();
-        SystemBarHelper.tintStatusBar(this, CommonUtils.getColor(this,R.color.colorPrimary),0.1f);
+        SystemBarHelper.tintStatusBar(this, CommonUtils.getColor(this, R.color.colorPrimary), 0.1f);
         activity = this;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setupWindowAnimations();
@@ -209,9 +209,13 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
     public void dismissDialog() {
-        if (dialog != null) {
-            dialog.dismiss();
-            dialog = null;
+        try {
+            if (dialog != null) {
+                dialog.dismiss();
+                dialog = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -284,5 +288,14 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     public void onEvent(EmptyEvent event) {
 
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        //Activity意外退出时onRestoreInstanceState会被调用，在重新返回时为了避免空指针
+        // ，直接销毁该Activity然后打开MainActivity（MainActivity做了空指针等异常处理所以可以直接返回）
+        startActivity(MainActivity.class);
+        AppManager.getInstance().killActivity(activity);
     }
 }

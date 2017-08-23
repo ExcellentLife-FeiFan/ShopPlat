@@ -1,6 +1,7 @@
 package com.ytxd.spp.presenter;
 
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
@@ -8,10 +9,12 @@ import com.ytxd.spp.model.CatagaryM;
 import com.ytxd.spp.model.GoodM;
 import com.ytxd.spp.model.MerchantM;
 import com.ytxd.spp.model.OrderGoodM;
+import com.ytxd.spp.model.OrderM;
 import com.ytxd.spp.model.ShoppingCartM;
 import com.ytxd.spp.net.ApiResult;
 import com.ytxd.spp.net.Apis;
 import com.ytxd.spp.net.JsonCallback;
+import com.ytxd.spp.ui.activity.main.MerchantDetailActivity;
 import com.ytxd.spp.util.ShoppingCartUtil;
 import com.ytxd.spp.util.ToastUtil;
 import com.ytxd.spp.view.IMerchantGoodView;
@@ -63,15 +66,15 @@ public class MerchantGoodPresenter extends BasePresenter<IMerchantGoodView> {
     }
 
     public void getGoodFromOrder(String orderCode) {
-        OkGo.<ApiResult<List<OrderGoodM>>>get(Apis.GetOrderGoodsInfo)
+        OkGo.<ApiResult<OrderM>>get(Apis.GetOrderInfo)
                 .params("OrderCode", orderCode)
-                .execute(new JsonCallback<ApiResult<List<OrderGoodM>>>() {
+                .execute(new JsonCallback<ApiResult<OrderM>>() {
                     @Override
-                    public void onSuccess(Response<ApiResult<List<OrderGoodM>>> response) {
+                    public void onSuccess(Response<ApiResult<OrderM>> response) {
                         try {
-                            ApiResult<List<OrderGoodM>> result = response.body();
+                            ApiResult<OrderM> result = response.body();
                             if (result.isSuccess()) {
-                                iView.lodeOrderGoodsSuccess(result.getObj());
+                                iView.lodeOrderGoodsSuccess(result.getObj().getChildrenGoods());
                                 return;
                             } else {
                                 ToastUtil.showToastShort(context, result.getMsg());
@@ -83,7 +86,7 @@ public class MerchantGoodPresenter extends BasePresenter<IMerchantGoodView> {
                     }
 
                     @Override
-                    public void onError(Response<ApiResult<List<OrderGoodM>>> response) {
+                    public void onError(Response<ApiResult<OrderM>> response) {
                         iView.lodeOrderGoodsFail();
                         super.onError(response);
                     }
@@ -91,17 +94,23 @@ public class MerchantGoodPresenter extends BasePresenter<IMerchantGoodView> {
 
     }
 
-
-    public void addOrderGood(GoodM good, MerchantM merchantM, List<OrderGoodM> orderGoods) {
+    //逐个对照刚更新的商店商品来添加从“再来一单”中订单内的商品到本地购物车
+    public void addOrderGood(AppCompatActivity activity, GoodM good, MerchantM merchantM, List<OrderGoodM> orderGoods) {
         if (null != good.getGoods() && good.getGoods().size() > 0) {
             List<ShoppingCartM.Goods> gAs = new ArrayList<>();
             for (int i = 0; i < orderGoods.size(); i++) {
                 for (int j = 0; j < good.getGoods().size(); j++) {
                     if (good.getGoods().get(j).getGoodsCode().equals(orderGoods.get(i).getGoodsCode())) {
-                        ShoppingCartM.Goods g=new ShoppingCartM.Goods();
+                        ShoppingCartM.Goods g = new ShoppingCartM.Goods();
                         g.setCount(orderGoods.get(i).getBuyNumber());
                         g.setGoodM(good.getGoods().get(j));
                         gAs.add(g);
+
+                        //再来一单，判断是否价格改变，如果改变保存该商品以便以后提示
+                        if (ShoppingCartUtil.isPriceChanged(good.getGoods().get(j), orderGoods.get(i))) {
+                            good.getGoods().get(j).setChangeType(2);
+                            ((MerchantDetailActivity) activity).oneMoreOrderGoodsChanged.add(good.getGoods().get(j));
+                        }
                     }
 
                 }
@@ -122,6 +131,11 @@ public class MerchantGoodPresenter extends BasePresenter<IMerchantGoodView> {
             GoodM gA = null;
             for (int i = 0; i < orderGoods.size(); i++) {
                 if (good.getGoodsCode().equals(orderGoods.get(i).getGoodsCode())) {
+                    //再来一单，判断是否价格改变，如果改变保存该商品以便以后提示
+                    if (ShoppingCartUtil.isPriceChanged(good, orderGoods.get(i))) {
+                        good.setChangeType(2);
+                        ((MerchantDetailActivity) activity).oneMoreOrderGoodsChanged.add(good);
+                    }
                     count = orderGoods.get(i).getBuyNumber();
                     orderGoods.remove(i);
                     isCotained = true;
@@ -131,7 +145,6 @@ public class MerchantGoodPresenter extends BasePresenter<IMerchantGoodView> {
             }
             if (isCotained) {
                 ShoppingCartUtil.addGoods(context, merchantM, gA, count);
-
             }
         }
     }

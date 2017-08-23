@@ -9,11 +9,13 @@ public interface IRegisterView extends IBaseView {
 
     void stopTimer();
 
-    void finishRegister();
+    void finishRegister(String phone, String pwd);
 
     void sendCodeSuccess(String code);
 
     void showDialogs();
 
     void dissmisDialogs();
+
+    void startToMain();
 }

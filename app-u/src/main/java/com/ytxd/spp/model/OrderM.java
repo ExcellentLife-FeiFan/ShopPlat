@@ -44,6 +44,8 @@ public class OrderM implements Serializable {
     private String CreateTime;
     private DeliveryStaffM DeliveryStaffModel;
 
+    private String PayStr;
+
     private List<ShoppingCartM.Goods> goods;
 
     private List<OrderGoodM> ChildrenGoods;
@@ -313,5 +315,13 @@ public class OrderM implements Serializable {
 
     public void setChildrenGoods(List<OrderGoodM> childrenGoods) {
         ChildrenGoods = childrenGoods;
+    }
+
+    public String getPayStr() {
+        return PayStr;
+    }
+
+    public void setPayStr(String payStr) {
+        PayStr = payStr;
     }
 }

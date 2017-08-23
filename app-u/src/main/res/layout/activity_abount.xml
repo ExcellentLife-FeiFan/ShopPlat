@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <com.ytxd.spp.ui.views.ActionBarView
+        android:id="@+id/actionBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionbar_height" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryLow">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp60"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:layout_width="@dimen/dp75"
+                android:layout_height="@dimen/dp75"
+                android:src="@drawable/logo"
+                app:riv_corner_radius="@dimen/dp10" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_ui_margin_large"
+                android:fontFamily="sans-serif"
+                android:text="轻松生活  有我陪伴"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/sp18"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/tv_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_ui_margin"
+                android:background="@drawable/bg_gray_border_halfcircle"
+                android:paddingBottom="@dimen/dp4"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingRight="@dimen/dp10"
+                android:paddingTop="@dimen/dp4"
+                android:text="v1.0.1"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_size_micro" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/default_ui_margin_medium"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tv_check_update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp50"
+                android:padding="@dimen/dp10"
+                android:text="检查更新"
+                android:textColor="@color/black_overlay"
+                android:textSize="@dimen/text_size_common_s" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="北京宜天信达网络有限科技公司"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_size_micro" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

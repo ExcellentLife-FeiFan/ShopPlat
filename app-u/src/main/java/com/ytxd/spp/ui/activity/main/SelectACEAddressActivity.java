@@ -34,6 +34,7 @@ import com.ytxd.spp.ui.adapter.SelectACEAdLV;
 import com.ytxd.spp.ui.views.InListView;
 import com.ytxd.spp.util.AMapLocationUtil;
 import com.ytxd.spp.util.AbStrUtil;
+import com.ytxd.spp.util.AbWifiUtil;
 import com.ytxd.spp.util.CommonUtils;
 import com.ytxd.spp.view.IHomeSelectACEView;
 import com.zaaach.citypicker.CityPickerActivity;
@@ -79,6 +80,8 @@ public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresente
     RelativeLayout rl_lv_ad_data;
     @BindView(R.id.rl_lv_near_ad)
     RelativeLayout rl_lv_near_ad;
+    @BindView(R.id.ll_ad_data)
+    LinearLayout llAdData;
     private HomeAddressM addressM;
 
     @Override
@@ -94,7 +97,7 @@ public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresente
         ButterKnife.bind(this);
         getBar().initActionBar("选择收货地址", "", "", R.drawable.ic_back_white, -1, this);
         initView();
-        if(CommonUtils.isLogined2()){
+        if (CommonUtils.isLogined2()) {
             presenter.getADList();
         }
     }
@@ -107,7 +110,7 @@ public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresente
         lvAdData.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                searchPoint2(selectACEAdLV.getItem(position),new LatLonPoint(Double.valueOf(selectACEAdLV.getItem(position).getLat()), Double.valueOf(selectACEAdLV.getItem(position).getLng())));
+                searchPoint2(selectACEAdLV.getItem(position), new LatLonPoint(Double.valueOf(selectACEAdLV.getItem(position).getLat()), Double.valueOf(selectACEAdLV.getItem(position).getLng())));
             }
         });
         mNearAddAdapter = new AddressSearchLV(new ArrayList<PoiItem>(), this);
@@ -127,15 +130,12 @@ public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresente
         lvSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                EventBus.getDefault().post(new HomeAddressChangeEvent(new HomeAddressM(mNearAddAdapter.getItem(position).getCityName(), mSearchAddAdapter.getItem(position).getTitle()
+                EventBus.getDefault().post(new HomeAddressChangeEvent(new HomeAddressM(mSearchAddAdapter.getItem(position).getCityName(), mSearchAddAdapter.getItem(position).getTitle()
                         , mSearchAddAdapter.getItem(position).toString()
                         , mSearchAddAdapter.getItem(position).getLatLonPoint())));
                 AppManager.getInstance().killActivity(activity);
             }
         });
-
-
-        AMapLocationUtil.getInstance().startLocation();
         etSearch.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -152,6 +152,10 @@ public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresente
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2,
                                       int arg3) {
+                if (!AbWifiUtil.isConnectivity(activity)) {
+                    showToast(getString(R.string.net_wrong));
+                    return;
+                }
                 mSearchAddAdapter.clearItems();
                 if (cs.length() <= 0) {
                     llLoc.setVisibility(View.VISIBLE);
@@ -251,8 +255,11 @@ public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresente
                 startActivityForResult(new Intent(this, CityActivity.class), REQUEST_CODE_PICK_CITY);
                 break;
             case R.id.tv_re_loc:
-                tvLocAd.setText(getString(R.string.loc_doing));
-                AMapLocationUtil.getInstance().startLocation();
+                if (tvLocAd.getText().toString().equals(getString(R.string.loc_doing))) {
+                    showToast(getString(R.string.loc_doing));
+                } else {
+                    actionLocation();
+                }
                 break;
             case R.id.tv_loc_ad:
                 String ad = tvLocAd.getText().toString();
@@ -280,7 +287,11 @@ public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresente
             searchPoint1(new LatLonPoint(event.getaMapLocation().getLatitude(), event.getaMapLocation().getLongitude()));
         } else {
             tvLocAd.setText(getString(R.string.loc_fail));
-            tvCity.setText(getString(R.string.loc_fail));
+            city = "北京";
+            tvCity.setText(city);
+            if (CommonUtils.isHaveLocationPermi(activity)) {
+
+            }
         }
 
     }
@@ -327,6 +338,15 @@ public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresente
         }
     }
 
+    private void actionLocation() {
+        tvLocAd.setText(getString(R.string.loc_doing));
+        if (isNetConnected()) {
+            AMapLocationUtil.getInstance().startLocation();
+        } else {
+            tvLocAd.setText("请检查网络");
+        }
+    }
+
     @Override
     public void init() {
 
@@ -335,10 +355,24 @@ public class SelectACEAddressActivity extends BaseActivity<HomeSelectACEPresente
     @Override
     public void lodeSuccess(List<AddressM> items) {
         selectACEAdLV.addItems(items, true);
+        if (selectACEAdLV.getCount() > 0) {
+            llAdData.setVisibility(View.VISIBLE);
+        } else {
+            llAdData.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void lodeFailed() {
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (null == addressM) {
+            actionLocation();
+        }
+    }
+
 }

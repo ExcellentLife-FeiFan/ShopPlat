@@ -19,10 +19,12 @@ import java.util.List;
  * 主界面presenter
  * Created by panl on 15/12/24.
  */
-public class OrderActivityPresenter extends BasePresenter<IOrderActivityView> {
+public class OrderActivityPresenter extends OrderPresenter {
+    IOrderActivityView iView;
 
     public OrderActivityPresenter(Context context, IOrderActivityView iView) {
         super(context, iView);
+        this.iView = iView;
     }
 
     @Override
@@ -83,7 +85,6 @@ public class OrderActivityPresenter extends BasePresenter<IOrderActivityView> {
                 });
 
     }
-
 
 
 }

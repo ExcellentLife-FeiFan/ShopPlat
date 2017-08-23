@@ -10,6 +10,7 @@ import com.ytxd.spp.R;
 import com.ytxd.spp.base.AppManager;
 import com.ytxd.spp.base.BaseActivity;
 import com.ytxd.spp.presenter.RegisterPresenter;
+import com.ytxd.spp.ui.activity.main.MainActivity;
 import com.ytxd.spp.util.AbStrUtil;
 import com.ytxd.spp.util.HideUtil;
 import com.ytxd.spp.util.ToastUtil;
@@ -81,11 +82,9 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
                     showToast("验证码未接收到?");
                 } */else if (AbStrUtil.isEmpty(pwd)) {
                     ToastUtil.showToastShort(this, "请输入密码");
-                }
-               /* else if (!code.equals(this.smsCode)) {
+                }/* else if (!code.equals(this.smsCode)) {
                     showToast("验证码错误");
-                }*/
-                else {
+                } */else {
                     presenter.registerPhone(phone, pwd, invitecode);
                 }
                 break;
@@ -117,13 +116,19 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
     }
 
     @Override
+    public void startToMain() {
+        startActivity(MainActivity.class);
+        AppManager.getInstance().killActivity(this);
+    }
+
+    @Override
     public void stopTimer() {
         time.cancel();
     }
 
     @Override
-    public void finishRegister() {
-        AppManager.getInstance().killActivity(this);
+    public void finishRegister(String phone, String pwd) {
+        presenter.loginPhone(phone,pwd);
     }
 
     class TimeCount extends CountDownTimer {

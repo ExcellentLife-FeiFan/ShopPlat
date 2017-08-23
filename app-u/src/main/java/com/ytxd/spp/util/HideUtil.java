@@ -38,7 +38,7 @@ public class HideUtil {
      * @param activity
      */
     public static void init(Activity activity) {
-        new HideUtil(activity, null);
+//        new HideUtil(activity, null);
     }
 
     /**

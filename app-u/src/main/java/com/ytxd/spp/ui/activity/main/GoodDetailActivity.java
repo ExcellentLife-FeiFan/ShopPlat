@@ -1,5 +1,6 @@
 package com.ytxd.spp.ui.activity.main;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -16,6 +17,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
+import com.bigkoo.convenientbanner.holder.Holder;
 import com.flyco.systembar.SystemBarHelper;
 import com.kennyc.view.MultiStateView;
 import com.ytxd.spp.R;
@@ -24,11 +27,13 @@ import com.ytxd.spp.base.BaseActivity2;
 import com.ytxd.spp.event.CartListClearRefreshEvent;
 import com.ytxd.spp.event.GoodAddEvent;
 import com.ytxd.spp.event.GoodMinusEvent;
+import com.ytxd.spp.event.OrderChangeToCannotBuyEvent;
 import com.ytxd.spp.event.RefreshLoginEvent;
 import com.ytxd.spp.model.GoodEvaluateM;
 import com.ytxd.spp.model.GoodM;
 import com.ytxd.spp.model.LocalShoppingCartM;
 import com.ytxd.spp.model.MerchantM;
+import com.ytxd.spp.net.Apis;
 import com.ytxd.spp.presenter.GoodDetailPresenter;
 import com.ytxd.spp.ui.activity.order.EnsureOrderActivity;
 import com.ytxd.spp.ui.adapter.GoodCommentLV;
@@ -127,9 +132,32 @@ public class GoodDetailActivity extends BaseActivity2<GoodDetailPresenter> imple
         goodM = (GoodM) getIntent().getSerializableExtra("data");
         merchantCode = getIntent().getStringExtra("merchantCode");
         merchantM = (MerchantM) getIntent().getSerializableExtra("merchant");
+        List<String> imgs = CommonUtils.getStringList(goodM.getLogoPaths().split(","));
+        //自定义你的Holder，实现更多复杂的界面，不一定是图片翻页，其他任何控件翻页亦可。
+        convenientBanner.setPages(
+                new CBViewHolderCreator<LocalImageHolderView>() {
+                    @Override
+                    public LocalImageHolderView createHolder() {
+                        return new LocalImageHolderView();
+                    }
+                }, imgs)
+                //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
+                .setPageIndicator(new int[]{R.drawable.ic_banner_dot_ns, R.drawable.ic_banner_dot_s})
+                //设置指示器的方向
+                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL)
+        ;
+        if (imgs.size() > 1) {
+            convenientBanner.startTurning(3000).setCanLoop(true);
+        } else {
+            convenientBanner.setCanLoop(false);
+        }
+        //设置翻页的效果，不需要翻页效果可用不设
+        //.setPageTransformer(Transformer.DefaultTransformer);    集成特效之后会有白屏现象，新版已经分离，如果要集成特效的例子可以看Demo的点击响应。
+//        convenientBanner.setManualPageable(false);//设置不能手动影响
+
         CommonUtils.setText(tvGoodName, goodM.getGoodsTitle());
         CommonUtils.setText(tvMonthSales, goodM.getSaleNumber() + "");
-        ImageLoadUtil.setImageNP(goodM.getLogoPaths(), ivGood, this);
+//        ImageLoadUtil.setImageNP(CommonUtils.getGoodLogoFirst(goodM.getLogoPaths()), ivGood, this);
         refreshCartLayoutData();
         if (null != goodM.getGoods() && goodM.getGoods().size() > 0) {
             ll_no_stand.setVisibility(View.GONE);
@@ -199,7 +227,7 @@ public class GoodDetailActivity extends BaseActivity2<GoodDetailPresenter> imple
     }
 
     private void refreshCartLayoutData() {
-        List<LocalShoppingCartM> beans =  ShoppingCartUtil.getLocalShoppingCartMs(merchantCode);
+        List<LocalShoppingCartM> beans = ShoppingCartUtil.getLocalShoppingCartMs(merchantCode);
         btnOk.setText("选好了");
         btnOk.setEnabled(true);
         if (beans.size() > 0) {
@@ -215,7 +243,7 @@ public class GoodDetailActivity extends BaseActivity2<GoodDetailPresenter> imple
                 if (p >= qs) {
                     btnOk.setEnabled(true);
                 } else {
-                    btnOk.setText("满"+merchantM.getQSPrice()+"送");
+                    btnOk.setText("满" + merchantM.getQSPrice() + "送");
                     btnOk.setEnabled(false);
                 }
             } else {
@@ -223,17 +251,17 @@ public class GoodDetailActivity extends BaseActivity2<GoodDetailPresenter> imple
                 tvTotalP.setText(CommonUtils.getString(R.string.none_goods));
                 btnOk.setEnabled(false);
             }
-            if (null != cartListDialog) {
-                cartListDialog.setData();
-            }
         } else {
             tvTotalNum.setText("0");
             tvTotalP.setText(CommonUtils.getString(R.string.none_goods));
             btnOk.setEnabled(false);
         }
+        if (null != cartListDialog) {
+            cartListDialog.setData();
+        }
 
-        String canBuyS=ShoppingCartUtil.canBuy(merchantM);
-        if(!canBuyS.equals("OK")){
+        String canBuyS = ShoppingCartUtil.canBuy(merchantM);
+        if (!canBuyS.equals("OK")) {
             btnOk.setEnabled(false);
             btnOk.setText(canBuyS);
         }
@@ -271,6 +299,16 @@ public class GoodDetailActivity extends BaseActivity2<GoodDetailPresenter> imple
     }
 
 
+    public void onEvent(OrderChangeToCannotBuyEvent event) {
+     /*   if (ShoppingCartUtil.canBuy(merchantM).equals("OK")) {
+            merchantM.setShopsOpen(event.stateM.getShopsOpen());
+            merchantM.setBusinessEndTime(event.stateM.getBusinessEndTime());
+            merchantM.setBusinessBeginTime(event.stateM.getBusinessBeginTime());
+            refreshCartLayoutData();
+        }*/
+    }
+
+
     @OnClick({R.id.tv_select_stand, R.id.ll_comment_more, R.id.tv_num_comment, R.id.shopping_cart_layout})
     public void onViewClicked2(View view) {
         switch (view.getId()) {
@@ -292,7 +330,7 @@ public class GoodDetailActivity extends BaseActivity2<GoodDetailPresenter> imple
     @OnClick(R.id.btn_ok)
     public void onViewClicked() {
         if (!tvTotalNum.getText().toString().equals("0")) {
-            if(CommonUtils.isLogined(this,true)){
+            if (CommonUtils.isLogined(this, true)) {
                 startActivity(EnsureOrderActivity.class, "merchant", merchantM);
             }
         }
@@ -307,9 +345,9 @@ public class GoodDetailActivity extends BaseActivity2<GoodDetailPresenter> imple
     public void lodeCommentSuccess(List<GoodEvaluateM> items) {
         mAdapter.addItems(items, true);
         tvNumComment.setText(mAdapter.getCount() + "条评论");
-        if(mAdapter.getCount()>0){
+        if (mAdapter.getCount() > 0) {
             msvComment.setViewState(MultiStateView.VIEW_STATE_CONTENT);
-        }else{
+        } else {
             msvComment.setViewState(MultiStateView.VIEW_STATE_EMPTY);
         }
     }
@@ -317,9 +355,9 @@ public class GoodDetailActivity extends BaseActivity2<GoodDetailPresenter> imple
     @Override
     public void lodeCommentFailed() {
         tvNumComment.setText(mAdapter.getCount() + "条评论");
-        if(mAdapter.getCount()>0){
+        if (mAdapter.getCount() > 0) {
             msvComment.setViewState(MultiStateView.VIEW_STATE_CONTENT);
-        }else{
+        } else {
             msvComment.setViewState(MultiStateView.VIEW_STATE_EMPTY);
         }
     }
@@ -327,12 +365,12 @@ public class GoodDetailActivity extends BaseActivity2<GoodDetailPresenter> imple
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==1001){
-            if(data.getBooleanExtra("payback",false)){
+        if (resultCode == 1001) {
+            if (data.getBooleanExtra("payback", false)) {
                 List<LocalShoppingCartM> beans = ShoppingCartUtil.getLocalShoppingCartMs(merchantCode);
-                ShoppingCartUtil.deleteCart(this,merchantCode);
+                ShoppingCartUtil.deleteCart(this, merchantCode);
                 App.initDataBase(this);
-                ShoppingCartUtil.deleteCart(this,merchantCode);
+                ShoppingCartUtil.deleteCart(this, merchantCode);
                 App.liteOrm.save(beans);
                 startActivity(EnsureOrderActivity.class, "merchant", merchantM);
                 EventBus.getDefault().post(new RefreshLoginEvent());
@@ -340,60 +378,23 @@ public class GoodDetailActivity extends BaseActivity2<GoodDetailPresenter> imple
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*        //自定义你的Holder，实现更多复杂的界面，不一定是图片翻页，其他任何控件翻页亦可。
-        convenientBanner.setPages(
-                new CBViewHolderCreator<LocalImageHolderView>() {
-                    @Override
-                    public LocalImageHolderView createHolder() {
-                        return new LocalImageHolderView();
-                    }
-                }, CommonUtils.getSampleList(5))
-                //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
-                .setPageIndicator(new int[]{R.drawable.ic_banner_dot_ns, R.drawable.ic_banner_dot_s})
-                //设置指示器的方向
-                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL)
-                .startTurning(3000);
-        //设置翻页的效果，不需要翻页效果可用不设
-        //.setPageTransformer(Transformer.DefaultTransformer);    集成特效之后会有白屏现象，新版已经分离，如果要集成特效的例子可以看Demo的点击响应。
-//        convenientBanner.setManualPageable(false);//设置不能手动影响*/
-/*
     public class LocalImageHolderView implements Holder<String> {
+        ImageView imageView;
 
         @Override
         public View createView(Context context) {
             View imgV = getLayoutInflater().inflate(R.layout.item_banner_image, null);
-            ImageView imageView = (ImageView) imgV.findViewById(R.id.iv);
+            imageView = (ImageView) imgV.findViewById(R.id.iv);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setImageResource(R.mipmap.img_food);
+            imageView.setImageResource(R.color.white);
             return imgV;
         }
 
         @Override
         public void UpdateUI(Context context, final int position, String data) {
-
-
+            ImageLoadUtil.setImage(Apis.AddPATH(data), imageView, context);
         }
 
 
-    }*/
+    }
 }

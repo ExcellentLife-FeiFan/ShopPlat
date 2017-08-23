@@ -25,12 +25,13 @@ public class OrderItemVH extends BaseViewHolder {
     public TextView txtOrderRemarks;
     public TextView txtOrderTime;
     public TextView tvPrice;
+    public TextView tvPriceD;
     public TextView tvState;
     public MyExpandableLayout expandActi;
     public ExpandIconView expandv;
     public RelativeLayout rlExpandv;
     public TextView tvReject;
-    public TextView tvSelectStaff;
+//    public TextView tvSelectStaff;
     public TextView tvAceOrder;
     public TextView tvSendNow;
     public TextView tvCancelReason;
@@ -52,11 +53,12 @@ public class OrderItemVH extends BaseViewHolder {
         this.txtOrderRemarks = (TextView) rootView.findViewById(R.id.txt_order_remarks);
         this.txtOrderTime = (TextView) rootView.findViewById(R.id.txt_order_time);
         this.tvPrice = (TextView) rootView.findViewById(R.id.tv_price);
+        this.tvPriceD= (TextView) rootView.findViewById(R.id.tv_price_d);
         this.expandActi = (MyExpandableLayout) rootView.findViewById(R.id.expand_acti);
         this.expandv = (ExpandIconView) rootView.findViewById(R.id.expandv);
         this.rlExpandv = (RelativeLayout) rootView.findViewById(R.id.rl_expandv);
         this.tvReject = (TextView) rootView.findViewById(R.id.tv_reject);
-        this.tvSelectStaff = (TextView) rootView.findViewById(R.id.tv_select_staff);
+//        this.tvSelectStaff = (TextView) rootView.findViewById(R.id.tv_select_staff);
         this.tvAceOrder = (TextView) rootView.findViewById(R.id.tv_ace_order);
         this.llOrderBasic = (LinearLayout) rootView.findViewById(R.id.ll_order_basic);
         this.tvState= (TextView) rootView.findViewById(R.id.tv_state);

@@ -49,6 +49,7 @@ public class HomeFM3 extends BaseFragment<HomeOrderPresenter> implements SwipeRe
     MultiStateView msvOrder;
     Unbinder unbinder;
     HomeOrderA orderA;
+    View footerView;
 
     @Override
     protected void initPresenter() {
@@ -66,8 +67,16 @@ public class HomeFM3 extends BaseFragment<HomeOrderPresenter> implements SwipeRe
     public void initView() {
         refreshLayout.setOnRefreshListener(this);
         rvOrder.setLayoutManager(new LinearLayoutManager(activity));
+        footerView = activity.getLayoutInflater().inflate(R.layout.footer_oder_more, (ViewGroup) rvOrder.getParent(), false);
+        footerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(MyOrderActivity.class);
+            }
+        });
         rvOrder.addItemDecoration(new SimpleDividerDecoration(activity, R.color.common_divider_color, R.dimen.divider_height));
-        orderA = new HomeOrderA(null);
+        orderA = new HomeOrderA(null, presenter);
+        orderA.addFooterView(footerView);
         orderA.isFirstOnly(true);
         orderA.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         rvOrder.setAdapter(orderA);
@@ -81,7 +90,7 @@ public class HomeFM3 extends BaseFragment<HomeOrderPresenter> implements SwipeRe
             @Override
             public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
                 Intent intent = new Intent(activity, OrderDetailActivity.class);
-                intent.putExtra("data", orderA.getItem(i));
+                intent.putExtra("orderCode", orderA.getItem(i).getOrderCode());
                 intent.putExtra("position", i);
                 startActivity(intent);
             }
@@ -127,9 +136,9 @@ public class HomeFM3 extends BaseFragment<HomeOrderPresenter> implements SwipeRe
 
     @Override
     public void onRefresh() {
-        if(CommonUtils.isLogined(activity)){
+        if (CommonUtils.isLogined(activity)) {
             presenter.getOrderList();
-        }else{
+        } else {
             refreshLayout.setRefreshing(false);
         }
     }
@@ -140,20 +149,59 @@ public class HomeFM3 extends BaseFragment<HomeOrderPresenter> implements SwipeRe
     }
 
     @Override
-    public void lodeSuccess(List<OrderM> items) {
-        refreshLayout.setRefreshing(false);
-        orderA.setNewData(items);
-        if (orderA.getItemCount() > 0) {
-            msvOrder.setViewState(MultiStateView.VIEW_STATE_CONTENT);
-        } else {
-            msvOrder.setViewState(MultiStateView.VIEW_STATE_EMPTY);
-        }
+    public void cancelSuccess(int position) {
+        orderA.getItem(position).setOrderStateCode(OrderM.CANCEL_U);
+        orderA.notifyItemChanged(position);
     }
 
     @Override
-    public void lodeFailed() {
+    public void ensureSuccess(int position) {
+        orderA.getItem(position).setOrderStateCode(OrderM.SUCCESS);
+        orderA.notifyItemChanged(position);
+    }
+
+    @Override
+    public void deleteSuccess(int position) {
+        orderA.getData().remove(position);
+        orderA.notifyItemRemoved(position);
+    }
+
+    @Override
+    public void refreshSuccess(List<OrderM> items) {
         refreshLayout.setRefreshing(false);
-        msvOrder.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        orderA.setNewData(items);
+        showContent();
+    }
+
+    @Override
+    public void refreshFailed() {
+        refreshLayout.setRefreshing(false);
+        showContent();
+    }
+
+    @Override
+    public void showDialogs() {
+        CommonUtils.showDialog(activity);
+    }
+
+    @Override
+    public void dissmisDialogs() {
+        CommonUtils.hideDialog();
+    }
+
+    private void showContent() {
+        if (orderA.getData().size() > 0) {
+            msvOrder.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+            if (orderA.getData().size() == 3) {
+                if (orderA.getFooterLayoutCount() == 0) {
+                    orderA.addFooterView(footerView);
+                }
+            } else {
+                orderA.removeAllFooterView();
+            }
+        } else {
+            msvOrder.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        }
     }
 
 
@@ -161,8 +209,9 @@ public class HomeFM3 extends BaseFragment<HomeOrderPresenter> implements SwipeRe
         msvOrder.setViewState(MultiStateView.VIEW_STATE_LOADING);
         presenter.getOrderList();
     }
+
     public void onEvent(RefreshLoginEvent event) {
-        if(CommonUtils.isLogined2()){
+        if (CommonUtils.isLogined2()) {
             msvOrder.setViewState(MultiStateView.VIEW_STATE_LOADING);
             presenter.getOrderList();
         }

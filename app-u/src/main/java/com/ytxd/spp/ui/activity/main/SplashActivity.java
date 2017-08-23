@@ -18,6 +18,7 @@ import com.ytxd.spp.view.ISplashView;
 
 import cn.jpush.android.api.BasicPushNotificationBuilder;
 import cn.jpush.android.api.JPushInterface;
+import cn.sharesdk.framework.ShareSDK;
 
 public class SplashActivity extends BaseActivity<SplashPresenter> implements ISplashView {
 
@@ -45,7 +46,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements ISp
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
+        ShareSDK.initSDK(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mPermissionsChecker = new PermissionsChecker(this);
             // 缺少权限时, 进入权限配置页面

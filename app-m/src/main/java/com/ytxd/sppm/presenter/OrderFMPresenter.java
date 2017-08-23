@@ -28,6 +28,9 @@ public class OrderFMPresenter extends BasePresenter<IOrderFMView> {
     }
 
     public void getOrderList(final int mode, int pageIndex,String orderStateCode) {
+        if(!CommonUtils.isLogined2()){
+            return;
+        }
         OkGo.<ApiResult<List<OrderM>>>get(Apis.GetCSOrderList)//
                 .params("SupermarketCode", App.user.getSupermarketCode())
                 .params("PageIndex", pageIndex)
@@ -116,24 +119,27 @@ public class OrderFMPresenter extends BasePresenter<IOrderFMView> {
 
     public void aceOrder(OrderM order, final int position) {
         CommonUtils.showDialog(context);
-        OkGo.<ApiResult<Object>>get(Apis.UpdateOrderTaking)//
+        OkGo.<ApiResult<OrderM>>get(Apis.UpdateOrderTaking)//
                 .params("OrderCode", order.getOrderCode())
                 .params("AndroidOrIos", order.getUserModel().getAndroidOrIos())
                 .params("TSAlias", order.getUserModel().getTSAlias())
-                .execute(new JsonCallback<ApiResult<Object>>() {
+                .execute(new JsonCallback<ApiResult<OrderM>>() {
                     @Override
-                    public void onSuccess(Response<ApiResult<Object>> response) {
+                    public void onSuccess(Response<ApiResult<OrderM>> response) {
                         CommonUtils.hideDialog();
-                        ApiResult<Object> result = response.body();
+                        ApiResult<OrderM> result = response.body();
                         if (result.isSuccess()) {
                             iView.aceOrderSuccess(position);
-                        } else {
+                        } else if(result.getState()==500){
+                            ToastUtil.showToastShort(context, result.getMsg());
+                            iView.aceOrderFailed(position,result.getObj());
+                        }else{
                             ToastUtil.showToastShort(context, result.getMsg());
                         }
                     }
 
                     @Override
-                    public void onError(Response<ApiResult<Object>> response) {
+                    public void onError(Response<ApiResult<OrderM>> response) {
                         CommonUtils.hideDialog();
                         super.onError(response);
                         ToastUtil.showToastShort(context, CommonUtils.getString(R.string.action_failure));
@@ -143,11 +149,11 @@ public class OrderFMPresenter extends BasePresenter<IOrderFMView> {
 
     }
 
-    public void setSendding(OrderM order, String deliveryStaffCode, final int position) {
+    public void setSendding(OrderM order, final int position) {
         CommonUtils.showDialog(context);
         OkGo.<ApiResult<Object>>get(Apis.UpdateOrderYPS)//
                 .params("OrderCode", order.getOrderCode())
-                .params("DeliveryStaffCode", deliveryStaffCode)
+                .params("DeliveryStaffCode", order.getDeliveryStaffCode())
                 .params("AndroidOrIos", order.getUserModel().getAndroidOrIos())
                 .params("TSAlias", order.getUserModel().getTSAlias())
                 .execute(new JsonCallback<ApiResult<Object>>() {

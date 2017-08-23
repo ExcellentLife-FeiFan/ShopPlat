@@ -105,11 +105,6 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
         return activity;
     }
 
-
-    /**
-     * 如果是通过FragmentTransaction的show和hide的方法来控制显示，调用的是onHiddenChanged.
-     * 若是初始就show的Fragment 为了触发该事件 需要先hide再show
-     */
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
@@ -121,6 +116,20 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
             onInvisible();
         }
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (getUserVisibleHint()) {
+            isVisible = true;
+            onVisible();
+        } else {
+            isVisible = false;
+            onInvisible();
+        }
+    }
+
+
 
     protected void onVisible() {
         lazyLoad();

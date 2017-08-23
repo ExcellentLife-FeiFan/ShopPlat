@@ -36,7 +36,7 @@
                 android:drawablePadding="@dimen/default_ui_margin"
                 android:text="@string/loc_doing"
                 android:maxWidth="200dp"
-                android:maxLines="2"
+                android:maxLines="1"
                 android:ellipsize="middle"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp18" />

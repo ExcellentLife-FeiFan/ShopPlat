@@ -87,6 +87,7 @@
                 android:paddingRight="@dimen/padding_left">
 
                 <LinearLayout
+                    android:id="@+id/ll_wechat"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/common_viewgroup_height"
                     android:gravity="center_vertical"
@@ -119,6 +120,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_alipay"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/common_viewgroup_height"
                     android:gravity="center_vertical"

@@ -88,7 +88,7 @@
                     android:layout_height="@dimen/common_viewgroup_height"
                     android:background="@drawable/selector_bg_viewgroup_click4"
                     android:gravity="center"
-                    android:text="退出登录"
+                    android:text="注销账户"
                     android:textColor="@color/tv_top_card"
                     android:textSize="@dimen/text_size_common_btn" />
 

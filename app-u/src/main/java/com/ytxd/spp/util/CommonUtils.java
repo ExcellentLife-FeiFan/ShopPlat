@@ -1,11 +1,19 @@
 package com.ytxd.spp.util;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +22,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.amap.api.maps2d.AMapUtils;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.services.core.LatLonPoint;
@@ -25,12 +35,19 @@ import com.ytxd.spp.model.MerchantM;
 import com.ytxd.spp.ui.activity.login.LoginActivity;
 import com.ytxd.spp.ui.views.loadview.CustomDialog;
 
+import java.io.File;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Random;
 
+import static com.ytxd.spp.base.App.context;
 import static com.ytxd.spp.base.App.user;
 
 
@@ -177,13 +194,18 @@ public class CommonUtils {
     }
 
     public static String getString(int res) {
-        return App.context.getResources().getString(res);
+        return context.getResources().getString(res);
     }
 
     public static Drawable getDrawable(Context context, int res) {
         return context.getResources().getDrawable(res);
     }
 
+    public static Drawable getTextDrawable(int res) {
+        Drawable drawable = context.getResources().getDrawable(res);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        return drawable;
+    }
 
     public static String getUserCachePath() {
         if (null != user) {
@@ -258,7 +280,7 @@ public class CommonUtils {
     }
 
     public static void setBackgroundDrawable(View v, int res) {
-        v.setBackgroundDrawable(App.context.getResources().getDrawable(res));
+        v.setBackgroundDrawable(context.getResources().getDrawable(res));
     }
 
     public static void setBackgroundDrawable(Context context, View v, int res) {
@@ -266,11 +288,11 @@ public class CommonUtils {
     }
 
     public static void setTextColor(TextView v, int res) {
-        v.setTextColor(App.context.getResources().getColor(res));
+        v.setTextColor(context.getResources().getColor(res));
     }
 
     public static void setImageDrawable(ImageView v, int res) {
-        v.setImageDrawable(App.context.getResources().getDrawable(res));
+        v.setImageDrawable(context.getResources().getDrawable(res));
     }
 
 
@@ -359,6 +381,16 @@ public class CommonUtils {
         return list;
     }
 
+    public static String getGoodLogoFirst(String logos) {
+        try {
+            return getStringList(logos.split(",")).get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+
+    }
+
     public static boolean getBoolean(int b) {
         return b == 1 ? true : false;
     }
@@ -403,5 +435,161 @@ public class CommonUtils {
         } else {
             return bd + "  " + h;
         }
+    }
+
+    public static void intallApk(File t, Context context) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.setDataAndType(Uri.fromFile(t),
+                "application/vnd.android.package-archive");
+        context.startActivity(intent);
+    }
+/*
+    */
+/**
+ * @return 返回类型  String
+ * @throws
+ * @Title: getIpAddress
+ * @Description: TODO(获取当前ip地址)
+ *//*
+
+    public static String getIpAddress(Context context) {
+        String ip = null;
+        ConnectivityManager conMann = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mobileNetworkInfo = conMann.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        NetworkInfo wifiNetworkInfo = conMann.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        if (mobileNetworkInfo.isConnected()) {
+            ip = getLocalIpAddress();
+        }else if(wifiNetworkInfo.isConnected())
+        {
+            WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+            int ipAddress = wifiInfo.getIpAddress();
+            ip = intToIp(ipAddress);
+        }
+        return ip;
+
+    }
+    public static String getLocalIpAddress() {
+        try {
+            String ipv4;
+            ArrayList<NetworkInterface>  nilist = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface ni: nilist)
+            {
+                ArrayList<InetAddress>  ialist = Collections.list(ni.getInetAddresses());
+                for (InetAddress address: ialist){
+                    if (!address.isLoopbackAddress() && InetAddressUtils.isIPv4Address(ipv4=address.getHostAddress()))
+                    {
+                        return ipv4;
+                    }
+                }
+
+            }
+
+        } catch (SocketException ex) {
+            Log.e("localip", ex.toString());
+        }
+        return null;
+    }
+    public static String intToIp(int ipInt) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(ipInt & 0xFF).append(".");
+        sb.append((ipInt >> 8) & 0xFF).append(".");
+        sb.append((ipInt >> 16) & 0xFF).append(".");
+        sb.append((ipInt >> 24) & 0xFF);
+        return sb.toString();
+    }
+*/
+
+    /**
+     * 获取ip地址
+     *
+     * @return
+     */
+    public static String getHostIP() {
+
+        String hostIp = null;
+        try {
+            Enumeration nis = NetworkInterface.getNetworkInterfaces();
+            InetAddress ia = null;
+            while (nis.hasMoreElements()) {
+                NetworkInterface ni = (NetworkInterface) nis.nextElement();
+                Enumeration<InetAddress> ias = ni.getInetAddresses();
+                while (ias.hasMoreElements()) {
+                    ia = ias.nextElement();
+                    if (ia instanceof Inet6Address) {
+                        continue;// skip ipv6
+                    }
+                    String ip = ia.getHostAddress();
+                    if (!"127.0.0.1".equals(ip)) {
+                        hostIp = ia.getHostAddress();
+                        break;
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            Log.i("yao", "SocketException");
+            e.printStackTrace();
+        }
+        return hostIp;
+
+    }
+    /**
+     * 获取设备号
+     */
+    public static String getImei(Context context) {
+        String imei = null;
+        try {
+            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            imei = telephonyManager.getDeviceId();
+        } catch (Exception e) {
+            Log.e(JpushUtil.class.getSimpleName(), e.getMessage());
+        }
+        return imei;
+    }
+
+    /**
+     * 检查是否有定位的权限
+     */
+    public static boolean isHaveLocationPermi(final Context context) {
+        PackageManager pm = context.getPackageManager();
+        /*boolean permission = (PackageManager.PERMISSION_GRANTED ==
+                pm.checkPermission("android.permission.ACCESS_FINE_LOCATION", context.getPackageName()));*/
+        boolean permission = (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_DENIED);
+        boolean permission2 = (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                PackageManager.PERMISSION_DENIED);
+        if (permission) {
+            DialogUtils.showDialog(context, "提示", "暂时未获取到定位权限，去设置？", new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    if (which.name().equals(DialogAction.POSITIVE.name())) {
+                        getAppDetailSettingIntent(context);
+                    }
+                }
+            });
+            return false;
+        } else {
+            return true;
+        }
+    }
+    /**
+     * 跳到系统应用详情界面
+     */
+    public static void getAppDetailSettingIntent(Context context) {
+        Intent localIntent = new Intent();
+        localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= 9) {
+            localIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+            localIntent.setData(Uri.fromParts("package", context.getPackageName(), null));
+        } else if (Build.VERSION.SDK_INT <= 8) {
+            localIntent.setAction(Intent.ACTION_VIEW);
+            localIntent.setClassName("com.android.settings", "com.android.settings.InstalledAppDetails");
+            localIntent.putExtra("com.android.settings.ApplicationPkgName", context.getPackageName());
+        }
+        context.startActivity(localIntent);
     }
 }

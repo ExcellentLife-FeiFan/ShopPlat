@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static com.ytxd.sppm.base.App.context;
+import static com.ytxd.sppm.util.PrintUtils.MEAL_NAME_MAX_LENGTH;
+
 
 /**
  * Created by XY on 2016/11/20.
@@ -121,11 +124,17 @@ public class CommonUtils {
     }
 
     public static String getString(int res) {
-        return App.context.getResources().getString(res);
+        return context.getResources().getString(res);
     }
 
     public static Drawable getDrawable(Context context, int res) {
         return context.getResources().getDrawable(res);
+    }
+
+    public static Drawable getTextDrawable(int res) {
+        Drawable drawable = context.getResources().getDrawable(res);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        return drawable;
     }
 
 
@@ -202,7 +211,7 @@ public class CommonUtils {
     }
 
     public static void setBackgroundDrawable(View v, int res) {
-        v.setBackgroundDrawable(App.context.getResources().getDrawable(res));
+        v.setBackgroundDrawable(context.getResources().getDrawable(res));
     }
 
     public static void setBackgroundDrawable(Context context, View v, int res) {
@@ -210,11 +219,11 @@ public class CommonUtils {
     }
 
     public static void setTextColor(TextView v, int res) {
-        v.setTextColor(App.context.getResources().getColor(res));
+        v.setTextColor(context.getResources().getColor(res));
     }
 
     public static void setImageDrawable(ImageView v, int res) {
-        v.setImageDrawable(App.context.getResources().getDrawable(res));
+        v.setImageDrawable(context.getResources().getDrawable(res));
     }
 
 
@@ -322,7 +331,7 @@ public class CommonUtils {
             PrintUtils.selectCommand(PrintUtils.NORMAL);
             PrintUtils.selectCommand(PrintUtils.ALIGN_LEFT);
             PrintUtils.printText(PrintUtils.printTwoData("编号:", orderM.getOrderCode() + "\n"));
-            PrintUtils.printText("\n\n");
+            PrintUtils.printText("\n");
             PrintUtils.printText(PrintUtils.printTwoData("下单时间:", AbDateUtil.getStringByFormat(CommonUtils.getFormatTimeString(orderM.getCreateTime()), AbDateUtil.dateFormatYMDHM) + "\n"));
             PrintUtils.printText(PrintUtils.printTwoData("期望送达时间:", AbDateUtil.getStringByFormat(CommonUtils.getFormatTimeString(orderM.getSDTime()), AbDateUtil.dateFormatYMDHM) + "\n"));
             PrintUtils.printText("--------------------------------\n");
@@ -330,14 +339,40 @@ public class CommonUtils {
             PrintUtils.printText(PrintUtils.printThreeData("名称", "数量", "金额\n"));
             PrintUtils.printText("--------------------------------\n");
             PrintUtils.selectCommand(PrintUtils.BOLD_CANCEL);
-            for (int i = 0; i < orderM.getChildrenGoods().size(); i++) {
-                OrderGoodM goodM = orderM.getChildrenGoods().get(i);
-                PrintUtils.printText(PrintUtils.printThreeData(goodM.getGoodsTitle(), goodM.getBuyNumber() + "", goodM.getXPrice() + "\n"));
+            try {
+                for (int i = 0; i < orderM.getChildrenGoods().size(); i++) {
+                    OrderGoodM goodM = orderM.getChildrenGoods().get(i);
+                    if(goodM.getGoodsTitle().length()>MEAL_NAME_MAX_LENGTH){
+                        int c10=goodM.getGoodsTitle().length()/MEAL_NAME_MAX_LENGTH;
+                        for (int j = 0; j < c10; j++) {
+                            if(j==0){
+                                PrintUtils.printText(PrintUtils.printThreeData(goodM.getGoodsTitle().substring(0,MEAL_NAME_MAX_LENGTH), goodM.getBuyNumber() + "", goodM.getXPrice() + "\n"));
+                            }else{
+                                PrintUtils.printText(goodM.getGoodsTitle().substring(j*MEAL_NAME_MAX_LENGTH,(j+1)*MEAL_NAME_MAX_LENGTH)+"\n");
+                            }
+                        }
+                        if(goodM.getGoodsTitle().length()>MEAL_NAME_MAX_LENGTH*c10){
+                            PrintUtils.printText(goodM.getGoodsTitle().substring(c10*MEAL_NAME_MAX_LENGTH,goodM.getGoodsTitle().length())+"\n");
+                        }
+                    }else{
+                        PrintUtils.printText(PrintUtils.printThreeData(goodM.getGoodsTitle(), goodM.getBuyNumber() + "", goodM.getXPrice() + "\n"));
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
             PrintUtils.printText(PrintUtils.printTwoData("配送费", orderM.getPSPrice() + "\n"));
             PrintUtils.printText("--------------------------------\n");
             PrintUtils.printText(PrintUtils.printTwoData("合计", orderM.getYPrice() + "\n"));
-            PrintUtils.printText(PrintUtils.printTwoData("优惠", CommonUtils.getFloatString2(Float.valueOf(orderM.getYPrice()) - Float.valueOf(orderM.getSJPrice())) + "\n"));
+            if (!AbStrUtil.isEmpty(orderM.getJMoney())) {
+                PrintUtils.printText(PrintUtils.printTwoData("满减", "-" + CommonUtils.getFloatString2(Float.valueOf(orderM.getJMoney())) + "\n"));
+            }
+            if (!AbStrUtil.isEmpty(orderM.getCouponPrice())) {
+                PrintUtils.printText(PrintUtils.printTwoData("优惠券", "-" + CommonUtils.getFloatString2(Float.valueOf(orderM.getCouponPrice())) + "\n"));
+            }
+//            PrintUtils.printText(PrintUtils.printTwoData("优惠", CommonUtils.getFloatString2(Float.valueOf(orderM.getYPrice()) - Float.valueOf(orderM.getSJPrice())) + "\n"));
             PrintUtils.printText("--------------------------------\n");
             PrintUtils.printText(PrintUtils.printTwoData("实收", orderM.getSJPrice() + "\n"));
             PrintUtils.printText("--------------------------------\n");

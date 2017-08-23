@@ -22,6 +22,7 @@ import com.ytxd.spp.model.ShoppingCartM;
 import com.ytxd.spp.ui.dialog.SelectGoodStandDialog;
 import com.ytxd.spp.ui.views.FakeAddImageView;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -30,6 +31,9 @@ import java.util.List;
 
 public class ShoppingCartUtil {
 
+    /**
+     *
+     * */
     public static int getLocalCartGoodCount(String goodCode, String merchantCode) {
         int c = 0;
         List<LocalShoppingCartM> beans = getLocalShoppingCartMs(merchantCode);
@@ -47,7 +51,7 @@ public class ShoppingCartUtil {
 
     }
 
-    public static void refreshLocalCartGood(GoodM good, String merchantCode) {
+    public static void updateLocalCartGood(GoodM good, String merchantCode) {
         List<LocalShoppingCartM> beans = getLocalShoppingCartMs(merchantCode);
         if (beans.size() > 0) {
             LocalShoppingCartM shoppingCartM = beans.get(0);
@@ -63,6 +67,25 @@ public class ShoppingCartUtil {
 
     }
 
+    public static void deleteLocalCartGood(GoodM good, String merchantCode) {
+        List<LocalShoppingCartM> beans = getLocalShoppingCartMs(merchantCode);
+        if (beans.size() > 0) {
+            LocalShoppingCartM shoppingCartM = beans.get(0);
+            for (int i = 0; i < shoppingCartM.getShoppingCartM().goods.size(); i++) {
+                if (shoppingCartM.getShoppingCartM().goods.get(i).getGoodM().getGoodsCode().equals(good.getGoodsCode())) {
+                    shoppingCartM.getShoppingCartM().goods.remove(i);
+                    App.liteOrm.update(shoppingCartM);
+                    break;
+                }
+
+            }
+        }
+
+    }
+
+    /**
+     * 添加单个商品到本地购物车
+     */
     public static boolean goodMinusEvent(Context context, String merchantCode, GoodM goodM) {
         boolean canrefresh = false;
         if (CommonUtils.isDBInit(context)) {
@@ -80,6 +103,9 @@ public class ShoppingCartUtil {
 
     }
 
+    /**
+     * 减去单个商品从本地购物车
+     */
     public static boolean goodAddEvent(Context context, MerchantM merchant, GoodM goodM) {
         boolean canrefresh = false;
         if (CommonUtils.isDBInit(context)) {
@@ -232,7 +258,10 @@ public class ShoppingCartUtil {
     }
 
     public static String canBuy(MerchantM merchantM) {
-        boolean isRest = false;
+        if (!CommonUtils.getBoolean(merchantM.getShopsOpen())) {
+            return "未营业";
+        }
+      /*  boolean isRest;
         String b = CommonUtils.getFormatTimeString(merchantM.getBusinessBeginTime());
         String[] bs = b.split(":");
         float bt = Float.valueOf(bs[0]) * 60f + Float.valueOf(bs[1]);
@@ -249,9 +278,7 @@ public class ShoppingCartUtil {
         }
         if (isRest) {
             return "正在休息";
-        }
-
-
+        }*/
 
         return "OK";
     }
@@ -261,5 +288,43 @@ public class ShoppingCartUtil {
                 .whereEquals(LocalShoppingCartM.CARTCODE, merchantCode);
         List<LocalShoppingCartM> beans = App.liteOrm.query(queryBuilder);
         return beans;
+    }
+
+
+    //根据在线获取并临时保存到本地数据库的商品列表来剔除本地购物车中商店不存在（删除）的商品
+    public static boolean refreshLocalCartGoodByOnlineGot(String merchantCode) {
+        List<LocalShoppingCartM> beans = getLocalShoppingCartMs(merchantCode);
+        int count = 0;
+        if (beans.size() > 0) {
+            LocalShoppingCartM shoppingCartM = beans.get(0);
+            List<ShoppingCartM.Goods> goods = shoppingCartM.getShoppingCartM().getGoods();
+
+            //遍历查询删除
+            Iterator<ShoppingCartM.Goods> iterator = goods.iterator();
+            while (iterator.hasNext()) {
+                ShoppingCartM.Goods good = iterator.next();
+                QueryBuilder queryBuilder = new QueryBuilder(GoodM.class)
+                        .whereEquals("GoodsCode", good.getGoodM().getGoodsCode());
+                List<GoodM> gs = App.liteOrm.query(queryBuilder);
+                if (gs.size() <= 0) {
+                    iterator.remove();//移除当前
+                    count++;
+                }
+            }
+            if (count > 0) {
+                App.liteOrm.update(shoppingCartM);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isPriceChanged(GoodM goodM1, GoodM goodM2) {
+        float lg = Float.valueOf(goodM1.getYPrice());
+        float ln = Float.valueOf(goodM2.getYPrice());
+        if (lg != ln) {
+            return true;
+        }
+        return false;
     }
 }

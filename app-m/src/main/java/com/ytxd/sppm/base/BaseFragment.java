@@ -48,13 +48,16 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     public abstract void initView();
 
 
-    protected abstract void initData();
+    protected void initData() {
+    }
+
+    ;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (AppCompatActivity) getActivity();
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
         initPresenter();
@@ -106,14 +109,27 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     }
 
 
+   /* */
+
     /**
      * 如果是通过FragmentTransaction的show和hide的方法来控制显示，调用的是onHiddenChanged.
      * 若是初始就show的Fragment 为了触发该事件 需要先hide再show
-     */
+     *//*
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
+            isVisible = true;
+            onVisible();
+        } else {
+            isVisible = false;
+            onInvisible();
+        }
+    }*/
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (getUserVisibleHint()) {
             isVisible = true;
             onVisible();
         } else {
@@ -142,7 +158,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     }
 
     protected void showToast(String txt) {
-         ToastUtil.showToastShort(getActivity(), txt);
+        ToastUtil.showToastShort(getActivity(), txt);
     }
 
     public void onEvent(EmptyEvent event) {
@@ -151,7 +167,6 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
 
 
     // --------------------------------------------------------------------------------------
-
 
 
     protected void startActivity(Class<?> cls) {
@@ -225,21 +240,26 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
         Intent intent = new Intent(activity, cls);
         startActivityForResult(intent, requestCode);
     }
-    protected void setBackgroundDrawable(View v,int res){
+
+    protected void setBackgroundDrawable(View v, int res) {
         v.setBackgroundDrawable(getResources().getDrawable(res));
     }
-    protected void setTextColor(TextView v, int res){
+
+    protected void setTextColor(TextView v, int res) {
         v.setTextColor(getResources().getColor(res));
     }
-    protected void setImageDrawable(ImageView v, int res){
+
+    protected void setImageDrawable(ImageView v, int res) {
         v.setImageDrawable(getResources().getDrawable(res));
     }
+
     /**
      * 获取登录Token
      */
     public String getToken() {
         return SPUtil.getInstance().getString("token", "");
     }
+
     /**
      * 设置登录Token
      *
@@ -252,7 +272,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(EventBus.getDefault().isRegistered(this)){
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
         if (null != presenter) {

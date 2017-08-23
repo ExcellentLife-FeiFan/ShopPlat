@@ -20,6 +20,7 @@ public interface IOrderFMView extends IBaseView {
     void refreshSuccess(List<OrderM> items);
 
     void aceOrderSuccess(int position);
+    void aceOrderFailed(int position,OrderM orderM);
 
     void setSenddingSuccess(int position);
 

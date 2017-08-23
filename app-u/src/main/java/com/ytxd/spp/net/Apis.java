@@ -48,6 +48,14 @@ public class Apis {
      */
     public static String PhoneLogin = BASE_URL + "/API_User/PhoneLogin";
 
+    /**
+     * 手机号注册用户绑定第三方号
+     *
+     * @param UserCode:用户编号
+     * @param Type 类别,QQ,WeChat,WeiBo;传对应的参数
+     * @param Code 第三方唯一号
+     */
+    public static String BindThirdPartyCode = BASE_URL + "/API_User/BingCode";
 
     /**
      * 第三方登录
@@ -56,6 +64,23 @@ public class Apis {
      * @param Code 第三方唯一号
      */
     public static String ThirdPartyLogin = BASE_URL + "/API_User/ThirdPartyLogin";
+
+
+    /**
+     * 绑定手机号
+     *
+     * @param UserCode:用户编号
+     * @param Phone
+     */
+    public static String BingPhone = BASE_URL + "/API_User/BingPhoneByThirdParty";
+
+    /**
+     * 注册后第一次登录输入邀请码
+     *
+     * @param UserCode:用户编号
+     * @param InvitationCode:邀请码
+     */
+    public static String UpdateUserInviter = BASE_URL + "/API_User/UpdateUserInviter";
 
 
     /**
@@ -159,6 +184,8 @@ public class Apis {
      * @param SHAddressCode
      * @param UserCouponCode
      * @param ManJianCode
+     * @param MMoney:满多少钱(没有传0)新加参数
+     * @param JMoney:减多少钱(没有传0)新加参数
      * @param GoodsInfo :商品信息格式为：商品编号[商品数量, s001[2,s002[1
      * @param SDTime
      * @param Remarks
@@ -189,11 +216,20 @@ public class Apis {
     public static String UpdateOrderPay = BASE_URL + "/API_User/UpdateOrderPay";
 
     /**
+     * 更新订单已删除
+     *
+     * @param OrderCode
+     */
+    public static String UpdateOrderYSC = BASE_URL + "/API_CS/UpdateOrderYSC";
+
+
+
+    /**
      * 确认收货（完成订单）
      *
      * @param OrderCode
      */
-    public static String DetermineSH = BASE_URL + "/API_User/DetermineSH";
+    public static String UserDetermineSH = BASE_URL + "/API_User/UserDetermineSH";
 
     /**
      * 取消订单
@@ -221,11 +257,12 @@ public class Apis {
     public static String SetUserCouponAllRead = BASE_URL + "/API_User/SetUserCouponAllRead";
 
     /**
-     * 获取订单商品详情
+     * 获取订单详情
      *
      * @param OrderCode:订单编号
      */
-    public static String GetOrderGoodsInfo = BASE_URL + "/API_User/GetOrderInfo";
+    public static String GetOrderInfo = BASE_URL + "/API_User/getOrderInfo";
+
 
     /**
      * 获取超市满减信息
@@ -305,7 +342,47 @@ public class Apis {
     public static String UpdateUserAlias = BASE_URL + "/API_User/UpdateUserAlias";
 
 
+    /**
+     * 获取超市 营业时间,是否营业中.(用于提交订单前判断)
+     *
+     * @param SupermarketCode:超市编号
+     */
+    public static String GetSupermarketBusinessTimeIsOpen = BASE_URL + "/API_User/GetSupermarketBusinessTimeIsOpen";
 
+    /**
+     * 根据商品ids获取商品列表
+     *
+     * @param GoodsCodes:商品ID集合，逗号分隔，如 1,2,3,4,5
+     */
+    public static String GetGoodsInfoByCodes = BASE_URL + "/API_User/getGoodsInfoByCodes";
+
+    /**
+     * 获取超市详情
+     *
+     * @param SupermarketCode:超市编号
+     */
+    public static String GetSupermarketInfo = BASE_URL + "/API_User/GetSupermarketInfo";
+
+    /**
+     * 订单支付(付款获取串)
+     *
+     * @param OrderCode:订单编号
+     * @param PayType:支付类别,0001=支付宝 0002=微信,0003=货到付款
+     * @param AndroidOrIos:安卓=1，苹果=2
+     * @param TSAlias:alias
+     * @param device_info:设备号(微信用)
+     * <p>
+     * @param spbill_create_ip:客户端IP(微信用)
+     */
+    public static String Pay = BASE_URL + "/API_User/Pay";
+
+
+    /**
+     * 获取app新版本
+     *
+     * @param AndroidOrIos:1=安卓,2=苹果
+     */
+    public static String GetSoftwareNewsVersion = BASE_URL + "/API_User/GetSoftwareNewsVersion";
 
 
 }

@@ -181,6 +181,22 @@ public class DialogUtils {
         }
         myDialog.show();
     }
+    public static void showInputDialog(Context activity, String title, String content, int inputType, int hint, int minLenth, int maxLenth,MaterialDialog.InputCallback callback) {
+        if (myDialog == null) {
+            myDialog = new MaterialDialog.Builder(activity)
+                    .title(title)
+                    .content(content)
+                    .inputType(inputType)
+                    .inputRange(minLenth,maxLenth)
+                    .positiveText("确定")
+                    .positiveColor(activity.getResources().getColor(R.color.colorPrimary))
+                    .input(hint, R.string.null_s2, false, callback)
+                    .show();
+            myDialog.setOnDismissListener(myDissmissListener);
+            return;
+        }
+        myDialog.show();
+    }
 
     public static void showDialog(Activity activity, String title, String content) {
         if (myDialog == null) {

@@ -29,12 +29,12 @@ public class PrintUtils {
     /**
      * 左侧汉字最多显示几个文字
      */
-    private static final int LEFT_TEXT_MAX_LENGTH = 8;
+    private static final int LEFT_TEXT_MAX_LENGTH = 9;
 
     /**
      * 小票打印菜品的名称，上限调到8个字
      */
-    public static final int MEAL_NAME_MAX_LENGTH = 8;
+    public static final int MEAL_NAME_MAX_LENGTH = 9;
 
     private static OutputStream outputStream = null;
 

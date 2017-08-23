@@ -61,7 +61,6 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                 startActivity(BlueToothPrintActivity.class);
                 break;
             case R.id.tv_logout:
-
                 JpushUtil.getInstance().setAliasNull(App.user.getSupermarketCode());
                 SPUtil.getInstance().putString("pwd", "");
                 startActivity(LoginActivity.class);

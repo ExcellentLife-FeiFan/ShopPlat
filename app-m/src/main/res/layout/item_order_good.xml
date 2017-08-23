@@ -8,9 +8,10 @@
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:text="可口可乐少时诵诗书所可口可乐少时诵诗书所"
+        android:layout_centerVertical="true"
+        android:maxLines="3"
         android:maxWidth="130dp"
+        android:text="法规的公司电话公司符合施工后是否合适绥芬河"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/text_size_common_s" />
 
@@ -18,8 +19,8 @@
         android:id="@+id/tv_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="x1"
+        android:layout_centerHorizontal="true"
+        android:text="x0"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/text_size_common_s" />
 
@@ -29,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:text="22.00"
+        android:text="0.00"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/text_size_common_s" />
 

@@ -167,25 +167,29 @@
 
                 <include layout="@layout/line_gray"></include>
 
-                <RelativeLayout
-                    android:id="@+id/rl_paypwd"
-                    style="@style/VG_padding">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical">
 
-                    <TextView
-                        style="@style/TV_VG_LEFT_WC"
-                        android:text="支付密码" />
+                    <RelativeLayout
+                        android:id="@+id/rl_paypwd"
+                        style="@style/VG_padding">
+                        <TextView
+                            style="@style/TV_VG_LEFT_WC"
+                            android:text="支付密码" />
 
+                        <TextView
+                            android:id="@+id/tv_pay_pwd"
+                            style="@style/TV_VG_RGIHT_DRAWABLE"
+                            android:text="未设置"
+                            android:textColor="@color/colorPrimary" />
+                    </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/tv_pay_pwd"
-                        style="@style/TV_VG_RGIHT_DRAWABLE"
-                        android:text="未设置"
-                        android:textColor="@color/colorPrimary" />
+                    <include layout="@layout/line_gray"></include>
 
-
-                </RelativeLayout>
-
-                <include layout="@layout/line_gray"></include>
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
