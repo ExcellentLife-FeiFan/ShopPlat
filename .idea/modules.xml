@@ -3,7 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ShopPlat.iml" filepath="$PROJECT_DIR$/ShopPlat.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app-m/app-m.iml" filepath="$PROJECT_DIR$/app-m/app-m.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app-u/app-u.iml" filepath="$PROJECT_DIR$/app-u/app-u.iml" />
       <module fileurl="file://$PROJECT_DIR$/citypicker/citypicker.iml" filepath="$PROJECT_DIR$/citypicker/citypicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/mobsharelibrary/mobsharelibrary.iml" filepath="$PROJECT_DIR$/mobsharelibrary/mobsharelibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/pickerview/pickerview.iml" filepath="$PROJECT_DIR$/pickerview/pickerview.iml" />
