@@ -53,8 +53,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:' + supportVersion
     compile 'com.android.support:design:' + supportVersion
     compile 'com.android.support:recyclerview-v7:' + supportVersion
-    //noinspection GradleCompatible
-    //    compile 'com.github.mcxtzhang:AnimShopButton:V1.2.0'
     compile files('libs/jcore-android-1.1.5.jar')
     compile files('libs/jpush-android-3.0.7.jar')
     compile 'com.android.support:support-dynamic-animation:' + supportVersion
