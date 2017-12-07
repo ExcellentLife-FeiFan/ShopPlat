@@ -15,11 +15,23 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
+    //配置keystore签名
+    signingConfigs {
+        release {
+            storeFile file("快点-商家v.jks")
+            storePassword "000000"
+            keyAlias "快点-商家v"
+            keyPassword "000000"
+        }
+    }
+
     buildTypes {
         release {
-
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.release
         }
     }
 }
