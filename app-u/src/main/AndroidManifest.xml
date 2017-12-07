@@ -44,7 +44,7 @@
         <!-- 高德地图已打包key -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="0b2f1d795161f9ebfa821fe3bbe170bc" />
+            android:value="0b2f1d7z95161f9ebfa821fe3bbe170bc" />
 
         <!-- 高德地图未打包key -->
         <!--      <meta-data

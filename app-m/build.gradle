@@ -1,16 +1,13 @@
 apply plugin: 'com.android.application'
 
-def supportVersion = "25.3.1"
+def supportVersion = "26.0.2"
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.0"
-
-
+    compileSdkVersion 26
     defaultConfig {
         applicationId "com.ytxd.sppm"
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         renderscriptTargetApi 25
@@ -53,7 +50,8 @@ dependencies {
     compile 'me.iwf.photopicker:PhotoPicker:0.9.8@aar'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.github.zagum:Android-ExpandIcon:1.2.0'
-    compile 'com.jakewharton:butterknife:8.4.0'
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'com.aurelhubert:ahbottomnavigation:2.0.6'
     compile 'com.zxy.android:recovery:0.1.4'
     compile 'me.zhanghai.android.materialratingbar:library:1.0.2'

@@ -1,13 +1,12 @@
 apply plugin: 'com.android.application'
-def supportVersion = "25.3.1"
+def supportVersion = "26.0.2"
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    compileSdkVersion 26
     defaultConfig {
         applicationId "com.ytxd.spp"
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 5
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -75,6 +74,7 @@ dependencies {
     compile 'com.zaaach:toprightmenu:1.0'
     compile 'com.daimajia.numberprogressbar:library:1.4@aar'
     testCompile 'junit:junit:4.12'
-    compile 'com.jakewharton:butterknife-compiler:8.4.0'
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
 }
